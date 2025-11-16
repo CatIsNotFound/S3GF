@@ -1,23 +1,5 @@
 
 #include "Core.h"
-#include "SDL3/SDL_asyncio.h"
-#include "SDL3/SDL_audio.h"
-#include "SDL3/SDL_events.h"
-#include "SDL3/SDL_stdinc.h"
-#include "SDL3/SDL_timer.h"
-#include "SDL3/SDL_video.h"
-#include "src/Basic.h"
-#include "src/Components.h"
-#include <SDL3/SDL_error.h>
-#include <SDL3/SDL_iostream.h>
-#include <SDL3_mixer/SDL_mixer.h>
-#include <chrono>
-#include <cmath>
-#include <cstdint>
-#include <format>
-#include <memory>
-#include <sys/types.h>
-#include <thread>
 
 namespace S3GF {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
@@ -70,6 +52,46 @@ namespace S3GF {
         _cmd_list.push_back(std::make_unique<FillCMD>(_renderer, color));
     }
 
+    void Renderer::drawPoint(const Graphics::Point &point) {
+        _cmd_list.push_back(std::make_unique<PointCMD>(_renderer, point));
+    }
+
+    void Renderer::drawPoint(Graphics::Point &&point) {
+        _cmd_list.push_back(std::make_unique<PointCMD>(_renderer, point));
+    }
+
+    void Renderer::drawLine(const Graphics::Line &line) {
+        _cmd_list.push_back(std::make_unique<LineCMD>(_renderer, line));
+    }
+
+    void Renderer::drawLine(Graphics::Line &&line) {
+        _cmd_list.push_back(std::make_unique<LineCMD>(_renderer, line));
+    }
+
+    void Renderer::drawRectangle(const Graphics::Rectangle &rectangle) {
+        _cmd_list.push_back(std::make_unique<RectCMD>(_renderer, rectangle));
+    }
+
+    void Renderer::drawRectangle(Graphics::Rectangle &&rectangle) {
+        _cmd_list.push_back(std::make_unique<RectCMD>(_renderer, rectangle));
+    }
+
+    void Renderer::drawTriangle(const Graphics::Triangle &triangle) {
+        _cmd_list.push_back(std::make_unique<TriangleCMD>(_renderer, triangle));
+    }
+
+    void Renderer::drawTriangle(Graphics::Triangle &&triangle) {
+        _cmd_list.push_back(std::make_unique<TriangleCMD>(_renderer, triangle));
+    }
+
+    void Renderer::drawEllipse(const Graphics::Ellipse &ellipse) {
+        _cmd_list.push_back(std::make_unique<EllipseCMD>(_renderer, ellipse));
+    }
+
+    void Renderer::drawEllipse(Graphics::Ellipse &&ellipse) {
+        _cmd_list.push_back(std::make_unique<EllipseCMD>(_renderer, ellipse));
+    }
+
     void Renderer::drawTexture(SDL_Texture* texture, Property* property) {
         if (!texture || !property) return;
         _cmd_list.push_back(std::make_unique<TextureCMD>(_renderer, texture, property));
@@ -83,6 +105,81 @@ namespace S3GF {
     void Renderer::FillCMD::exec() {
         SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
         SDL_RenderClear(renderer);
+    }
+
+    void Renderer::PointCMD::exec() {
+        if (!point.size) return;
+        SDL_SetRenderDrawColor(renderer, point.color.r, point.color.g, point.color.b, point.color.a);
+        if (point.size == 1) {
+            SDL_RenderPoint(renderer, point.position.x, point.position.y);
+        } else {
+
+        }
+    }
+
+    void Renderer::LineCMD::exec() {
+        const auto SIZE = line.size();
+        const auto START = line.startPosition();
+        const auto END = line.endPosition();
+        if (!SIZE) return;
+        SDL_SetRenderDrawColor(renderer, line.color.r, line.color.g, line.color.b, line.color.a);
+        if (SIZE == 1) {
+            SDL_RenderLine(renderer, START.x, START.y,
+                           END.x, END.y);
+            return;
+        }
+        SDL_RenderGeometry(renderer, nullptr, line.vertexes(),
+                           line.vertexCount(), line.indices(), line.indiceCount());
+    }
+
+    void Renderer::RectCMD::exec() {
+        bool draw_bordered = rectangle.border_size > 0;
+        bool fill_rect = rectangle.background_color.a > 0;
+        SDL_FRect r(rectangle.geometry.pos.x, rectangle.geometry.pos.y,
+                    rectangle.geometry.size.width, rectangle.geometry.size.height);
+        if (fill_rect) {
+            SDL_SetRenderDrawColor(renderer, rectangle.background_color.r,
+                                   rectangle.background_color.g,
+                                   rectangle.background_color.b,
+                                   rectangle.background_color.a);
+            SDL_RenderFillRect(renderer, &r);
+        }
+        if (draw_bordered) {
+            SDL_SetRenderDrawColor(renderer, rectangle.border_color.r,
+                                   rectangle.border_color.g,
+                                   rectangle.border_color.b,
+                                   rectangle.border_color.a);
+            if (rectangle.border_size == 1) {
+                SDL_RenderRect(renderer, &r);
+            } else {
+                const float THICKNESS = rectangle.border_size;
+                const float X = rectangle.geometry.pos.x;
+                const float Y = rectangle.geometry.pos.y;
+                const float W = rectangle.geometry.size.width;
+                const float H = rectangle.geometry.size.height;
+                SDL_FRect rects[4];
+                rects[0] = {X, Y, W, THICKNESS };
+                rects[1] = {X, Y + H - THICKNESS, W, THICKNESS };
+                rects[2] = {X, Y + THICKNESS, THICKNESS, H - 2 * THICKNESS };
+                rects[3] = {X + W - THICKNESS, Y + THICKNESS, THICKNESS, H - 2 * THICKNESS };
+                SDL_RenderFillRects(renderer, rects, 4);
+            }
+        }
+    }
+
+    void Renderer::TriangleCMD::exec() {
+        if (triangle.background_color.a == 0) return;
+        SDL_FColor color = Algorithm::convert2FColor(triangle.background_color);
+        SDL_Vertex vx[3] = {
+                {{triangle.point1.x, triangle.point1.y}, color},
+                {{triangle.point1.x, triangle.point1.y}, color},
+                {{triangle.point1.x, triangle.point1.y}, color}
+        };
+        SDL_RenderGeometry(renderer, nullptr, vx, 3, nullptr, 0);
+    }
+
+    void Renderer::EllipseCMD::exec() {
+
     }
 
     void Renderer::TextureCMD::exec() {

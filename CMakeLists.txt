@@ -36,6 +36,12 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
             src/Core.h
             src/Components.cpp
             src/Components.h
+            src/MultiThread/Components.cpp
+            src/MultiThread/Components.h
+            src/Utils/Random.cpp
+            src/Utils/Random.h
+            src/Algorithm/Draw.h
+            src/Utils/DateTime.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -46,6 +52,12 @@ else ()
             src/Core.h
             src/Components.cpp
             src/Components.h
+            src/MultiThread/Components.cpp
+            src/MultiThread/Components.h
+            src/Utils/Random.cpp
+            src/Utils/Random.h
+            src/Algorithm/Draw.h
+            src/Utils/DateTime.h
     )
 endif ()
 

@@ -15,6 +15,7 @@
 
 #include "Libs.h"
 
+
 using SRenderer     = SDL_Renderer;
 using SSurface      = SDL_Surface;
 using STexture      = SDL_Texture;
@@ -139,10 +140,15 @@ namespace S3GF {
      */
     struct Geometry {
         int x, y, width, height;
+
         Geometry();
+
         Geometry(int x, int y, int width, int height);
+
         void setGeometry(int x, int y, int width, int height);
+
         void setPosition(int x, int y);
+
         void resize(int width, int height);
     };
 
@@ -154,45 +160,87 @@ namespace S3GF {
      */
     struct Vector2 {
         float x, y;
+
         explicit Vector2() : x(0.0f), y(0.0f) {}
+
         Vector2(float x, float y);
+
         /**
          * @brief 重新设置新的向量
          * @param x
          * @param y
          */
         void reset(float x, float y);
-        void reset(const Vector2& vector2);
-        Vector2 operator+(const Vector2& v) const { return {this->x + v.x, this->y + v.y}; }
-        Vector2 operator-(const Vector2& v) const { return {this->x - v.x, this->y - v.y}; }
-        Vector2 operator*(const Vector2& v) const { return {this->x * v.x, this->y * v.y}; }
+
+        void reset(const Vector2 &vector2);
+
+        Vector2 operator+(const Vector2 &v) const { return {this->x + v.x, this->y + v.y}; }
+
+        Vector2 operator-(const Vector2 &v) const { return {this->x - v.x, this->y - v.y}; }
+
+        Vector2 operator*(const Vector2 &v) const { return {this->x * v.x, this->y * v.y}; }
+
         Vector2 operator*(float v) const { return {this->x * v, this->y * v}; };
-        Vector2 operator/(const Vector2& v) const { return {this->x / v.x, this->y / v.y}; }
+
+        Vector2 operator/(const Vector2 &v) const { return {this->x / v.x, this->y / v.y}; }
+
         Vector2 operator/(float v) const { return (v != 0) ? Vector2(this->x / v, this->y / v) : *this; }
-        void operator+=(const Vector2& v) { this->x += v.x; this->y += v.y; }
-        void operator-=(const Vector2& v) { this->x -= v.x; this->y -= v.y; }
-        void operator*=(const Vector2& v) { this->x *= v.x; this->y *= v.y; }
-        void operator*=(float v) { this->x *= v; this->y *= v; }
-        void operator/=(const Vector2& v) { this->x /= v.x; this->y /= v.y; }
-        void operator/=(float v) { if (v == 0) return; this->x /= v; this->y /= v; }
-        bool operator==(const Vector2& v) const {
+
+        void operator+=(const Vector2 &v) {
+            this->x += v.x;
+            this->y += v.y;
+        }
+
+        void operator-=(const Vector2 &v) {
+            this->x -= v.x;
+            this->y -= v.y;
+        }
+
+        void operator*=(const Vector2 &v) {
+            this->x *= v.x;
+            this->y *= v.y;
+        }
+
+        void operator*=(float v) {
+            this->x *= v;
+            this->y *= v;
+        }
+
+        void operator/=(const Vector2 &v) {
+            this->x /= v.x;
+            this->y /= v.y;
+        }
+
+        void operator/=(float v) {
+            if (v == 0) return;
+            this->x /= v;
+            this->y /= v;
+        }
+
+        bool operator==(const Vector2 &v) const {
             return ((this->x != v.x) ? false : ((this->y != v.y) ? false : true));
         }
-        bool operator!=(const Vector2& v) const {
+
+        bool operator!=(const Vector2 &v) const {
             return ((this->x != v.x) ? true : ((this->y != v.y) ? true : false));
         }
-        bool operator>(const Vector2& v) const {
+
+        bool operator>(const Vector2 &v) const {
             return (this->x > v.x && this->y > v.y);
         }
-        bool operator>=(const Vector2& v) const {
+
+        bool operator>=(const Vector2 &v) const {
             return (this->x >= v.x && this->y >= v.y);
         }
-        bool operator<(const Vector2& v) const {
+
+        bool operator<(const Vector2 &v) const {
             return (this->x < v.x && this->y < v.y);
         }
-        bool operator<=(const Vector2& v) const {
+
+        bool operator<=(const Vector2 &v) const {
             return (this->x <= v.x && this->y <= v.y);
         }
+
         /**
          * @brief 判断两个坐标位置是否大致相等
          * @param v         指定另一个坐标
@@ -200,9 +248,9 @@ namespace S3GF {
          * @retval true  表示相等
          * @retval false 表示不相等
          */
-        [[nodiscard]] bool isEqual(const Vector2& v, const float EPISON = 1e-6f) const {
+        [[nodiscard]] bool isEqual(const Vector2 &v, const float EPISON = 1e-6f) const {
             return ((this->x >= v.x - EPISON && this->x <= v.x + EPISON) &&
-                (this->y >= v.y - EPISON && this->y <= v.y + EPISON));
+                    (this->y >= v.y - EPISON && this->y <= v.y + EPISON));
         }
     };
 
@@ -214,43 +262,84 @@ namespace S3GF {
      */
     struct Size {
         float width, height;
+
         explicit Size() : width(0.0f), height(0.0f) {}
+
         Size(float width, float height);
+
         /**
          * @brief 重新设置新的尺寸
          * @param width
          * @param height
          */
         void reset(float width, float height);
-        void reset(const Size& size);
-        Size operator+(const Size& s) const { return {this->width + s.width, this->height + s.height}; }
-        Size operator-(const Size& s) const { return {this->width - s.width, this->height - s.height}; }
-        Size operator*(const Size& s) const { return {this->width * s.width, this->height * s.height}; }
+
+        void reset(const Size &size);
+
+        Size operator+(const Size &s) const { return {this->width + s.width, this->height + s.height}; }
+
+        Size operator-(const Size &s) const { return {this->width - s.width, this->height - s.height}; }
+
+        Size operator*(const Size &s) const { return {this->width * s.width, this->height * s.height}; }
+
         Size operator*(float v) const { return {this->width * v, this->height * v}; }
-        Size operator/(const Size& s) const { return {this->width / s.width, this->height / s.height}; }
+
+        Size operator/(const Size &s) const { return {this->width / s.width, this->height / s.height}; }
+
         Size operator/(float v) const { return (v == 0) ? *this : Size(this->width / v, this->height / v); }
-        void operator+=(const Size& s) { this->width += s.width; this->height += s.height; }
-        void operator-=(const Size& s) { this->width -= s.width; this->height -= s.height; }
-        void operator*=(const Size& s) { this->width *= s.width; this->height *= s.height; }
-        void operator*=(float v) { this->width *= v; this->height *= v; }
-        void operator/=(const Size& s) { this->width /= s.width; this->height /= s.height; }
-        void operator/=(float v) { if (v == 0) return; this->width /= v; this->height /= v; }
-        bool operator==(const Size& s) const {
+
+        void operator+=(const Size &s) {
+            this->width += s.width;
+            this->height += s.height;
+        }
+
+        void operator-=(const Size &s) {
+            this->width -= s.width;
+            this->height -= s.height;
+        }
+
+        void operator*=(const Size &s) {
+            this->width *= s.width;
+            this->height *= s.height;
+        }
+
+        void operator*=(float v) {
+            this->width *= v;
+            this->height *= v;
+        }
+
+        void operator/=(const Size &s) {
+            this->width /= s.width;
+            this->height /= s.height;
+        }
+
+        void operator/=(float v) {
+            if (v == 0) return;
+            this->width /= v;
+            this->height /= v;
+        }
+
+        bool operator==(const Size &s) const {
             return (this->width != s.width) ? false : ((this->height != this->height) ? false : true);
         }
-        bool operator!=(const Size& s) const {
+
+        bool operator!=(const Size &s) const {
             return (this->width != s.width) ? true : ((this->height != this->height) ? true : false);
         }
-        bool operator>(const Size& s) const {
+
+        bool operator>(const Size &s) const {
             return (this->width > s.width && this->height > s.height);
         }
-        bool operator>=(const Size& s) const {
+
+        bool operator>=(const Size &s) const {
             return (this->width >= s.width && this->height >= s.height);
         }
-        bool operator<(const Size& s) const {
+
+        bool operator<(const Size &s) const {
             return (this->width < s.width && this->height < s.height);
         }
-        bool operator<=(const Size& s) const {
+
+        bool operator<=(const Size &s) const {
             return (this->width <= s.width && this->height <= s.height);
         }
     };
@@ -264,23 +353,38 @@ namespace S3GF {
     struct GeometryF {
         Vector2 pos;
         Size size;
-        void reset(const Vector2& pos, const Size& size) {
+
+        explicit GeometryF(float x, float y, float w, float h)
+                : pos(x, y), size(w, h) {}
+
+        explicit GeometryF(const Vector2 &pos, const Size &size)
+                : pos(pos), size(size) {}
+
+        explicit GeometryF(Vector2 &&pos, Size &&size)
+                : pos(pos), size(size) {}
+
+        explicit GeometryF() : pos(0, 0), size(0, 0) {}
+
+        void reset(const Vector2 &pos, const Size &size) {
             this->pos.x = pos.x;
             this->pos.y = pos.y;
             this->size.width = size.width;
             this->size.height = size.height;
         }
+
         void reset(float x, float y, float width, float height) {
             this->pos.x = x;
             this->pos.y = y;
             this->size.width = width;
             this->size.height = height;
         }
-        void resetPos(const Vector2& pos) {
+
+        void resetPos(const Vector2 &pos) {
             this->pos.x = pos.x;
             this->pos.y = pos.y;
         }
-        void resetSize(const Size& size) {
+
+        void resetSize(const Size &size) {
             this->size.width = size.width;
             this->size.height = size.height;
         }
@@ -303,34 +407,47 @@ namespace S3GF {
         /// 列
         uint32_t _col;
         /// 删除器
-        std::function<void(T&)> _deleter;
+        std::function<void(T &)> _deleter;
     public:
         using iterator = typename std::vector<T>::iterator;
         using constIterator = typename std::vector<T>::const_iterator;
+
         struct Position {
             uint32_t row;
             uint32_t col;
+
             Position() : row(0), col(0) {}
+
             Position(uint32_t row, uint32_t col) : row(row), col(col) {}
+
             bool isValid() const { return row && col; }
-            bool operator==(const Position& p) const { return (row == p.row && col == p.col); }
-            bool operator!=(const Position& p) const { return (row != p.row || col != p.col); }
-            bool operator>(const Position& p) const { return (row >= p.row && col > p.col); }
-            bool operator<(const Position& p) const { return (row <= p.row && col < p.col); }
-            bool operator>=(const Position& p) const { return (row >= p.row && col >= p.col); }
-            bool operator<=(const Position& p) const { return (row <= p.row && col <= p.col); }
+
+            bool operator==(const Position &p) const { return (row == p.row && col == p.col); }
+
+            bool operator!=(const Position &p) const { return (row != p.row || col != p.col); }
+
+            bool operator>(const Position &p) const { return (row >= p.row && col > p.col); }
+
+            bool operator<(const Position &p) const { return (row <= p.row && col < p.col); }
+
+            bool operator>=(const Position &p) const { return (row >= p.row && col >= p.col); }
+
+            bool operator<=(const Position &p) const { return (row <= p.row && col <= p.col); }
         };
+
         /**
          * @brief 创建一个空白的二维矩阵（没有任何数据）
          */
         explicit Matrix2D() : _row(0), _col(0), _datas() {}
+
         /**
          * @brief 创建指定行列的二维矩阵
          * @param row 行
          * @param col  列
          * @param deleter 删除器（若需要删除指针等情况时指定）
          */
-        Matrix2D(uint32_t row, uint32_t col, const std::function<void(T&)> &deleter = {});
+        Matrix2D(uint32_t row, uint32_t col, const std::function<void(T &)> &deleter = {});
+
         /**
          * @brief 创建指定行列与默认值的二维矩阵
          * @param row  行
@@ -338,38 +455,45 @@ namespace S3GF {
          * @param value 默认值（用于填充所有数据）
          * @param deleter 删除器（若需要删除指针等情况时指定）
          */
-        Matrix2D(uint32_t row, uint32_t col, const T &value, const std::function<void(T&)> &deleter = {});
+        Matrix2D(uint32_t row, uint32_t col, const T &value, const std::function<void(T &)> &deleter = {});
+
         /**
          * @brief 复制原有的二维矩阵
          * @param matrix    指定二维矩阵
          */
         Matrix2D(const Matrix2D<T> &matrix);
+
         ~Matrix2D();
+
         /**
          * @brief 设置删除器
          * @param function  指定函数
          *
          * 当此类析构时，将调用删除器以删除指针！
          */
-        void setDeleter(const std::function<void(T&)>& function);
+        void setDeleter(const std::function<void(T &)> &function);
+
         /**
          * @brief 填充所有值
          * @param value 指定值
          */
-        void fill(const T& value);
+        void fill(const T &value);
+
         /**
          * @brief 填充范围内的值
          * @param start 指定开始位置（行列）
          * @param end   指定结束位置（行列）
          * @param value 指定填充的值
          */
-        bool fillN(const Matrix2D::Position &start, const Matrix2D::Position &end, const T& value);
+        bool fillN(const Matrix2D::Position &start, const Matrix2D::Position &end, const T &value);
+
         /**
          * @brief 重新调整新的大小
          * @param line 行
          * @param col  列
          */
         void resize(uint32_t line, uint32_t col);
+
         /**
          * @brief 获取矩阵中指定行列的数据
          * @param row 行
@@ -377,7 +501,8 @@ namespace S3GF {
          * @return 返回对应行列下的数据
          * @see get
          */
-        T& at(uint32_t row, uint32_t col);
+        T &at(uint32_t row, uint32_t col);
+
         /**
          * @brief 获取矩阵中指定行列的数据
          * @param row 行
@@ -386,19 +511,24 @@ namespace S3GF {
          * @note 区别于 `at`，此函数为常量版本，无法修改里面的数据！
          * @see at
          */
-        const T& get(uint32_t row, uint32_t col);
+        const T &get(uint32_t row, uint32_t col);
+
         /**
          * @brief 获取当前矩阵的总行数
          * @return 返回对应的行数
          */
         [[nodiscard]] uint32_t rows() const;
+
         /**
          * @brief 获取当前矩阵的总列数
          * @return 返回对应的列数
          */
         [[nodiscard]] uint32_t cols() const;
-        Matrix2D operator+(const Matrix2D<T>& other) const;
-        Matrix2D operator-(const Matrix2D<T>& other) const;
+
+        Matrix2D operator+(const Matrix2D<T> &other) const;
+
+        Matrix2D operator-(const Matrix2D<T> &other) const;
+
         /**
          * @brief 矩阵乘法
          * @param other     指定矩阵，其指定的行数必需与现有的列数相等
@@ -407,18 +537,24 @@ namespace S3GF {
          * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
          * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！
          */
-        Matrix2D operator*(const Matrix2D<T>& other) const;
+        Matrix2D operator*(const Matrix2D<T> &other) const;
 
-        bool operator==(const Matrix2D<T>& other) const;
-        bool operator!=(const Matrix2D<T>& other) const;
+        bool operator==(const Matrix2D<T> &other) const;
 
-        T& operator[](uint32_t index);
-        T& operator()(uint32_t row, uint32_t col);
+        bool operator!=(const Matrix2D<T> &other) const;
+
+        T &operator[](uint32_t index);
+
+        T &operator()(uint32_t row, uint32_t col);
 
         iterator begin() { return _datas.begin(); }
+
         iterator end() { return _datas.end(); }
+
         constIterator begin() const { return _datas.begin(); }
+
         constIterator end() const { return _datas.end(); }
+
         /**
          * @brief 全局相加
          * @param value     指定值
@@ -426,7 +562,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行相加操作
          */
-        void add(T& value, const std::function<void(T&, T&)>& function = {});
+        void add(T &value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 全局相加
          * @param value     指定值
@@ -434,7 +571,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行相加操作
          */
-        void add(T&& value, const std::function<void(T&, T&)>& function = {});
+        void add(T &&value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 全局相减
          * @param value 指定值
@@ -442,7 +580,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行相减操作
          */
-        void minus(T& value, const std::function<void(T&, T&)>& function = {});
+        void minus(T &value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 全局相减
          * @param value 指定值
@@ -450,7 +589,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行相减操作
          */
-        void minus(T&& value, const std::function<void(T&, T&)>& function = {});
+        void minus(T &&value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 全局乘法
          * @param value     指定值
@@ -458,7 +598,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行相乘操作
          */
-        void times(T& value, const std::function<void(T&, T&)>& function = {});
+        void times(T &value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 全局点乘
          * @param value     指定值
@@ -466,7 +607,8 @@ namespace S3GF {
          *
          * 将矩阵里的所有值进行点乘操作
          */
-        void times(T&& value, const std::function<void(T&, T&)>& function = {});
+        void times(T &&value, const std::function<void(T &, T &)> &function = {});
+
         /**
          * @brief 矩阵点乘
          * @param other     指定矩阵
@@ -474,6 +616,7 @@ namespace S3GF {
          * @note 两个矩阵的大小必需完全一样（即行列必需相等）！
          */
         void times(const Matrix2D<T> &other, const std::function<void(T &, const T &)> &function = {});
+
         /**
          * @brief 矩阵乘法
          *
@@ -483,6 +626,7 @@ namespace S3GF {
          * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！
          */
         void multiply(const Matrix2D<T> &other);
+
         /**
          * @brief 转置矩阵
          *
@@ -490,6 +634,7 @@ namespace S3GF {
          * @see rotate
          */
         void transpose();
+
         /**
          * @brief 翻转矩阵
          *
@@ -500,6 +645,7 @@ namespace S3GF {
          * @see rotate
          */
         void reverse(bool reverse_row = true, bool reverse_col = false);
+
         /**
          * @brief 旋转矩阵
          * @param turn_right 是否向右旋转 90°，反之向左旋转 90°
@@ -507,6 +653,7 @@ namespace S3GF {
          * @see transpose
          */
         void rotate(bool turn_right = true);
+
         /**
          * @brief 切割指定行矩阵
          * @param start_row     起始行
@@ -514,6 +661,7 @@ namespace S3GF {
          * @return 返回矩阵行位于 `[start_row, end_row)` 区间内的所有行矩阵
          */
         Matrix2D splitRows(uint32_t start_row, uint32_t end_row);
+
         /**
          * @brief 切割指定列矩阵
          * @param start_col     起始列
@@ -521,6 +669,7 @@ namespace S3GF {
          * @return 返回矩阵行位于 `[start_col, end_col)` 区间内的所有列矩阵
          */
         Matrix2D splitCols(uint32_t start_col, uint32_t end_col);
+
         /**
          * @brief 切割矩阵
          *
@@ -533,7 +682,8 @@ namespace S3GF {
          * @note 从 `start_pos` 位置起，若取得数据的总个数小于新的矩阵大小，则剩余部分自动填充为空数据。
          * @note 指定的 `start_pos` 位置若超出原有矩阵的范围，将返回空矩阵。
          */
-        Matrix2D split(uint32_t rows, uint32_t cols, const Position& start_pos);
+        Matrix2D split(uint32_t rows, uint32_t cols, const Position &start_pos);
+
         /**
          * @brief 按照矩形的方式切割矩阵
          *
@@ -544,6 +694,7 @@ namespace S3GF {
          *
          */
         Matrix2D split(Matrix2D::Position start_pos, Matrix2D::Position end_pos);
+
         /**
          * @brief 逆矩阵
          * @return 返回新的矩阵，用于存储求得的结果
@@ -559,13 +710,13 @@ namespace S3GF {
     }
 
     template<typename T>
-    Matrix2D<T>::Matrix2D(uint32_t row, uint32_t col, const std::function<void(T&)> &deleter)
-        : _row(row), _col(col), _deleter(deleter) {
+    Matrix2D<T>::Matrix2D(uint32_t row, uint32_t col, const std::function<void(T &)> &deleter)
+            : _row(row), _col(col), _deleter(deleter) {
         _datas.resize(_row * _col);
     }
 
     template<typename T>
-    Matrix2D<T>::Matrix2D(uint32_t row, uint32_t col, const T &value, const std::function<void(T&)> &deleter)
+    Matrix2D<T>::Matrix2D(uint32_t row, uint32_t col, const T &value, const std::function<void(T &)> &deleter)
             : _row(row), _col(col), _deleter(deleter) {
         _datas.resize(_row * _col);
         fill(value);
@@ -580,7 +731,7 @@ namespace S3GF {
     template<typename T>
     Matrix2D<T>::~Matrix2D() {
         if (_deleter) {
-            for (auto& _d : _datas) {
+            for (auto &_d: _datas) {
                 _deleter(_d);
             }
         }
@@ -670,7 +821,7 @@ namespace S3GF {
             return Matrix2D<T>();
         }
         if constexpr (!std::is_integral_v<std::decay_t<T>> &&
-                        !std::is_floating_point_v<std::decay_t<T>>) {
+                      !std::is_floating_point_v<std::decay_t<T>>) {
             static_assert(!std::is_integral_v<std::decay_t<T>> &&
                           !std::is_floating_point_v<std::decay_t<T>>,
                           "[FATAL] Can't support the current data type!");
@@ -678,7 +829,7 @@ namespace S3GF {
         Matrix2D<T> result(_row, other._col, other._deleter);
         for (size_t i = 0; i < _row; ++i) {
             for (size_t k = 0; k < _col; ++k) {
-                const T& a_ik = _datas[i * _col + k];
+                const T &a_ik = _datas[i * _col + k];
                 for (size_t j = 0; j < other._col; ++j) {
                     result[i * other._col + j] += a_ik * other._datas[k * other._col + j];
                 }
@@ -718,8 +869,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::add(T &value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::add(T &value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -732,8 +883,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::add(T &&value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::add(T &&value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -747,8 +898,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::minus(T &value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::minus(T &value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -762,8 +913,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::minus(T &&value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::minus(T &&value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -777,8 +928,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::times(T &value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::times(T &value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -792,8 +943,8 @@ namespace S3GF {
     }
 
     template<typename T>
-    void Matrix2D<T>::times(T &&value, const std::function<void(T&, T&)> &function) {
-        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T& v) {
+    void Matrix2D<T>::times(T &&value, const std::function<void(T &, T &)> &function) {
+        std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
             } else if constexpr (std::is_integral_v<std::decay_t<T>> ||
@@ -837,7 +988,7 @@ namespace S3GF {
         std::vector<T> result(_row * other._col);
         for (size_t i = 0; i < _row; ++i) {
             for (size_t k = 0; k < _col; ++k) {
-                const T& a_ik = _datas[i * _col + k];
+                const T &a_ik = _datas[i * _col + k];
                 for (size_t j = 0; j < other._col; ++j) {
                     result[i * other._col + j] += a_ik * other._datas[k * other._col + j];
                 }
@@ -1075,106 +1226,82 @@ namespace S3GF {
         }
         return _ret;
     }
+}
 
+#include "Algorithm/Draw.h"
 
+namespace S3GF {
     /**
      * @namespace Graphics
      * @brief 基本图形
      *
      * 包含所有基本图形，如：点、线段、矩形、椭圆等基本图形。
      */
-    // namespace Graphics {
-    //     /**
-    //      * @struct Point
-    //      * @brief 圆点
-    //      */
-    //     struct Point {
-    //         Vector2 pos;
-    //         SColor color;
-    //         Point() : pos(0, 0), color(StdColor::Black) {}
-    //         explicit Point(Vector2 pos, SColor color = StdColor::Black) : pos(pos), color(color) {}
-    //         Point(float x, float y, SColor color = StdColor::Black) : pos(x, y), color(color) {}
-    //         Point(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255)
-    //             : pos(x, y), color(r, g, b, a) {}
-    //         Point(Vector2 pos, const std::string& hex_color = "#000000");
-    //         Point(float x, float y, const std::string& hex_color = "#000000");
-    //     };
-    //     /**
-    //      * @struct Line
-    //      * @brief 线段
-    //      */
-    //     struct Line {
-    //         Vector2 start;
-    //         Vector2 end;
-    //         uint8_t width;
-    //         SColor color;
-    //         Line() : start(0, 0), end(0, 0), width(1), color(StdColor::Black) {}
-    //         Line(float x1, float y1, float x2, float y2, uint8_t width = 1, SColor color = StdColor::Black)
-    //             : start(x1, y1), end(x2, y2), width(width), color(color) {}
-    //         Line(Vector2 start, Vector2 end, uint8_t width = 1, SColor color = StdColor::Black)
-    //             : start(start), end(end), width(width), color(color) {}
-    //         Line(float x1, float y1, float x2, float y2, uint8_t width = 1, uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t a = 255)
-    //             : start(x1, y1), end(x2, y2), width(width), color(r, g, b, a) {}
-    //         Line(float x1, float y1, float x2, float y2, uint8_t width, const std::string &hex_color = "#000000");
-    //         Line(Vector2 start, Vector2 end, uint8_t width, const std::string &hex_color = "#000000");
-    //     };
-    //     /**
-    //      * @struct Rectangle
-    //      * @brief 矩形
-    //      */
-    //     struct Rectangle {
-    //         Vector2 pos;
-    //         Size size;
-    //         bool bordered_mode;
-    //         bool filled_mode;
-    //         SColor fore_color;
-    //         SColor back_color;
-    //         Rectangle() : pos(0, 0), size(0, 0), filled_mode(false), bordered_mode(true),
-    //             fore_color(StdColor::Black), back_color(StdColor::Black) {}
-    //         Rectangle(Vector2 pos, Size size, SColor foreground = StdColor::Black, bool bordered_mode = true,
-    //                   bool filled_mode = false, SColor background = StdColor::Black)
-    //                   : pos(pos), size(size), fore_color(foreground), bordered_mode(bordered_mode),
-    //                     filled_mode(filled_mode), back_color(background) {}
-    //         explicit Rectangle(float x, float y, float width, float height, SColor foreground = StdColor::Black,
-    //                   bool bordered_mode = true, bool filled_mode = false, SColor background = StdColor::Black)
-    //                   : pos(x, y), size(width, height), fore_color(foreground), bordered_mode(bordered_mode),
-    //                      filled_mode(filled_mode), back_color(background) {}
-    //         Rectangle(float x, float y, uint32_t width, uint32_t height,
-    //                   uint8_t fore_r, uint8_t fore_g, uint8_t fore_b, uint8_t fore_a = 255,
-    //                   bool bordered_mode = true, bool filled_mode = false,
-    //                   uint8_t back_r = 0, uint8_t back_g = 0, uint8_t back_b = 0, uint8_t back_a = 255)
-    //                   : pos(x, y), size(width, height), fore_color(fore_r, fore_g, fore_b, fore_a),
-    //                     bordered_mode(bordered_mode), filled_mode(filled_mode),
-    //                     back_color(back_r, back_g, back_b, back_a) {}
-    //         explicit Rectangle(Vector2 pos, Size size, const std::string& foreground = "#000000", bool bordered_mode = true,
-    //                   bool filled_mode = false, const std::string& background = "#000000");
-    //         Rectangle(float x, float y, float width, float height, const std::string& foreground = "#000000",
-    //                   bool bordered_mode = true, bool filled_mode = false, const std::string& background = "#000000");
+    namespace Graphics {
+        struct Point {
+            Vector2 position;
+            uint16_t size;
+            SDL_Color color;
+        };
 
-    //     };
-    //     /**
-    //      * @struct Ellipse
-    //      * @brief 椭圆
-    //      */
-    //     struct Ellipse {
-    //         Vector2 pos;
-    //         Size area;
-    //         bool bordered_mode;
-    //         bool filled_mode;
-    //         SColor fore_color;
-    //         SColor back_color;
-    //         Ellipse() : pos(0, 0), area(0, 0), bordered_mode(true), filled_mode(false),
-    //                     fore_color(StdColor::Black), back_color(StdColor::Black) {}
-    //         explicit Ellipse(Vector2 pos, Size area, SColor foreground = StdColor::Black, bool bordered_mode = true,
-    //                 bool filled_mode = false, SColor background = StdColor::Black)
-    //                 : pos(pos), area(area), fore_color(foreground), bordered_mode(bordered_mode),
-    //                   filled_mode(filled_mode), back_color(background) {}
-    //         Ellipse(float x, float y, float width, float height, SColor foreground = StdColor::Black,
-    //                 bool bordered_mode = true, bool filled_mode = false, SColor background = StdColor::Black)
-    //                 : pos(x, y), area(width, height), fore_color(foreground), bordered_mode(bordered_mode),
-    //                   filled_mode(filled_mode), back_color(background) {}
-    //     };
-    // }
+        struct Line {
+            explicit Line(float x1, float y1, float x2, float y2, uint16_t size, const SDL_Color& color)
+                : _start_position(x1, y1), _end_position(x2, y2), _size(size), color(color) {update();}
+            explicit Line(const Vector2& start, const Vector2& end, uint16_t size, const SDL_Color &color)
+                : _start_position(start), _end_position(end), _size(size), color(color) {update();}
+            SDL_Color color;
+            const int *indices() { return _indices.data(); }
+            const SDL_Vertex *vertexes() { return _vertexes.data(); }
+            size_t indiceCount() const { return _indices.size(); }
+            size_t vertexCount() const { return _vertexes.size(); }
+            const Vector2& startPosition() const { return _start_position; }
+            const Vector2& endPosition() const { return _end_position; }
+            void setStartPosition(const Vector2& pos) { _start_position.reset(pos.x, pos.y); update(); }
+            void setStartPosition(float x, float y) { _start_position.reset(x, y); update(); }
+            void setEndPosition(const Vector2& pos) { _end_position.reset(pos.x, pos.y); update(); }
+            void setEndPosition(float x, float y) { _end_position.reset(x, y); update(); }
+            uint8_t size() const { return _size; }
+            void setSize(uint8_t new_size) { _size = new_size; update(); }
+        private:
+            void update() {
+                S3GF::Algorithm::calcLine(_start_position.x, _start_position.y,
+                                _end_position.x, _end_position.y,
+                                _size, color, _vertexes, _indices);
+            }
+            Vector2 _start_position;
+            Vector2 _end_position;
+            uint8_t _size;
+            std::array<int, 6> _indices;
+            std::array<SDL_Vertex, 4> _vertexes;
+        };
+
+        struct Rectangle {
+            GeometryF geometry;
+            uint16_t border_size;
+            SDL_Color border_color;
+            SDL_Color background_color;
+        };
+
+        struct Triangle {
+            Vector2 point1;
+            Vector2 point2;
+            Vector2 point3;
+            SDL_Color background_color;
+        };
+
+        struct Ellipse {
+            Vector2 center_point;
+            Size radius;
+            uint16_t border_size;
+            SDL_Color border_color;
+            SDL_Color background_color;
+            float rotate;
+            uint16_t pts;
+            std::vector<SDL_FRect> points;
+        };
+    }
 }
+
+
 
 #endif //BASIC_H

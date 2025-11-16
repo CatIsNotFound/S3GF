@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef S3GF_CORE_H
+#define S3GF_CORE_H
 #include "Components.h"
 
 namespace S3GF {
@@ -15,6 +15,16 @@ namespace S3GF {
         Window* window() const;
         void _update();
         void fillBackground(const SDL_Color& color);
+        void drawPoint(const Graphics::Point& point);
+        void drawPoint(Graphics::Point&& point);
+        void drawLine(const Graphics::Line& line);
+        void drawLine(Graphics::Line&& line);
+        void drawRectangle(const Graphics::Rectangle& rectangle);
+        void drawRectangle(Graphics::Rectangle&& rectangle);
+        void drawTriangle(const Graphics::Triangle& triangle);
+        void drawTriangle(Graphics::Triangle&& triangle);
+        void drawEllipse(const Graphics::Ellipse& ellipse);
+        void drawEllipse(Graphics::Ellipse&& ellipse);
         void drawTexture(SDL_Texture* texture, Property* property);
         void drawText(TTF_Text* text, const Vector2& position);
     private:
@@ -27,6 +37,37 @@ namespace S3GF {
             explicit FillCMD(SDL_Renderer* renderer, SDL_Color color = StdColor::Black) 
                 : Command(renderer), bg_color(color) {}
             SDL_Color bg_color;
+            void exec() override;
+        };
+        struct PointCMD : public Command {
+            explicit PointCMD(SDL_Renderer* renderer, const Graphics::Point& point)
+                : Command(renderer), point(point) {}
+            Graphics::Point point;
+            void exec() override;
+        };
+        struct LineCMD : public Command {
+            explicit LineCMD(SDL_Renderer* renderer, const Graphics::Line& line)
+                : Command(renderer), line(line) {}
+            Graphics::Line line;
+            void exec() override;
+        };
+        struct RectCMD : public Command {
+
+            explicit RectCMD(SDL_Renderer* renderer, const Graphics::Rectangle& rect)
+                : Command(renderer), rectangle(rect) {}
+            Graphics::Rectangle rectangle;
+            void exec() override;
+        };
+        struct TriangleCMD : public Command {
+            explicit TriangleCMD(SDL_Renderer* renderer, const Graphics::Triangle& tri)
+                    : Command(renderer), triangle(tri) {}
+            Graphics::Triangle triangle;
+            void exec() override;
+        };
+        struct EllipseCMD : public Command {
+            explicit EllipseCMD(SDL_Renderer* renderer, const Graphics::Ellipse& elli)
+                    : Command(renderer), ellipse(elli) {}
+            Graphics::Ellipse ellipse;
             void exec() override;
         };
         struct TextureCMD : public Command {
