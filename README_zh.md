@@ -1,6 +1,6 @@
 # S3GF
 
-![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL3-3.0.0-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.0_beta-red.svg)
+![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.0_beta-red.svg)
 
 S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形框架库。
 本库基于 C++20 现代特性、面向对象思想、模块化结构等方式构建而成的第三方库。
