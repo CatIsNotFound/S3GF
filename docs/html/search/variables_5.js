@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gainsboro_0',['Gainsboro',['../namespace_s3_g_f_1_1_std_color.html#a5c255bb85e243e676eaa3f070d213c23',1,'S3GF::StdColor']]],
-  ['gold_1',['Gold',['../namespace_s3_g_f_1_1_std_color.html#abc524a0f2561e15e9c905d9cd6612be2',1,'S3GF::StdColor']]],
-  ['gray_2',['Gray',['../namespace_s3_g_f_1_1_std_color.html#acf6e78736774c56c657101afaa324921',1,'S3GF::StdColor']]],
-  ['green_3',['Green',['../namespace_s3_g_f_1_1_std_color.html#af4acc93094964da0e70b40edf9e19277',1,'S3GF::StdColor']]]
+  ['font_0',['font',['../struct_s3_g_f_1_1_text_system_1_1_font_engine.html#ae8eba1a14d7d53b76b96bbf81602562b',1,'S3GF::TextSystem::FontEngine']]],
+  ['font_5fcolor_1',['font_color',['../struct_s3_g_f_1_1_text_system_1_1_text.html#a73a3d51ee5844ccfdfe2afaa145224c6',1,'S3GF::TextSystem::Text']]],
+  ['font_5fname_2',['font_name',['../struct_s3_g_f_1_1_text_system_1_1_text.html#abf249571ff1892cdc552fa6df6f7e4d2',1,'S3GF::TextSystem::Text']]],
+  ['function_3',['function',['../struct_s3_g_f_1_1_tasks_manager_1_1_task.html#ae60036b5491b45bc1b9407119c4b9da6',1,'S3GF::TasksManager::Task']]]
 ];

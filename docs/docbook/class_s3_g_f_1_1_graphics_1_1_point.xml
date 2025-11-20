@@ -5,7 +5,7 @@
 <simplesect>
     <title>Public Member Functions    </title>
         <itemizedlist>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_point_1a65cfc1f26f4887cdc8ae2d9ee63b8764"/><emphasis role="strong">Point</emphasis> (float x, float y, uint16_t size, const SDL_Color &amp;color, uint16_t count=32)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_point_1afccd1b5b86820466768853a0da6fda79"/><emphasis role="strong">Point</emphasis> (float x, float y, uint16_t size=1, const SDL_Color &amp;color=<link linkend="__basic_8h_1a00b679b260574e983176649636e9ac48">StdColor::Black</link>, uint16_t count=32)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_point_1aa720f3e334bc919cde952ab23d03e62e"/>void <emphasis role="strong">move</emphasis> (float x, float y)</para>
 </listitem>

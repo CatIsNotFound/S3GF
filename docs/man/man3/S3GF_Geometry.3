@@ -1,4 +1,4 @@
-.TH "S3GF::Geometry" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Geometry" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,23 +9,26 @@ S3GF::Geometry \- 位置、大小
 .PP
 .PP
 \fR#include <Basic\&.h>\fP
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBGeometry\fP (int x, int y, int width, int height)"
+.RI "\fBGeometry\fP ()"
 .br
 .ti -1c
-.RI "void \fBsetGeometry\fP (int x, int y, int width, int height)"
+.RI "\fBGeometry\fP (int \fBx\fP, int \fBy\fP, int \fBwidth\fP, int \fBheight\fP)"
 .br
 .ti -1c
-.RI "void \fBsetPosition\fP (int x, int y)"
+.RI "void \fBsetGeometry\fP (int \fBx\fP, int \fBy\fP, int \fBwidth\fP, int \fBheight\fP)"
 .br
 .ti -1c
-.RI "void \fBresize\fP (int width, int height)"
+.RI "void \fBsetPosition\fP (int \fBx\fP, int \fBy\fP)"
+.br
+.ti -1c
+.RI "void \fBresize\fP (int \fBwidth\fP, int \fBheight\fP)"
 .br
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -41,10 +44,34 @@ S3GF::Geometry \- 位置、大小
 .RI "int \fBheight\fP"
 .br
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 位置、大小 
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Geometry::Geometry ()\fR [inline]\fP"
+
+.SS "S3GF::Geometry::Geometry (int x, int y, int width, int height)\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::Geometry::resize (int width, int height)\fR [inline]\fP"
+
+.SS "void S3GF::Geometry::setGeometry (int x, int y, int width, int height)\fR [inline]\fP"
+
+.SS "void S3GF::Geometry::setPosition (int x, int y)\fR [inline]\fP"
+
+.SH "类成员变量说明"
+.PP 
+.SS "int S3GF::Geometry::height"
+
+.SS "int S3GF::Geometry::width"
+
+.SS "int S3GF::Geometry::x"
+
+.SS "int S3GF::Geometry::y"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

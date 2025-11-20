@@ -92,7 +92,6 @@ namespace S3GF {
         std::unique_ptr<Property> _property;
         Renderer* _renderer;
     };
-
 }
 #include "Core.h"
 #endif // !S3GF_COMPONETS_H

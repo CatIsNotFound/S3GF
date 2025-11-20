@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__thread_pool_8h_source" xml:lang="en-US">
+<title>ThreadPool.h</title>
+<indexterm><primary>D:/Coding/S3GF/src/MultiThread/ThreadPool.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">1 
+2 <emphasis role="preprocessor">#ifndef&#32;S3GF_THREADPOOL_H</emphasis>
+3 <emphasis role="preprocessor">#define&#32;S3GF_THREADPOOL_H</emphasis>
+4 <emphasis role="preprocessor">#include&#32;&quot;Libs.h&quot;</emphasis>
+5 <emphasis role="preprocessor">#include&#32;&quot;Utils/Logger.h&quot;</emphasis>
+6 <emphasis role="preprocessor">#define&#32;sleep(sec)&#32;std::this_thread::sleep_for(std::chrono::seconds(sec))</emphasis>
+7 <emphasis role="preprocessor">#define&#32;sleepMS(millisec)&#32;std::this_thread::sleep_for(std::chrono::milliseconds(millisec))</emphasis>
+8 <emphasis role="preprocessor">#define&#32;sleepNS(nanosec)&#32;std::this_thread::sleep_for(std::chrono::nanoseconds(nanosec))</emphasis>
+9 
+10 <emphasis role="keyword">namespace&#32;</emphasis><link linkend="_namespace_s3_g_f">S3GF</link>&#32;{
+11 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>ThreadPool&#32;{
+12 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+13 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;ThreadPool(uint32_t&#32;max_waiting,&#32;uint32_t&#32;max_running&#32;=&#32;std::thread::hardware_concurrency())
+14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;_nums_of_threads(max_running),&#32;_max_threads_count(max_waiting),&#32;_running(<emphasis role="keyword">true</emphasis>)&#32;{
+15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!max_running&#32;||&#32;max_running&#32;&gt;&#32;std::thread::hardware_concurrency())&#32;{
+16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Argument&#32;error:&#32;Maximum&#32;threads&#32;count&#32;argument&#32;is&#32;invalid!&quot;</emphasis>,&#32;Logger::FATAL);
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::invalid_argument(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Argument&#32;error:&#32;Maximum&#32;threads&#32;count&#32;argument&#32;is&#32;invalid!&quot;</emphasis>);
+18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!max_waiting)&#32;{
+20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Argument&#32;error:&#32;Maximum&#32;waiting&#32;threads&#32;count&#32;argument&#32;is&#32;invalid!!&quot;</emphasis>,&#32;Logger::FATAL);
+21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::invalid_argument(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Argument&#32;error:&#32;Maximum&#32;waiting&#32;threads&#32;count&#32;argument&#32;is&#32;invalid!!&quot;</emphasis>);
+22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(max_running--)&#32;{
+24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_thread_list.emplace_back([<emphasis role="keyword">this</emphasis>]{
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void()&gt;&#32;this_task;
+26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<emphasis role="keyword">true</emphasis>)&#32;{
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.wait(lock,&#32;[<emphasis role="keyword">this</emphasis>]&#32;{
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;!_waiting_queue.empty()&#32;||&#32;!_running;
+30 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_running&#32;&amp;&amp;&#32;_waiting_queue.empty())&#32;<emphasis role="keywordflow">return</emphasis>;
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_waiting_queue.empty())&#32;<emphasis role="keywordflow">continue</emphasis>;
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this_task&#32;=&#32;std::move(_waiting_queue.front());
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_waiting_queue.pop();
+35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_thread_count&#32;+=&#32;1;
+36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.unlock();
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">try</emphasis>&#32;{
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this_task();
+39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">catch</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;std::exception&amp;&#32;e)&#32;{
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(std::format(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Task&#32;failed!&#32;&quot;</emphasis>
+41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;Exception:&#32;{}&quot;</emphasis>,&#32;e.what()),&#32;Logger::ERROR);
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.lock();
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_thread_count&#32;-=&#32;1;
+45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_all();
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.unlock();
+47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+51 
+52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~ThreadPool()&#32;{
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;stopAll();
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+55 
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;append(std::function&lt;<emphasis role="keywordtype">void</emphasis>()&gt;&#32;function)&#32;{
+57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.wait(lock,&#32;[<emphasis role="keyword">this</emphasis>]&#32;{
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_waiting_queue.size()&#32;&lt;&#32;_max_threads_count&#32;||&#32;!_running;
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_running)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_waiting_queue.emplace(std::move(function));
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_one();
+64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+66 
+67 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;startAll()&#32;{
+68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+69 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+72 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_all();
+73 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+74 
+75 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;wait(<emphasis role="keywordtype">bool</emphasis>&#32;clear_queue&#32;=&#32;<emphasis role="keyword">false</emphasis>)&#32;{
+76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+77 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(clear_queue&#32;&amp;&amp;&#32;!_waiting_queue.empty())&#32;{
+78 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_waiting_queue&#32;=&#32;{};
+79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_all();
+80 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+81 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.wait(lock,&#32;[<emphasis role="keyword">this</emphasis>]&#32;{
+82 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(_waiting_queue.empty()&#32;&amp;&amp;&#32;_running_thread_count&#32;==&#32;0)&#32;||&#32;!_running;
+83 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+84 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+85 
+86 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;stopAll()&#32;{
+87 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+88 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+89 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_running)&#32;<emphasis role="keywordflow">return</emphasis>;
+90 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+91 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_waiting_queue&#32;=&#32;{};
+92 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+93 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_all();
+94 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;th&#32;:&#32;_thread_list)&#32;{
+95 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(th.joinable())&#32;th.join();
+96 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+97 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+98 
+99 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;restartAll()&#32;{
+100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_running)&#32;stopAll();
+101 
+102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_thread_list.clear();
+103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;nums&#32;=&#32;_nums_of_threads;
+104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(nums--)&#32;{
+105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_thread_list.emplace_back([<emphasis role="keyword">this</emphasis>]{
+106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void()&gt;&#32;this_task;
+107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<emphasis role="keyword">true</emphasis>)&#32;{
+108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.wait(lock,&#32;[<emphasis role="keyword">this</emphasis>]&#32;{
+110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;!_waiting_queue.empty()&#32;||&#32;!_running;
+111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_running&#32;&amp;&amp;&#32;_waiting_queue.empty())&#32;<emphasis role="keywordflow">return</emphasis>;
+113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_waiting_queue.empty())&#32;<emphasis role="keywordflow">continue</emphasis>;
+114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this_task&#32;=&#32;std::move(_waiting_queue.front());
+115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_waiting_queue.pop();
+116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_thread_count&#32;+=&#32;1;
+117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.unlock();
+118 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">try</emphasis>&#32;{
+119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this_task();
+120 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">catch</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;std::exception&amp;&#32;e)&#32;{
+121 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(std::format(<emphasis role="stringliteral">&quot;ThreadPool:&#32;Task&#32;failed!&#32;&quot;</emphasis>
+122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;Exception:&#32;{}&quot;</emphasis>,&#32;e.what()),&#32;Logger::ERROR);
+123 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.lock();
+125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_thread_count&#32;-=&#32;1;
+126 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_condition_var.notify_all();
+127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lock.unlock();
+128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;startAll();
+132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+133 
+134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isRunning()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_running.load(std::memory_order_acquire);&#32;}
+135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;uint32_t&#32;threadsCount()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_nums_of_threads;&#32;}
+136 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;uint32_t&#32;waitingQueueCount()&#32;{
+137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_lock&lt;std::mutex&gt;&#32;lock(_mutex);
+138 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_waiting_queue.size();
+139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;uint32_t&#32;maxWaitingQueueCount()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_max_threads_count;&#32;}
+141 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;uint32_t&#32;runningThreadsCount()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_running_thread_count;&#32;}
+142 
+143 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+144 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;std::thread&gt;&#32;_thread_list;
+145 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_nums_of_threads;
+146 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_max_threads_count;
+147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::atomic&lt;uint32_t&gt;&#32;_running_thread_count{0};
+148 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::mutex&#32;_mutex;
+149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::condition_variable&#32;_condition_var;
+150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::queue&lt;std::function&lt;void()&gt;&gt;&#32;_waiting_queue;
+151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::atomic&lt;bool&gt;&#32;_running;
+152 &#32;&#32;&#32;&#32;};
+153 
+154 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>TasksManager&#32;:&#32;<emphasis role="keyword">private</emphasis>&#32;ThreadPool&#32;{
+155 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;Priority&#32;{
+157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Low,
+158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Medium,
+159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;High
+160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+161 
+162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task">Task</link>&#32;{
+163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;id;
+164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Priority&#32;priority;
+165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void()&gt;&#32;function;
+166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+167 
+168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task_cmp">TaskCmp</link>&#32;{
+169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;operator()(<link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task">Task</link>&amp;&#32;t1,&#32;<link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task">Task</link>&amp;&#32;t2)&#32;{
+170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(t1.priority&#32;&lt;&#32;t2.priority)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(t2.priority&#32;&lt;&#32;t1.priority)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;t1.id&#32;&gt;&#32;t2.id;
+173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+175 
+176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TasksManager(<emphasis role="keywordtype">size_t</emphasis>&#32;max_tasks,&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;max_threads)
+177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;ThreadPool(max_tasks,&#32;max_threads)&#32;{}
+178 
+179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;addTask(std::function&lt;<emphasis role="keywordtype">void</emphasis>()&gt;&#32;function,&#32;Priority&#32;priority&#32;=&#32;Low)&#32;{
+180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_tasks_queue.emplace(_next_id++,&#32;priority,&#32;std::move(function));
+181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+182 
+183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;startAllTasks()&#32;{
+184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!_tasks_queue.empty())&#32;{
+185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;top&#32;=&#32;_tasks_queue.top();
+186 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;append(top.function);
+187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_tasks_queue.pop();
+188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+190 
+191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;start()&#32;{
+192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_tasks_queue.empty())&#32;<emphasis role="keywordflow">return</emphasis>;
+193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;top&#32;=&#32;_tasks_queue.top();
+194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;append(top.function);
+195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_tasks_queue.pop();
+196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+197 
+198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;stopAllTasks()&#32;{&#32;ThreadPool::wait(<emphasis role="keyword">true</emphasis>);&#32;}
+199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;wait()&#32;{&#32;ThreadPool::wait();&#32;}
+200 
+201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;tasksCount()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_tasks_queue.size();&#32;}
+202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;runningTasks()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;runningThreadsCount();&#32;}
+203 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::priority_queue&lt;Task,&#32;std::vector&lt;Task&gt;,&#32;<link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task_cmp">TaskCmp</link>&gt;&#32;_tasks_queue;
+205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;_next_id{1};
+206 &#32;&#32;&#32;&#32;};
+207 }
+208 
+209 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_THREADPOOL_H</emphasis>
+</programlisting></section>

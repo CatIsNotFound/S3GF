@@ -1,4 +1,4 @@
-.TH "S3GF::Graphics::Ellipse" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Graphics::Ellipse" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,32 +6,132 @@ S3GF::Graphics::Ellipse
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Attributes"
+.PP
+\fR#include <Basic\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBVector2\fP \fBcenter_point\fP"
+.RI "\fBEllipse\fP ()"
 .br
 .ti -1c
-.RI "\fBSize\fP \fBradius\fP"
+.RI "\fBEllipse\fP (float cx, float cy, float rw, float rh, uint16_t border_size=1, const SDL_Color &border_color=\fBStdColor::Black\fP, const SDL_Color &back_color=\fBStdColor::Transparent\fP, float degree=0\&.f, uint16_t segment=32)"
 .br
 .ti -1c
-.RI "uint16_t \fBborder_size\fP"
+.RI "void \fBreset\fP (float cx, float cy, float rw, float rh, uint16_t border_size, const SDL_Color &border_color, const SDL_Color &back_color, float degree, uint16_t segment=32)"
 .br
 .ti -1c
-.RI "SDL_Color \fBborder_color\fP"
+.RI "void \fBreset\fP (const \fBVector2\fP &center_pos, const \fBSize\fP &\fBradius\fP, uint16_t border_size, const SDL_Color &border_color, const SDL_Color &back_color, float degree, uint16_t segment=32)"
 .br
 .ti -1c
-.RI "SDL_Color \fBbackground_color\fP"
+.RI "void \fBsetGeometry\fP (float x, float y, float rw, float rh)"
 .br
 .ti -1c
-.RI "uint16_t \fBpts\fP"
+.RI "void \fBsetGeometry\fP (const \fBVector2\fP &position, const \fBSize\fP &size)"
 .br
 .ti -1c
-.RI "std::vector< SDL_FRect > \fBpoints\fP"
+.RI "void \fBsetBorder\fP (uint16_t size, const SDL_Color &color)"
+.br
+.ti -1c
+.RI "void \fBsetBackground\fP (const SDL_Color &color)"
+.br
+.ti -1c
+.RI "void \fBsetRotate\fP (float rotate)"
+.br
+.ti -1c
+.RI "const \fBVector2\fP & \fBcenterPosition\fP () const"
+.br
+.ti -1c
+.RI "const \fBSize\fP & \fBradius\fP () const"
+.br
+.ti -1c
+.RI "uint16_t \fBborderSize\fP () const"
+.br
+.ti -1c
+.RI "const SDL_Color & \fBborderColor\fP () const"
+.br
+.ti -1c
+.RI "const SDL_Color & \fBbackgroundColor\fP () const"
+.br
+.ti -1c
+.RI "float \fBrotateDegree\fP () const"
+.br
+.ti -1c
+.RI "const int * \fBindices\fP () const"
+.br
+.ti -1c
+.RI "const SDL_Vertex * \fBvertices\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBindicesCount\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBvertexCount\fP () const"
+.br
+.ti -1c
+.RI "const int * \fBborderIndices\fP () const"
+.br
+.ti -1c
+.RI "const SDL_Vertex * \fBborderVertices\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBborderIndicesCount\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBborderVerticesCount\fP () const"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Graphics::Ellipse::Ellipse ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::Graphics::Ellipse::Ellipse (float cx, float cy, float rw, float rh, uint16_t border_size = \fR1\fP, const SDL_Color & border_color = \fR\fBStdColor::Black\fP\fP, const SDL_Color & back_color = \fR\fBStdColor::Transparent\fP\fP, float degree = \fR0\&.f\fP, uint16_t segment = \fR32\fP)\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "const SDL_Color & S3GF::Graphics::Ellipse::backgroundColor () const\fR [inline]\fP"
+
+.SS "const SDL_Color & S3GF::Graphics::Ellipse::borderColor () const\fR [inline]\fP"
+
+.SS "const int * S3GF::Graphics::Ellipse::borderIndices () const\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Ellipse::borderIndicesCount () const\fR [inline]\fP"
+
+.SS "uint16_t S3GF::Graphics::Ellipse::borderSize () const\fR [inline]\fP"
+
+.SS "const SDL_Vertex * S3GF::Graphics::Ellipse::borderVertices () const\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Ellipse::borderVerticesCount () const\fR [inline]\fP"
+
+.SS "const \fBVector2\fP & S3GF::Graphics::Ellipse::centerPosition () const\fR [inline]\fP"
+
+.SS "const int * S3GF::Graphics::Ellipse::indices () const\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Ellipse::indicesCount () const\fR [inline]\fP"
+
+.SS "const \fBSize\fP & S3GF::Graphics::Ellipse::radius () const\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::reset (const \fBVector2\fP & center_pos, const \fBSize\fP & radius, uint16_t border_size, const SDL_Color & border_color, const SDL_Color & back_color, float degree, uint16_t segment = \fR32\fP)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::reset (float cx, float cy, float rw, float rh, uint16_t border_size, const SDL_Color & border_color, const SDL_Color & back_color, float degree, uint16_t segment = \fR32\fP)\fR [inline]\fP"
+
+.SS "float S3GF::Graphics::Ellipse::rotateDegree () const\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::setBackground (const SDL_Color & color)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::setBorder (uint16_t size, const SDL_Color & color)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::setGeometry (const \fBVector2\fP & position, const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::setGeometry (float x, float y, float rw, float rh)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Ellipse::setRotate (float rotate)\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Ellipse::vertexCount () const\fR [inline]\fP"
+
+.SS "const SDL_Vertex * S3GF::Graphics::Ellipse::vertices () const\fR [inline]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_s3_g_f_1_1_abstract_control" xml:lang="en-US">
+<title>S3GF::AbstractControl Class Reference</title>
+<indexterm><primary>S3GF::AbstractControl</primary></indexterm>
+<simplesect>
+    <title>Public Types    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1aa14690b6ce6b2367ee47b702a60b2a2f"/>enum <emphasis role="strong">State</emphasis> { <?linebreak?><emphasis role="strong">Normal</emphasis>
+, <emphasis role="strong">Hover</emphasis>
+, <emphasis role="strong">Pressed</emphasis>
+, <emphasis role="strong">Disabled</emphasis>
+, <?linebreak?><emphasis role="strong">Selected</emphasis>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a9478a845286aa8e052cf8aa4bda6a355"/><emphasis role="strong">AbstractControl</emphasis> (const std::string &amp;name, <link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> *renderer, GT click_area=<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>(), <link linkend="_class_s3_g_f_1_1_abstract_control">AbstractControl</link> *parent=nullptr)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a8a9488a463d0e5783319b650fc3b5898"/>void <emphasis role="strong">setName</emphasis> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a14a2dd534a6f1186c575dbe7da7030a6"/>const std::string &amp; <emphasis role="strong">name</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1af1ccb1df1f1a7576a7a35c7b147e85e8"/>void <emphasis role="strong">move</emphasis> (float x, float y)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a6c41e0546c77479d33a81e54417792e2"/>void <emphasis role="strong">move</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;pos)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a50b3e050faed184aa568ba7f24a002be"/>void <emphasis role="strong">move</emphasis> (<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;&amp;pos)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a45f2d68e4cad68f6b0ef169ab0a9d13d"/>void <emphasis role="strong">resize</emphasis> (float w, float h)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a9a4905294496c09908f7ee921c67f58d"/>void <emphasis role="strong">resize</emphasis> (const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a14c9b104486f152119586077a742c32e"/>void <emphasis role="strong">resize</emphasis> (<link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;&amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a616a623b384f5107430554ade4de037d"/>void <emphasis role="strong">setGeometry</emphasis> (float x, float y, float w, float h)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1aa0f17389eef0821657550be53401c7a5"/>void <emphasis role="strong">setGeometry</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;pos, const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a96655b45ea057cc301e1897ef9dfbb33"/>void <emphasis role="strong">setGeometry</emphasis> (<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;&amp;pos, <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;&amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a985063f8de4e9a086c0bca1cf4812b75"/>void <emphasis role="strong">setGeometry</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a564c789034aead23b4330ebbcb6292e3"/>void <emphasis role="strong">setGeometry</emphasis> (<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp;&amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ac7ff09eac6fdf57af0664529c708770c"/>const <link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp; <emphasis role="strong">geometry</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a199bfc2d8b4089248b69257c8fbe3542"/>const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp; <emphasis role="strong">position</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1aeed19454217de7ab2607571b5e577628"/>const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp; <emphasis role="strong">size</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a3b1934aec50d66fb16c2bf1ef678570b"/>void <emphasis role="strong">setVisible</emphasis> (bool visible)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a232a76be1751810e4f7309dd4250080e"/>bool <emphasis role="strong">visible</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a5aff1fcb0c54622545c9d5c7cebbe533"/>void <emphasis role="strong">setEnabled</emphasis> (bool enabled)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1adc1188da678d025e2570bdc26d9ea554"/>bool <emphasis role="strong">enabled</emphasis> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a5bec4a58bb0d21e453c6e34788a856a5"/>virtual void <emphasis role="strong">paintEvent</emphasis> (<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> *)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a29a78accbcd245853aa1b94ca154b913"/>virtual void <emphasis role="strong">loadEvent</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a08f6c61afb027ca4f3559a2a4b43ce6b"/>virtual void <emphasis role="strong">unloadEvent</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ac54b483a47c9857e396f4efc89b8336c"/>virtual void <emphasis role="strong">moveEvent</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ad5dddbd2eeee0ff556e8f71f89dea6d0"/>virtual void <emphasis role="strong">resizeEvent</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1af74470c8fee952e6f90fa07879acf2c2"/>virtual void <emphasis role="strong">onPressed</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1afd050003d126a2d67de5d8984c5b0d4e"/>virtual void <emphasis role="strong">onReleased</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1af2dc05f08ac507a1e219c8a4c355d421"/>virtual void <emphasis role="strong">onTriggered</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a14875c0cab88c8b9d19625267faaa427"/>virtual void <emphasis role="strong">onHovered</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ab2a4bb707df125b77fc87daff953722a"/>virtual void <emphasis role="strong">onEntered</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1abc3ed5ac020968ae56a51d556be485f4"/>virtual void <emphasis role="strong">onLeft</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ae34ae707ab513a7a0fee896a03b46473"/>virtual void <emphasis role="strong">enabledChanged</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a265da4967db81801bb9baa83f047fe68"/>virtual void <emphasis role="strong">visibleChanged</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ab422fbe4c6b47ab5f11d768a3a33e7a2"/>void <emphasis role="strong">_update_click_area</emphasis> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a5e0336af26bfeb54413998bd52383310"/>uint64_t <emphasis role="strong">_id</emphasis> {0}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a56cf04280008c2b964a5bce2b761b445"/>std::string <emphasis role="strong">_name</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a1e8de06fc9012f7b69fe70821d4d89d5"/><link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> * <emphasis role="strong">_renderer</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ab8b025c742ac4acf0280f9b22b990362"/><link linkend="_class_s3_g_f_1_1_abstract_control">AbstractControl</link> * <emphasis role="strong">_parent</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a3d316337b6c996cb80b4df30152818f9"/><link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> <emphasis role="strong">_geometry</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a0e2f461cf47fba7f218d32d91d8199f5"/><link linkend="_class_s3_g_f_1_1_click_area">ClickArea</link> <emphasis role="strong">_click_area</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a73019a45bd9a9ed2f2aee1357301bd03"/>bool <emphasis role="strong">_is_down</emphasis> {false}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a57a24474325c398644fa71352fa9e719"/>bool <emphasis role="strong">_visible</emphasis> {true}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1ad396a36b9ecbdedc6beb6f44d2b64a80"/>bool <emphasis role="strong">_enabled</emphasis> {true}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_abstract_control_1a416042b3c42b0bbcad5b01cd6bb8bc6f"/>bool <emphasis role="strong">_entered</emphasis> {false}</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/Controls/Control.h</section>

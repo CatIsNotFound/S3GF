@@ -5,7 +5,6 @@ var _core_8h =
     [ "S3GF::Window::Geometry", "struct_s3_g_f_1_1_window_1_1_geometry.html", "struct_s3_g_f_1_1_window_1_1_geometry" ],
     [ "S3GF::EventSystem", "class_s3_g_f_1_1_event_system.html", "class_s3_g_f_1_1_event_system" ],
     [ "S3GF::Engine", "class_s3_g_f_1_1_engine.html", "class_s3_g_f_1_1_engine" ],
-    [ "S3GF::Logger", "class_s3_g_f_1_1_logger.html", "class_s3_g_f_1_1_logger" ],
     [ "S3GF::Font", "class_s3_g_f_1_1_font.html", "class_s3_g_f_1_1_font" ],
     [ "S3GF::TextSystem", "class_s3_g_f_1_1_text_system.html", "class_s3_g_f_1_1_text_system" ],
     [ "S3GF::TextSystem::Text", "struct_s3_g_f_1_1_text_system_1_1_text.html", "struct_s3_g_f_1_1_text_system_1_1_text" ],

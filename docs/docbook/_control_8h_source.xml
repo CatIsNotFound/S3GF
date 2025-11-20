@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__control_8h_source" xml:lang="en-US">
+<title>Control.h</title>
+<indexterm><primary>D:/Coding/S3GF/src/Controls/Control.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">1 <emphasis role="preprocessor">#ifndef&#32;S3GF_CONTROL_H</emphasis>
+2 <emphasis role="preprocessor">#define&#32;S3GF_CONTROL_H</emphasis>
+3 <emphasis role="preprocessor">#include&#32;&lt;utility&gt;</emphasis>
+4 
+5 <emphasis role="preprocessor">#include&#32;&quot;Core.h&quot;</emphasis>
+6 <emphasis role="preprocessor">#include&#32;&quot;Utils/Cursor.h&quot;</emphasis>
+7 <emphasis role="preprocessor">#include&#32;&quot;Algorithm/Collider.h&quot;</emphasis>
+8 <emphasis role="keyword">namespace&#32;</emphasis><link linkend="_namespace_s3_g_f">S3GF</link>&#32;{
+9 &#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;</emphasis>GT&#32;=&#32;std::variant&lt;std::monostate,&#32;Graphics::Point,&#32;Graphics::Rectangle&gt;;
+10 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;uint64_t&#32;_next_id&#32;=&#32;0;
+11 
+12 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>ClickArea&#32;{
+13 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;ClickArea(uint64_t&#32;window_id,&#32;GT&#32;graphic)
+15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;_base(std::move(graphic)),&#32;_winID(window_id)&#32;{
+16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem::global()-&gt;appendEvent(_next_id++,&#32;[<emphasis role="keyword">this</emphasis>](SDL_Event&#32;ev)&#32;{
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(ev.window.windowID&#32;!=&#32;_winID)&#32;{
+18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_pressed&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_hovered&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>;
+21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_enabled)&#32;<emphasis role="keywordflow">return</emphasis>;
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&#32;cur_pos&#32;=&#32;<link linkend="_class_s3_g_f_1_1_cursor_1a984a03baa8c281afb7b0829f39e48c46">Cursor::global</link>()-&gt;<link linkend="_class_s3_g_f_1_1_cursor_1a67b6b189ea170bbd1b05ebdc521f8580">position</link>();
+24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;int8_t&#32;tri&#32;=&#32;-1;
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(_base.index())&#32;{
+26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;1:
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;tri&#32;=&#32;Algorithm::comparePosInPoint(cur_pos,&#32;std::get&lt;Graphics::Point&gt;(_base));
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;2:
+30 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;tri&#32;=&#32;Algorithm::comparePosInRect(cur_pos,&#32;std::get&lt;Graphics::Rectangle&gt;(_base));
+31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(tri&#32;&gt;&#32;0)&#32;{
+36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_hovered)&#32;{
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_hovered&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(ev.button.type&#32;==&#32;SDL_EVENT_MOUSE_BUTTON_DOWN&#32;||&#32;ev.key.type&#32;==&#32;SDL_EVENT_KEY_DOWN)&#32;{
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_down&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(ev.button.type&#32;==&#32;SDL_EVENT_MOUSE_BUTTON_UP&#32;||&#32;ev.key.type&#32;==&#32;SDL_EVENT_KEY_UP)&#32;{
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_down&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_pressed&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_hovered&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_pressed&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_entered&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_is_hovered&#32;&amp;&amp;&#32;!_is_entered)&#32;_is_entered&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_is_pressed&#32;&amp;&amp;&#32;_func)&#32;{
+52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_func();
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_pressed&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+55 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+57 
+58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setEnabled(<emphasis role="keywordtype">bool</emphasis>&#32;enabled)&#32;{
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_enabled&#32;=&#32;enabled;
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+61 
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;enabled()&#32;{
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_enabled;
+64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+65 
+66 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setPressedEvent(std::function&lt;<emphasis role="keywordtype">void</emphasis>()&gt;&#32;function)&#32;{
+67 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_func&#32;=&#32;std::move(function);
+68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+69 
+70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;resetPress()&#32;{&#32;_is_pressed&#32;=&#32;<emphasis role="keyword">false</emphasis>;&#32;}
+71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setHover(<emphasis role="keywordtype">bool</emphasis>&#32;enabled)&#32;{&#32;_is_hovered&#32;=&#32;enabled;&#32;}
+72 
+73 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGraphic(GT&#32;graphic)&#32;{
+74 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_base&#32;=&#32;std::move(graphic);
+75 
+76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+77 
+78 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setPoint(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position,&#32;uint16_t&#32;size)&#32;{
+79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;1)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+80 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&amp;&#32;pt&#32;=&#32;std::get&lt;Graphics::Point&gt;(_base);
+81 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pt.reset(position,&#32;size,&#32;pt.color());
+82 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+83 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+84 
+85 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setRect(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&amp;&#32;geometry)&#32;{
+86 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;2)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+87 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&amp;&#32;rect&#32;=&#32;std::get&lt;Graphics::Rectangle&gt;(_base);
+88 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;rect.setGeometry(geometry);
+89 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+90 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+91 
+92 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point()&#32;{
+93 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;1)&#32;{
+94 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::runtime_error(<emphasis role="stringliteral">&quot;ClickArea:&#32;The&#32;graphic&#32;is&#32;not&#32;point!&quot;</emphasis>);
+95 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+96 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::get&lt;Graphics::Point&gt;(_base);
+97 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+98 
+99 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rectangle()&#32;{
+100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;2)&#32;{
+101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::runtime_error(<emphasis role="stringliteral">&quot;ClickArea:&#32;The&#32;graphic&#32;is&#32;not&#32;rectangle!&quot;</emphasis>);
+102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::get&lt;Graphics::Rectangle&gt;(_base);
+104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+105 
+106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;getPoint(<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point)&#32;{
+107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;1)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;point&#32;=&#32;std::get&lt;Graphics::Point&gt;(_base);
+109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+111 
+112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;getRect(<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect)&#32;{
+113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_base.index()&#32;!=&#32;2)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;o_rect&#32;=&#32;std::get&lt;Graphics::Rectangle&gt;(_base);
+115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;rect.reset(o_rect.geometry(),&#32;o_rect.borderSize(),&#32;o_rect.borderColor(),&#32;o_rect.backgroundColor());
+116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+118 
+119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isPressed()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_is_pressed;&#32;}
+120 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isHovered()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_is_hovered;&#32;}
+121 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isEntered()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_is_entered;&#32;}
+122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isDown()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_is_down;&#32;}
+123 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;index()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_base.index();&#32;}
+124 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GT&#32;_base;
+126 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;_winID;
+127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_pressed{<emphasis role="keyword">false</emphasis>},&#32;_is_hovered{<emphasis role="keyword">false</emphasis>},&#32;_is_entered{<emphasis role="keyword">false</emphasis>},&#32;_is_down{<emphasis role="keyword">false</emphasis>},&#32;_is_triggered{<emphasis role="keyword">false</emphasis>};
+128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_enabled{<emphasis role="keyword">true</emphasis>};
+129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void()&gt;&#32;_func;
+130 &#32;&#32;&#32;&#32;};
+131 
+132 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>AbstractControl&#32;{
+133 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;State&#32;{
+135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Normal,
+136 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Hover,
+137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Pressed,
+138 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Disabled,
+139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Selected
+140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+141 
+142 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;AbstractControl(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;name,&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer,
+143 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GT&#32;click_area&#32;=&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>(),
+144 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AbstractControl*&#32;parent&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>)
+145 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;_name(name),&#32;_renderer(renderer),&#32;_parent(parent),&#32;_id(++_next_id),
+146 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_click_area(renderer-&gt;window()-&gt;windowID(),&#32;std::move(click_area))&#32;{
+147 
+148 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;renderer-&gt;window()-&gt;installPaintEvent([<emphasis role="keyword">this</emphasis>]&#32;(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;r)&#32;{
+149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_visible)&#32;<emphasis role="keywordflow">return</emphasis>;
+150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;paintEvent(r);
+151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+152 
+153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem::global()-&gt;appendEvent(_next_id++,&#32;[<emphasis role="keyword">this</emphasis>](SDL_Event&#32;ev)&#32;{
+154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_visible&#32;||&#32;!_enabled)&#32;<emphasis role="keywordflow">return</emphasis>;
+155 
+156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_entered_changed&#32;=&#32;(_entered&#32;!=&#32;_click_area.isEntered());
+157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_entered_changed)&#32;{
+158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_entered&#32;=&#32;_click_area.isEntered();
+159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_entered)&#32;onEntered();&#32;<emphasis role="keywordflow">else</emphasis>&#32;onLeft();
+160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.isHovered())&#32;onHovered();
+162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_button_down_changed&#32;=&#32;(_is_down&#32;!=&#32;_click_area.isDown());
+163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_button_down_changed)&#32;{
+164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_down&#32;=&#32;_click_area.isDown();
+165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_is_down)&#32;onPressed();&#32;<emphasis role="keywordflow">else</emphasis>&#32;onReleased();
+166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.isPressed())&#32;{
+168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;onTriggered();
+169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_click_area.resetPress();
+170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+172 
+173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.index()&#32;==&#32;1)&#32;{
+174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;pt&#32;=&#32;_click_area.point();
+175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetPos(pt.position());
+176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;size&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">float</emphasis><emphasis role="keyword">&gt;</emphasis>(pt.size());
+177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetSize({size,&#32;size});
+178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.index()&#32;==&#32;2)&#32;{
+179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;re&#32;=&#32;_click_area.rectangle();
+180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(re.geometry());
+181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;loadEvent();
+183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+184 
+185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~AbstractControl()&#32;{&#32;unloadEvent();&#32;};
+186 
+187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setName(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;name)&#32;{
+188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_name&#32;=&#32;name;
+189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+190 
+191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;name()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_name;
+193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+194 
+195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;move(<emphasis role="keywordtype">float</emphasis>&#32;x,&#32;<emphasis role="keywordtype">float</emphasis>&#32;y)&#32;{
+196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetPos({x,&#32;y});
+197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+200 
+201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;move(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos)&#32;{
+202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetPos(pos);
+203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+206 
+207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;move(<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&amp;&#32;pos)&#32;{
+208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetPos(pos);
+209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+210 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+212 
+213 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;resize(<emphasis role="keywordtype">float</emphasis>&#32;w,&#32;<emphasis role="keywordtype">float</emphasis>&#32;h)&#32;{
+214 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetSize({w,&#32;h});
+215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+218 
+219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;resize(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_size">Size</link>&amp;&#32;size)&#32;{
+220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetSize(size);
+221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+222 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+224 
+225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;resize(<link linkend="_struct_s3_g_f_1_1_size">Size</link>&amp;&amp;&#32;size)&#32;{
+226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.resetSize(size);
+227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+230 
+231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGeometry(<emphasis role="keywordtype">float</emphasis>&#32;x,&#32;<emphasis role="keywordtype">float</emphasis>&#32;y,&#32;<emphasis role="keywordtype">float</emphasis>&#32;w,&#32;<emphasis role="keywordtype">float</emphasis>&#32;h)&#32;{
+232 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(x,&#32;y,&#32;w,&#32;h);
+233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+237 
+238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGeometry(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_size">Size</link>&amp;&#32;size)&#32;{
+239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(pos,&#32;size);
+240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+242 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+244 
+245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGeometry(<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&amp;&#32;pos,&#32;<link linkend="_struct_s3_g_f_1_1_size">Size</link>&amp;&amp;&#32;size)&#32;{
+246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(pos,&#32;size);
+247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+248 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+250 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+251 
+252 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGeometry(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&amp;&#32;geometry)&#32;{
+253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(geometry);
+254 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+256 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+257 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+258 
+259 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setGeometry(<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&amp;&amp;&#32;geometry)&#32;{
+260 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.reset(geometry);
+261 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_update_click_area();
+262 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;moveEvent();
+263 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;resizeEvent();
+264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+265 
+266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&amp;&#32;geometry()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_geometry;&#32;}
+267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_geometry.pos;&#32;}
+268 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_size">Size</link>&amp;&#32;size()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_geometry.size;&#32;}
+269 
+270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setVisible(<emphasis role="keywordtype">bool</emphasis>&#32;visible)&#32;{
+271 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_visible&#32;=&#32;visible;
+272 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;visibleChanged();
+273 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;visible()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_visible;&#32;}
+275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setEnabled(<emphasis role="keywordtype">bool</emphasis>&#32;enabled)&#32;{
+276 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_enabled&#32;=&#32;enabled;
+277 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;enabledChanged();
+278 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+279 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;enabled()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_enabled;&#32;}
+280 
+281 &#32;&#32;&#32;&#32;<emphasis role="keyword">protected</emphasis>:
+282 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;paintEvent(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*)&#32;{}
+283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;loadEvent()&#32;{}
+284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;unloadEvent()&#32;{}
+285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;moveEvent()&#32;{}
+286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;resizeEvent()&#32;{}
+287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onPressed()&#32;{}
+288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onReleased()&#32;{}
+289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onTriggered()&#32;{}
+290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onHovered()&#32;{}
+291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onEntered()&#32;{}
+292 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;onLeft()&#32;{}
+293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;enabledChanged()&#32;{}
+294 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;visibleChanged()&#32;{}
+295 
+296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;_update_click_area()&#32;{
+297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.index()&#32;==&#32;1)&#32;{
+298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;min&#32;=&#32;std::min(_geometry.size.width,&#32;_geometry.size.height);
+299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;real_size&#32;=&#32;std::min(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">int</emphasis><emphasis role="keyword">&gt;</emphasis>(min),&#32;UINT16_MAX);
+300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_click_area.setPoint(_geometry.pos,&#32;real_size);
+301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(_click_area.index()&#32;==&#32;2)&#32;{
+302 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_click_area.setRect(_geometry);
+303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(std::format(<emphasis role="stringliteral">&quot;Changed:&#32;{},&#32;{}&#32;{}x{}&quot;</emphasis>,
+304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_geometry.pos.x,&#32;_geometry.pos.y,&#32;_geometry.size.width,&#32;_geometry.size.height));
+305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+307 
+308 &#32;&#32;&#32;&#32;<emphasis role="keyword">protected</emphasis>:
+309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;_id{0};
+310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;_name;
+311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;_renderer;
+312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AbstractControl*&#32;_parent;
+313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&#32;_geometry;
+314 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_click_area">ClickArea</link>&#32;_click_area;
+315 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_down{<emphasis role="keyword">false</emphasis>};
+316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_visible{<emphasis role="keyword">true</emphasis>},&#32;_enabled{<emphasis role="keyword">true</emphasis>},&#32;_entered{<emphasis role="keyword">false</emphasis>};
+317 &#32;&#32;&#32;&#32;};
+318 
+319 <emphasis role="comment">//&#32;&#32;&#32;&#32;class&#32;Button&#32;:&#32;public&#32;AbstractControl&#32;{</emphasis>
+320 <emphasis role="comment">//&#32;&#32;&#32;&#32;public:</emphasis>
+321 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;explicit&#32;Button(const&#32;std::string&amp;&#32;object_name,&#32;Renderer*&#32;renderer,&#32;AbstractControl*&#32;parent&#32;=&#32;nullptr)</emphasis>
+322 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;AbstractControl(object_name,&#32;renderer,&#32;_click_area,&#32;parent)&#32;{</emphasis>
+323 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;auto&#32;g&#32;=&#32;geometry();</emphasis>
+324 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_base&#32;=&#32;Graphics::Rectangle(g.pos.x,&#32;g.pos.y,&#32;_default_size.width,&#32;_default_size.height,</emphasis>
+325 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;1,&#32;StdColor::Black,&#32;StdColor::White);</emphasis>
+326 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;setGeometry(0,&#32;0,&#32;_default_size.width,&#32;_default_size.height);</emphasis>
+327 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+328 <emphasis role="comment">//</emphasis>
+329 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;void&#32;setText(const&#32;std::string&amp;&#32;text)&#32;{&#32;_text&#32;=&#32;text;&#32;}</emphasis>
+330 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;const&#32;std::string&amp;&#32;text()&#32;const&#32;{&#32;return&#32;_text;&#32;}</emphasis>
+331 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;void&#32;setFontName(const&#32;std::string&amp;&#32;font_name)&#32;{&#32;_font_name&#32;=&#32;font_name;&#32;}</emphasis>
+332 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;const&#32;std::string&amp;&#32;fontName()&#32;const&#32;{&#32;return&#32;_font_name;&#32;}</emphasis>
+333 <emphasis role="comment">//</emphasis>
+334 <emphasis role="comment">//&#32;&#32;&#32;&#32;protected:</emphasis>
+335 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;virtual&#32;void&#32;drawEvent()&#32;override&#32;{</emphasis>
+336 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(!_visible)&#32;return;</emphasis>
+337 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(!_renderer)&#32;return;</emphasis>
+338 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_renderer-&gt;drawRectangle(std::get&lt;Graphics::Rectangle&gt;(_base));</emphasis>
+339 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+340 <emphasis role="comment">//</emphasis>
+341 <emphasis role="comment">//&#32;&#32;&#32;&#32;private:</emphasis>
+342 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GT&#32;_base;</emphasis>
+343 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Size&#32;_min_size{0,&#32;0};</emphasis>
+344 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Size&#32;_max_size{0,&#32;0};</emphasis>
+345 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Size&#32;_default_size{60,&#32;40};</emphasis>
+346 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;_font_name;</emphasis>
+347 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;_text{&quot;Button&quot;};</emphasis>
+348 <emphasis role="comment">//&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void()&gt;&#32;_function;</emphasis>
+349 <emphasis role="comment">//&#32;&#32;&#32;&#32;};</emphasis>
+350 
+351 }&#32;<emphasis role="comment">//&#32;S3GF</emphasis>
+352 
+353 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_CONTROL_H</emphasis>
+</programlisting></section>

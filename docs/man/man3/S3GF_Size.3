@@ -1,4 +1,4 @@
-.TH "S3GF::Size" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Size" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,14 +9,17 @@ S3GF::Size \- 尺寸、大小
 .PP
 .PP
 \fR#include <Basic\&.h>\fP
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBSize\fP (float width, float height)"
+.RI "\fBSize\fP ()"
 .br
 .ti -1c
-.RI "void \fBreset\fP (float width, float height)"
+.RI "\fBSize\fP (float \fBwidth\fP, float \fBheight\fP)"
+.br
+.ti -1c
+.RI "void \fBreset\fP (float \fBwidth\fP, float \fBheight\fP)"
 .br
 .RI "重新设置新的尺寸 "
 .ti -1c
@@ -77,7 +80,7 @@ S3GF::Size \- 尺寸、大小
 .RI "bool \fBoperator<=\fP (const \fBSize\fP &s) const"
 .br
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -87,19 +90,63 @@ S3GF::Size \- 尺寸、大小
 .RI "float \fBheight\fP"
 .br
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 尺寸、大小 
 
 用于调整对象的尺寸、大小 
-.SH "Member Function Documentation"
+.SH "构造及析构函数说明"
 .PP 
+.SS "S3GF::Size::Size ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::Size::Size (float width, float height)\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "bool S3GF::Size::operator!= (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator* (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator* (float v) const\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator*= (const \fBSize\fP & s)\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator*= (float v)\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator+ (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator+= (const \fBSize\fP & s)\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator\- (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator\-= (const \fBSize\fP & s)\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator/ (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "\fBSize\fP S3GF::Size::operator/ (float v) const\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator/= (const \fBSize\fP & s)\fR [inline]\fP"
+
+.SS "void S3GF::Size::operator/= (float v)\fR [inline]\fP"
+
+.SS "bool S3GF::Size::operator< (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "bool S3GF::Size::operator<= (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "bool S3GF::Size::operator== (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "bool S3GF::Size::operator> (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "bool S3GF::Size::operator>= (const \fBSize\fP & s) const\fR [inline]\fP"
+
+.SS "void S3GF::Size::reset (const \fBSize\fP & size)\fR [inline]\fP"
+
 .SS "void S3GF::Size::reset (float width, float height)\fR [inline]\fP"
 
 .PP
 重新设置新的尺寸 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIwidth\fP 
 .br
@@ -107,7 +154,13 @@ S3GF::Size \- 尺寸、大小
 .RE
 .PP
 
-
-.SH "Author"
+.SH "类成员变量说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "float S3GF::Size::height"
+
+.SS "float S3GF::Size::width"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

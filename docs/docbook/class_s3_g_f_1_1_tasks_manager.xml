@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_s3_g_f_1_1_tasks_manager" xml:lang="en-US">
+<title>S3GF::TasksManager Class Reference</title>
+<indexterm><primary>S3GF::TasksManager</primary></indexterm>
+<para>Inheritance diagram for S3GF::TasksManager:    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_s3_g_f_1_1_tasks_manager.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task">Task</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_s3_g_f_1_1_tasks_manager_1_1_task_cmp">TaskCmp</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Types    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1ad3eac04a07a5b0e906806a957637ddfc"/>enum <emphasis role="strong">Priority</emphasis> { <emphasis role="strong">Low</emphasis>
+, <emphasis role="strong">Medium</emphasis>
+, <emphasis role="strong">High</emphasis>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1a1c78b71f73acb6d076105a9f0711dfeb"/><emphasis role="strong">TasksManager</emphasis> (size_t max_tasks, size_t max_threads)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1adc8fbdcacd5d9164f0e2474ee96674e8"/>void <emphasis role="strong">addTask</emphasis> (std::function&lt; void()&gt; function, Priority priority=Low)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1a8fcd8aa14933b684fab653eeab6faf2d"/>void <emphasis role="strong">startAllTasks</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1aab66e7e9e435fa7b377be3a34aa7892b"/>void <emphasis role="strong">start</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1a3afe11b9e76ce970464e6f92f059c9a2"/>void <emphasis role="strong">stopAllTasks</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1a4810d7a7ffb50fb19fec364fc5b694bf"/>void <emphasis role="strong">wait</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1a2ea65c2ed39f5f01b8bdcf085c4304bf"/>size_t <emphasis role="strong">tasksCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_tasks_manager_1aa0d0d413fd4879396967cc39c9e60bdf"/>size_t <emphasis role="strong">runningTasks</emphasis> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/MultiThread/ThreadPool.h</section>

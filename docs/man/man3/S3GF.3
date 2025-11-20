@@ -1,4 +1,4 @@
-.TH "S3GF" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,11 +7,30 @@ S3GF \- \fBS3GF\fP 空间
 .SH SYNOPSIS
 .br
 .PP
-.SS "Classes"
+.SS "命名空间"
 
 .in +1c
 .ti -1c
+.RI "namespace \fBAlgorithm\fP"
+.br
+.ti -1c
+.RI "namespace \fBGraphics\fP"
+.br
+.ti -1c
+.RI "namespace \fBStdColor\fP"
+.br
+.in -1c
+.SS "类"
+
+.in +1c
+.ti -1c
+.RI "class \fBAbstractControl\fP"
+.br
+.ti -1c
 .RI "class \fBAudioSystem\fP"
+.br
+.ti -1c
+.RI "class \fBClickArea\fP"
 .br
 .ti -1c
 .RI "class \fBCursor\fP"
@@ -61,10 +80,16 @@ S3GF \- \fBS3GF\fP 空间
 .RI "class \fBTaskQueue\fP"
 .br
 .ti -1c
+.RI "class \fBTasksManager\fP"
+.br
+.ti -1c
 .RI "class \fBTextSystem\fP"
 .br
 .ti -1c
 .RI "class \fBTexture\fP"
+.br
+.ti -1c
+.RI "class \fBThreadPool\fP"
 .br
 .ti -1c
 .RI "class \fBTimer\fP"
@@ -80,11 +105,33 @@ S3GF \- \fBS3GF\fP 空间
 .RI "class \fBWindow\fP"
 .br
 .in -1c
-.SH "Detailed Description"
+.SS "类型定义"
+
+.in +1c
+.ti -1c
+.RI "using \fBGT\fP = std::variant<std::monostate, \fBGraphics::Point\fP, \fBGraphics::Rectangle\fP>"
+.br
+.in -1c
+.SS "变量"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fB_next_id\fP = 0"
+.br
+.in -1c
+.SH "详细描述"
 .PP 
 \fBS3GF\fP 空间 
 
 所有库都将被存储于此命名空间 
-.SH "Author"
+.SH "类型定义说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "using \fBS3GF::GT\fP = std::variant<std::monostate, \fBGraphics::Point\fP, \fBGraphics::Rectangle\fP>"
+
+.SH "变量说明"
+.PP 
+.SS "uint64_t S3GF::_next_id = 0\fR [inline]\fP"
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

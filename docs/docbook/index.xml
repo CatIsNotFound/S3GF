@@ -11,12 +11,14 @@
 </chapter>
 <chapter>
     <title>Class Documentation</title>
+    <xi:include href="class_s3_g_f_1_1_abstract_control.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="struct_s3_g_f_1_1_audio_system_1_1_audio.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_audio_system.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_s3_g_f_1_1_click_area.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_cursor.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_date_time.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="struct_s3_g_f_1_1_date_time_1_1_d_t.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="struct_s3_g_f_1_1_graphics_1_1_ellipse.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_s3_g_f_1_1_graphics_1_1_ellipse.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_engine.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_event_system.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_font.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
@@ -35,10 +37,14 @@
     <xi:include href="class_s3_g_f_1_1_graphics_1_1_rectangle.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_renderer.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="struct_s3_g_f_1_1_size.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="struct_s3_g_f_1_1_tasks_manager_1_1_task.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="struct_s3_g_f_1_1_tasks_manager_1_1_task_cmp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_task_queue.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_s3_g_f_1_1_tasks_manager.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="struct_s3_g_f_1_1_text_system_1_1_text.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_text_system.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_texture.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="class_s3_g_f_1_1_thread_pool.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_timer.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_graphics_1_1_triangle.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="class_s3_g_f_1_1_trigger.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
@@ -48,16 +54,20 @@
 </chapter>
 <chapter>
     <title>File Documentation</title>
+    <xi:include href="_collider_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_draw_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_basic_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_basic_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_components_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_multi_thread_2_components_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="_control_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_core_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_libs_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="_queue_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="_thread_pool_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_cursor_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_date_time_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="_queue_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="_logger_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
     <xi:include href="_random_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </chapter>
 <index/>

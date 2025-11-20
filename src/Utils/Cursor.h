@@ -1,6 +1,7 @@
 
 #ifndef S3GF_CURSOR_H
 #define S3GF_CURSOR_H
+#include "Logger.h"
 #include "Components.h"
 
 namespace S3GF {
@@ -97,6 +98,9 @@ namespace S3GF {
          * @see move
          */
         Vector2 globalPosition() const {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             Vector2 _pos;
             SDL_GetGlobalMouseState(&_pos.x, &_pos.y);
             return _pos;
@@ -108,6 +112,9 @@ namespace S3GF {
          * @see move
          */
         Vector2 position() const {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             Vector2 _pos;
             SDL_GetMouseState(&_pos.x, &_pos.y);
             return _pos;
@@ -117,6 +124,9 @@ namespace S3GF {
          * @return 返回鼠标所在的窗口 ID
          */
         uint64_t focusOn() const {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             return SDL_GetWindowID(SDL_GetMouseFocus());
         }
         /**
@@ -128,6 +138,9 @@ namespace S3GF {
          * @see globalPosition
          */
         void move(const Vector2& pos, const Window* window = nullptr) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             if (window) {
                 SDL_WarpMouseInWindow(window->self(), pos.x, pos.y);
             } else {
@@ -144,6 +157,9 @@ namespace S3GF {
          * @see globalPosition
          */
         void move(float x, float y, const Window* window = nullptr) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             if (window) {
                 SDL_WarpMouseInWindow(window->self(), x, y);
             } else {
@@ -156,6 +172,9 @@ namespace S3GF {
          * @note 若不设置 window 参数，将默认以全局显示器屏幕为主
          */
         void moveToCenter(const Window* window = nullptr) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             Vector2 pos;
             if (window) {
                 int w, h;
@@ -182,6 +201,9 @@ namespace S3GF {
          * @see StdCursor
          */
         void setCursor(const StdCursor& cursor) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             if (this->cursor() == cursor) return;
             if (_custom_cursor && _user_custom.contains(cursor)) {
                 auto user_cursor = _user_custom.at(cursor);
@@ -213,6 +235,9 @@ namespace S3GF {
          * 从指定路径加载图像作为自定义鼠标光标，并设置热点坐标。
          */
         void setCursor(const std::string &path, int hot_x, int hot_y) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             SDL_Surface *temp = IMG_Load(path.data());
             if (!temp) {
                 SDL_Log("[ERROR] Can't load image while setting cursor: %s", path.data());
@@ -250,6 +275,9 @@ namespace S3GF {
          * @see userCustomEnabled
          */
         void setCustomCursor(const StdCursor& stdCursor, const std::string& path, const UserCustom::HotPoint& hot_point) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             auto new_cursor = IMG_Load(path.c_str());
             if (!new_cursor) {
                 SDL_Log("[ERROR] Can't set custom cursor, because the current path \"%s\" is not valid!", path.c_str());
@@ -276,6 +304,9 @@ namespace S3GF {
          * @see visible
          */
         void setVisible(bool visible) {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             if (visible) {
                 SDL_ShowCursor();
             } else {
@@ -297,6 +328,9 @@ namespace S3GF {
 
     private:
         explicit Cursor() {
+            if (!SDL_HasMouse()) {
+                Logger::log("Cursor: No mouse device!", Logger::WARN);
+            }
             _cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_DEFAULT);
         }
         StdCursor _std_cursor{Default};

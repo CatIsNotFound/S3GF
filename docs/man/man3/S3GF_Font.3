@@ -1,4 +1,4 @@
-.TH "S3GF::Font" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Font" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,7 +6,9 @@ S3GF::Font
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Types"
+.PP
+\fR#include <Core\&.h>\fP
+.SS "Public 类型"
 
 .in +1c
 .ti -1c
@@ -21,7 +23,7 @@ S3GF::Font
 .RI "enum \fBHinting\fP { \fBNormal\fP, \fBLight\fP, \fBMono\fP, \fBNone\fP, \fBSubPixel\fP }"
 .br
 .in -1c
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -38,6 +40,9 @@ S3GF::Font
 .br
 .ti -1c
 .RI "\fBFont\fP (const std::string &font_path, float font_size=9\&.f)"
+.br
+.ti -1c
+.RI "\fB~Font\fP ()"
 .br
 .ti -1c
 .RI "void \fBsetFontSize\fP (float size)"
@@ -97,14 +102,14 @@ S3GF::Font
 .RI "TTF_Font * \fBself\fP () const"
 .br
 .in -1c
-.SH "Member Enumeration Documentation"
+.SH "成员枚举类型说明"
 .PP 
 .SS "enum \fBS3GF::Font::Direction\fP"
 
 .PP
 字体方向 
 .PP
-\fBEnumerator\fP
+\fB枚举值\fP
 .in +1c
 .TP
 \f(BILeftToRight \fP
@@ -118,12 +123,27 @@ S3GF::Font
 .TP
 \f(BIBottomToTop \fP
 从下到上 
+.SS "enum \fBS3GF::Font::Hinting\fP"
+
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BINormal \fP
+.TP
+\f(BILight \fP
+.TP
+\f(BIMono \fP
+.TP
+\f(BINone \fP
+.TP
+\f(BISubPixel \fP
 .SS "enum \fBS3GF::Font::Style\fP"
 
 .PP
 字体样式 
 .PP
-\fBEnumerator\fP
+\fB枚举值\fP
 .in +1c
 .TP
 \f(BIRegular \fP
@@ -140,7 +160,61 @@ S3GF::Font
 .TP
 \f(BIStrikethrough \fP
 删除线样式 
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Font::Font (\fBFont\fP && )\fR [delete]\fP"
+
+.SS "S3GF::Font::Font (const \fBFont\fP & )\fR [delete]\fP"
+
+.SS "S3GF::Font::Font (const std::string & font_path, float font_size = \fR9\&.f\fP)\fR [explicit]\fP"
+
+.SS "S3GF::Font::~Font ()"
+
+.SH "成员函数说明"
+.PP 
+.SS "const SDL_Color S3GF::Font::fontColor () const"
+
+.SS "\fBFont::Direction\fP S3GF::Font::fontDirection () const"
+
+.SS "bool S3GF::Font::fontKerning () const"
+
+.SS "float S3GF::Font::fontSize () const"
+
+.SS "uint32_t S3GF::Font::lineSpacing () const"
+
+.SS "\fBFont\fP & S3GF::Font::operator= (const \fBFont\fP & )\fR [delete]\fP"
+
+.SS "\fBFont\fP & S3GF::Font::operator= (\fBFont\fP && )\fR [delete]\fP"
+
+.SS "uint32_t S3GF::Font::outline () const"
+
+.SS "const SDL_Color S3GF::Font::outlineColor () const"
+
+.SS "TTF_Font * S3GF::Font::self () const"
+
+.SS "void S3GF::Font::setFontColor (const SDL_Color & color)"
+
+.SS "void S3GF::Font::setFontDirection (\fBDirection\fP direction)"
+
+.SS "void S3GF::Font::setFontHinting (uint32_t flags)"
+
+.SS "void S3GF::Font::setFontKerning (bool enabled)"
+
+.SS "void S3GF::Font::setFontSize (float size)"
+
+.SS "void S3GF::Font::setLineSpacing (uint32_t spacing)"
+
+.SS "void S3GF::Font::setOutline (uint32_t value = \fR0\fP)"
+
+.SS "void S3GF::Font::setOutlineColor (const SDL_Color & color)"
+
+.SS "void S3GF::Font::setStyle (uint32_t flags)"
+
+.SS "SDL_Surface * S3GF::Font::toImage (const std::string & text)"
+
+.SS "SDL_Surface * S3GF::Font::toImage (const std::string & text, const SDL_Color & backgrond_color)"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

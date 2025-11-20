@@ -1,4 +1,4 @@
-.TH "S3GF::Matrix2D< T >::Position" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Matrix2D< T >::Position" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,11 +6,16 @@ S3GF::Matrix2D< T >::Position
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Basic\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBPosition\fP (uint32_t row, uint32_t col)"
+.RI "\fBPosition\fP ()"
+.br
+.ti -1c
+.RI "\fBPosition\fP (uint32_t \fBrow\fP, uint32_t \fBcol\fP)"
 .br
 .ti -1c
 .RI "bool \fBisValid\fP () const"
@@ -34,7 +39,7 @@ S3GF::Matrix2D< T >::Position
 .RI "bool \fBoperator<=\fP (const \fBPosition\fP &p) const"
 .br
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -44,7 +49,35 @@ S3GF::Matrix2D< T >::Position
 .RI "uint32_t \fBcol\fP"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "template<typename T> \fBS3GF::Matrix2D\fP< T >::Position::Position ()\fR [inline]\fP"
+
+.SS "template<typename T> \fBS3GF::Matrix2D\fP< T >::Position::Position (uint32_t row, uint32_t col)\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::isValid () const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator!= (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator< (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator<= (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator== (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator> (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::Position::operator>= (const \fBPosition\fP & p) const\fR [inline]\fP"
+
+.SH "类成员变量说明"
+.PP 
+.SS "template<typename T> uint32_t \fBS3GF::Matrix2D\fP< T >::Position::col"
+
+.SS "template<typename T> uint32_t \fBS3GF::Matrix2D\fP< T >::Position::row"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

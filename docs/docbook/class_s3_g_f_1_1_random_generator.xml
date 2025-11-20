@@ -18,27 +18,33 @@
 <simplesect>
     <title>Static Public Member Functions    </title>
         <itemizedlist>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a668b24c317315c428f1f283f2534e1ed"/>static int <emphasis role="strong">randInt</emphasis> (int start, int end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a5af0e204c167f662419aa0b090291169"/>static int <emphasis role="strong">randInt</emphasis> (int start, int end)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1ae2847f10a8e0fc232cac895c10d95a42"/>static int64_t <emphasis role="strong">randBigInt</emphasis> (int64_t start, int64_t end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a3b24b19ec322c6835ce1a7789d028ab0"/>static int64_t <emphasis role="strong">randBigInt</emphasis> (int64_t start, int64_t end)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a5f703edcc28d73667f01e0882c620e75"/>static uint32_t <emphasis role="strong">randUInt</emphasis> (uint32_t start, uint32_t end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a3d5c9f93aa55aeb1a9119a4145dc8e5e"/>static uint32_t <emphasis role="strong">randUInt</emphasis> (uint32_t start, uint32_t end)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a0b7b68363ba28474a77302aa6ee7cf65"/>static uint64_t <emphasis role="strong">randBigUInt</emphasis> (uint64_t start, uint64_t end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1af9bbcae443193f2c983d6a822c2b94e8"/>static uint64_t <emphasis role="strong">randBigUInt</emphasis> (uint64_t start, uint64_t end)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1aff44611c28368eee030cc3c86c3d11a4"/>static float <emphasis role="strong">randFloat</emphasis> (float start, float end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a763edaf25f9d09cb980faaf2605d303d"/>static float <emphasis role="strong">randFloat</emphasis> (float start, float end)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a099468514946b9ff4ea65a9f85339720"/>static double <emphasis role="strong">randDouble</emphasis> (double start, double end)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a006346ba0bffdd65fc2af02cd7affff7"/>static double <emphasis role="strong">randDouble</emphasis> (double start, double end)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a996b97e2d75191db76f61fdf2d6660ec"/>static long double <emphasis role="strong">randBigDouble</emphasis> (long double start, long double end)</para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <simplesect>
     <title>Static Public Attributes    </title>
         <itemizedlist>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a1bf66af1434608751e5e9ebeb4ced04a"/>static time_t <emphasis role="strong">time_seed</emphasis> {time(0)}</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a40b01f8a5b57bbb77a69f847c69ba4d1"/>static std::random_device <emphasis role="strong">_rnd_dev</emphasis> {}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1a0b2fa02a923b620cd4ec1659deb7ca6a"/>static std::default_random_engine <emphasis role="strong">_def_rand_eng</emphasis> {}</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_random_generator_1aa1cde4d66717796d0fd01291f7b4724d"/>static bool <emphasis role="strong">_is_init</emphasis> {false}</para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <para>
-The documentation for this class was generated from the following files:</para>
-D:/Coding/S3GF/src/Utils/Random.hD:/Coding/S3GF/src/Utils/Random.cpp</section>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/Utils/Random.h</section>

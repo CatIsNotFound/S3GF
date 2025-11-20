@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__collider_8h_source" xml:lang="en-US">
+<title>Collider.h</title>
+<indexterm><primary>D:/Coding/S3GF/src/Algorithm/Collider.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">1 
+2 <emphasis role="preprocessor">#ifndef&#32;S3GF_COLLIDER_H</emphasis>
+3 <emphasis role="preprocessor">#define&#32;S3GF_COLLIDER_H</emphasis>
+4 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__basic_8h">Basic.h</link>&quot;</emphasis>
+5 
+6 <emphasis role="keyword">namespace&#32;</emphasis><link linkend="_namespace_s3_g_f">S3GF</link>&#32;{
+7 &#32;&#32;&#32;&#32;<emphasis role="keyword">namespace&#32;</emphasis>Algorithm&#32;{
+8 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;int8_t&#32;comparePosInRect(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;vec,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect)&#32;{
+9 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;left&#32;=&#32;rect.geometry().pos.x;
+10 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;right&#32;=&#32;left&#32;+&#32;rect.geometry().size.width;
+11 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;top&#32;=&#32;rect.geometry().pos.y;
+12 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;bottom&#32;=&#32;top&#32;+&#32;rect.geometry().size.height;
+13 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((vec.x&#32;&gt;&#32;left)&#32;&amp;&amp;&#32;(vec.x&#32;&lt;=&#32;right)&#32;&amp;&amp;&#32;(vec.y&#32;&gt;&#32;top)&#32;&amp;&amp;&#32;(vec.y&#32;&lt;&#32;bottom))&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+14 
+15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;onX&#32;=&#32;(vec.x&#32;==&#32;left&#32;||&#32;vec.x&#32;==&#32;right);
+16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;onY&#32;=&#32;(vec.y&#32;==&#32;top&#32;&#32;||&#32;vec.y&#32;==&#32;bottom);
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(onX&#32;&amp;&amp;&#32;onY)&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+18 
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+21 
+22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;int8_t&#32;comparePosInPoint(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point)&#32;{
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;pt&#32;=&#32;point.position();
+24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(point.size()&#32;&lt;&#32;2)&#32;{
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(point.position().<link linkend="_struct_s3_g_f_1_1_vector2_1ab603a1976f0bf55e46c39fa8f0a25742">isEqual</link>(pos)&#32;?&#32;1&#32;:&#32;-1);
+26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;dx&#32;=&#32;pos.x&#32;-&#32;pt.x;
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;dy&#32;=&#32;pos.y&#32;-&#32;pt.y;
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;dd&#32;=&#32;dx&#32;*&#32;dx&#32;+&#32;dy&#32;*&#32;dy;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//&#32;距离平方</emphasis>
+30 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;rr&#32;=&#32;(point.size()&#32;/&#32;2.f)&#32;*&#32;(point.size()&#32;/&#32;2.f);
+31 
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(dd&#32;&gt;&#32;rr&#32;+&#32;1e-5f)&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(std::fabs(dd&#32;-&#32;rr)&#32;&lt;&#32;1e-5f)&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+36 
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;int8_t&#32;comparePoints(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point1,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point2)&#32;{
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;p1&#32;=&#32;point1.position(),&#32;p2&#32;=&#32;point2.position();
+39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(point1.size()&#32;&lt;&#32;2&#32;&amp;&amp;&#32;point2.size()&#32;&lt;&#32;2)&#32;{
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(point1.position().<link linkend="_struct_s3_g_f_1_1_vector2_1ab603a1976f0bf55e46c39fa8f0a25742">isEqual</link>(point2.position())&#32;?&#32;1&#32;:&#32;-1);
+41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;r1&#32;=&#32;point1.size()&#32;/&#32;2.f,&#32;r2&#32;=&#32;point2.size()&#32;/&#32;2.f;
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;dx&#32;=&#32;p1.x&#32;-&#32;p2.x;
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;dy&#32;=&#32;p1.y&#32;-&#32;p2.y;
+45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;d&#32;&#32;=&#32;std::hypot(dx,&#32;dy);&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//&#32;圆心距</emphasis>
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;rSum&#32;=&#32;r1&#32;+&#32;r2;
+47 
+48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(d&#32;&gt;&#32;rSum&#32;+&#32;1e-5f)&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//&#32;完全相离</emphasis>
+49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(std::fabs(d&#32;-&#32;rSum)&#32;&lt;&#32;1e-5f)&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;&#32;&#32;&#32;<emphasis role="comment">//&#32;外切（只有一个交点）</emphasis>
+50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+52 
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;int8_t&#32;compareRects(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect1,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect2)&#32;{
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;x1&#32;=&#32;rect1.geometry().pos.x,&#32;x2&#32;=&#32;rect1.geometry().pos.x&#32;+&#32;rect1.geometry().size.width,
+55 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;y1&#32;=&#32;rect1.geometry().pos.y,&#32;y2&#32;=&#32;rect1.geometry().pos.y&#32;+&#32;rect1.geometry().size.height,
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;x3&#32;=&#32;rect2.geometry().pos.x,&#32;x4&#32;=&#32;rect2.geometry().pos.x&#32;+&#32;rect2.geometry().size.width,
+57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;y3&#32;=&#32;rect2.geometry().pos.y,&#32;y4&#32;=&#32;rect2.geometry().pos.y&#32;+&#32;rect2.geometry().size.height;
+58 
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(x2&#32;&lt;&#32;x3&#32;||&#32;x1&#32;&gt;&#32;x4&#32;||&#32;y2&#32;&lt;&#32;y3&#32;||&#32;y1&#32;&gt;&#32;y4)&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(x3&#32;&lt;=&#32;x1&#32;&amp;&amp;&#32;y3&#32;&lt;=&#32;y1&#32;&amp;&amp;&#32;x4&#32;&gt;=&#32;x2&#32;&amp;&amp;&#32;y4&#32;&gt;=&#32;y2)&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(x1&#32;&lt;=&#32;x3&#32;&amp;&amp;&#32;y1&#32;&lt;=&#32;y3&#32;&amp;&amp;&#32;x2&#32;&gt;=&#32;x4&#32;&amp;&amp;&#32;y2&#32;&gt;=&#32;y4)&#32;<emphasis role="keywordflow">return</emphasis>&#32;2;
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+64 &#32;&#32;&#32;&#32;}
+65 }
+66 
+67 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_COLLIDER_H</emphasis>
+</programlisting></section>

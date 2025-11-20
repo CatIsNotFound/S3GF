@@ -22,7 +22,7 @@
 18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(255&#32;*&#32;color.a)};
 19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
 20 
-21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcPoint(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position,&#32;<emphasis role="keywordtype">float</emphasis>&#32;radius,&#32;SDL_Color&#32;color,
+21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcPoint(<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;position,&#32;<emphasis role="keywordtype">float</emphasis>&#32;radius,&#32;SDL_Color&#32;color,
 22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;SDL_Vertex&gt;&amp;&#32;vertices,&#32;std::vector&lt;int&gt;&amp;&#32;indices,
 23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;uint16_t&#32;count&#32;=&#32;32)&#32;{
 24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.clear();
@@ -80,7 +80,7 @@
 76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[5]&#32;=&#32;3;
 77 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
 78 
-79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcRectangleBorder(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link>&amp;&#32;geometry,&#32;uint16_t&#32;border_size,
+79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcRectangleBorder(<emphasis role="keyword">const</emphasis>&#32;GeometryF&amp;&#32;geometry,&#32;uint16_t&#32;border_size,
 80 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&lt;SDL_FRect,&#32;4&gt;&amp;&#32;borders)&#32;{
 81 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">float</emphasis>&#32;THICKNESS&#32;=&#32;border_size;
 82 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">float</emphasis>&#32;X&#32;=&#32;geometry.pos.x;
@@ -93,7 +93,7 @@
 89 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;borders[3]&#32;=&#32;{X&#32;+&#32;W&#32;-&#32;THICKNESS,&#32;Y&#32;+&#32;THICKNESS,&#32;THICKNESS,&#32;H&#32;-&#32;2&#32;*&#32;THICKNESS&#32;};
 90 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
 91 
-92 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcTriangle(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos1,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos2,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos3,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color,
+92 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcTriangle(<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;pos1,&#32;<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;pos2,&#32;<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;pos3,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color,
 93 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&lt;SDL_Vertex,&#32;3&gt;&amp;&#32;vertices,&#32;std::array&lt;int,&#32;3&gt;&amp;&#32;indices)&#32;{
 94 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_FColor&#32;fcolor&#32;=&#32;convert2FColor(color);
 95 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices[0]&#32;=&#32;{{pos1.x,&#32;pos1.y},&#32;fcolor};
@@ -103,8 +103,69 @@
 99 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[1]&#32;=&#32;1;
 100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[2]&#32;=&#32;2;
 101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-102 &#32;&#32;&#32;&#32;}
-103 }
-104 
-105 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_DRAW_H</emphasis>
+102 
+103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcEllipse(<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;center_pt,&#32;<emphasis role="keyword">const</emphasis>&#32;Size&amp;&#32;radius,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color,
+104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;degree,&#32;uint16_t&#32;segment,&#32;std::vector&lt;SDL_Vertex&gt;&amp;&#32;vertices,
+105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;int&gt;&amp;&#32;indices)&#32;{
+106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.clear();
+107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices.clear();
+108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;colorF&#32;=&#32;convert2FColor(color);
+109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;rot&#32;=&#32;degree&#32;*&#32;M_PI&#32;/&#32;180.f;
+110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;cosRot&#32;=&#32;cosf(rot),&#32;sinRot&#32;=&#32;sinf(rot);
+111 
+112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.resize(segment&#32;+&#32;2);
+113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices[0]&#32;=&#32;{&#32;{center_pt.x,&#32;center_pt.y},&#32;colorF,&#32;{0,&#32;0}&#32;};
+114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;=&#32;segment;&#32;++i)&#32;{
+115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;theta&#32;=&#32;2.f&#32;*&#32;M_PI&#32;*&#32;i&#32;/&#32;segment;
+116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;x&#32;=&#32;radius.width&#32;*&#32;cosf(theta);
+117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;y&#32;=&#32;radius.height&#32;*&#32;sinf(theta);
+118 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices[i&#32;+&#32;1]&#32;=&#32;SDL_Vertex{{&#32;center_pt.x&#32;+&#32;x&#32;*&#32;cosRot&#32;-&#32;y&#32;*&#32;sinRot,
+119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;center_pt.y&#32;+&#32;x&#32;*&#32;sinRot&#32;+&#32;y&#32;*&#32;cosRot&#32;},
+120 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;colorF,&#32;{0,&#32;0}&#32;};
+121 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices.resize(segment&#32;*&#32;3);
+123 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;segment;&#32;++i)&#32;{
+124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[3&#32;*&#32;i]&#32;=&#32;0;
+125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[3&#32;*&#32;i&#32;+&#32;1]&#32;=&#32;i&#32;+&#32;1;
+126 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[3&#32;*&#32;i&#32;+&#32;2]&#32;=&#32;i&#32;+&#32;2;
+127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+129 
+130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;calcEllipseRing(<emphasis role="keyword">const</emphasis>&#32;Vector2&amp;&#32;center_pt,&#32;<emphasis role="keyword">const</emphasis>&#32;Size&amp;&#32;radius,&#32;uint16_t&#32;border_size,
+131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;border_color,&#32;<emphasis role="keywordtype">float</emphasis>&#32;degree,&#32;uint16_t&#32;segment,
+132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;SDL_Vertex&gt;&amp;&#32;vertices,&#32;std::vector&lt;int&gt;&amp;&#32;indices)&#32;{
+133 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;rx2&#32;=&#32;radius.width&#32;-&#32;border_size,&#32;ry2&#32;=&#32;radius.height&#32;-&#32;border_size;
+134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(rx2&#32;&lt;=&#32;0&#32;||&#32;ry2&#32;&lt;=&#32;0)&#32;<emphasis role="keywordflow">return</emphasis>;
+135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;colorF&#32;=&#32;convert2FColor(border_color);
+136 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.clear();
+137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices.clear();
+138 
+139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;rot&#32;=&#32;degree&#32;*&#32;M_PI&#32;/&#32;180.f;
+140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;cosR&#32;=&#32;cosf(rot),&#32;sinR&#32;=&#32;sinf(rot);
+141 
+142 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.reserve((segment&#32;+&#32;1)&#32;*&#32;2);
+143 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;=&#32;segment;&#32;++i)&#32;{
+144 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;theta&#32;=&#32;2.f&#32;*&#32;M_PI&#32;*&#32;i&#32;/&#32;segment;
+145 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;ex&#32;=&#32;radius.width&#32;*&#32;cosf(theta);
+146 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;ey&#32;=&#32;radius.height&#32;*&#32;sinf(theta);
+147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;ix&#32;=&#32;rx2&#32;*&#32;cosf(theta);
+148 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;iy&#32;=&#32;ry2&#32;*&#32;sinf(theta);
+149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.push_back({&#32;{center_pt.x&#32;+&#32;ex&#32;*&#32;cosR&#32;-&#32;ey&#32;*&#32;sinR,
+150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;center_pt.y&#32;+&#32;ex&#32;*&#32;sinR&#32;+&#32;ey&#32;*&#32;cosR},&#32;colorF,
+151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{0,0}&#32;});
+152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vertices.push_back({&#32;{center_pt.x&#32;+&#32;ix&#32;*&#32;cosR&#32;-&#32;iy&#32;*&#32;sinR,
+153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;center_pt.y&#32;+&#32;ix&#32;*&#32;sinR&#32;+&#32;iy&#32;*&#32;cosR},&#32;colorF,&#32;{0,0}&#32;});
+154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+155 
+156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;segment&#32;*&#32;2;&#32;i&#32;+=&#32;2)&#32;{
+157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices.insert(indices.end(),&#32;{&#32;i,&#32;i&#32;+&#32;1,&#32;i&#32;+&#32;2,&#32;&#32;&#32;i&#32;+&#32;1,&#32;i&#32;+&#32;3,&#32;i&#32;+&#32;2&#32;});
+158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+159 
+160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[indices.size()&#32;-&#32;2]&#32;=&#32;0;
+161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;indices[indices.size()&#32;-&#32;1]&#32;=&#32;1;
+162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+163 &#32;&#32;&#32;&#32;}
+164 }
+165 
+166 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_DRAW_H</emphasis>
 </programlisting></section>

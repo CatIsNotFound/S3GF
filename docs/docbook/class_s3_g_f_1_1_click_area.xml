@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_s3_g_f_1_1_click_area" xml:lang="en-US">
+<title>S3GF::ClickArea Class Reference</title>
+<indexterm><primary>S3GF::ClickArea</primary></indexterm>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a937ecf2191c0bff97f4e4e9f90ab61f2"/><emphasis role="strong">ClickArea</emphasis> (uint64_t window_id, GT graphic)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ab235ab18785cbfcf187c5cd9757bf064"/>void <emphasis role="strong">setEnabled</emphasis> (bool enabled)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a1111169c533c283a931406f317bace79"/>bool <emphasis role="strong">enabled</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a37ef970c10f03b359ee7801b7186a4c9"/>void <emphasis role="strong">setPressedEvent</emphasis> (std::function&lt; void()&gt; function)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ad92ac4463ff2a6bd81bc9aa407bfef17"/>void <emphasis role="strong">resetPress</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a74e7fe2952457d3e0c470148c8aa7d76"/>void <emphasis role="strong">setHover</emphasis> (bool enabled)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a360806b905326ad41fd24482d1370c42"/>void <emphasis role="strong">setGraphic</emphasis> (GT graphic)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a80221e8c48eff94ead04c761d195b334"/>bool <emphasis role="strong">setPoint</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;position, uint16_t size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ab22f458bb31284f5cdc0c6255da2b2a1"/>bool <emphasis role="strong">setRect</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1af21e3e2c6802b2bb959a0bf82999b91e"/><link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link> &amp; <emphasis role="strong">point</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a4bbe88f67b66b5fa07b286107d996dea"/><link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link> &amp; <emphasis role="strong">rectangle</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a9156ac7bd5b9a5d62fbfefb25bc3afce"/>bool <emphasis role="strong">getPoint</emphasis> (<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link> &amp;point)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ac3157bed441e1e79bc80d29fda372c17"/>bool <emphasis role="strong">getRect</emphasis> (<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link> &amp;rect)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a63097ed5052059914cb885d5a0b071ac"/>bool <emphasis role="strong">isPressed</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ac4337e1c438e76b590a871eb8317e93a"/>bool <emphasis role="strong">isHovered</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1af0a1e507ab9bcf42d1cff0225fedf0c1"/>bool <emphasis role="strong">isEntered</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1a466d035a7da0fa36393497c34c7e2ee9"/>bool <emphasis role="strong">isDown</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_click_area_1ac3e605bc3c5f4a7f5a31d66bad58498f"/>size_t <emphasis role="strong">index</emphasis> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/Controls/Control.h</section>

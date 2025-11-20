@@ -1,0 +1,286 @@
+.TH "S3GF::AbstractControl" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+S3GF::AbstractControl
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <Control\&.h>\fP
+.SS "Public 类型"
+
+.in +1c
+.ti -1c
+.RI "enum \fBState\fP { \fBNormal\fP, \fBHover\fP, \fBPressed\fP, \fBDisabled\fP, \fBSelected\fP }"
+.br
+.in -1c
+.SS "Public 成员函数"
+
+.in +1c
+.ti -1c
+.RI "\fBAbstractControl\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBGT\fP click_area=\fBGraphics::Rectangle\fP(), \fBAbstractControl\fP *parent=nullptr)"
+.br
+.ti -1c
+.RI "\fB~AbstractControl\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetName\fP (const std::string &\fBname\fP)"
+.br
+.ti -1c
+.RI "const std::string & \fBname\fP () const"
+.br
+.ti -1c
+.RI "void \fBmove\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fBmove\fP (const \fBVector2\fP &pos)"
+.br
+.ti -1c
+.RI "void \fBmove\fP (\fBVector2\fP &&pos)"
+.br
+.ti -1c
+.RI "void \fBresize\fP (float w, float h)"
+.br
+.ti -1c
+.RI "void \fBresize\fP (const \fBSize\fP &\fBsize\fP)"
+.br
+.ti -1c
+.RI "void \fBresize\fP (\fBSize\fP &&\fBsize\fP)"
+.br
+.ti -1c
+.RI "void \fBsetGeometry\fP (float x, float y, float w, float h)"
+.br
+.ti -1c
+.RI "void \fBsetGeometry\fP (const \fBVector2\fP &pos, const \fBSize\fP &\fBsize\fP)"
+.br
+.ti -1c
+.RI "void \fBsetGeometry\fP (\fBVector2\fP &&pos, \fBSize\fP &&\fBsize\fP)"
+.br
+.ti -1c
+.RI "void \fBsetGeometry\fP (const \fBGeometryF\fP &\fBgeometry\fP)"
+.br
+.ti -1c
+.RI "void \fBsetGeometry\fP (\fBGeometryF\fP &&\fBgeometry\fP)"
+.br
+.ti -1c
+.RI "const \fBGeometryF\fP & \fBgeometry\fP () const"
+.br
+.ti -1c
+.RI "const \fBVector2\fP & \fBposition\fP () const"
+.br
+.ti -1c
+.RI "const \fBSize\fP & \fBsize\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetVisible\fP (bool \fBvisible\fP)"
+.br
+.ti -1c
+.RI "bool \fBvisible\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetEnabled\fP (bool \fBenabled\fP)"
+.br
+.ti -1c
+.RI "bool \fBenabled\fP () const"
+.br
+.in -1c
+.SS "Protected 成员函数"
+
+.in +1c
+.ti -1c
+.RI "virtual void \fBpaintEvent\fP (\fBRenderer\fP *)"
+.br
+.ti -1c
+.RI "virtual void \fBloadEvent\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBunloadEvent\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBmoveEvent\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBresizeEvent\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonPressed\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonReleased\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonTriggered\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonHovered\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonEntered\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonLeft\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBenabledChanged\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBvisibleChanged\fP ()"
+.br
+.ti -1c
+.RI "void \fB_update_click_area\fP ()"
+.br
+.in -1c
+.SS "Protected 属性"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fB_id\fP {0}"
+.br
+.ti -1c
+.RI "std::string \fB_name\fP"
+.br
+.ti -1c
+.RI "\fBRenderer\fP * \fB_renderer\fP"
+.br
+.ti -1c
+.RI "\fBAbstractControl\fP * \fB_parent\fP"
+.br
+.ti -1c
+.RI "\fBGeometryF\fP \fB_geometry\fP"
+.br
+.ti -1c
+.RI "\fBClickArea\fP \fB_click_area\fP"
+.br
+.ti -1c
+.RI "bool \fB_is_down\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_visible\fP {true}"
+.br
+.ti -1c
+.RI "bool \fB_enabled\fP {true}"
+.br
+.ti -1c
+.RI "bool \fB_entered\fP {false}"
+.br
+.in -1c
+.SH "成员枚举类型说明"
+.PP 
+.SS "enum \fBS3GF::AbstractControl::State\fP"
+
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BINormal \fP
+.TP
+\f(BIHover \fP
+.TP
+\f(BIPressed \fP
+.TP
+\f(BIDisabled \fP
+.TP
+\f(BISelected \fP
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::AbstractControl::AbstractControl (const std::string & name, \fBRenderer\fP * renderer, \fBGT\fP click_area = \fR\fBGraphics::Rectangle\fP()\fP, \fBAbstractControl\fP * parent = \fRnullptr\fP)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::AbstractControl::~AbstractControl ()\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::AbstractControl::_update_click_area ()\fR [inline]\fP, \fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::enabled () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::enabledChanged ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "const \fBGeometryF\fP & S3GF::AbstractControl::geometry () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::loadEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "void S3GF::AbstractControl::move (const \fBVector2\fP & pos)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::move (float x, float y)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::move (\fBVector2\fP && pos)\fR [inline]\fP"
+
+.SS "virtual void S3GF::AbstractControl::moveEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "const std::string & S3GF::AbstractControl::name () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onEntered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onHovered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onLeft ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onPressed ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onReleased ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::onTriggered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "virtual void S3GF::AbstractControl::paintEvent (\fBRenderer\fP * )\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "const \fBVector2\fP & S3GF::AbstractControl::position () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::AbstractControl::resize (const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::resize (float w, float h)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::resize (\fBSize\fP && size)\fR [inline]\fP"
+
+.SS "virtual void S3GF::AbstractControl::resizeEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "void S3GF::AbstractControl::setEnabled (bool enabled)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setGeometry (const \fBGeometryF\fP & geometry)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setGeometry (const \fBVector2\fP & pos, const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setGeometry (float x, float y, float w, float h)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setGeometry (\fBGeometryF\fP && geometry)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setGeometry (\fBVector2\fP && pos, \fBSize\fP && size)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setName (const std::string & name)\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setVisible (bool visible)\fR [inline]\fP"
+
+.SS "const \fBSize\fP & S3GF::AbstractControl::size () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::unloadEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "bool S3GF::AbstractControl::visible () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::visibleChanged ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SH "类成员变量说明"
+.PP 
+.SS "\fBClickArea\fP S3GF::AbstractControl::_click_area\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_enabled {true}\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_entered {false}\fR [protected]\fP"
+
+.SS "\fBGeometryF\fP S3GF::AbstractControl::_geometry\fR [protected]\fP"
+
+.SS "uint64_t S3GF::AbstractControl::_id {0}\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_is_down {false}\fR [protected]\fP"
+
+.SS "std::string S3GF::AbstractControl::_name\fR [protected]\fP"
+
+.SS "\fBAbstractControl\fP* S3GF::AbstractControl::_parent\fR [protected]\fP"
+
+.SS "\fBRenderer\fP* S3GF::AbstractControl::_renderer\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_visible {true}\fR [protected]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

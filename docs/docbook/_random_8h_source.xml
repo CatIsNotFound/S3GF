@@ -17,16 +17,76 @@
 13 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;RandomGenerator&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;RandomGenerator&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
 14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~RandomGenerator()&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
 15 
-16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;randInt(<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;end);
-17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;int64_t&#32;randBigInt(int64_t&#32;start,&#32;int64_t&#32;end);
-18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint32_t&#32;randUInt(uint32_t&#32;start,&#32;uint32_t&#32;end);
-19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;randBigUInt(uint64_t&#32;start,&#32;uint64_t&#32;end);
-20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">float</emphasis>&#32;randFloat(<emphasis role="keywordtype">float</emphasis>&#32;start,&#32;<emphasis role="keywordtype">float</emphasis>&#32;end);
-21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;randDouble(<emphasis role="keywordtype">double</emphasis>&#32;start,&#32;<emphasis role="keywordtype">double</emphasis>&#32;end);
-22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;time_t&#32;time_seed;
-23 &#32;&#32;&#32;&#32;};
-24 }
-25 
-26 
-27 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_RANDOM_H</emphasis>
+16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;randInt(<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;end)&#32;{
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_int_distribution&lt;int&gt;&#32;uni(start,&#32;end);
+18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;_def_rand_eng.seed(time(0));
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+21 
+22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;int64_t&#32;randBigInt(int64_t&#32;start,&#32;int64_t&#32;end)&#32;{
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_int_distribution&lt;int64_t&gt;&#32;uni(start,&#32;end);
+24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+30 
+31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint32_t&#32;randUInt(uint32_t&#32;start,&#32;uint32_t&#32;end)&#32;{
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_int_distribution&lt;uint32_t&gt;&#32;uni(start,&#32;end);
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+39 
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;randBigUInt(uint64_t&#32;start,&#32;uint64_t&#32;end)&#32;{
+41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_int_distribution&lt;uint64_t&gt;&#32;uni(start,&#32;end);
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+48 
+49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">float</emphasis>&#32;randFloat(<emphasis role="keywordtype">float</emphasis>&#32;start,&#32;<emphasis role="keywordtype">float</emphasis>&#32;end)&#32;{
+50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_real_distribution&lt;float&gt;&#32;uni(start,&#32;end);
+51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+55 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+57 
+58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;randDouble(<emphasis role="keywordtype">double</emphasis>&#32;start,&#32;<emphasis role="keywordtype">double</emphasis>&#32;end)&#32;{
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_real_distribution&lt;double&gt;&#32;uni(start,&#32;end);
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+66 
+67 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;randBigDouble(<emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;start,&#32;<emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;end)&#32;{
+68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::uniform_real_distribution&lt;long&#32;double&gt;&#32;uni(start,&#32;end);
+69 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!_is_init)&#32;{
+70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_def_rand_eng.seed(time(<emphasis role="keyword">nullptr</emphasis>));
+71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_is_init&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+72 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+73 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;uni(_def_rand_eng);
+74 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+75 
+76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::random_device&#32;_rnd_dev;
+77 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::default_random_engine&#32;_def_rand_eng;
+78 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_init;
+79 &#32;&#32;&#32;&#32;};
+80 
+81 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;std::random_device&#32;RandomGenerator::_rnd_dev{};
+82 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;std::default_random_engine&#32;RandomGenerator::_def_rand_eng{};
+83 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;RandomGenerator::_is_init{<emphasis role="keyword">false</emphasis>};
+84 }
+85 
+86 
+87 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_RANDOM_H</emphasis>
 </programlisting></section>

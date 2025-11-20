@@ -1,4 +1,4 @@
-.TH "S3GF::Trigger" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Trigger" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,9 +6,14 @@ S3GF::Trigger
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Components\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
+.ti -1c
+.RI "\fBTrigger\fP ()=delete"
+.br
 .ti -1c
 .RI "\fBTrigger\fP (\fBTrigger\fP &&)=delete"
 .br
@@ -23,6 +28,9 @@ S3GF::Trigger
 .br
 .ti -1c
 .RI "\fBTrigger\fP (const std::function< bool()> &condition, const std::function< void()> &event)"
+.br
+.ti -1c
+.RI "\fB~Trigger\fP ()"
 .br
 .ti -1c
 .RI "void \fBsetCondition\fP (const std::function< bool()> &condition)"
@@ -46,7 +54,39 @@ S3GF::Trigger
 .RI "uint64_t \fBtriggeredCount\fP () const"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Trigger::Trigger ()\fR [delete]\fP"
+
+.SS "S3GF::Trigger::Trigger (\fBTrigger\fP && )\fR [delete]\fP"
+
+.SS "S3GF::Trigger::Trigger (const \fBTrigger\fP & )\fR [delete]\fP"
+
+.SS "S3GF::Trigger::Trigger (const std::function< bool()> & condition, const std::function< void()> & event)\fR [explicit]\fP"
+
+.SS "S3GF::Trigger::~Trigger ()"
+
+.SH "成员函数说明"
+.PP 
+.SS "bool S3GF::Trigger::enabled () const"
+
+.SS "bool S3GF::Trigger::isTriggered () const"
+
+.SS "\fBTrigger\fP & S3GF::Trigger::operator= (const \fBTrigger\fP & )\fR [delete]\fP"
+
+.SS "\fBTrigger\fP & S3GF::Trigger::operator= (\fBTrigger\fP && )\fR [delete]\fP"
+
+.SS "void S3GF::Trigger::setCondition (const std::function< bool()> & condition)"
+
+.SS "void S3GF::Trigger::setEvent (const std::function< void()> & event)"
+
+.SS "void S3GF::Trigger::start (uint32_t count = \fR1\fP)"
+
+.SS "void S3GF::Trigger::stop ()"
+
+.SS "uint64_t S3GF::Trigger::triggeredCount () const"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

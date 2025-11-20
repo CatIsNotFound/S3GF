@@ -5,6 +5,7 @@
 
 namespace S3GF {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
+    SDL_Color Renderer::_background_color{StdColor::Black};
     SDL_WindowID Engine::_main_window_id{0};
     bool Engine::_quit_requested{false};
     int Engine::_return_code{0};
@@ -33,21 +34,19 @@ namespace S3GF {
 
     void Renderer::_update() {
         SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_NONE);
-        if (_cmd_list.empty()) {
-            SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-            SDL_RenderClear(_renderer);
-        } else {
-            for (auto& cmd : _cmd_list) {
-                cmd->exec();
-            }
+        SDL_SetRenderDrawColor(_renderer, _background_color.r, _background_color.g,
+                                _background_color.b, _background_color.a);
+        SDL_RenderClear(_renderer);
+        for (auto& cmd : _cmd_list) {
+            cmd->exec();
         }
         SDL_RenderPresent(_renderer);
         _cmd_list.clear();
         _window->paintEvent();
     }
 
-    void Renderer::fillBackground(const SDL_Color& color) {
-        _cmd_list.push_back(std::make_unique<FillCMD>(_renderer, color));
+    void Renderer::fillBackground(const SDL_Color& color, bool covered) {
+        _cmd_list.push_back(std::make_unique<FillCMD>(_renderer, color, covered));
     }
 
     void Renderer::drawPoint(const Graphics::Point &point) {
@@ -123,8 +122,12 @@ namespace S3GF {
     }
 
     void Renderer::FillCMD::exec() {
-        SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
-        SDL_RenderClear(renderer);
+        if (_covered) {
+            SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
+            SDL_RenderClear(renderer);
+        } else {
+            Renderer::updateBackground(bg_color);
+        }
     }
 
     void Renderer::ClipCMD::exec() {
@@ -348,6 +351,10 @@ namespace S3GF {
         return _visible;
     }
 
+    void Window::close() {
+        unloadEvent();
+    }
+
     bool Window::setResizable(bool enabled) {
         auto _ret = SDL_SetWindowResizable(_window, enabled);
         if (!_ret) {
@@ -422,13 +429,13 @@ namespace S3GF {
     }
 
     void Window::installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event) {
-        _paint_event = paint_event;
+        _paint_event_list.push_back(paint_event);
     }
 
     void Window::paintEvent() {
-        if (_paint_event) {
-            _paint_event(_renderer.get());
-        }
+        std::for_each(_paint_event_list.begin(), _paint_event_list.end(), [this] (auto& ev) {
+            if (ev) ev(_renderer.get());
+        });
     }
 
     void Window::resizeEvent() {
@@ -497,6 +504,8 @@ namespace S3GF {
     bool EventSystem::run() {
         SDL_Event ev;
         if (SDL_PollEvent(&ev)) {
+            _is_key_down = (ev.key.type == SDL_EVENT_KEY_DOWN);
+            _is_mouse_down = (ev.button.type == SDL_EVENT_MOUSE_BUTTON_DOWN);
             for (auto i = _engine->begin(); i != _engine->end(); i++) {
                 if (ev.window.windowID != i->first) continue;
                 if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
@@ -526,6 +535,8 @@ namespace S3GF {
         return true;
     }
 
+    bool EventSystem::isKeyDown() const { return _is_key_down; }
+    bool EventSystem::isMouseButtonDown() const { return _is_mouse_down; }
 
     Engine::Engine() : _running(true) {
         if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
@@ -765,7 +776,7 @@ namespace S3GF {
             surface = TTF_RenderText_Blended(_font, text.c_str(), 0, _font_color);
         }
         if (!surface) {
-            Logger::log(std::format("Can't draw the current text!\nException: {}", SDL_GetError()), Logger::ERROR);
+            Logger::log(std::format("Can't drawEvent the current text!\nException: {}", SDL_GetError()), Logger::ERROR);
         }
         return surface;
     }
@@ -803,7 +814,7 @@ namespace S3GF {
             surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _font_color, backgrond_color);
         }
         if (!surface) {
-            Logger::log(std::format("Can't draw the current text!\nException: {}", SDL_GetError()), Logger::ERROR);
+            Logger::log(std::format("Can't drawEvent the current text!\nException: {}", SDL_GetError()), Logger::ERROR);
         }
         return surface;
     }

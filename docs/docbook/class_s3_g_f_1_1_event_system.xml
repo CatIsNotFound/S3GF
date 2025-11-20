@@ -21,6 +21,10 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_event_system_1aef07ac4065327fe7ccf9e2a10d0f3418"/>bool <emphasis role="strong">run</emphasis> ()</para>
 </listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_event_system_1a44e3d9103f39fd2103388cbf115e6a6d"/>bool <emphasis role="strong">isKeyDown</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_event_system_1a7d02cfcf760fa28bf137bacaba551ba8"/>bool <emphasis role="strong">isMouseButtonDown</emphasis> () const</para>
+</listitem>
         </itemizedlist>
 </simplesect>
 <simplesect>

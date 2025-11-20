@@ -1,4 +1,4 @@
-.TH "S3GF::Matrix2D< T >" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Matrix2D< T >" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,14 +9,14 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .PP
 .PP
 \fR#include <Basic\&.h>\fP
-.SS "Classes"
+.SS "类"
 
 .in +1c
 .ti -1c
 .RI "struct \fBPosition\fP"
 .br
 .in -1c
-.SS "Public Types"
+.SS "Public 类型"
 
 .in +1c
 .ti -1c
@@ -26,7 +26,7 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .RI "using \fBconstIterator\fP = typename std::vector<T>::const_iterator"
 .br
 .in -1c
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -46,6 +46,9 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .br
 .RI "复制原有的二维矩阵 "
 .ti -1c
+.RI "\fB~Matrix2D\fP ()"
+.br
+.ti -1c
 .RI "void \fBsetDeleter\fP (const std::function< void(T &)> &function)"
 .br
 .RI "设置删除器 "
@@ -54,7 +57,7 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .br
 .RI "填充所有值 "
 .ti -1c
-.RI "bool \fBfillN\fP (const \fBMatrix2D::Position\fP &start, const \fBMatrix2D::Position\fP &end, const T &value)"
+.RI "bool \fBfillN\fP (const \fBMatrix2D::Position\fP &start, const \fBMatrix2D::Position\fP &\fBend\fP, const T &value)"
 .br
 .RI "填充范围内的值 "
 .ti -1c
@@ -100,16 +103,16 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .RI "T & \fBoperator()\fP (uint32_t row, uint32_t col)"
 .br
 .ti -1c
-.RI "iterator \fBbegin\fP ()"
+.RI "\fBiterator\fP \fBbegin\fP ()"
 .br
 .ti -1c
-.RI "iterator \fBend\fP ()"
+.RI "\fBiterator\fP \fBend\fP ()"
 .br
 .ti -1c
-.RI "constIterator \fBbegin\fP () const"
+.RI "\fBconstIterator\fP \fBbegin\fP () const"
 .br
 .ti -1c
-.RI "constIterator \fBend\fP () const"
+.RI "\fBconstIterator\fP \fBend\fP () const"
 .br
 .ti -1c
 .RI "void \fBadd\fP (T &value, const std::function< void(T &, T &)> &function={})"
@@ -176,7 +179,7 @@ S3GF::Matrix2D< T > \- 二维矩阵
 .br
 .RI "逆矩阵 "
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 
 .SS "template<typename T>
@@ -185,20 +188,30 @@ struct S3GF::Matrix2D< T >"二维矩阵
 
 
 .PP
-\fBSince\fP
+\fB自从\fP
 .RS 4
 v1\&.1\&.0-alpha
 .RE
 .PP
 支持使用基本数据类型及简单的结构体进行存储。 
-.SH "Constructor & Destructor Documentation"
+.SH "成员类型定义说明"
 .PP 
+.SS "template<typename T> using \fBS3GF::Matrix2D\fP< T >::constIterator = typename std::vector<T>::const_iterator"
+
+.SS "template<typename T> using \fBS3GF::Matrix2D\fP< T >::iterator = typename std::vector<T>::iterator"
+
+.SH "构造及析构函数说明"
+.PP 
+.SS "template<typename T> \fBS3GF::Matrix2D\fP< T >::Matrix2D ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.PP
+创建一个空白的二维矩阵（没有任何数据） 
 .SS "template<typename T> \fBS3GF::Matrix2D\fP< T >::Matrix2D (uint32_t row, uint32_t col, const std::function< void(T &)> & deleter = \fR{}\fP)"
 
 .PP
 创建指定行列的二维矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIrow\fP 行 
 .br
@@ -213,7 +226,7 @@ v1\&.1\&.0-alpha
 .PP
 创建指定行列与默认值的二维矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIrow\fP 行 
 .br
@@ -230,20 +243,22 @@ v1\&.1\&.0-alpha
 .PP
 复制原有的二维矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fImatrix\fP 指定二维矩阵 
 .RE
 .PP
 
-.SH "Member Function Documentation"
+.SS "template<typename T> \fBS3GF::Matrix2D\fP< T >::~\fBMatrix2D\fP ()"
+
+.SH "成员函数说明"
 .PP 
 .SS "template<typename T> void \fBS3GF::Matrix2D\fP< T >::add (T && value, const std::function< void(T &, T &)> & function = \fR{}\fP)"
 
 .PP
 全局相加 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -256,7 +271,7 @@ v1\&.1\&.0-alpha
 .PP
 全局相加 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -269,41 +284,49 @@ v1\&.1\&.0-alpha
 .PP
 获取矩阵中指定行列的数据 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIrow\fP 行 
 .br
 \fIcol\fP 列 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回对应行列下的数据 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBget\fP 
 .RE
 .PP
+
+.SS "template<typename T> \fBiterator\fP \fBS3GF::Matrix2D\fP< T >::begin ()\fR [inline]\fP"
+
+.SS "template<typename T> \fBconstIterator\fP \fBS3GF::Matrix2D\fP< T >::begin () const\fR [inline]\fP"
 
 .SS "template<typename T> uint32_t \fBS3GF::Matrix2D\fP< T >::cols () const\fR [nodiscard]\fP"
 
 .PP
 获取当前矩阵的总列数 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回对应的列数 
 .RE
 .PP
+
+.SS "template<typename T> \fBiterator\fP \fBS3GF::Matrix2D\fP< T >::end ()\fR [inline]\fP"
+
+.SS "template<typename T> \fBconstIterator\fP \fBS3GF::Matrix2D\fP< T >::end () const\fR [inline]\fP"
 
 .SS "template<typename T> void \fBS3GF::Matrix2D\fP< T >::fill (const T & value)"
 
 .PP
 填充所有值 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .RE
@@ -314,7 +337,7 @@ v1\&.1\&.0-alpha
 .PP
 填充范围内的值 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIstart\fP 指定开始位置（行列） 
 .br
@@ -329,24 +352,24 @@ v1\&.1\&.0-alpha
 .PP
 获取矩阵中指定行列的数据 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIrow\fP 行 
 .br
 \fIcol\fP 列 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回对应行列下的数据 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 区别于 \fRat\fP，此函数为常量版本，无法修改里面的数据！ 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBat\fP 
 .RE
@@ -357,12 +380,12 @@ v1\&.1\&.0-alpha
 .PP
 逆矩阵 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回新的矩阵，用于存储求得的结果 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！ 
 
@@ -376,7 +399,7 @@ v1\&.1\&.0-alpha
 .PP
 全局相减 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -389,7 +412,7 @@ v1\&.1\&.0-alpha
 .PP
 全局相减 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -402,12 +425,12 @@ v1\&.1\&.0-alpha
 .PP
 矩阵乘法 将矩阵里的所有值进行乘法操作 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIother\fP 指定矩阵，其指定的行数必需与现有的列数相等 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！ 
 
@@ -415,20 +438,24 @@ v1\&.1\&.0-alpha
 两个矩阵必需分别为 m * n, n * p 的大小才可用！ 
 .RE
 .PP
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::operator!= (const \fBMatrix2D\fP< T > & other) const"
+
+.SS "template<typename T> T & \fBS3GF::Matrix2D\fP< T >::operator() (uint32_t row, uint32_t col)"
 
 .SS "template<typename T> \fBMatrix2D\fP< T > \fBS3GF::Matrix2D\fP< T >::operator* (const \fBMatrix2D\fP< T > & other) const"
 
 .PP
 矩阵乘法 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIother\fP 指定矩阵，其指定的行数必需与现有的列数相等
 .RE
 .PP
 将矩阵里的所有值进行乘法操作 
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！ 
 
@@ -437,12 +464,20 @@ v1\&.1\&.0-alpha
 .RE
 .PP
 
+.SS "template<typename T> \fBMatrix2D\fP< T > \fBS3GF::Matrix2D\fP< T >::operator+ (const \fBMatrix2D\fP< T > & other) const"
+
+.SS "template<typename T> \fBMatrix2D\fP< T > \fBS3GF::Matrix2D\fP< T >::operator\- (const \fBMatrix2D\fP< T > & other) const"
+
+.SS "template<typename T> bool \fBS3GF::Matrix2D\fP< T >::operator== (const \fBMatrix2D\fP< T > & other) const"
+
+.SS "template<typename T> T & \fBS3GF::Matrix2D\fP< T >::operator[] (uint32_t index)"
+
 .SS "template<typename T> void \fBS3GF::Matrix2D\fP< T >::resize (uint32_t line, uint32_t col)"
 
 .PP
 重新调整新的大小 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIline\fP 行 
 .br
@@ -455,19 +490,19 @@ v1\&.1\&.0-alpha
 .PP
 翻转矩阵 当选择任何一个方向的逆序时，都会发生交换。 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIreverse_row\fP 行与行之间逆序（垂直翻转） 
 .br
 \fIreverse_col\fP 列与列之间逆序（水平翻转） 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 当两个参数都为 \fRtrue\fP 时，矩阵将完全逆序 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBrotate\fP 
 .RE
@@ -478,12 +513,12 @@ v1\&.1\&.0-alpha
 .PP
 旋转矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIturn_right\fP 是否向右旋转 90°，反之向左旋转 90° 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBreverse\fP 
 
@@ -497,7 +532,7 @@ v1\&.1\&.0-alpha
 .PP
 获取当前矩阵的总行数 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回对应的行数 
 .RE
@@ -508,7 +543,7 @@ v1\&.1\&.0-alpha
 .PP
 设置删除器 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIfunction\fP 指定函数
 .RE
@@ -519,14 +554,14 @@ v1\&.1\&.0-alpha
 .PP
 按照矩形的方式切割矩阵 根据起始位置和结束位置包围成一个矩形，并将其切割成独立的矩阵。 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIstart_pos\fP 起始位置 
 .br
 \fIend_pos\fP 结束位置 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回切割后的矩阵。 
 .RE
@@ -537,7 +572,7 @@ v1\&.1\&.0-alpha
 .PP
 切割矩阵 切割原有的矩阵，根据 \fRstart_pos\fP 位置开始，取 \fRrows * cols\fP 个数据并创建成新的矩阵。 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIrows\fP 新的行数 
 .br
@@ -546,12 +581,12 @@ v1\&.1\&.0-alpha
 \fIstart_pos\fP 从哪个位置开始 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回新的大小为 \fR(rows * cols)\fP 的二维矩阵。
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 从 \fRstart_pos\fP 位置起，若取得数据的总个数小于新的矩阵大小，则剩余部分自动填充为空数据。 
 
@@ -565,14 +600,14 @@ v1\&.1\&.0-alpha
 .PP
 切割指定列矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIstart_col\fP 起始列 
 .br
 \fIend_col\fP 结束列 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回矩阵行位于 \fR[start_col, end_col)\fP 区间内的所有列矩阵 
 .RE
@@ -583,14 +618,14 @@ v1\&.1\&.0-alpha
 .PP
 切割指定行矩阵 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIstart_row\fP 起始行 
 .br
 \fIend_row\fP 结束行 
 .RE
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回矩阵行位于 \fR[start_row, end_row)\fP 区间内的所有行矩阵 
 .RE
@@ -601,14 +636,14 @@ v1\&.1\&.0-alpha
 .PP
 矩阵点乘 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIother\fP 指定矩阵 
 .br
 \fIfunction\fP 函数（对于复杂的数据类型，此参数必需指定） 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 两个矩阵的大小必需完全一样（即行列必需相等）！ 
 .RE
@@ -619,7 +654,7 @@ v1\&.1\&.0-alpha
 .PP
 全局点乘 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -632,7 +667,7 @@ v1\&.1\&.0-alpha
 .PP
 全局乘法 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvalue\fP 指定值 
 .br
@@ -645,13 +680,13 @@ v1\&.1\&.0-alpha
 .PP
 转置矩阵 将原有的 m * n 大小的矩阵转置为 n * m 大小的矩阵。 
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBrotate\fP 
 .RE
 .PP
 
 
-.SH "Author"
+.SH "作者"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

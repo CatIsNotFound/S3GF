@@ -1,0 +1,94 @@
+.TH "S3GF::TasksManager" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+S3GF::TasksManager
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ThreadPool\&.h>\fP
+.PP
+继承自 \fBS3GF::ThreadPool\fP \&.
+.SS "类"
+
+.in +1c
+.ti -1c
+.RI "struct \fBTask\fP"
+.br
+.ti -1c
+.RI "struct \fBTaskCmp\fP"
+.br
+.in -1c
+.SS "Public 类型"
+
+.in +1c
+.ti -1c
+.RI "enum \fBPriority\fP { \fBLow\fP, \fBMedium\fP, \fBHigh\fP }"
+.br
+.in -1c
+.SS "Public 成员函数"
+
+.in +1c
+.ti -1c
+.RI "\fBTasksManager\fP (size_t max_tasks, size_t max_threads)"
+.br
+.ti -1c
+.RI "void \fBaddTask\fP (std::function< void()> function, \fBPriority\fP priority=\fBLow\fP)"
+.br
+.ti -1c
+.RI "void \fBstartAllTasks\fP ()"
+.br
+.ti -1c
+.RI "void \fBstart\fP ()"
+.br
+.ti -1c
+.RI "void \fBstopAllTasks\fP ()"
+.br
+.ti -1c
+.RI "void \fBwait\fP ()"
+.br
+.ti -1c
+.RI "size_t \fBtasksCount\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBrunningTasks\fP () const"
+.br
+.in -1c
+.SH "成员枚举类型说明"
+.PP 
+.SS "enum \fBS3GF::TasksManager::Priority\fP"
+
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BILow \fP
+.TP
+\f(BIMedium \fP
+.TP
+\f(BIHigh \fP
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::TasksManager::TasksManager (size_t max_tasks, size_t max_threads)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::TasksManager::addTask (std::function< void()> function, \fBPriority\fP priority = \fR\fBLow\fP\fP)\fR [inline]\fP"
+
+.SS "size_t S3GF::TasksManager::runningTasks () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::TasksManager::start ()\fR [inline]\fP"
+
+.SS "void S3GF::TasksManager::startAllTasks ()\fR [inline]\fP"
+
+.SS "void S3GF::TasksManager::stopAllTasks ()\fR [inline]\fP"
+
+.SS "size_t S3GF::TasksManager::tasksCount () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::TasksManager::wait ()\fR [inline]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

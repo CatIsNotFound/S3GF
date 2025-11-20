@@ -21,7 +21,7 @@
 <simplesect>
     <title>Public Member Functions    </title>
         <itemizedlist>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a027244e180fc3c65c09d62c85d3f973c"/><emphasis role="strong">Window</emphasis> (const std::string &amp;title, int width=800, int height=600, GraphicEngine engine=OPENGL)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a2c1cf049ca9f53606241ca9e854775f8"/><emphasis role="strong">Window</emphasis> (<link linkend="_class_s3_g_f_1_1_engine">Engine</link> *object, const std::string &amp;title, int width=800, int height=600, GraphicEngine engine=OPENGL)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1ab539c7bd71aea612582486d60a732438"/>bool <emphasis role="strong">move</emphasis> (int x, int y)</para>
 </listitem>
@@ -39,6 +39,8 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1ae4cee5b6a7c35f701c0ffea3bde86f5f"/>bool <emphasis role="strong">visible</emphasis> () const</para>
 </listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1ae7ead6b58159e6a7339ec439ebb9fad1"/>void <emphasis role="strong">close</emphasis> ()</para>
+</listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1aa857d94af1731b096cf461cf68c30560"/>bool <emphasis role="strong">setResizable</emphasis> (bool enabled)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1aabb5fa35ab45228d06e3b74e235951ad"/>bool <emphasis role="strong">resizable</emphasis> () const</para>
@@ -46,6 +48,14 @@
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a6529d9d1d8f274cd223846d97615edab"/>void <emphasis role="strong">setRenderer</emphasis> (<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> *renderer)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a781de017baa94449be949ef773ef24dd"/><link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> * <emphasis role="strong">renderer</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1adef79b6c0147e70e059ec63b97d59d1b"/>void <emphasis role="strong">setBorderless</emphasis> (bool enabled)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1ac34c28bcab4f18b1cc1b64fa003f0340"/>bool <emphasis role="strong">borderless</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a7437312d5b93d2432e528dfd9419843d"/>void <emphasis role="strong">setFullScreen</emphasis> (bool enabled, bool move_to_center=false)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a2130d57c077453c8465b2e2376011588"/>bool <emphasis role="strong">fullScreen</emphasis> () const</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1affe01533b2da96d47f9aac9eeb64baab"/>void <emphasis role="strong">setWindowTitle</emphasis> (const std::string &amp;title)</para>
 </listitem>
@@ -55,6 +65,11 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a8b26495e67adad2883e06b8ed2163923"/>void <emphasis role="strong">installPaintEvent</emphasis> (const std::function&lt; void(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link> *renderer)&gt; &amp;paint_event)</para>
 </listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1aec94ad756464adaff049e7c9dede4016"/>virtual void <emphasis role="strong">paintEvent</emphasis> ()</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a4aa5df893e771cf9fde9a9c1385ace96"/>virtual void <emphasis role="strong">resizeEvent</emphasis> ()</para>
@@ -66,6 +81,15 @@
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a5b49f097a24b23011cd1f90f3352f260"/>virtual void <emphasis role="strong">lostFocusEvent</emphasis> ()</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1abb3ade9405cff3344fed7a0267a2385c"/>virtual void <emphasis role="strong">unloadEvent</emphasis> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Friends    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a70538530bc36e033e360880ef311df61"/>class <emphasis role="strong">Renderer</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_window_1a9daac1e9f186a9341e2a138d426f9867"/>class <emphasis role="strong">EventSystem</emphasis></para>
 </listitem>
         </itemizedlist>
 </simplesect>

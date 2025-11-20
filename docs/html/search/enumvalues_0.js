@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['bold_0',['Bold',['../class_s3_g_f_1_1_font.html#adae219183f4d93eac0ccc1acee291d6faacd53d94aca257770d7173b17c250365',1,'S3GF::Font']]],
-  ['bottomtotop_1',['BottomToTop',['../class_s3_g_f_1_1_font.html#abb818ee36d5718918af00acbbd541419a29eb6f9aab53e6dc2c377f47012ce677',1,'S3GF::Font']]]
+  ['apr_0',['Apr',['../class_s3_g_f_1_1_date_time.html#a9b63b8696f803dcd168d5c0fe1269d7bad04718891b7ad100c0348ad3d53b22c2',1,'S3GF::DateTime']]],
+  ['april_1',['April',['../class_s3_g_f_1_1_date_time.html#a9b63b8696f803dcd168d5c0fe1269d7bafe68f25ce24aa3fa127d9dbb52cf5743',1,'S3GF::DateTime']]],
+  ['aug_2',['Aug',['../class_s3_g_f_1_1_date_time.html#a9b63b8696f803dcd168d5c0fe1269d7ba06f777e334dab799a8b4e3a3d414d894',1,'S3GF::DateTime']]],
+  ['august_3',['August',['../class_s3_g_f_1_1_date_time.html#a9b63b8696f803dcd168d5c0fe1269d7bae1a02e127d2fd1c09d4585c441a2539c',1,'S3GF::DateTime']]]
 ];

@@ -1,4 +1,4 @@
-.TH "S3GF::EventSystem" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::EventSystem" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,7 +6,9 @@ S3GF::EventSystem
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Core\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -22,6 +24,9 @@ S3GF::EventSystem
 .RI "\fBEventSystem\fP & \fBoperator=\fP (const \fBEventSystem\fP &)=delete"
 .br
 .ti -1c
+.RI "\fB~EventSystem\fP ()"
+.br
+.ti -1c
 .RI "void \fBappendEvent\fP (uint64_t id, const std::function< void(SDL_Event)> &event)"
 .br
 .ti -1c
@@ -33,8 +38,14 @@ S3GF::EventSystem
 .ti -1c
 .RI "bool \fBrun\fP ()"
 .br
+.ti -1c
+.RI "bool \fBisKeyDown\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisMouseButtonDown\fP () const"
+.br
 .in -1c
-.SS "Static Public Member Functions"
+.SS "静态 Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -44,7 +55,37 @@ S3GF::EventSystem
 .RI "static \fBEventSystem\fP * \fBglobal\fP ()"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::EventSystem::EventSystem (\fBEventSystem\fP && )\fR [delete]\fP"
+
+.SS "S3GF::EventSystem::EventSystem (const \fBEventSystem\fP & )\fR [delete]\fP"
+
+.SS "S3GF::EventSystem::~EventSystem ()\fR [default]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::EventSystem::appendEvent (uint64_t id, const std::function< void(SDL_Event)> & event)"
+
+.SS "void S3GF::EventSystem::clearEvent ()"
+
+.SS "\fBEventSystem\fP * S3GF::EventSystem::global ()\fR [static]\fP"
+
+.SS "\fBEventSystem\fP * S3GF::EventSystem::global (\fBEngine\fP * engine)\fR [static]\fP"
+
+.SS "bool S3GF::EventSystem::isKeyDown () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::EventSystem::isMouseButtonDown () const\fR [nodiscard]\fP"
+
+.SS "\fBEventSystem\fP & S3GF::EventSystem::operator= (const \fBEventSystem\fP & )\fR [delete]\fP"
+
+.SS "\fBEventSystem\fP & S3GF::EventSystem::operator= (\fBEventSystem\fP && )\fR [delete]\fP"
+
+.SS "void S3GF::EventSystem::removeEvent (uint64_t id)"
+
+.SS "bool S3GF::EventSystem::run ()"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

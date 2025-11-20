@@ -1,0 +1,851 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>S3GF: S3GF::Graphics::Ellipse类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   </div>
+   <div id="projectbrief">SDL3 Graphics Framework</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('class_s3_g_f_1_1_graphics_1_1_ellipse.html','','class_s3_g_f_1_1_graphics_1_1_ellipse-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">S3GF::Graphics::Ellipse类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_basic_8h_source.html">Basic.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:affbb2065616983aee05274005e32f4a1" id="r_affbb2065616983aee05274005e32f4a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affbb2065616983aee05274005e32f4a1">Ellipse</a> ()</td></tr>
+<tr class="memitem:aa2f877f0569232eff4055aff106eafc6" id="r_aa2f877f0569232eff4055aff106eafc6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2f877f0569232eff4055aff106eafc6">Ellipse</a> (float cx, float cy, float rw, float rh, uint16_t border_size=1, const SDL_Color &amp;border_color=<a class="el" href="namespace_s3_g_f_1_1_std_color.html#a00b679b260574e983176649636e9ac48">StdColor::Black</a>, const SDL_Color &amp;back_color=<a class="el" href="namespace_s3_g_f_1_1_std_color.html#a3948d783c2e9ea1aaa19703d78afd84e">StdColor::Transparent</a>, float degree=0.f, uint16_t segment=32)</td></tr>
+<tr class="memitem:a1ea0900ec0b39dad8485ae34c8751f9d" id="r_a1ea0900ec0b39dad8485ae34c8751f9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ea0900ec0b39dad8485ae34c8751f9d">reset</a> (float cx, float cy, float rw, float rh, uint16_t border_size, const SDL_Color &amp;border_color, const SDL_Color &amp;back_color, float degree, uint16_t segment=32)</td></tr>
+<tr class="memitem:a14738c1392e54f2ae7411f8fc6b49cae" id="r_a14738c1392e54f2ae7411f8fc6b49cae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14738c1392e54f2ae7411f8fc6b49cae">reset</a> (const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;center_pos, const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;<a class="el" href="#a2ff0e1194df5691dc8c0b5cddbecb127">radius</a>, uint16_t border_size, const SDL_Color &amp;border_color, const SDL_Color &amp;back_color, float degree, uint16_t segment=32)</td></tr>
+<tr class="memitem:a3c5567f0e7dfd9012d8701f058f9a159" id="r_a3c5567f0e7dfd9012d8701f058f9a159"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c5567f0e7dfd9012d8701f058f9a159">setGeometry</a> (float x, float y, float rw, float rh)</td></tr>
+<tr class="memitem:a977a6eb0e30d7d7aaf16542fcc5fc3cc" id="r_a977a6eb0e30d7d7aaf16542fcc5fc3cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a977a6eb0e30d7d7aaf16542fcc5fc3cc">setGeometry</a> (const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;position, const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;size)</td></tr>
+<tr class="memitem:a11b0a097a9cb06ac4dc8b40024b33b93" id="r_a11b0a097a9cb06ac4dc8b40024b33b93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11b0a097a9cb06ac4dc8b40024b33b93">setBorder</a> (uint16_t size, const SDL_Color &amp;color)</td></tr>
+<tr class="memitem:af05f2bf4bae924bb3cdfe7ad625cbb17" id="r_af05f2bf4bae924bb3cdfe7ad625cbb17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af05f2bf4bae924bb3cdfe7ad625cbb17">setBackground</a> (const SDL_Color &amp;color)</td></tr>
+<tr class="memitem:a8ecc49526d44d94de9b8a4cb528fba31" id="r_a8ecc49526d44d94de9b8a4cb528fba31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ecc49526d44d94de9b8a4cb528fba31">setRotate</a> (float rotate)</td></tr>
+<tr class="memitem:ad3a80d9b2b7500a4e4b9ad0d26055dea" id="r_ad3a80d9b2b7500a4e4b9ad0d26055dea"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3a80d9b2b7500a4e4b9ad0d26055dea">centerPosition</a> () const</td></tr>
+<tr class="memitem:a2ff0e1194df5691dc8c0b5cddbecb127" id="r_a2ff0e1194df5691dc8c0b5cddbecb127"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ff0e1194df5691dc8c0b5cddbecb127">radius</a> () const</td></tr>
+<tr class="memitem:a13c1950bd394fb247ff79291f62b8595" id="r_a13c1950bd394fb247ff79291f62b8595"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13c1950bd394fb247ff79291f62b8595">borderSize</a> () const</td></tr>
+<tr class="memitem:ad35be26e097fab93cb9d5914a932426f" id="r_ad35be26e097fab93cb9d5914a932426f"><td class="memItemLeft" align="right" valign="top">const SDL_Color &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad35be26e097fab93cb9d5914a932426f">borderColor</a> () const</td></tr>
+<tr class="memitem:a8ac107f9eaa037e6cc79bb3e45571b15" id="r_a8ac107f9eaa037e6cc79bb3e45571b15"><td class="memItemLeft" align="right" valign="top">const SDL_Color &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ac107f9eaa037e6cc79bb3e45571b15">backgroundColor</a> () const</td></tr>
+<tr class="memitem:a2b6131c9e3fa069d9fb07099c9b05a26" id="r_a2b6131c9e3fa069d9fb07099c9b05a26"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b6131c9e3fa069d9fb07099c9b05a26">rotateDegree</a> () const</td></tr>
+<tr class="memitem:ac2cd14583cf4cd0a245ad1a544305767" id="r_ac2cd14583cf4cd0a245ad1a544305767"><td class="memItemLeft" align="right" valign="top">const int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2cd14583cf4cd0a245ad1a544305767">indices</a> () const</td></tr>
+<tr class="memitem:ac63f216752df051280c8e1c7669a080e" id="r_ac63f216752df051280c8e1c7669a080e"><td class="memItemLeft" align="right" valign="top">const SDL_Vertex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac63f216752df051280c8e1c7669a080e">vertices</a> () const</td></tr>
+<tr class="memitem:af3fbdc1a314b1654ca6b1f841b9ef415" id="r_af3fbdc1a314b1654ca6b1f841b9ef415"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3fbdc1a314b1654ca6b1f841b9ef415">indicesCount</a> () const</td></tr>
+<tr class="memitem:a4b69f007e1bb4402255c67f6076d4870" id="r_a4b69f007e1bb4402255c67f6076d4870"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b69f007e1bb4402255c67f6076d4870">vertexCount</a> () const</td></tr>
+<tr class="memitem:a9b11d3ea10cc80e88f82cd1bbfa36597" id="r_a9b11d3ea10cc80e88f82cd1bbfa36597"><td class="memItemLeft" align="right" valign="top">const int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b11d3ea10cc80e88f82cd1bbfa36597">borderIndices</a> () const</td></tr>
+<tr class="memitem:a342222557222bd751f81f93ea487cb7a" id="r_a342222557222bd751f81f93ea487cb7a"><td class="memItemLeft" align="right" valign="top">const SDL_Vertex *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a342222557222bd751f81f93ea487cb7a">borderVertices</a> () const</td></tr>
+<tr class="memitem:a201364a3ddc1d4390f61a8de845b03be" id="r_a201364a3ddc1d4390f61a8de845b03be"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a201364a3ddc1d4390f61a8de845b03be">borderIndicesCount</a> () const</td></tr>
+<tr class="memitem:a5f9a11eec8e1c204be88c74b58ec1b12" id="r_a5f9a11eec8e1c204be88c74b58ec1b12"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f9a11eec8e1c204be88c74b58ec1b12">borderVerticesCount</a> () const</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">构造及析构函数说明</h2>
+<a id="affbb2065616983aee05274005e32f4a1" name="affbb2065616983aee05274005e32f4a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affbb2065616983aee05274005e32f4a1">&#9670;&#160;</a></span>Ellipse() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::Graphics::Ellipse::Ellipse </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa2f877f0569232eff4055aff106eafc6" name="aa2f877f0569232eff4055aff106eafc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2f877f0569232eff4055aff106eafc6">&#9670;&#160;</a></span>Ellipse() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::Graphics::Ellipse::Ellipse </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>cx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>cy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rw</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rh</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>border_size</em></span><span class="paramdefsep"> = </span><span class="paramdefval">1</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>border_color</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespace_s3_g_f_1_1_std_color.html#a00b679b260574e983176649636e9ac48">StdColor::Black</a></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>back_color</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespace_s3_g_f_1_1_std_color.html#a3948d783c2e9ea1aaa19703d78afd84e">StdColor::Transparent</a></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>degree</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.f</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>segment</em></span><span class="paramdefsep"> = </span><span class="paramdefval">32</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">成员函数说明</h2>
+<a id="a8ac107f9eaa037e6cc79bb3e45571b15" name="a8ac107f9eaa037e6cc79bb3e45571b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ac107f9eaa037e6cc79bb3e45571b15">&#9670;&#160;</a></span>backgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color &amp; S3GF::Graphics::Ellipse::backgroundColor </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad35be26e097fab93cb9d5914a932426f" name="ad35be26e097fab93cb9d5914a932426f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad35be26e097fab93cb9d5914a932426f">&#9670;&#160;</a></span>borderColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color &amp; S3GF::Graphics::Ellipse::borderColor </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9b11d3ea10cc80e88f82cd1bbfa36597" name="a9b11d3ea10cc80e88f82cd1bbfa36597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b11d3ea10cc80e88f82cd1bbfa36597">&#9670;&#160;</a></span>borderIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int * S3GF::Graphics::Ellipse::borderIndices </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a201364a3ddc1d4390f61a8de845b03be" name="a201364a3ddc1d4390f61a8de845b03be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a201364a3ddc1d4390f61a8de845b03be">&#9670;&#160;</a></span>borderIndicesCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t S3GF::Graphics::Ellipse::borderIndicesCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13c1950bd394fb247ff79291f62b8595" name="a13c1950bd394fb247ff79291f62b8595"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13c1950bd394fb247ff79291f62b8595">&#9670;&#160;</a></span>borderSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t S3GF::Graphics::Ellipse::borderSize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a342222557222bd751f81f93ea487cb7a" name="a342222557222bd751f81f93ea487cb7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a342222557222bd751f81f93ea487cb7a">&#9670;&#160;</a></span>borderVertices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Vertex * S3GF::Graphics::Ellipse::borderVertices </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5f9a11eec8e1c204be88c74b58ec1b12" name="a5f9a11eec8e1c204be88c74b58ec1b12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f9a11eec8e1c204be88c74b58ec1b12">&#9670;&#160;</a></span>borderVerticesCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t S3GF::Graphics::Ellipse::borderVerticesCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad3a80d9b2b7500a4e4b9ad0d26055dea" name="ad3a80d9b2b7500a4e4b9ad0d26055dea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3a80d9b2b7500a4e4b9ad0d26055dea">&#9670;&#160;</a></span>centerPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp; S3GF::Graphics::Ellipse::centerPosition </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2cd14583cf4cd0a245ad1a544305767" name="ac2cd14583cf4cd0a245ad1a544305767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2cd14583cf4cd0a245ad1a544305767">&#9670;&#160;</a></span>indices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int * S3GF::Graphics::Ellipse::indices </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3fbdc1a314b1654ca6b1f841b9ef415" name="af3fbdc1a314b1654ca6b1f841b9ef415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3fbdc1a314b1654ca6b1f841b9ef415">&#9670;&#160;</a></span>indicesCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t S3GF::Graphics::Ellipse::indicesCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2ff0e1194df5691dc8c0b5cddbecb127" name="a2ff0e1194df5691dc8c0b5cddbecb127"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ff0e1194df5691dc8c0b5cddbecb127">&#9670;&#160;</a></span>radius()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp; S3GF::Graphics::Ellipse::radius </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14738c1392e54f2ae7411f8fc6b49cae" name="a14738c1392e54f2ae7411f8fc6b49cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14738c1392e54f2ae7411f8fc6b49cae">&#9670;&#160;</a></span>reset() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::reset </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>center_pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>radius</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>border_size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>border_color</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>back_color</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>degree</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>segment</em></span><span class="paramdefsep"> = </span><span class="paramdefval">32</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ea0900ec0b39dad8485ae34c8751f9d" name="a1ea0900ec0b39dad8485ae34c8751f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ea0900ec0b39dad8485ae34c8751f9d">&#9670;&#160;</a></span>reset() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::reset </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>cx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>cy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rw</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rh</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>border_size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>border_color</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>back_color</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>degree</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>segment</em></span><span class="paramdefsep"> = </span><span class="paramdefval">32</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2b6131c9e3fa069d9fb07099c9b05a26" name="a2b6131c9e3fa069d9fb07099c9b05a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b6131c9e3fa069d9fb07099c9b05a26">&#9670;&#160;</a></span>rotateDegree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float S3GF::Graphics::Ellipse::rotateDegree </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af05f2bf4bae924bb3cdfe7ad625cbb17" name="af05f2bf4bae924bb3cdfe7ad625cbb17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af05f2bf4bae924bb3cdfe7ad625cbb17">&#9670;&#160;</a></span>setBackground()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::setBackground </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>color</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11b0a097a9cb06ac4dc8b40024b33b93" name="a11b0a097a9cb06ac4dc8b40024b33b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11b0a097a9cb06ac4dc8b40024b33b93">&#9670;&#160;</a></span>setBorder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::setBorder </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>color</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a977a6eb0e30d7d7aaf16542fcc5fc3cc" name="a977a6eb0e30d7d7aaf16542fcc5fc3cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a977a6eb0e30d7d7aaf16542fcc5fc3cc">&#9670;&#160;</a></span>setGeometry() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c5567f0e7dfd9012d8701f058f9a159" name="a3c5567f0e7dfd9012d8701f058f9a159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c5567f0e7dfd9012d8701f058f9a159">&#9670;&#160;</a></span>setGeometry() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rw</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rh</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8ecc49526d44d94de9b8a4cb528fba31" name="a8ecc49526d44d94de9b8a4cb528fba31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ecc49526d44d94de9b8a4cb528fba31">&#9670;&#160;</a></span>setRotate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Graphics::Ellipse::setRotate </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rotate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b69f007e1bb4402255c67f6076d4870" name="a4b69f007e1bb4402255c67f6076d4870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b69f007e1bb4402255c67f6076d4870">&#9670;&#160;</a></span>vertexCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t S3GF::Graphics::Ellipse::vertexCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac63f216752df051280c8e1c7669a080e" name="ac63f216752df051280c8e1c7669a080e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac63f216752df051280c8e1c7669a080e">&#9670;&#160;</a></span>vertices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Vertex * S3GF::Graphics::Ellipse::vertices </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Coding/S3GF/src/<a class="el" href="_basic_8h_source.html">Basic.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespace_s3_g_f.html">S3GF</a></li><li class="navelem"><a href="namespace_s3_g_f_1_1_graphics.html">Graphics</a></li><li class="navelem"><a href="class_s3_g_f_1_1_graphics_1_1_ellipse.html">Ellipse</a></li>
+    <li class="footer">生成于 <span class="timestamp"></span> , 为 S3GF使用  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

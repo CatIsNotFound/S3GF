@@ -13,7 +13,7 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a9efb43052b70c5d11ad0988392f08bad"/>void <emphasis role="strong">_update</emphasis> ()</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a9ce6fefa991d62039fffcdd7e2432226"/>void <emphasis role="strong">fillBackground</emphasis> (const SDL_Color &amp;color)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a39c0b35e153c9e22ef5ea87f830374d4"/>void <emphasis role="strong">fillBackground</emphasis> (const SDL_Color &amp;color, bool covered=false)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1af4653958d9ed34428643e73d3858df1f"/>void <emphasis role="strong">drawPoint</emphasis> (const <link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link> &amp;point)</para>
 </listitem>
@@ -31,13 +31,19 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a2e9e587b249e08e967270375c901d081"/>void <emphasis role="strong">drawTriangle</emphasis> (<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link> &amp;&amp;triangle)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1af347a016faf2ceb5220d8b8d8f12e21a"/>void <emphasis role="strong">drawEllipse</emphasis> (const <link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link> &amp;ellipse)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1af347a016faf2ceb5220d8b8d8f12e21a"/>void <emphasis role="strong">drawEllipse</emphasis> (const <link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link> &amp;ellipse)</para>
 </listitem>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1abb16a81974174721009b6f3e5b150f45"/>void <emphasis role="strong">drawEllipse</emphasis> (<link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link> &amp;&amp;ellipse)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1abb16a81974174721009b6f3e5b150f45"/>void <emphasis role="strong">drawEllipse</emphasis> (<link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link> &amp;&amp;ellipse)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a16227bd62e7cde596178431f2e052535"/>void <emphasis role="strong">drawTexture</emphasis> (SDL_Texture *texture, <link linkend="_struct_s3_g_f_1_1_property">Property</link> *property)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a3ba676fa181fd1236b369e960c36034a"/>void <emphasis role="strong">drawText</emphasis> (TTF_Text *text, const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;position)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a95ba98f12654b7cab21f83bf81202df2"/>void <emphasis role="strong">setViewport</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link> &amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1ad439d010b4731b9eef6ced87c090b8ae"/>void <emphasis role="strong">setClipView</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link> &amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_renderer_1a0d1440227a05c1912e8a99f758cd3388"/>void <emphasis role="strong">setBlendMode</emphasis> (const SDL_BlendMode &amp;blend_mode)</para>
 </listitem>
         </itemizedlist>
 </simplesect>

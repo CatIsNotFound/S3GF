@@ -1466,7 +1466,8 @@ namespace S3GF {
             uint16_t _count{32};
         public:
             explicit Point() : _position(0, 0), _size(1), _color(StdColor::Black), _count(32) { update(); }
-            Point(float x, float y, uint16_t size, const SDL_Color& color, uint16_t count = 32)
+            Point(float x, float y, uint16_t size = 1, const SDL_Color& color = StdColor::Black,
+                  uint16_t count = 32)
                 : _position(x, y), _size(size), _color(color), _count(count) { update(); }
             void move(float x, float y) { _position.reset(x, y); update(); }
             void move(const Vector2& new_pos) { _position.reset(new_pos); update(); }
@@ -1616,6 +1617,7 @@ namespace S3GF {
                 _geometry.size.reset(w, h);
                 S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
+
             void setBorderSize(uint16_t border_size) {
                 _border_size = border_size;
                 S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);

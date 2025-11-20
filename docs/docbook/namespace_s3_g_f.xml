@@ -10,7 +10,11 @@
 <simplesect>
     <title>Classes    </title>
         <itemizedlist>
+            <listitem><para>class <link linkend="_class_s3_g_f_1_1_abstract_control">AbstractControl</link></para>
+</listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_audio_system">AudioSystem</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_s3_g_f_1_1_click_area">ClickArea</link></para>
 </listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_cursor">Cursor</link></para>
 
@@ -50,9 +54,13 @@
 </listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_task_queue">TaskQueue</link></para>
 </listitem>
+            <listitem><para>class <link linkend="_class_s3_g_f_1_1_tasks_manager">TasksManager</link></para>
+</listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_text_system">TextSystem</link></para>
 </listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_texture">Texture</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_s3_g_f_1_1_thread_pool">ThreadPool</link></para>
 </listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_timer">Timer</link></para>
 </listitem>
@@ -63,6 +71,20 @@
 <para>向量坐标 </para>
 </listitem>
             <listitem><para>class <link linkend="_class_s3_g_f_1_1_window">Window</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Typedefs    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_namespace_s3_g_f_1ae50a59a633c413747ceeebe8a6bc6e22"/>using <emphasis role="strong">GT</emphasis> = std::variant&lt;std::monostate, <link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>, <link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&gt;</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Variables    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_namespace_s3_g_f_1a25c566ab8ed729df7bacf4ba5b4b01c2"/>uint64_t <emphasis role="strong">_next_id</emphasis> = 0</para>
 </listitem>
         </itemizedlist>
 </simplesect>

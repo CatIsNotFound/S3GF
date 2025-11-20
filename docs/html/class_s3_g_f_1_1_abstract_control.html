@@ -1,0 +1,1375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>S3GF: S3GF::AbstractControl类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   </div>
+   <div id="projectbrief">SDL3 Graphics Framework</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('class_s3_g_f_1_1_abstract_control.html','','class_s3_g_f_1_1_abstract_control-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">S3GF::AbstractControl类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_control_8h_source.html">Control.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public 类型</h2></td></tr>
+<tr class="memitem:aa14690b6ce6b2367ee47b702a60b2a2f" id="r_aa14690b6ce6b2367ee47b702a60b2a2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2f">State</a> { <br />
+&#160;&#160;<a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2fa076787909487f407d5c80e346c9ba8b0">Normal</a>
+, <a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2fa725c83070e738957ed263b2436e7d300">Hover</a>
+, <a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2fab4a69450151e9a4f088bd22bd9bf47c6">Pressed</a>
+, <a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2fa21a259be7c7a3eb6e329b19d37302717">Disabled</a>
+, <br />
+&#160;&#160;<a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2fa3fec01a8b9caf6ac983ead92c32ca330">Selected</a>
+<br />
+ }</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a9478a845286aa8e052cf8aa4bda6a355" id="r_a9478a845286aa8e052cf8aa4bda6a355"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9478a845286aa8e052cf8aa4bda6a355">AbstractControl</a> (const std::string &amp;<a class="el" href="#a14a2dd534a6f1186c575dbe7da7030a6">name</a>, <a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *renderer, <a class="el" href="namespace_s3_g_f.html#ae50a59a633c413747ceeebe8a6bc6e22">GT</a> click_area=<a class="el" href="class_s3_g_f_1_1_graphics_1_1_rectangle.html">Graphics::Rectangle</a>(), <a class="el" href="class_s3_g_f_1_1_abstract_control.html">AbstractControl</a> *parent=nullptr)</td></tr>
+<tr class="memitem:aebcd086d92286abe726236bf175e1403" id="r_aebcd086d92286abe726236bf175e1403"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebcd086d92286abe726236bf175e1403">~AbstractControl</a> ()</td></tr>
+<tr class="memitem:a8a9488a463d0e5783319b650fc3b5898" id="r_a8a9488a463d0e5783319b650fc3b5898"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a9488a463d0e5783319b650fc3b5898">setName</a> (const std::string &amp;<a class="el" href="#a14a2dd534a6f1186c575dbe7da7030a6">name</a>)</td></tr>
+<tr class="memitem:a14a2dd534a6f1186c575dbe7da7030a6" id="r_a14a2dd534a6f1186c575dbe7da7030a6"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14a2dd534a6f1186c575dbe7da7030a6">name</a> () const</td></tr>
+<tr class="memitem:af1ccb1df1f1a7576a7a35c7b147e85e8" id="r_af1ccb1df1f1a7576a7a35c7b147e85e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1ccb1df1f1a7576a7a35c7b147e85e8">move</a> (float x, float y)</td></tr>
+<tr class="memitem:a6c41e0546c77479d33a81e54417792e2" id="r_a6c41e0546c77479d33a81e54417792e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c41e0546c77479d33a81e54417792e2">move</a> (const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;pos)</td></tr>
+<tr class="memitem:a50b3e050faed184aa568ba7f24a002be" id="r_a50b3e050faed184aa568ba7f24a002be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50b3e050faed184aa568ba7f24a002be">move</a> (<a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&amp;pos)</td></tr>
+<tr class="memitem:a45f2d68e4cad68f6b0ef169ab0a9d13d" id="r_a45f2d68e4cad68f6b0ef169ab0a9d13d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45f2d68e4cad68f6b0ef169ab0a9d13d">resize</a> (float w, float h)</td></tr>
+<tr class="memitem:a9a4905294496c09908f7ee921c67f58d" id="r_a9a4905294496c09908f7ee921c67f58d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a4905294496c09908f7ee921c67f58d">resize</a> (const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;<a class="el" href="#aeed19454217de7ab2607571b5e577628">size</a>)</td></tr>
+<tr class="memitem:a14c9b104486f152119586077a742c32e" id="r_a14c9b104486f152119586077a742c32e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14c9b104486f152119586077a742c32e">resize</a> (<a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&amp;<a class="el" href="#aeed19454217de7ab2607571b5e577628">size</a>)</td></tr>
+<tr class="memitem:a616a623b384f5107430554ade4de037d" id="r_a616a623b384f5107430554ade4de037d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a616a623b384f5107430554ade4de037d">setGeometry</a> (float x, float y, float w, float h)</td></tr>
+<tr class="memitem:aa0f17389eef0821657550be53401c7a5" id="r_aa0f17389eef0821657550be53401c7a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0f17389eef0821657550be53401c7a5">setGeometry</a> (const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;pos, const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;<a class="el" href="#aeed19454217de7ab2607571b5e577628">size</a>)</td></tr>
+<tr class="memitem:a96655b45ea057cc301e1897ef9dfbb33" id="r_a96655b45ea057cc301e1897ef9dfbb33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96655b45ea057cc301e1897ef9dfbb33">setGeometry</a> (<a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&amp;pos, <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&amp;<a class="el" href="#aeed19454217de7ab2607571b5e577628">size</a>)</td></tr>
+<tr class="memitem:a985063f8de4e9a086c0bca1cf4812b75" id="r_a985063f8de4e9a086c0bca1cf4812b75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a985063f8de4e9a086c0bca1cf4812b75">setGeometry</a> (const <a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;<a class="el" href="#ac7ff09eac6fdf57af0664529c708770c">geometry</a>)</td></tr>
+<tr class="memitem:a564c789034aead23b4330ebbcb6292e3" id="r_a564c789034aead23b4330ebbcb6292e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a564c789034aead23b4330ebbcb6292e3">setGeometry</a> (<a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;&amp;<a class="el" href="#ac7ff09eac6fdf57af0664529c708770c">geometry</a>)</td></tr>
+<tr class="memitem:ac7ff09eac6fdf57af0664529c708770c" id="r_ac7ff09eac6fdf57af0664529c708770c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7ff09eac6fdf57af0664529c708770c">geometry</a> () const</td></tr>
+<tr class="memitem:a199bfc2d8b4089248b69257c8fbe3542" id="r_a199bfc2d8b4089248b69257c8fbe3542"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a199bfc2d8b4089248b69257c8fbe3542">position</a> () const</td></tr>
+<tr class="memitem:aeed19454217de7ab2607571b5e577628" id="r_aeed19454217de7ab2607571b5e577628"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeed19454217de7ab2607571b5e577628">size</a> () const</td></tr>
+<tr class="memitem:a3b1934aec50d66fb16c2bf1ef678570b" id="r_a3b1934aec50d66fb16c2bf1ef678570b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b1934aec50d66fb16c2bf1ef678570b">setVisible</a> (bool <a class="el" href="#a232a76be1751810e4f7309dd4250080e">visible</a>)</td></tr>
+<tr class="memitem:a232a76be1751810e4f7309dd4250080e" id="r_a232a76be1751810e4f7309dd4250080e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a232a76be1751810e4f7309dd4250080e">visible</a> () const</td></tr>
+<tr class="memitem:a5aff1fcb0c54622545c9d5c7cebbe533" id="r_a5aff1fcb0c54622545c9d5c7cebbe533"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aff1fcb0c54622545c9d5c7cebbe533">setEnabled</a> (bool <a class="el" href="#adc1188da678d025e2570bdc26d9ea554">enabled</a>)</td></tr>
+<tr class="memitem:adc1188da678d025e2570bdc26d9ea554" id="r_adc1188da678d025e2570bdc26d9ea554"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc1188da678d025e2570bdc26d9ea554">enabled</a> () const</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected 成员函数</h2></td></tr>
+<tr class="memitem:a5bec4a58bb0d21e453c6e34788a856a5" id="r_a5bec4a58bb0d21e453c6e34788a856a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5bec4a58bb0d21e453c6e34788a856a5">paintEvent</a> (<a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *)</td></tr>
+<tr class="memitem:a29a78accbcd245853aa1b94ca154b913" id="r_a29a78accbcd245853aa1b94ca154b913"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29a78accbcd245853aa1b94ca154b913">loadEvent</a> ()</td></tr>
+<tr class="memitem:a08f6c61afb027ca4f3559a2a4b43ce6b" id="r_a08f6c61afb027ca4f3559a2a4b43ce6b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08f6c61afb027ca4f3559a2a4b43ce6b">unloadEvent</a> ()</td></tr>
+<tr class="memitem:ac54b483a47c9857e396f4efc89b8336c" id="r_ac54b483a47c9857e396f4efc89b8336c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac54b483a47c9857e396f4efc89b8336c">moveEvent</a> ()</td></tr>
+<tr class="memitem:ad5dddbd2eeee0ff556e8f71f89dea6d0" id="r_ad5dddbd2eeee0ff556e8f71f89dea6d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5dddbd2eeee0ff556e8f71f89dea6d0">resizeEvent</a> ()</td></tr>
+<tr class="memitem:af74470c8fee952e6f90fa07879acf2c2" id="r_af74470c8fee952e6f90fa07879acf2c2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af74470c8fee952e6f90fa07879acf2c2">onPressed</a> ()</td></tr>
+<tr class="memitem:afd050003d126a2d67de5d8984c5b0d4e" id="r_afd050003d126a2d67de5d8984c5b0d4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd050003d126a2d67de5d8984c5b0d4e">onReleased</a> ()</td></tr>
+<tr class="memitem:af2dc05f08ac507a1e219c8a4c355d421" id="r_af2dc05f08ac507a1e219c8a4c355d421"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2dc05f08ac507a1e219c8a4c355d421">onTriggered</a> ()</td></tr>
+<tr class="memitem:a14875c0cab88c8b9d19625267faaa427" id="r_a14875c0cab88c8b9d19625267faaa427"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14875c0cab88c8b9d19625267faaa427">onHovered</a> ()</td></tr>
+<tr class="memitem:ab2a4bb707df125b77fc87daff953722a" id="r_ab2a4bb707df125b77fc87daff953722a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2a4bb707df125b77fc87daff953722a">onEntered</a> ()</td></tr>
+<tr class="memitem:abc3ed5ac020968ae56a51d556be485f4" id="r_abc3ed5ac020968ae56a51d556be485f4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc3ed5ac020968ae56a51d556be485f4">onLeft</a> ()</td></tr>
+<tr class="memitem:ae34ae707ab513a7a0fee896a03b46473" id="r_ae34ae707ab513a7a0fee896a03b46473"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae34ae707ab513a7a0fee896a03b46473">enabledChanged</a> ()</td></tr>
+<tr class="memitem:a265da4967db81801bb9baa83f047fe68" id="r_a265da4967db81801bb9baa83f047fe68"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a265da4967db81801bb9baa83f047fe68">visibleChanged</a> ()</td></tr>
+<tr class="memitem:ab422fbe4c6b47ab5f11d768a3a33e7a2" id="r_ab422fbe4c6b47ab5f11d768a3a33e7a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab422fbe4c6b47ab5f11d768a3a33e7a2">_update_click_area</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:a5e0336af26bfeb54413998bd52383310" id="r_a5e0336af26bfeb54413998bd52383310"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e0336af26bfeb54413998bd52383310">_id</a> {0}</td></tr>
+<tr class="memitem:a56cf04280008c2b964a5bce2b761b445" id="r_a56cf04280008c2b964a5bce2b761b445"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56cf04280008c2b964a5bce2b761b445">_name</a></td></tr>
+<tr class="memitem:a1e8de06fc9012f7b69fe70821d4d89d5" id="r_a1e8de06fc9012f7b69fe70821d4d89d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e8de06fc9012f7b69fe70821d4d89d5">_renderer</a></td></tr>
+<tr class="memitem:ab8b025c742ac4acf0280f9b22b990362" id="r_ab8b025c742ac4acf0280f9b22b990362"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_abstract_control.html">AbstractControl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8b025c742ac4acf0280f9b22b990362">_parent</a></td></tr>
+<tr class="memitem:a3d316337b6c996cb80b4df30152818f9" id="r_a3d316337b6c996cb80b4df30152818f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d316337b6c996cb80b4df30152818f9">_geometry</a></td></tr>
+<tr class="memitem:a0e2f461cf47fba7f218d32d91d8199f5" id="r_a0e2f461cf47fba7f218d32d91d8199f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_click_area.html">ClickArea</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e2f461cf47fba7f218d32d91d8199f5">_click_area</a></td></tr>
+<tr class="memitem:a73019a45bd9a9ed2f2aee1357301bd03" id="r_a73019a45bd9a9ed2f2aee1357301bd03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73019a45bd9a9ed2f2aee1357301bd03">_is_down</a> {false}</td></tr>
+<tr class="memitem:a57a24474325c398644fa71352fa9e719" id="r_a57a24474325c398644fa71352fa9e719"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57a24474325c398644fa71352fa9e719">_visible</a> {true}</td></tr>
+<tr class="memitem:ad396a36b9ecbdedc6beb6f44d2b64a80" id="r_ad396a36b9ecbdedc6beb6f44d2b64a80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad396a36b9ecbdedc6beb6f44d2b64a80">_enabled</a> {true}</td></tr>
+<tr class="memitem:a416042b3c42b0bbcad5b01cd6bb8bc6f" id="r_a416042b3c42b0bbcad5b01cd6bb8bc6f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416042b3c42b0bbcad5b01cd6bb8bc6f">_entered</a> {false}</td></tr>
+</table>
+<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">成员枚举类型说明</h2>
+<a id="aa14690b6ce6b2367ee47b702a60b2a2f" name="aa14690b6ce6b2367ee47b702a60b2a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14690b6ce6b2367ee47b702a60b2a2f">&#9670;&#160;</a></span>State</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#aa14690b6ce6b2367ee47b702a60b2a2f">S3GF::AbstractControl::State</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="aa14690b6ce6b2367ee47b702a60b2a2fa076787909487f407d5c80e346c9ba8b0" name="aa14690b6ce6b2367ee47b702a60b2a2fa076787909487f407d5c80e346c9ba8b0"></a>Normal&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa14690b6ce6b2367ee47b702a60b2a2fa725c83070e738957ed263b2436e7d300" name="aa14690b6ce6b2367ee47b702a60b2a2fa725c83070e738957ed263b2436e7d300"></a>Hover&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa14690b6ce6b2367ee47b702a60b2a2fab4a69450151e9a4f088bd22bd9bf47c6" name="aa14690b6ce6b2367ee47b702a60b2a2fab4a69450151e9a4f088bd22bd9bf47c6"></a>Pressed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa14690b6ce6b2367ee47b702a60b2a2fa21a259be7c7a3eb6e329b19d37302717" name="aa14690b6ce6b2367ee47b702a60b2a2fa21a259be7c7a3eb6e329b19d37302717"></a>Disabled&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa14690b6ce6b2367ee47b702a60b2a2fa3fec01a8b9caf6ac983ead92c32ca330" name="aa14690b6ce6b2367ee47b702a60b2a2fa3fec01a8b9caf6ac983ead92c32ca330"></a>Selected&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">构造及析构函数说明</h2>
+<a id="a9478a845286aa8e052cf8aa4bda6a355" name="a9478a845286aa8e052cf8aa4bda6a355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9478a845286aa8e052cf8aa4bda6a355">&#9670;&#160;</a></span>AbstractControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::AbstractControl::AbstractControl </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *</td>          <td class="paramname"><span class="paramname"><em>renderer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_s3_g_f.html#ae50a59a633c413747ceeebe8a6bc6e22">GT</a></td>          <td class="paramname"><span class="paramname"><em>click_area</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="class_s3_g_f_1_1_graphics_1_1_rectangle.html">Graphics::Rectangle</a>()</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_s3_g_f_1_1_abstract_control.html">AbstractControl</a> *</td>          <td class="paramname"><span class="paramname"><em>parent</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aebcd086d92286abe726236bf175e1403" name="aebcd086d92286abe726236bf175e1403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebcd086d92286abe726236bf175e1403">&#9670;&#160;</a></span>~AbstractControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::AbstractControl::~AbstractControl </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">成员函数说明</h2>
+<a id="ab422fbe4c6b47ab5f11d768a3a33e7a2" name="ab422fbe4c6b47ab5f11d768a3a33e7a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab422fbe4c6b47ab5f11d768a3a33e7a2">&#9670;&#160;</a></span>_update_click_area()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::_update_click_area </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adc1188da678d025e2570bdc26d9ea554" name="adc1188da678d025e2570bdc26d9ea554"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc1188da678d025e2570bdc26d9ea554">&#9670;&#160;</a></span>enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::enabled </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae34ae707ab513a7a0fee896a03b46473" name="ae34ae707ab513a7a0fee896a03b46473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae34ae707ab513a7a0fee896a03b46473">&#9670;&#160;</a></span>enabledChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::enabledChanged </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac7ff09eac6fdf57af0664529c708770c" name="ac7ff09eac6fdf57af0664529c708770c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7ff09eac6fdf57af0664529c708770c">&#9670;&#160;</a></span>geometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp; S3GF::AbstractControl::geometry </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a29a78accbcd245853aa1b94ca154b913" name="a29a78accbcd245853aa1b94ca154b913"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29a78accbcd245853aa1b94ca154b913">&#9670;&#160;</a></span>loadEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::loadEvent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6c41e0546c77479d33a81e54417792e2" name="a6c41e0546c77479d33a81e54417792e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c41e0546c77479d33a81e54417792e2">&#9670;&#160;</a></span>move() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::move </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af1ccb1df1f1a7576a7a35c7b147e85e8" name="af1ccb1df1f1a7576a7a35c7b147e85e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1ccb1df1f1a7576a7a35c7b147e85e8">&#9670;&#160;</a></span>move() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::move </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a50b3e050faed184aa568ba7f24a002be" name="a50b3e050faed184aa568ba7f24a002be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b3e050faed184aa568ba7f24a002be">&#9670;&#160;</a></span>move() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::move </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac54b483a47c9857e396f4efc89b8336c" name="ac54b483a47c9857e396f4efc89b8336c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac54b483a47c9857e396f4efc89b8336c">&#9670;&#160;</a></span>moveEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::moveEvent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14a2dd534a6f1186c575dbe7da7030a6" name="a14a2dd534a6f1186c575dbe7da7030a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14a2dd534a6f1186c575dbe7da7030a6">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; S3GF::AbstractControl::name </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2a4bb707df125b77fc87daff953722a" name="ab2a4bb707df125b77fc87daff953722a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a4bb707df125b77fc87daff953722a">&#9670;&#160;</a></span>onEntered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onEntered </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14875c0cab88c8b9d19625267faaa427" name="a14875c0cab88c8b9d19625267faaa427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14875c0cab88c8b9d19625267faaa427">&#9670;&#160;</a></span>onHovered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onHovered </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abc3ed5ac020968ae56a51d556be485f4" name="abc3ed5ac020968ae56a51d556be485f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc3ed5ac020968ae56a51d556be485f4">&#9670;&#160;</a></span>onLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onLeft </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af74470c8fee952e6f90fa07879acf2c2" name="af74470c8fee952e6f90fa07879acf2c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af74470c8fee952e6f90fa07879acf2c2">&#9670;&#160;</a></span>onPressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onPressed </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd050003d126a2d67de5d8984c5b0d4e" name="afd050003d126a2d67de5d8984c5b0d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd050003d126a2d67de5d8984c5b0d4e">&#9670;&#160;</a></span>onReleased()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onReleased </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af2dc05f08ac507a1e219c8a4c355d421" name="af2dc05f08ac507a1e219c8a4c355d421"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2dc05f08ac507a1e219c8a4c355d421">&#9670;&#160;</a></span>onTriggered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::onTriggered </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5bec4a58bb0d21e453c6e34788a856a5" name="a5bec4a58bb0d21e453c6e34788a856a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bec4a58bb0d21e453c6e34788a856a5">&#9670;&#160;</a></span>paintEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::paintEvent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a199bfc2d8b4089248b69257c8fbe3542" name="a199bfc2d8b4089248b69257c8fbe3542"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a199bfc2d8b4089248b69257c8fbe3542">&#9670;&#160;</a></span>position()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp; S3GF::AbstractControl::position </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9a4905294496c09908f7ee921c67f58d" name="a9a4905294496c09908f7ee921c67f58d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a4905294496c09908f7ee921c67f58d">&#9670;&#160;</a></span>resize() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>size</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a45f2d68e4cad68f6b0ef169ab0a9d13d" name="a45f2d68e4cad68f6b0ef169ab0a9d13d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f2d68e4cad68f6b0ef169ab0a9d13d">&#9670;&#160;</a></span>resize() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::resize </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>w</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14c9b104486f152119586077a742c32e" name="a14c9b104486f152119586077a742c32e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14c9b104486f152119586077a742c32e">&#9670;&#160;</a></span>resize() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>size</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad5dddbd2eeee0ff556e8f71f89dea6d0" name="ad5dddbd2eeee0ff556e8f71f89dea6d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5dddbd2eeee0ff556e8f71f89dea6d0">&#9670;&#160;</a></span>resizeEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::resizeEvent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5aff1fcb0c54622545c9d5c7cebbe533" name="a5aff1fcb0c54622545c9d5c7cebbe533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aff1fcb0c54622545c9d5c7cebbe533">&#9670;&#160;</a></span>setEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enabled</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a985063f8de4e9a086c0bca1cf4812b75" name="a985063f8de4e9a086c0bca1cf4812b75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a985063f8de4e9a086c0bca1cf4812b75">&#9670;&#160;</a></span>setGeometry() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>geometry</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0f17389eef0821657550be53401c7a5" name="aa0f17389eef0821657550be53401c7a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0f17389eef0821657550be53401c7a5">&#9670;&#160;</a></span>setGeometry() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a616a623b384f5107430554ade4de037d" name="a616a623b384f5107430554ade4de037d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a616a623b384f5107430554ade4de037d">&#9670;&#160;</a></span>setGeometry() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>w</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a564c789034aead23b4330ebbcb6292e3" name="a564c789034aead23b4330ebbcb6292e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564c789034aead23b4330ebbcb6292e3">&#9670;&#160;</a></span>setGeometry() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>geometry</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96655b45ea057cc301e1897ef9dfbb33" name="a96655b45ea057cc301e1897ef9dfbb33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96655b45ea057cc301e1897ef9dfbb33">&#9670;&#160;</a></span>setGeometry() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setGeometry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a9488a463d0e5783319b650fc3b5898" name="a8a9488a463d0e5783319b650fc3b5898"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a9488a463d0e5783319b650fc3b5898">&#9670;&#160;</a></span>setName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setName </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b1934aec50d66fb16c2bf1ef678570b" name="a3b1934aec50d66fb16c2bf1ef678570b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1934aec50d66fb16c2bf1ef678570b">&#9670;&#160;</a></span>setVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::AbstractControl::setVisible </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>visible</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeed19454217de7ab2607571b5e577628" name="aeed19454217de7ab2607571b5e577628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeed19454217de7ab2607571b5e577628">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_size.html">Size</a> &amp; S3GF::AbstractControl::size </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08f6c61afb027ca4f3559a2a4b43ce6b" name="a08f6c61afb027ca4f3559a2a4b43ce6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08f6c61afb027ca4f3559a2a4b43ce6b">&#9670;&#160;</a></span>unloadEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::unloadEvent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a232a76be1751810e4f7309dd4250080e" name="a232a76be1751810e4f7309dd4250080e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232a76be1751810e4f7309dd4250080e">&#9670;&#160;</a></span>visible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::visible </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a265da4967db81801bb9baa83f047fe68" name="a265da4967db81801bb9baa83f047fe68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a265da4967db81801bb9baa83f047fe68">&#9670;&#160;</a></span>visibleChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void S3GF::AbstractControl::visibleChanged </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">类成员变量说明</h2>
+<a id="a0e2f461cf47fba7f218d32d91d8199f5" name="a0e2f461cf47fba7f218d32d91d8199f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2f461cf47fba7f218d32d91d8199f5">&#9670;&#160;</a></span>_click_area</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s3_g_f_1_1_click_area.html">ClickArea</a> S3GF::AbstractControl::_click_area</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad396a36b9ecbdedc6beb6f44d2b64a80" name="ad396a36b9ecbdedc6beb6f44d2b64a80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad396a36b9ecbdedc6beb6f44d2b64a80">&#9670;&#160;</a></span>_enabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::_enabled {true}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a416042b3c42b0bbcad5b01cd6bb8bc6f" name="a416042b3c42b0bbcad5b01cd6bb8bc6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a416042b3c42b0bbcad5b01cd6bb8bc6f">&#9670;&#160;</a></span>_entered</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::_entered {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d316337b6c996cb80b4df30152818f9" name="a3d316337b6c996cb80b4df30152818f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d316337b6c996cb80b4df30152818f9">&#9670;&#160;</a></span>_geometry</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> S3GF::AbstractControl::_geometry</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5e0336af26bfeb54413998bd52383310" name="a5e0336af26bfeb54413998bd52383310"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e0336af26bfeb54413998bd52383310">&#9670;&#160;</a></span>_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t S3GF::AbstractControl::_id {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a73019a45bd9a9ed2f2aee1357301bd03" name="a73019a45bd9a9ed2f2aee1357301bd03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73019a45bd9a9ed2f2aee1357301bd03">&#9670;&#160;</a></span>_is_down</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::_is_down {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a56cf04280008c2b964a5bce2b761b445" name="a56cf04280008c2b964a5bce2b761b445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56cf04280008c2b964a5bce2b761b445">&#9670;&#160;</a></span>_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string S3GF::AbstractControl::_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8b025c742ac4acf0280f9b22b990362" name="ab8b025c742ac4acf0280f9b22b990362"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8b025c742ac4acf0280f9b22b990362">&#9670;&#160;</a></span>_parent</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s3_g_f_1_1_abstract_control.html">AbstractControl</a>* S3GF::AbstractControl::_parent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1e8de06fc9012f7b69fe70821d4d89d5" name="a1e8de06fc9012f7b69fe70821d4d89d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e8de06fc9012f7b69fe70821d4d89d5">&#9670;&#160;</a></span>_renderer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a>* S3GF::AbstractControl::_renderer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57a24474325c398644fa71352fa9e719" name="a57a24474325c398644fa71352fa9e719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57a24474325c398644fa71352fa9e719">&#9670;&#160;</a></span>_visible</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AbstractControl::_visible {true}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Coding/S3GF/src/Controls/<a class="el" href="_control_8h_source.html">Control.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespace_s3_g_f.html">S3GF</a></li><li class="navelem"><a href="class_s3_g_f_1_1_abstract_control.html">AbstractControl</a></li>
+    <li class="footer">生成于 <span class="timestamp"></span> , 为 S3GF使用  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

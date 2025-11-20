@@ -15,7 +15,10 @@ var class_s3_g_f_1_1_renderer =
     [ "drawTexture", "class_s3_g_f_1_1_renderer.html#a16227bd62e7cde596178431f2e052535", null ],
     [ "drawTriangle", "class_s3_g_f_1_1_renderer.html#ac5b16566c6cbb324b0d500b68a718a6a", null ],
     [ "drawTriangle", "class_s3_g_f_1_1_renderer.html#a2e9e587b249e08e967270375c901d081", null ],
-    [ "fillBackground", "class_s3_g_f_1_1_renderer.html#a9ce6fefa991d62039fffcdd7e2432226", null ],
+    [ "fillBackground", "class_s3_g_f_1_1_renderer.html#a39c0b35e153c9e22ef5ea87f830374d4", null ],
     [ "self", "class_s3_g_f_1_1_renderer.html#a127ec7b2dd4768d0c380cecbd3ffbe96", null ],
+    [ "setBlendMode", "class_s3_g_f_1_1_renderer.html#a0d1440227a05c1912e8a99f758cd3388", null ],
+    [ "setClipView", "class_s3_g_f_1_1_renderer.html#ad439d010b4731b9eef6ced87c090b8ae", null ],
+    [ "setViewport", "class_s3_g_f_1_1_renderer.html#a95ba98f12654b7cab21f83bf81202df2", null ],
     [ "window", "class_s3_g_f_1_1_renderer.html#a57fb8978aad17c0c110354e70ecd8e0e", null ]
 ];

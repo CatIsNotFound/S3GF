@@ -1,4 +1,4 @@
-.TH "S3GF::Window" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Window" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,25 +6,30 @@ S3GF::Window
 .SH SYNOPSIS
 .br
 .PP
-.SS "Classes"
+.PP
+\fR#include <Core\&.h>\fP
+.SS "类"
 
 .in +1c
 .ti -1c
 .RI "struct \fBGeometry\fP"
 .br
 .in -1c
-.SS "Public Types"
+.SS "Public 类型"
 
 .in +1c
 .ti -1c
 .RI "enum \fBGraphicEngine\fP { \fBOPENGL\fP, \fBVULKAN\fP }"
 .br
 .in -1c
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBWindow\fP (const std::string &title, int width=800, int height=600, GraphicEngine engine=OPENGL)"
+.RI "\fBWindow\fP (\fBEngine\fP *object, const std::string &title, int width=800, int height=600, \fBGraphicEngine\fP engine=\fBOPENGL\fP)"
+.br
+.ti -1c
+.RI "\fB~Window\fP ()"
 .br
 .ti -1c
 .RI "bool \fBmove\fP (int x, int y)"
@@ -51,16 +56,31 @@ S3GF::Window
 .RI "bool \fBvisible\fP () const"
 .br
 .ti -1c
+.RI "void \fBclose\fP ()"
+.br
+.ti -1c
 .RI "bool \fBsetResizable\fP (bool enabled)"
 .br
 .ti -1c
 .RI "bool \fBresizable\fP () const"
 .br
 .ti -1c
-.RI "void \fBsetRenderer\fP (\fBRenderer\fP *renderer)"
+.RI "void \fBsetRenderer\fP (\fBRenderer\fP *\fBrenderer\fP)"
 .br
 .ti -1c
 .RI "\fBRenderer\fP * \fBrenderer\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetBorderless\fP (bool enabled)"
+.br
+.ti -1c
+.RI "bool \fBborderless\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetFullScreen\fP (bool enabled, bool move_to_center=false)"
+.br
+.ti -1c
+.RI "bool \fBfullScreen\fP () const"
 .br
 .ti -1c
 .RI "void \fBsetWindowTitle\fP (const std::string &title)"
@@ -72,8 +92,12 @@ S3GF::Window
 .RI "SDL_Window * \fBself\fP () const"
 .br
 .ti -1c
-.RI "void \fBinstallPaintEvent\fP (const std::function< void(\fBRenderer\fP *renderer)> &paint_event)"
+.RI "void \fBinstallPaintEvent\fP (const std::function< void(\fBRenderer\fP *\fBrenderer\fP)> &paint_event)"
 .br
+.in -1c
+.SS "Protected 成员函数"
+
+.in +1c
 .ti -1c
 .RI "virtual void \fBpaintEvent\fP ()"
 .br
@@ -93,7 +117,96 @@ S3GF::Window
 .RI "virtual void \fBunloadEvent\fP ()"
 .br
 .in -1c
+.SS "友元"
 
-.SH "Author"
+.in +1c
+.ti -1c
+.RI "class \fBRenderer\fP"
+.br
+.ti -1c
+.RI "class \fBEventSystem\fP"
+.br
+.in -1c
+.SH "成员枚举类型说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "enum \fBS3GF::Window::GraphicEngine\fP"
+
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BIOPENGL \fP
+.TP
+\f(BIVULKAN \fP
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::Window::Window (\fBEngine\fP * object, const std::string & title, int width = \fR800\fP, int height = \fR600\fP, \fBGraphicEngine\fP engine = \fR\fBOPENGL\fP\fP)\fR [explicit]\fP"
+
+.SS "S3GF::Window::~Window ()"
+
+.SH "成员函数说明"
+.PP 
+.SS "bool S3GF::Window::borderless () const"
+
+.SS "void S3GF::Window::close ()"
+
+.SS "bool S3GF::Window::fullScreen () const"
+
+.SS "const \fBWindow::Geometry\fP S3GF::Window::geometry () const"
+
+.SS "void S3GF::Window::getFocusEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "bool S3GF::Window::hide ()"
+
+.SS "void S3GF::Window::installPaintEvent (const std::function< void(\fBRenderer\fP *\fBrenderer\fP)> & paint_event)"
+
+.SS "void S3GF::Window::lostFocusEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "bool S3GF::Window::move (int x, int y)"
+
+.SS "void S3GF::Window::moveEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "void S3GF::Window::paintEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "\fBRenderer\fP * S3GF::Window::renderer () const"
+
+.SS "bool S3GF::Window::resizable () const"
+
+.SS "bool S3GF::Window::resize (int width, int height)"
+
+.SS "void S3GF::Window::resizeEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "SDL_Window * S3GF::Window::self () const"
+
+.SS "void S3GF::Window::setBorderless (bool enabled)"
+
+.SS "void S3GF::Window::setFullScreen (bool enabled, bool move_to_center = \fRfalse\fP)"
+
+.SS "bool S3GF::Window::setGeometry (int x, int y, int width, int height)"
+
+.SS "void S3GF::Window::setRenderer (\fBRenderer\fP * renderer)"
+
+.SS "bool S3GF::Window::setResizable (bool enabled)"
+
+.SS "void S3GF::Window::setWindowTitle (const std::string & title)"
+
+.SS "bool S3GF::Window::show ()"
+
+.SS "void S3GF::Window::unloadEvent ()\fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "bool S3GF::Window::visible () const"
+
+.SS "uint32_t S3GF::Window::windowID () const"
+
+.SS "const std::string & S3GF::Window::windowTitle () const"
+
+.SH "友元及相关符号说明"
+.PP 
+.SS "friend class \fBEventSystem\fP\fR [friend]\fP"
+
+.SS "friend class \fBRenderer\fP\fR [friend]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

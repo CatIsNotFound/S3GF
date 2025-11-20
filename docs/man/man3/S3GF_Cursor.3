@@ -1,4 +1,4 @@
-.TH "S3GF::Cursor" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Cursor" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,7 +9,7 @@ S3GF::Cursor \- 鼠标光标
 .PP
 .PP
 \fR#include <Cursor\&.h>\fP
-.SS "Classes"
+.SS "类"
 
 .in +1c
 .ti -1c
@@ -17,7 +17,7 @@ S3GF::Cursor \- 鼠标光标
 .br
 .RI "用户自定义鼠标光标数据 "
 .in -1c
-.SS "Public Types"
+.SS "Public 类型"
 
 .in +1c
 .ti -1c
@@ -25,7 +25,7 @@ S3GF::Cursor \- 鼠标光标
 .br
 .RI "标准鼠标光标样式 "
 .in -1c
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -39,6 +39,9 @@ S3GF::Cursor \- 鼠标光标
 .br
 .ti -1c
 .RI "\fBCursor\fP & \fBoperator=\fP (\fBCursor\fP &&)=delete"
+.br
+.ti -1c
+.RI "\fB~Cursor\fP ()"
 .br
 .ti -1c
 .RI "\fBVector2\fP \fBglobalPosition\fP () const"
@@ -100,7 +103,7 @@ S3GF::Cursor \- 鼠标光标
 .RI "void \fBunload\fP ()"
 .br
 .in -1c
-.SS "Static Public Member Functions"
+.SS "静态 Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -108,48 +111,121 @@ S3GF::Cursor \- 鼠标光标
 .br
 .RI "获取鼠标光标全局 "
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 鼠标光标 
 
 用于全局控制鼠标光标的位置、样式 
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 需要使用 \fR\fBglobal()\fP\fP 获取全局 
 .RE
 .PP
 
-.SH "Member Enumeration Documentation"
+.SH "成员枚举类型说明"
 .PP 
 .SS "enum \fBS3GF::Cursor::StdCursor\fP"
 
 .PP
 标准鼠标光标样式 获取系统下当前使用的鼠标光标 
-.SH "Member Function Documentation"
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BIDefault \fP
+.TP
+\f(BINormal \fP
+.TP
+\f(BIEdit \fP
+.TP
+\f(BIWait \fP
+.TP
+\f(BICrosshair \fP
+.TP
+\f(BIBusy \fP
+.TP
+\f(BIResize_NWSE \fP
+.TP
+\f(BIResize_NESW \fP
+.TP
+\f(BIResize_Horizontal \fP
+.TP
+\f(BIResize_EW \fP
+.TP
+\f(BIResize_Vertical \fP
+.TP
+\f(BIResize_NS \fP
+.TP
+\f(BIMove \fP
+.TP
+\f(BINot_Allowed \fP
+.TP
+\f(BIForbidden \fP
+.TP
+\f(BIHand \fP
+.TP
+\f(BIPointer \fP
+.TP
+\f(BIResize_NW \fP
+.TP
+\f(BIResize_N \fP
+.TP
+\f(BIResize_NE \fP
+.TP
+\f(BIResize_E \fP
+.TP
+\f(BIResize_SE \fP
+.TP
+\f(BIResize_S \fP
+.TP
+\f(BIResize_SW \fP
+.TP
+\f(BIResize_W \fP
+.TP
+\f(BICount \fP
+.TP
+\f(BICustom \fP
+.SH "构造及析构函数说明"
 .PP 
+.SS "S3GF::Cursor::Cursor (const \fBCursor\fP & )\fR [explicit]\fP, \fR [delete]\fP"
+
+.SS "S3GF::Cursor::Cursor (\fBCursor\fP && )\fR [explicit]\fP, \fR [delete]\fP"
+
+.SS "S3GF::Cursor::~Cursor ()\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "\fBStdCursor\fP S3GF::Cursor::cursor () const\fR [inline]\fP"
+
+.PP
+获取当前鼠标光标样式 
 .SS "uint64_t S3GF::Cursor::focusOn () const\fR [inline]\fP"
 
 .PP
 获取鼠标当前聚焦于哪个窗口 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回鼠标所在的窗口 ID 
 .RE
 .PP
 
+.SS "\fBCursor\fP * S3GF::Cursor::global ()\fR [inline]\fP, \fR [static]\fP"
+
+.PP
+获取鼠标光标全局 
 .SS "\fBVector2\fP S3GF::Cursor::globalPosition () const\fR [inline]\fP"
 
 .PP
 获取鼠标光标在显示器中所在的位置 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回全局坐标 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBposition\fP 
 
@@ -163,19 +239,19 @@ S3GF::Cursor \- 鼠标光标
 .PP
 移动鼠标光标至指定位置 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIpos\fP 指定位置 
 .br
 \fIwindow\fP 指定窗口 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 若不指定 window 参数，将默认以全局显示器屏幕为主。 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBposition\fP 
 
@@ -189,7 +265,7 @@ S3GF::Cursor \- 鼠标光标
 .PP
 移动光标至指定位置 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIx\fP 指定横坐标 
 .br
@@ -198,12 +274,12 @@ S3GF::Cursor \- 鼠标光标
 \fIwindow\fP 指定窗口 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 若不指定 window 参数，将默认以全局显示器屏幕为主。 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBposition\fP 
 
@@ -217,28 +293,32 @@ S3GF::Cursor \- 鼠标光标
 .PP
 将鼠标光标移动至画面中心点 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIwindow\fP 指定窗口 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 若不设置 window 参数，将默认以全局显示器屏幕为主 
 .RE
 .PP
+
+.SS "\fBCursor\fP & S3GF::Cursor::operator= (const \fBCursor\fP & )\fR [delete]\fP"
+
+.SS "\fBCursor\fP & S3GF::Cursor::operator= (\fBCursor\fP && )\fR [delete]\fP"
 
 .SS "\fBVector2\fP S3GF::Cursor::position () const\fR [inline]\fP"
 
 .PP
 获取鼠标光标在获得焦点的窗口下的位置 
 .PP
-\fBReturns\fP
+\fB返回\fP
 .RS 4
 返回鼠标光标相对获得焦点窗口下的位置 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBglobalPosition\fP 
 
@@ -252,7 +332,7 @@ S3GF::Cursor \- 鼠标光标
 .PP
 设置自定义鼠标光标 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIpath\fP 指定路径下加载鼠标光标 
 .br
@@ -261,7 +341,7 @@ S3GF::Cursor \- 鼠标光标
 \fIhot_y\fP 中心点纵坐标 
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 若指定的 \fRpath\fP 参数无效，则无法设置！
 .RE
@@ -272,7 +352,7 @@ S3GF::Cursor \- 鼠标光标
 .PP
 设置鼠标光标 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIcursor\fP 指定光标类型 
 .PP
@@ -284,12 +364,12 @@ Cursor::global()\->setCursor(Cursor::Hand);
  
 .RE
 .PP
-\fBNote\fP
+\fB注解\fP
 .RS 4
 对于已经开启自定义鼠标光标的情况，将会改变对应类型的自定义光标； 若指定对应的光标类型没有定义鼠标光标，则会使用系统对应的鼠标光标！ 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBcursor\fP 
 
@@ -306,7 +386,7 @@ Cursor::global()\->setCursor(Cursor::Hand);
 .PP
 设置自定义鼠标光标 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIstdCursor\fP 指定标准鼠标类型 
 .br
@@ -315,7 +395,7 @@ Cursor::global()\->setCursor(Cursor::Hand);
 \fIhot_point\fP 指定热点 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBsetUserCustomEnabled\fP 
 
@@ -329,7 +409,7 @@ Cursor::global()\->setCursor(Cursor::Hand);
 .PP
 是否允许使用自定义鼠标光标 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIenabled\fP 启用/禁用 
 .RE
@@ -340,29 +420,35 @@ Cursor::global()\->setCursor(Cursor::Hand);
 .PP
 显示/隐藏鼠标光标 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIvisible\fP 决定是否显示鼠标光标 
 .RE
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBvisible\fP 
 .RE
 .PP
 
+.SS "void S3GF::Cursor::unload ()\fR [inline]\fP"
+
+.SS "bool S3GF::Cursor::userCustomEnabled () const\fR [inline]\fP"
+
+.PP
+当前是否使用自定义鼠标光标 
 .SS "bool S3GF::Cursor::visible () const\fR [inline]\fP"
 
 .PP
 获取当前鼠标光标是否显示 
 .PP
-\fBSee also\fP
+\fB参见\fP
 .RS 4
 \fBsetVisible\fP 
 .RE
 .PP
 
 
-.SH "Author"
+.SH "作者"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

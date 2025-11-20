@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse" xml:lang="en-US">
+<title>S3GF::Graphics::Ellipse Class Reference</title>
+<indexterm><primary>S3GF::Graphics::Ellipse</primary></indexterm>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1aa2f877f0569232eff4055aff106eafc6"/><emphasis role="strong">Ellipse</emphasis> (float cx, float cy, float rw, float rh, uint16_t border_size=1, const SDL_Color &amp;border_color=<link linkend="__basic_8h_1a00b679b260574e983176649636e9ac48">StdColor::Black</link>, const SDL_Color &amp;back_color=StdColor::Transparent, float degree=0.f, uint16_t segment=32)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a1ea0900ec0b39dad8485ae34c8751f9d"/>void <emphasis role="strong">reset</emphasis> (float cx, float cy, float rw, float rh, uint16_t border_size, const SDL_Color &amp;border_color, const SDL_Color &amp;back_color, float degree, uint16_t segment=32)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a14738c1392e54f2ae7411f8fc6b49cae"/>void <emphasis role="strong">reset</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;center_pos, const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;radius, uint16_t border_size, const SDL_Color &amp;border_color, const SDL_Color &amp;back_color, float degree, uint16_t segment=32)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a3c5567f0e7dfd9012d8701f058f9a159"/>void <emphasis role="strong">setGeometry</emphasis> (float x, float y, float rw, float rh)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a977a6eb0e30d7d7aaf16542fcc5fc3cc"/>void <emphasis role="strong">setGeometry</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;position, const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a11b0a097a9cb06ac4dc8b40024b33b93"/>void <emphasis role="strong">setBorder</emphasis> (uint16_t size, const SDL_Color &amp;color)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1af05f2bf4bae924bb3cdfe7ad625cbb17"/>void <emphasis role="strong">setBackground</emphasis> (const SDL_Color &amp;color)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a8ecc49526d44d94de9b8a4cb528fba31"/>void <emphasis role="strong">setRotate</emphasis> (float rotate)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1ad3a80d9b2b7500a4e4b9ad0d26055dea"/>const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp; <emphasis role="strong">centerPosition</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a2ff0e1194df5691dc8c0b5cddbecb127"/>const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp; <emphasis role="strong">radius</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a13c1950bd394fb247ff79291f62b8595"/>uint16_t <emphasis role="strong">borderSize</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1ad35be26e097fab93cb9d5914a932426f"/>const SDL_Color &amp; <emphasis role="strong">borderColor</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a8ac107f9eaa037e6cc79bb3e45571b15"/>const SDL_Color &amp; <emphasis role="strong">backgroundColor</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a2b6131c9e3fa069d9fb07099c9b05a26"/>float <emphasis role="strong">rotateDegree</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1ac2cd14583cf4cd0a245ad1a544305767"/>const int * <emphasis role="strong">indices</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1ac63f216752df051280c8e1c7669a080e"/>const SDL_Vertex * <emphasis role="strong">vertices</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1af3fbdc1a314b1654ca6b1f841b9ef415"/>size_t <emphasis role="strong">indicesCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a4b69f007e1bb4402255c67f6076d4870"/>size_t <emphasis role="strong">vertexCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a9b11d3ea10cc80e88f82cd1bbfa36597"/>const int * <emphasis role="strong">borderIndices</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a342222557222bd751f81f93ea487cb7a"/>const SDL_Vertex * <emphasis role="strong">borderVertices</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a201364a3ddc1d4390f61a8de845b03be"/>size_t <emphasis role="strong">borderIndicesCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_ellipse_1a5f9a11eec8e1c204be88c74b58ec1b12"/>size_t <emphasis role="strong">borderVerticesCount</emphasis> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/<link linkend="__basic_8h">Basic.h</link></section>

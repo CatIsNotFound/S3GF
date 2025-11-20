@@ -8,411 +8,403 @@
 4 <emphasis role="preprocessor">#include&#32;&quot;Components.h&quot;</emphasis>
 5 
 6 <emphasis role="keyword">namespace&#32;</emphasis><link linkend="_namespace_s3_g_f">S3GF</link>&#32;{
-7 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_window">Window</link>;
-8 &#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_property">Property</link>;
-9 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_texture">Texture</link>;
-10 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Renderer&#32;{
-11 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-12 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Renderer(<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>);
-13 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Renderer();
-14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
-15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window()&#32;<emphasis role="keyword">const</emphasis>;
-16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;_update();
-17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;fillBackground(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
-18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawPoint(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point);
-19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawPoint(<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&amp;&#32;point);
-20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawLine(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&#32;line);
-21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawLine(<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&amp;&#32;line);
-22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawRectangle(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rectangle);
-23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawRectangle(<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&amp;&#32;rectangle);
-24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTriangle(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&#32;triangle);
-25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTriangle(<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&amp;&#32;triangle);
-26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawEllipse(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&#32;ellipse);
-27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawEllipse(<link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&amp;&#32;ellipse);
-28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTexture(SDL_Texture*&#32;texture,&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;property);
-29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawText(TTF_Text*&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position);
-30 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>Command&#32;{
-32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Command(SDL_Renderer*&#32;renderer)&#32;:&#32;renderer(renderer)&#32;{}
-33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;=&#32;0;
-34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;renderer;
-35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>FillCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;FillCMD(SDL_Renderer*&#32;renderer,&#32;SDL_Color&#32;color&#32;=&#32;StdColor::Black)&#32;
-38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;bg_color(color)&#32;{}
-39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Color&#32;bg_color;
-40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>PointCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;PointCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point)
-44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;point(point)&#32;{}
-45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&#32;point;
-46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>LineCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;LineCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&#32;line)
-50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;line(line)&#32;{}
-51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&#32;line;
-52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>RectCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-55 
-56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;RectCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect)
-57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;rectangle(rect)&#32;{}
-58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&#32;rectangle;
-59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TriangleCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TriangleCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&#32;tri)
-63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;triangle(tri)&#32;{}
-64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&#32;triangle;
-65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-66 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-67 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>EllipseCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;EllipseCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&#32;elli)
-69 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;ellipse(elli)&#32;{}
-70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&#32;ellipse;
-71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-72 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-73 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TextureCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-74 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextureCMD(SDL_Renderer*&#32;renderer,&#32;SDL_Texture*&#32;texture,&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;property)
-75 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;_texture(texture),&#32;_property(property)&#32;{}
-76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Texture*&#32;_texture;
-77 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;_property;
-78 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-80 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TextCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
-81 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextCMD(SDL_Renderer*&#32;renderer,&#32;TTF_Text*&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position)
-82 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;text(text),&#32;position(position)&#32;{}
-83 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Text*&#32;text;
-84 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&#32;position;
-85 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
-86 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-87 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-88 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;_renderer{<emphasis role="keyword">nullptr</emphasis>};
-89 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;_window{<emphasis role="keyword">nullptr</emphasis>};
-90 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;std::unique_ptr&lt;Command&gt;&gt;&#32;_cmd_list;
-91 &#32;&#32;&#32;&#32;};
-92 
-93 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Window&#32;{
-94 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-95 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_window_1_1_geometry">Geometry</link>&#32;{
-96 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;y,&#32;width,&#32;height;
-97 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-98 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;GraphicEngine&#32;{
-99 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;OPENGL,
-100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;VULKAN
+7 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_engine">Engine</link>;
+8 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_window">Window</link>;
+9 &#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_property">Property</link>;
+10 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_texture">Texture</link>;
+11 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_event_system">EventSystem</link>;
+12 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Renderer&#32;{
+13 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Renderer(<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>);
+15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Renderer();
+16 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window()&#32;<emphasis role="keyword">const</emphasis>;
+18 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;_update();
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;fillBackground(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;covered&#32;=&#32;<emphasis role="keyword">false</emphasis>);
+20 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawPoint(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point);
+21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawPoint(<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&amp;&#32;point);
+22 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawLine(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&#32;line);
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawLine(<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&amp;&#32;line);
+24 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawRectangle(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rectangle);
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawRectangle(<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&amp;&#32;rectangle);
+26 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTriangle(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&#32;triangle);
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTriangle(<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&amp;&#32;triangle);
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawEllipse(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&#32;ellipse);
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawEllipse(<link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&amp;&#32;ellipse);
+30 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawTexture(SDL_Texture*&#32;texture,&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;property);
+31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;drawText(TTF_Text*&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position);
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setViewport(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&amp;&#32;geometry);
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setClipView(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&amp;&#32;geometry);
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setBlendMode(<emphasis role="keyword">const</emphasis>&#32;SDL_BlendMode&amp;&#32;blend_mode);
+35 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;updateBackground(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color)&#32;{
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_background_color&#32;=&#32;color;
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>Command&#32;{
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Command(SDL_Renderer*&#32;renderer)&#32;:&#32;renderer(renderer)&#32;{}
+41 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;=&#32;0;
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;renderer;
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>FillCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+45 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;FillCMD(SDL_Renderer*&#32;renderer,&#32;SDL_Color&#32;color&#32;=&#32;<link linkend="__basic_8h_1a00b679b260574e983176649636e9ac48">StdColor::Black</link>,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;covered&#32;=&#32;<emphasis role="keyword">false</emphasis>)
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;bg_color(color),&#32;_covered(covered)&#32;{}
+47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Color&#32;bg_color;
+48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_covered;
+49 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+50 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>ClipCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;ClipCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;reset&#32;=&#32;<emphasis role="keyword">true</emphasis>,&#32;SDL_Rect&#32;rect&#32;=&#32;{0,&#32;0,&#32;0,&#32;0})
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;_reset(reset),&#32;_clip_area(rect)&#32;{}
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Rect&#32;_clip_area;
+55 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_reset;
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>ViewportCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;ViewportCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;reset&#32;=&#32;<emphasis role="keyword">true</emphasis>,&#32;SDL_Rect&#32;rect&#32;=&#32;{0,&#32;0,&#32;0,&#32;0})
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;_reset(reset),&#32;_viewport_area(rect)&#32;{}
+61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Rect&#32;_viewport_area;
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_reset;
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>BlendModeCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+66 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;BlendModeCMD(SDL_Renderer*&#32;renderer,&#32;SDL_BlendMode&#32;blend_mode&#32;=&#32;SDL_BLENDMODE_NONE)
+67 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;_blend_mode(blend_mode)&#32;{}
+68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_BlendMode&#32;_blend_mode;
+69 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>PointCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+72 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;PointCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&amp;&#32;point)
+73 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;point(point)&#32;{}
+74 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_point">Graphics::Point</link>&#32;point;
+75 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+77 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>LineCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+78 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;LineCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&amp;&#32;line)
+79 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;line(line)&#32;{}
+80 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_line">Graphics::Line</link>&#32;line;
+81 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+82 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+83 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>RectCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+84 
+85 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;RectCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&amp;&#32;rect)
+86 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;rectangle(rect)&#32;{}
+87 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_rectangle">Graphics::Rectangle</link>&#32;rectangle;
+88 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+89 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+90 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TriangleCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+91 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TriangleCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&amp;&#32;tri)
+92 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;triangle(tri)&#32;{}
+93 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_triangle">Graphics::Triangle</link>&#32;triangle;
+94 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+95 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+96 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>EllipseCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+97 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;EllipseCMD(SDL_Renderer*&#32;renderer,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&amp;&#32;elli)
+98 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;ellipse(elli)&#32;{}
+99 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_graphics_1_1_ellipse">Graphics::Ellipse</link>&#32;ellipse;
+100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
 101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;title,&#32;<emphasis role="keywordtype">int</emphasis>&#32;width&#32;=&#32;800,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height&#32;=&#32;600,&#32;GraphicEngine&#32;engine&#32;=&#32;OPENGL);
-103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">~Window</link>();
-104 
-105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;move(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y);
-106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;resize(<emphasis role="keywordtype">int</emphasis>&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height);
-107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setGeometry(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">int</emphasis>&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height);
-108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&#32;geometry()&#32;<emphasis role="keyword">const</emphasis>;
-110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;windowID()&#32;<emphasis role="keyword">const</emphasis>;
-111 
-112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;show();
-113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;hide();
-114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;visible()&#32;<emphasis role="keyword">const</emphasis>;
-115 
-116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setResizable(<emphasis role="keywordtype">bool</emphasis>&#32;enabled);
-117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;resizable()&#32;<emphasis role="keyword">const</emphasis>;
-118 
-119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setRenderer(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
-120 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer()&#32;<emphasis role="keyword">const</emphasis>;
-121 
-122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setWindowTitle(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;title);
-123 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;windowTitle()&#32;<emphasis role="keyword">const</emphasis>;&#32;
-124 
-125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Window*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
-126 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;installPaintEvent(<emphasis role="keyword">const</emphasis>&#32;std::function&lt;<emphasis role="keywordtype">void</emphasis>(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer)&gt;&amp;&#32;paint_event);
-127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;paintEvent();
-128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;resizeEvent();
-129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;moveEvent();
-130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;getFocusEvent();
-131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;lostFocusEvent();
-132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;unloadEvent();
-133 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&#32;_window_geometry;
-135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::shared_ptr&lt;Renderer&gt;&#32;_renderer;&#32;
-136 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Window*&#32;_window{<emphasis role="keyword">nullptr</emphasis>};
-137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_WindowID&#32;_winID;
-138 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;_title;
-139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_visible{<emphasis role="keyword">true</emphasis>};
-140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_resizable{<emphasis role="keyword">false</emphasis>};
-141 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void(Renderer*)&gt;&#32;_paint_event;
-142 &#32;&#32;&#32;&#32;};
-143 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_class_s3_g_f_1_1_engine">Engine</link>;
-144 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>EventSystem&#32;{
-145 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-146 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem(EventSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem(<emphasis role="keyword">const</emphasis>&#32;EventSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-148 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem&#32;&amp;operator=(EventSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;EventSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~EventSystem();
+102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TextureCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextureCMD(SDL_Renderer*&#32;renderer,&#32;SDL_Texture*&#32;texture,&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;property)
+104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;_texture(texture),&#32;_property(property)&#32;{}
+105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Texture*&#32;_texture;
+106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_property">Property</link>*&#32;_property;
+107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>TextCMD&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;Command&#32;{
+110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextCMD(SDL_Renderer*&#32;renderer,&#32;TTF_Text*&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;position)
+111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;:&#32;Command(renderer),&#32;text(text),&#32;position(position)&#32;{}
+112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Text*&#32;text;
+113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&#32;position;
+114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;exec()&#32;<emphasis role="keyword">override</emphasis>;
+115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Renderer*&#32;_renderer{<emphasis role="keyword">nullptr</emphasis>};
+118 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;_window{<emphasis role="keyword">nullptr</emphasis>};
+119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;SDL_Color&#32;_background_color;
+120 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;std::unique_ptr&lt;Command&gt;&gt;&#32;_cmd_list;
+121 &#32;&#32;&#32;&#32;};
+122 
+123 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Window&#32;{
+124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">friend</emphasis>&#32;<emphasis role="keyword">class&#32;</emphasis>Renderer;
+125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">friend</emphasis>&#32;<emphasis role="keyword">class&#32;</emphasis>EventSystem;
+126 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_window_1_1_geometry">Geometry</link>&#32;{
+128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;y,&#32;width,&#32;height;
+129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;GraphicEngine&#32;{
+131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;OPENGL,
+132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;VULKAN
+133 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>(<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;<emphasis role="keywordtype">object</emphasis>,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;title,&#32;<emphasis role="keywordtype">int</emphasis>&#32;width&#32;=&#32;800,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height&#32;=&#32;600,&#32;GraphicEngine&#32;engine&#32;=&#32;OPENGL);
+135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">~Window</link>();
+136 
+137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;move(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y);
+138 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;resize(<emphasis role="keywordtype">int</emphasis>&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height);
+139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setGeometry(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">int</emphasis>&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height);
+140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+141 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&#32;geometry()&#32;<emphasis role="keyword">const</emphasis>;
+142 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;windowID()&#32;<emphasis role="keyword">const</emphasis>;
+143 
+144 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;show();
+145 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;hide();
+146 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;visible()&#32;<emphasis role="keyword">const</emphasis>;
+147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;close();
+148 
+149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setResizable(<emphasis role="keywordtype">bool</emphasis>&#32;enabled);
+150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;resizable()&#32;<emphasis role="keyword">const</emphasis>;
 151 
-152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;EventSystem*&#32;global(<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;engine);
-153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;EventSystem*&#32;global();
-154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;appendEvent(uint64_t&#32;<emphasis role="keywordtype">id</emphasis>,&#32;<emphasis role="keyword">const</emphasis>&#32;std::function&lt;<emphasis role="keywordtype">void</emphasis>(SDL_Event)&gt;&amp;&#32;event);
-155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;removeEvent(uint64_t&#32;<emphasis role="keywordtype">id</emphasis>);
-156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;clearEvent();
-157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;run();
-158 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;EventSystem(<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;engine)&#32;:&#32;_engine(engine)&#32;{}
-160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;EventSystem&gt;&#32;_instance;
-161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;_engine{<emphasis role="keyword">nullptr</emphasis>};
-162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::map&lt;uint64_t,&#32;std::function&lt;void(SDL_Event)&gt;&gt;&#32;_event_list;
-163 &#32;&#32;&#32;&#32;};
-164 
-165 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Engine&#32;{
-166 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;</emphasis>constIter&#32;=&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;::const_iterator;
-168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;</emphasis>iter&#32;=&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;::iterator;
-169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Engine();&#32;
-170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Engine();
-171 
-172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isRunning()&#32;<emphasis role="keyword">const</emphasis>;
-173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;exit(<emphasis role="keywordtype">int</emphasis>&#32;code&#32;=&#32;0);
-174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;exec();
-175 
-176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;newWindow(<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window);
-177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;removeWindow(SDL_WindowID&#32;<emphasis role="keywordtype">id</emphasis>);
-178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window(SDL_WindowID&#32;<emphasis role="keywordtype">id</emphasis>&#32;=&#32;_main_window_id)&#32;<emphasis role="keyword">const</emphasis>;
-179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;uint32_t&gt;&#32;windowIDList()&#32;<emphasis role="keyword">const</emphasis>;
-180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;constIter&#32;begin()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.cbegin();&#32;}
-181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;iter&#32;begin()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.begin();&#32;}
-182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;constIter&#32;end()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.cend();&#32;}
-183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;iter&#32;end()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.end();&#32;}
-184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;windowCount()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.size();&#32;}
-185 
-186 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFPS(uint32_t&#32;fps);
-187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;fps()&#32;<emphasis role="keyword">const</emphasis>;&#32;
-188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;throwFatalError();
-189 
-190 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;cleanUp();
-192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;running();
-193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_running;
-194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;_return_code;
-195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_quit_requested;
-196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_fps{0};
-197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;_frame_in_ns{0};
-198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_real_fps{0};
-199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;SDL_WindowID&#32;_main_window_id;
-200 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;&#32;_window_list;
-201 &#32;&#32;&#32;&#32;};
-202 
-203 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Logger&#32;{
-204 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;LogLevel&#32;{
-206 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;DEBUG,
-207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;INFO,
-208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;WARN,
-209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ERROR,
-210 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;FATAL
-211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-212 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger()&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-213 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger(Logger&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-214 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger(<emphasis role="keyword">const</emphasis>&#32;Logger&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger&amp;&#32;operator=(Logger&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger&amp;&#32;operator=(<emphasis role="keyword">const</emphasis>&#32;Logger&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Logger()&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setRenderer(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
+153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer()&#32;<emphasis role="keyword">const</emphasis>;
+154 
+155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setBorderless(<emphasis role="keywordtype">bool</emphasis>&#32;enabled);
+156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;borderless()&#32;<emphasis role="keyword">const</emphasis>;
+157 
+158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFullScreen(<emphasis role="keywordtype">bool</emphasis>&#32;enabled,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;move_to_center&#32;=&#32;<emphasis role="keyword">false</emphasis>);
+159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;fullScreen()&#32;<emphasis role="keyword">const</emphasis>;
+160 
+161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setWindowTitle(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;title);
+162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;windowTitle()&#32;<emphasis role="keyword">const</emphasis>;&#32;
+163 
+164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Window*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
+165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;installPaintEvent(<emphasis role="keyword">const</emphasis>&#32;std::function&lt;<emphasis role="keywordtype">void</emphasis>(<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer)&gt;&amp;&#32;paint_event);
+166 &#32;&#32;&#32;&#32;<emphasis role="keyword">protected</emphasis>:
+167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;paintEvent();
+168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;resizeEvent();
+169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;moveEvent();
+170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;getFocusEvent();
+171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;lostFocusEvent();
+172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;unloadEvent();
+173 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_geometry">Geometry</link>&#32;_window_geometry;
+175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::shared_ptr&lt;Renderer&gt;&#32;_renderer;&#32;
+176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Window*&#32;_window{<emphasis role="keyword">nullptr</emphasis>};
+177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_WindowID&#32;_winID;
+178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;_title;
+179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_visible{<emphasis role="keyword">true</emphasis>};
+180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_resizable{<emphasis role="keyword">false</emphasis>};
+181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_borderless{<emphasis role="keyword">false</emphasis>};
+182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_fullscreen{<emphasis role="keyword">false</emphasis>};
+183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Vector2&#32;_mouse_pos{0,&#32;0};
+184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;std::function&lt;void(Renderer*)&gt;&gt;&#32;_paint_event_list;
+185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Engine*&#32;_engine;
+186 &#32;&#32;&#32;&#32;};
+187 
+188 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>EventSystem&#32;{
+189 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+190 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem(EventSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem(<emphasis role="keyword">const</emphasis>&#32;EventSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem&#32;&amp;operator=(EventSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;EventSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;EventSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~EventSystem();
+195 
+196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;EventSystem*&#32;global(<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;engine);
+197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;EventSystem*&#32;global();
+198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;appendEvent(uint64_t&#32;<emphasis role="keywordtype">id</emphasis>,&#32;<emphasis role="keyword">const</emphasis>&#32;std::function&lt;<emphasis role="keywordtype">void</emphasis>(SDL_Event)&gt;&amp;&#32;event);
+199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;removeEvent(uint64_t&#32;<emphasis role="keywordtype">id</emphasis>);
+200 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;clearEvent();
+201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;run();
+202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isKeyDown()&#32;<emphasis role="keyword">const</emphasis>;
+203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;[[nodiscard]]&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isMouseButtonDown()&#32;<emphasis role="keyword">const</emphasis>;
+204 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;EventSystem(<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;engine)&#32;:&#32;_engine(engine)&#32;{}
+206 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;EventSystem&gt;&#32;_instance;
+207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_engine">Engine</link>*&#32;_engine{<emphasis role="keyword">nullptr</emphasis>};
+208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_mouse_down{<emphasis role="keyword">false</emphasis>},&#32;_is_key_down{<emphasis role="keyword">false</emphasis>};
+209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::map&lt;uint64_t,&#32;std::function&lt;void(SDL_Event)&gt;&gt;&#32;_event_list;
+210 &#32;&#32;&#32;&#32;};
+211 
+212 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Engine&#32;{
+213 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+214 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;</emphasis>constIter&#32;=&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;::const_iterator;
+215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;</emphasis>iter&#32;=&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;::iterator;
+216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Engine();&#32;
+217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Engine();
 218 
-219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;log(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;message,&#32;LogLevel&#32;level&#32;=&#32;DEBUG)&#32;{
-220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_time&#32;=&#32;SDL_GetTicksNS();
-221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(level&#32;&lt;&#32;_base_level)&#32;<emphasis role="keywordflow">return</emphasis>;
-222 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;_real_time&#32;=&#32;(_running_time&#32;-&#32;_started_time)&#32;/&#32;1e9;
-223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(level&#32;&gt;=&#32;WARN)&#32;{
-224 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cerr&#32;&lt;&lt;&#32;std::format(<emphasis role="stringliteral">&quot;[{:.06f}]&#32;[{}]&#32;{}\n&quot;</emphasis>,&#32;_real_time,&#32;_logLevelToString(level),&#32;message);
-225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
-226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;std::format(<emphasis role="stringliteral">&quot;[{:.06f}]&#32;[{}]&#32;{}\n&quot;</emphasis>,&#32;_real_time,&#32;_logLevelToString(level),&#32;message);
-227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_last_log_level&#32;=&#32;level;
-229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_last_log_info&#32;=&#32;message;
-230 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-231 
-232 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;setBaseLogLevel(LogLevel&#32;level)&#32;{
-233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_base_level&#32;=&#32;level;
-234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-235 
-236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;lastError()&#32;{
-237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(_last_log_level&#32;&gt;=&#32;ERROR&#32;?&#32;_last_log_info&#32;:&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>);
-238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-239 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;_logLevelToString(LogLevel&#32;level)&#32;{
-241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(level)&#32;{
-242 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;DEBUG:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;DEBUG&quot;</emphasis>;
-243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;INFO:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;INFO&quot;</emphasis>;
-244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;WARN:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;WARN&quot;</emphasis>;
-245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;ERROR:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;ERROR&quot;</emphasis>;
-246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;FATAL:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;FATAL&quot;</emphasis>;
-247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;UNKNOWN&quot;</emphasis>;
-248 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-250 
-251 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;LogLevel&#32;_base_level;
-252 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;LogLevel&#32;_last_log_level;
-253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;_last_log_info;
-254 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;_started_time;
-255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;_running_time;
-256 &#32;&#32;&#32;&#32;};
-257 
-258 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Font&#32;{
-259 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6f">Style</link>&#32;{
-266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faa6a508c2fdc8c8a0f88ce8436314fa9f">Regular</link>&#32;=&#32;0x0,
-268 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faacd53d94aca257770d7173b17c250365">Bold</link>&#32;=&#32;0x1,
-270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6fa31dae5ace49603c09991e457e6d1406a">Italic</link>&#32;=&#32;0x2,
-272 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faf130e6ae979f642e09688c5167405f73">Underline</link>&#32;=&#32;0x4,
-274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faf4f2d4c97903dc41d5dd7ffeffff8e4f">Strikethrough</link>&#32;=&#32;0x8
-275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-280 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;{
-282 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419acd1c50b7abe88d57a6389730f843d252">LeftToRight</link>&#32;=&#32;4,
-284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419a87226174aa7569ef1ac0415fb6ccf164">RightToLeft</link>,
-286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419ab50f90f228c756e305a7530da6d241f1">TopToBottom</link>,
-288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419a29eb6f9aab53e6dc2c377f47012ce677">BottomToTop</link>
-289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;Hinting&#32;{
-294 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Normal,
-295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Light,
-296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Mono,
-297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;None,
-298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SubPixel
-299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font(Font&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font(<emphasis role="keyword">const</emphasis>&#32;Font&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-302 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font&#32;&amp;operator=(Font&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;Font&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Font(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_path,&#32;<emphasis role="keywordtype">float</emphasis>&#32;font_size&#32;=&#32;9.f);
-305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Font();
-306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontSize(<emphasis role="keywordtype">float</emphasis>&#32;size);
-308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;fontSize()&#32;<emphasis role="keyword">const</emphasis>;
-309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontColor(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
-310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&#32;fontColor()&#32;<emphasis role="keyword">const</emphasis>;
-311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setStyle(uint32_t&#32;flags);
-312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setOutline(uint32_t&#32;value&#32;=&#32;0);
-313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;outline()&#32;<emphasis role="keyword">const</emphasis>;
-314 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setOutlineColor(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
-315 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&#32;outlineColor()&#32;<emphasis role="keyword">const</emphasis>;
-316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontDirection(<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;direction);
-317 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;fontDirection()&#32;<emphasis role="keyword">const</emphasis>;
-318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontHinting(uint32_t&#32;flags);
-319 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontKerning(<emphasis role="keywordtype">bool</emphasis>&#32;enabled);
-320 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;fontKerning()&#32;<emphasis role="keyword">const</emphasis>;
-321 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setLineSpacing(uint32_t&#32;spacing);
-322 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;lineSpacing()&#32;<emphasis role="keyword">const</emphasis>;
-323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
-324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;backgrond_color);
-325 
-326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Font*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
-327 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Font*&#32;_font{<emphasis role="keyword">nullptr</emphasis>};
-329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;_font_size{};
-330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SColor&#32;_font_color{};
-331 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_style_flags{};
-332 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_outline{};
-333 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SColor&#32;_outline_color{};
-334 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;_font_direction{};
-335 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_hinting{};
-336 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_font_kerning{};
-337 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_line_spacing{};
-338 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_font_is_loaded{<emphasis role="keyword">false</emphasis>};
-339 &#32;&#32;&#32;&#32;};
-340 
-341 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>TextSystem&#32;{
-342 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-343 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_text_system_1_1_text">Text</link>&#32;{
-344 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Text*&#32;self;
-345 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;text;
-346 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;font_name;
-347 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Color&#32;font_color;
-348 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-349 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_text_system_1_1_font_engine">FontEngine</link>&#32;{
-350 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;engine;
-351 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;surface_engine;
-352 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_ptr&lt;Font&gt;&#32;font;
-353 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-354 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem(TextSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-355 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem(<emphasis role="keyword">const</emphasis>&#32;TextSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-356 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem&#32;&amp;operator=(TextSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-357 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;TextSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-358 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~TextSystem();
+219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isRunning()&#32;<emphasis role="keyword">const</emphasis>;
+220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;exit(<emphasis role="keywordtype">int</emphasis>&#32;code&#32;=&#32;0);
+221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;exec();
+222 
+223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;newWindow(<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window);
+224 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;removeWindow(SDL_WindowID&#32;<emphasis role="keywordtype">id</emphasis>);
+225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_window">Window</link>*&#32;window(SDL_WindowID&#32;<emphasis role="keywordtype">id</emphasis>&#32;=&#32;_main_window_id)&#32;<emphasis role="keyword">const</emphasis>;
+226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;uint32_t&gt;&#32;windowIDList()&#32;<emphasis role="keyword">const</emphasis>;
+227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;constIter&#32;begin()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.cbegin();&#32;}
+228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;iter&#32;begin()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.begin();&#32;}
+229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;constIter&#32;end()<emphasis role="keyword">&#32;const&#32;</emphasis>{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.cend();&#32;}
+230 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;iter&#32;end()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.end();&#32;}
+231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;windowCount()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;_window_list.size();&#32;}
+232 
+233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFPS(uint32_t&#32;fps);
+234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;fps()&#32;<emphasis role="keyword">const</emphasis>;&#32;
+235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;throwFatalError();
+236 
+237 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;cleanUp();
+239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;running();
+240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_running;
+241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;_return_code;
+242 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_quit_requested;
+243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_fps{0};
+244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;_frame_in_ns{0};
+245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_real_fps{0};
+246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;SDL_WindowID&#32;_main_window_id;
+247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;SDL_WindowID,&#32;std::unique_ptr&lt;Window&gt;&gt;&#32;_window_list;
+248 &#32;&#32;&#32;&#32;};
+249 
+250 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Font&#32;{
+251 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+256 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6f">Style</link>&#32;{
+258 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faa6a508c2fdc8c8a0f88ce8436314fa9f">Regular</link>&#32;=&#32;0x0,
+260 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faacd53d94aca257770d7173b17c250365">Bold</link>&#32;=&#32;0x1,
+262 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6fa31dae5ace49603c09991e457e6d1406a">Italic</link>&#32;=&#32;0x2,
+264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faf130e6ae979f642e09688c5167405f73">Underline</link>&#32;=&#32;0x4,
+266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1adae219183f4d93eac0ccc1acee291d6faf4f2d4c97903dc41d5dd7ffeffff8e4f">Strikethrough</link>&#32;=&#32;0x8
+267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+272 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;{
+274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419acd1c50b7abe88d57a6389730f843d252">LeftToRight</link>&#32;=&#32;4,
+276 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419a87226174aa7569ef1ac0415fb6ccf164">RightToLeft</link>,
+278 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419ab50f90f228c756e305a7530da6d241f1">TopToBottom</link>,
+280 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419a29eb6f9aab53e6dc2c377f47012ce677">BottomToTop</link>
+281 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;Hinting&#32;{
+286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Normal,
+287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Light,
+288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Mono,
+289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;None,
+290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SubPixel
+291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+292 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font(Font&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font(<emphasis role="keyword">const</emphasis>&#32;Font&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+294 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font&#32;&amp;operator=(Font&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Font&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;Font&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;Font(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_path,&#32;<emphasis role="keywordtype">float</emphasis>&#32;font_size&#32;=&#32;9.f);
+297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Font();
+298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontSize(<emphasis role="keywordtype">float</emphasis>&#32;size);
+300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;fontSize()&#32;<emphasis role="keyword">const</emphasis>;
+301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontColor(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
+302 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&#32;fontColor()&#32;<emphasis role="keyword">const</emphasis>;
+303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setStyle(uint32_t&#32;flags);
+304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setOutline(uint32_t&#32;value&#32;=&#32;0);
+305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;outline()&#32;<emphasis role="keyword">const</emphasis>;
+306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setOutlineColor(<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
+307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&#32;outlineColor()&#32;<emphasis role="keyword">const</emphasis>;
+308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontDirection(<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;direction);
+309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;fontDirection()&#32;<emphasis role="keyword">const</emphasis>;
+310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontHinting(uint32_t&#32;flags);
+311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setFontKerning(<emphasis role="keywordtype">bool</emphasis>&#32;enabled);
+312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;fontKerning()&#32;<emphasis role="keyword">const</emphasis>;
+313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;setLineSpacing(uint32_t&#32;spacing);
+314 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;lineSpacing()&#32;<emphasis role="keyword">const</emphasis>;
+315 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;backgrond_color);
+317 
+318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Font*&#32;self()&#32;<emphasis role="keyword">const</emphasis>;
+319 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+320 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Font*&#32;_font{<emphasis role="keyword">nullptr</emphasis>};
+321 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;_font_size{};
+322 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SColor&#32;_font_color{};
+323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_style_flags{};
+324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_outline{};
+325 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SColor&#32;_outline_color{};
+326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font_1abb818ee36d5718918af00acbbd541419">Direction</link>&#32;_font_direction{};
+327 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_font_hinting{};
+328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_font_kerning{};
+329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint32_t&#32;_line_spacing{};
+330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_font_is_loaded{<emphasis role="keyword">false</emphasis>};
+331 &#32;&#32;&#32;&#32;};
+332 
+333 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>TextSystem&#32;{
+334 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+335 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_text_system_1_1_text">Text</link>&#32;{
+336 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_Text*&#32;self;
+337 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;text;
+338 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;font_name;
+339 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Color&#32;font_color;
+340 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+341 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_text_system_1_1_font_engine">FontEngine</link>&#32;{
+342 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;engine;
+343 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;surface_engine;
+344 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unique_ptr&lt;Font&gt;&#32;font;
+345 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+346 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem(TextSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+347 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem(<emphasis role="keyword">const</emphasis>&#32;TextSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+348 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem&#32;&amp;operator=(TextSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+349 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TextSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;TextSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+350 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~TextSystem();
+351 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+352 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;TextSystem*&#32;global();
+353 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isLoaded()&#32;<emphasis role="keyword">const</emphasis>;
+354 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;unload();
+355 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;addFont(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_path,&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
+356 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;removeFont(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
+357 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font">Font</link>*&#32;font(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
+358 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;StringList&#32;fontNameList()&#32;<emphasis role="keyword">const</emphasis>;
 359 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-360 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;TextSystem*&#32;global();
-361 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isLoaded()&#32;<emphasis role="keyword">const</emphasis>;
-362 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;unload();
-363 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;addFont(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_path,&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
-364 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;removeFont(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
-365 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_s3_g_f_1_1_font">Font</link>*&#32;font(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
-366 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;StringList&#32;fontNameList()&#32;<emphasis role="keyword">const</emphasis>;
-367 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-368 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;addText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
-369 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;removeText(uint64_t&#32;text_id);
-370 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
-371 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;appendText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
-372 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setTextFont(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
-373 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setTextColor(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
-374 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_text_system_1_1_text">Text</link>*&#32;indexOfText(uint64_t&#32;text_id);
-375 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;uint64_t&gt;&#32;textIDList()&#32;<emphasis role="keyword">const</emphasis>;
-376 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;drawText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos,&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
-377 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(uint64_t&#32;text_id);
-378 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-379 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextSystem();
-380 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;TextSystem&gt;&#32;_instance;
-381 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_loaded{<emphasis role="keyword">false</emphasis>};
-382 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::map&lt;uint64_t,&#32;Text&gt;&#32;_text_map;
-383 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;std::string,&#32;FontEngine&gt;&#32;_font_map;
-384 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;_text_engine{<emphasis role="keyword">nullptr</emphasis>};
-385 &#32;&#32;&#32;&#32;};
-386 
-387 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>AudioSystem&#32;{
-388 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
-389 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum&#32;class</emphasis>&#32;Status&#32;{
-390 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Unknown,
-391 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;NoLoaded,
-392 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Loading,
-393 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Invalid,
-394 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Loaded
-395 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-396 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-397 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_audio_system_1_1_audio">Audio</link>&#32;{
-398 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Audio*&#32;self;
-399 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Status&#32;status;
-400 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;url;
-401 
-402 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>{
-403 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Track*&#32;self{<emphasis role="keyword">nullptr</emphasis>};
-404 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;duration{0};
-405 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;position{0};
-406 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;track;
-407 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
-408 
-409 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem(AudioSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-410 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem(<emphasis role="keyword">const</emphasis>&#32;AudioSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-411 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem&#32;&amp;operator=(AudioSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-412 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;AudioSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
-413 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;AudioSystem*&#32;global();
-414 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~AudioSystem();
-415 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isValid()&#32;<emphasis role="keyword">const</emphasis>;
-416 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;load();
-417 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;unload();
-418 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
-419 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;newAudio();
-420 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;remove(uint64_t&#32;audio_id);
-421 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;clear();
-422 
-423 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_audio_system_1_1_audio">Audio</link>&amp;&#32;audio(uint64_t&#32;audio_id)&#32;<emphasis role="keyword">const</emphasis>;&#32;
-424 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
-425 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;AudioSystem();
-426 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;AudioSystem&gt;&#32;_instance;
-427 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_init{<emphasis role="keyword">false</emphasis>};
-428 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Mixer*&#32;_mixer;
-429 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;uint64_t,&#32;Audio&gt;&#32;_audios_map;
-430 &#32;&#32;&#32;&#32;};
-431 }
-432 
-433 <emphasis role="preprocessor">#endif</emphasis>
+360 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;addText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+361 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;removeText(uint64_t&#32;text_id);
+362 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+363 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;appendText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+364 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setTextFont(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;font_name);
+365 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;setTextColor(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;SDL_Color&amp;&#32;color);
+366 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_text_system_1_1_text">Text</link>*&#32;indexOfText(uint64_t&#32;text_id);
+367 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;uint64_t&gt;&#32;textIDList()&#32;<emphasis role="keyword">const</emphasis>;
+368 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;drawText(uint64_t&#32;text_id,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link>&amp;&#32;pos,&#32;<link linkend="_class_s3_g_f_1_1_renderer">Renderer</link>*&#32;renderer);
+369 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;SDL_Surface*&#32;toImage(uint64_t&#32;text_id);
+370 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+371 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;TextSystem();
+372 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;TextSystem&gt;&#32;_instance;
+373 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_loaded{<emphasis role="keyword">false</emphasis>};
+374 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::map&lt;uint64_t,&#32;Text&gt;&#32;_text_map;
+375 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;std::string,&#32;FontEngine&gt;&#32;_font_map;
+376 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;TTF_TextEngine*&#32;_text_engine{<emphasis role="keyword">nullptr</emphasis>};
+377 &#32;&#32;&#32;&#32;};
+378 
+379 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>AudioSystem&#32;{
+380 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+381 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum&#32;class</emphasis>&#32;Status&#32;{
+382 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Unknown,
+383 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;NoLoaded,
+384 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Loading,
+385 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Invalid,
+386 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Loaded
+387 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+388 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+389 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_struct_s3_g_f_1_1_audio_system_1_1_audio">Audio</link>&#32;{
+390 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Audio*&#32;self;
+391 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Status&#32;status;
+392 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;url;
+393 
+394 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">struct&#32;</emphasis>{
+395 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Track*&#32;self{<emphasis role="keyword">nullptr</emphasis>};
+396 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;duration{0};
+397 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;position{0};
+398 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;track;
+399 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+400 
+401 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem(AudioSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+402 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem(<emphasis role="keyword">const</emphasis>&#32;AudioSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+403 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem&#32;&amp;operator=(AudioSystem&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+404 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;AudioSystem&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;AudioSystem&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+405 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;AudioSystem*&#32;global();
+406 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~AudioSystem();
+407 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isValid()&#32;<emphasis role="keyword">const</emphasis>;
+408 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;load();
+409 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;unload();
+410 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+411 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;uint64_t&#32;newAudio();
+412 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;remove(uint64_t&#32;audio_id);
+413 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;clear();
+414 
+415 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_audio_system_1_1_audio">Audio</link>&amp;&#32;audio(uint64_t&#32;audio_id)&#32;<emphasis role="keyword">const</emphasis>;&#32;
+416 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+417 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">explicit</emphasis>&#32;AudioSystem();
+418 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::unique_ptr&lt;AudioSystem&gt;&#32;_instance;
+419 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;_is_init{<emphasis role="keyword">false</emphasis>};
+420 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;MIX_Mixer*&#32;_mixer;
+421 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::unordered_map&lt;uint64_t,&#32;Audio&gt;&#32;_audios_map;
+422 &#32;&#32;&#32;&#32;};
+423 }
+424 
+425 <emphasis role="preprocessor">#endif</emphasis>
 </programlisting></section>

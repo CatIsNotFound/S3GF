@@ -1,4 +1,4 @@
-.TH "D:/Coding/S3GF/src/Algorithm/Draw.h" 3 "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "D:/Coding/S3GF/src/Algorithm/Draw.h" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,7 +9,7 @@ D:/Coding/S3GF/src/Algorithm/Draw.h
 \fR#include 'Libs\&.h'\fP
 .br
 
-.SS "Namespaces"
+.SS "命名空间"
 
 .in +1c
 .ti -1c
@@ -20,14 +20,14 @@ D:/Coding/S3GF/src/Algorithm/Draw.h
 .RI "namespace \fBS3GF::Algorithm\fP"
 .br
 .in -1c
-.SS "Macros"
+.SS "宏定义"
 
 .in +1c
 .ti -1c
 .RI "#define \fBS3GF_DRAW_H\fP"
 .br
 .in -1c
-.SS "Functions"
+.SS "函数"
 
 .in +1c
 .ti -1c
@@ -48,11 +48,17 @@ D:/Coding/S3GF/src/Algorithm/Draw.h
 .ti -1c
 .RI "void \fBS3GF::Algorithm::calcTriangle\fP (const \fBVector2\fP &pos1, const \fBVector2\fP &pos2, const \fBVector2\fP &pos3, const SDL_Color &color, std::array< SDL_Vertex, 3 > &vertices, std::array< int, 3 > &indices)"
 .br
+.ti -1c
+.RI "void \fBS3GF::Algorithm::calcEllipse\fP (const \fBVector2\fP &center_pt, const \fBSize\fP &radius, const SDL_Color &color, float degree, uint16_t segment, std::vector< SDL_Vertex > &vertices, std::vector< int > &indices)"
+.br
+.ti -1c
+.RI "void \fBS3GF::Algorithm::calcEllipseRing\fP (const \fBVector2\fP &center_pt, const \fBSize\fP &radius, uint16_t border_size, const SDL_Color &border_color, float degree, uint16_t segment, std::vector< SDL_Vertex > &vertices, std::vector< int > &indices)"
+.br
 .in -1c
-.SH "Macro Definition Documentation"
+.SH "宏定义说明"
 .PP 
 .SS "#define S3GF_DRAW_H"
 
-.SH "Author"
+.SH "作者"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

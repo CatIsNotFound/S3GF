@@ -81,6 +81,8 @@
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_date_time_1a34b1663601465cdefd56d506ef803869"/>static std::string_view <emphasis role="strong">currentTimezone</emphasis> ()</para>
 </listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_date_time_1ab378035653eef9d05b1cca26f4bfb106"/>static uint64_t <emphasis role="strong">currentTimestamp</emphasis> ()</para>
+</listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_date_time_1ab49dd000abfccfc657d43b4746b33371"/>static std::string <emphasis role="strong">now</emphasis> ()</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_date_time_1ac70d3c2e1bc50ae9703f6c912ae7d9e6"/>static <link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link> <emphasis role="strong">currentDateTime</emphasis> ()</para>

@@ -1,4 +1,4 @@
-.TH "S3GF::Timer" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Timer" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,9 +6,14 @@ S3GF::Timer
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Components\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
+.ti -1c
+.RI "\fBTimer\fP ()=delete"
+.br
 .ti -1c
 .RI "\fBTimer\fP (\fBTimer\fP &&)=delete"
 .br
@@ -22,10 +27,13 @@ S3GF::Timer
 .RI "\fBTimer\fP & \fBoperator=\fP (const \fBTimer\fP &)=delete"
 .br
 .ti -1c
-.RI "\fBTimer\fP (uint64_t delay, const std::function< void()> &event)"
+.RI "\fB~Timer\fP ()"
 .br
 .ti -1c
-.RI "void \fBsetDelay\fP (uint64_t delay)"
+.RI "\fBTimer\fP (uint64_t \fBdelay\fP, const std::function< void()> &event)"
+.br
+.ti -1c
+.RI "void \fBsetDelay\fP (uint64_t \fBdelay\fP)"
 .br
 .ti -1c
 .RI "void \fBstart\fP (uint32_t count=1)"
@@ -49,7 +57,41 @@ S3GF::Timer
 .RI "uint32_t \fBtriggeredCount\fP () const"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Timer::Timer ()\fR [delete]\fP"
+
+.SS "S3GF::Timer::Timer (\fBTimer\fP && )\fR [delete]\fP"
+
+.SS "S3GF::Timer::Timer (const \fBTimer\fP & )\fR [delete]\fP"
+
+.SS "S3GF::Timer::~Timer ()"
+
+.SS "S3GF::Timer::Timer (uint64_t delay, const std::function< void()> & event)\fR [explicit]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "uint64_t S3GF::Timer::delay () const"
+
+.SS "bool S3GF::Timer::enabled () const"
+
+.SS "bool S3GF::Timer::isFinished () const"
+
+.SS "\fBTimer\fP & S3GF::Timer::operator= (const \fBTimer\fP & )\fR [delete]\fP"
+
+.SS "\fBTimer\fP & S3GF::Timer::operator= (\fBTimer\fP && )\fR [delete]\fP"
+
+.SS "void S3GF::Timer::setDelay (uint64_t delay)"
+
+.SS "void S3GF::Timer::setEvent (const std::function< void()> & event)"
+
+.SS "void S3GF::Timer::start (uint32_t count = \fR1\fP)"
+
+.SS "void S3GF::Timer::stop ()"
+
+.SS "uint32_t S3GF::Timer::triggeredCount () const"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

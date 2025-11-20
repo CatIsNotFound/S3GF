@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_s3_g_f_1_1_thread_pool" xml:lang="en-US">
+<title>S3GF::ThreadPool Class Reference</title>
+<indexterm><primary>S3GF::ThreadPool</primary></indexterm>
+<para>Inheritance diagram for S3GF::ThreadPool:    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_s3_g_f_1_1_thread_pool.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a14309c29fb21f465957dba1e986f3686"/><emphasis role="strong">ThreadPool</emphasis> (uint32_t max_waiting, uint32_t max_running=std::thread::hardware_concurrency())</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1abafb5d5090f3a9b0abf0606ed2604196"/>bool <emphasis role="strong">append</emphasis> (std::function&lt; void()&gt; function)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1abeaa16cb9d097dea946890097bbfa1c8"/>void <emphasis role="strong">startAll</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a38320bc36fba3d55aca73d8b81df1cb0"/>void <emphasis role="strong">wait</emphasis> (bool clear_queue=false)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a772a839e8c277e61a54fa04da24a2aee"/>void <emphasis role="strong">stopAll</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a5a72310a2e46851c5cd997b8069f80c8"/>void <emphasis role="strong">restartAll</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a341753bf7b2b1d8d79ca96dcb3203ff5"/>bool <emphasis role="strong">isRunning</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a90df8c0bdef8656c052458c54e201fa5"/>uint32_t <emphasis role="strong">threadsCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1af98abc1f25b283f6f55029250b8be7eb"/>uint32_t <emphasis role="strong">waitingQueueCount</emphasis> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a8fdb061e03eceb879920d3c6928acf29"/>uint32_t <emphasis role="strong">maxWaitingQueueCount</emphasis> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_thread_pool_1a97fdd97d5ab8c7a5b14d0bd62be8423b"/>uint32_t <emphasis role="strong">runningThreadsCount</emphasis> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this class was generated from the following file:</para>
+D:/Coding/S3GF/src/MultiThread/ThreadPool.h</section>

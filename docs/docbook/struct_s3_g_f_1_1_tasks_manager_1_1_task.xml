@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_s3_g_f_1_1_tasks_manager_1_1_task" xml:lang="en-US">
+<title>S3GF::TasksManager::Task Struct Reference</title>
+<indexterm><primary>S3GF::TasksManager::Task</primary></indexterm>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_struct_s3_g_f_1_1_tasks_manager_1_1_task_1a7640a561b93972d2ee50cfea8679c181"/>uint64_t <emphasis role="strong">id</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_struct_s3_g_f_1_1_tasks_manager_1_1_task_1aa3ed4c23a0e440b799b59d20b1421dce"/>Priority <emphasis role="strong">priority</emphasis></para>
+</listitem>
+            <listitem><para><anchor xml:id="_struct_s3_g_f_1_1_tasks_manager_1_1_task_1ae60036b5491b45bc1b9407119c4b9da6"/>std::function&lt; void()&gt; <emphasis role="strong">function</emphasis></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<para>
+The documentation for this struct was generated from the following file:</para>
+D:/Coding/S3GF/src/MultiThread/ThreadPool.h</section>

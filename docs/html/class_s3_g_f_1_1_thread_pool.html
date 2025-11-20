@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.14.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>S3GF: S3GF::ThreadPool类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   </div>
+   <div id="projectbrief">SDL3 Graphics Framework</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.14.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('class_s3_g_f_1_1_thread_pool.html','','class_s3_g_f_1_1_thread_pool-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">S3GF::ThreadPool类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_thread_pool_8h_source.html">ThreadPool.h</a>&gt;</code></p>
+<div class="dynheader">
+类 S3GF::ThreadPool 继承关系图:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_s3_g_f_1_1_thread_pool.png" usemap="#S3GF_3A_3AThreadPool_map" alt=""/>
+  <map id="S3GF_3A_3AThreadPool_map" name="S3GF_3A_3AThreadPool_map">
+<area href="class_s3_g_f_1_1_tasks_manager.html" alt="S3GF::TasksManager" shape="rect" coords="0,56,133,80"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a14309c29fb21f465957dba1e986f3686" id="r_a14309c29fb21f465957dba1e986f3686"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14309c29fb21f465957dba1e986f3686">ThreadPool</a> (uint32_t max_waiting, uint32_t max_running=std::thread::hardware_concurrency())</td></tr>
+<tr class="memitem:a26384b09a505fcc66351feaa1a559fe9" id="r_a26384b09a505fcc66351feaa1a559fe9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26384b09a505fcc66351feaa1a559fe9">~ThreadPool</a> ()</td></tr>
+<tr class="memitem:abafb5d5090f3a9b0abf0606ed2604196" id="r_abafb5d5090f3a9b0abf0606ed2604196"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abafb5d5090f3a9b0abf0606ed2604196">append</a> (std::function&lt; void()&gt; function)</td></tr>
+<tr class="memitem:abeaa16cb9d097dea946890097bbfa1c8" id="r_abeaa16cb9d097dea946890097bbfa1c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abeaa16cb9d097dea946890097bbfa1c8">startAll</a> ()</td></tr>
+<tr class="memitem:a38320bc36fba3d55aca73d8b81df1cb0" id="r_a38320bc36fba3d55aca73d8b81df1cb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38320bc36fba3d55aca73d8b81df1cb0">wait</a> (bool clear_queue=false)</td></tr>
+<tr class="memitem:a772a839e8c277e61a54fa04da24a2aee" id="r_a772a839e8c277e61a54fa04da24a2aee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a772a839e8c277e61a54fa04da24a2aee">stopAll</a> ()</td></tr>
+<tr class="memitem:a5a72310a2e46851c5cd997b8069f80c8" id="r_a5a72310a2e46851c5cd997b8069f80c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a72310a2e46851c5cd997b8069f80c8">restartAll</a> ()</td></tr>
+<tr class="memitem:a341753bf7b2b1d8d79ca96dcb3203ff5" id="r_a341753bf7b2b1d8d79ca96dcb3203ff5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a341753bf7b2b1d8d79ca96dcb3203ff5">isRunning</a> () const</td></tr>
+<tr class="memitem:a90df8c0bdef8656c052458c54e201fa5" id="r_a90df8c0bdef8656c052458c54e201fa5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90df8c0bdef8656c052458c54e201fa5">threadsCount</a> () const</td></tr>
+<tr class="memitem:af98abc1f25b283f6f55029250b8be7eb" id="r_af98abc1f25b283f6f55029250b8be7eb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af98abc1f25b283f6f55029250b8be7eb">waitingQueueCount</a> ()</td></tr>
+<tr class="memitem:a8fdb061e03eceb879920d3c6928acf29" id="r_a8fdb061e03eceb879920d3c6928acf29"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fdb061e03eceb879920d3c6928acf29">maxWaitingQueueCount</a> () const</td></tr>
+<tr class="memitem:a97fdd97d5ab8c7a5b14d0bd62be8423b" id="r_a97fdd97d5ab8c7a5b14d0bd62be8423b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97fdd97d5ab8c7a5b14d0bd62be8423b">runningThreadsCount</a> () const</td></tr>
+</table>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">构造及析构函数说明</h2>
+<a id="a14309c29fb21f465957dba1e986f3686" name="a14309c29fb21f465957dba1e986f3686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14309c29fb21f465957dba1e986f3686">&#9670;&#160;</a></span>ThreadPool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::ThreadPool::ThreadPool </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>max_waiting</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>max_running</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::thread::hardware_concurrency()</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a26384b09a505fcc66351feaa1a559fe9" name="a26384b09a505fcc66351feaa1a559fe9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26384b09a505fcc66351feaa1a559fe9">&#9670;&#160;</a></span>~ThreadPool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">S3GF::ThreadPool::~ThreadPool </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">成员函数说明</h2>
+<a id="abafb5d5090f3a9b0abf0606ed2604196" name="abafb5d5090f3a9b0abf0606ed2604196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abafb5d5090f3a9b0abf0606ed2604196">&#9670;&#160;</a></span>append()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::ThreadPool::append </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void()&gt;</td>          <td class="paramname"><span class="paramname"><em>function</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a341753bf7b2b1d8d79ca96dcb3203ff5" name="a341753bf7b2b1d8d79ca96dcb3203ff5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341753bf7b2b1d8d79ca96dcb3203ff5">&#9670;&#160;</a></span>isRunning()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::ThreadPool::isRunning </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8fdb061e03eceb879920d3c6928acf29" name="a8fdb061e03eceb879920d3c6928acf29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fdb061e03eceb879920d3c6928acf29">&#9670;&#160;</a></span>maxWaitingQueueCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t S3GF::ThreadPool::maxWaitingQueueCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a72310a2e46851c5cd997b8069f80c8" name="a5a72310a2e46851c5cd997b8069f80c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a72310a2e46851c5cd997b8069f80c8">&#9670;&#160;</a></span>restartAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ThreadPool::restartAll </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97fdd97d5ab8c7a5b14d0bd62be8423b" name="a97fdd97d5ab8c7a5b14d0bd62be8423b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97fdd97d5ab8c7a5b14d0bd62be8423b">&#9670;&#160;</a></span>runningThreadsCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t S3GF::ThreadPool::runningThreadsCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abeaa16cb9d097dea946890097bbfa1c8" name="abeaa16cb9d097dea946890097bbfa1c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeaa16cb9d097dea946890097bbfa1c8">&#9670;&#160;</a></span>startAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ThreadPool::startAll </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a772a839e8c277e61a54fa04da24a2aee" name="a772a839e8c277e61a54fa04da24a2aee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a772a839e8c277e61a54fa04da24a2aee">&#9670;&#160;</a></span>stopAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ThreadPool::stopAll </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a90df8c0bdef8656c052458c54e201fa5" name="a90df8c0bdef8656c052458c54e201fa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90df8c0bdef8656c052458c54e201fa5">&#9670;&#160;</a></span>threadsCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t S3GF::ThreadPool::threadsCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a38320bc36fba3d55aca73d8b81df1cb0" name="a38320bc36fba3d55aca73d8b81df1cb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38320bc36fba3d55aca73d8b81df1cb0">&#9670;&#160;</a></span>wait()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ThreadPool::wait </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>clear_queue</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af98abc1f25b283f6f55029250b8be7eb" name="af98abc1f25b283f6f55029250b8be7eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af98abc1f25b283f6f55029250b8be7eb">&#9670;&#160;</a></span>waitingQueueCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t S3GF::ThreadPool::waitingQueueCount </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Coding/S3GF/src/MultiThread/<a class="el" href="_thread_pool_8h_source.html">ThreadPool.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespace_s3_g_f.html">S3GF</a></li><li class="navelem"><a href="class_s3_g_f_1_1_thread_pool.html">ThreadPool</a></li>
+    <li class="footer">生成于 <span class="timestamp"></span> , 为 S3GF使用  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
+  </ul>
+</div>
+</body>
+</html>

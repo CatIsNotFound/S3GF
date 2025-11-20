@@ -53,7 +53,6 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
             src/MultiThread/Components.cpp
             src/MultiThread/Components.h
             src/Utils/All
-            src/Utils/Random.cpp
             src/Utils/Random.h
             src/Algorithm/All
             src/Algorithm/Draw.h
@@ -62,6 +61,7 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
             src/Algorithm/Collider.h
             src/MultiThread/ThreadPool.h
             src/Utils/Logger.h
+            src/Controls/Control.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -76,7 +76,6 @@ else ()
             src/MultiThread/Components.cpp
             src/MultiThread/Components.h
             src/Utils/All
-            src/Utils/Random.cpp
             src/Utils/Random.h
             src/Algorithm/All
             src/Algorithm/Draw.h
@@ -85,6 +84,7 @@ else ()
             src/Algorithm/Collider.h
             src/MultiThread/ThreadPool.h
             src/Utils/Logger.h
+            src/Controls/Control.h
     )
 endif ()
 

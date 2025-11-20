@@ -1,4 +1,4 @@
-.TH "S3GF::AudioSystem" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::AudioSystem" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,21 +6,23 @@ S3GF::AudioSystem
 .SH SYNOPSIS
 .br
 .PP
-.SS "Classes"
+.PP
+\fR#include <Core\&.h>\fP
+.SS "类"
 
 .in +1c
 .ti -1c
 .RI "struct \fBAudio\fP"
 .br
 .in -1c
-.SS "Public Types"
+.SS "Public 类型"
 
 .in +1c
 .ti -1c
 .RI "enum class \fBStatus\fP { \fBUnknown\fP, \fBNoLoaded\fP, \fBLoading\fP, \fBInvalid\fP, \fBLoaded\fP }"
 .br
 .in -1c
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -34,6 +36,9 @@ S3GF::AudioSystem
 .br
 .ti -1c
 .RI "\fBAudioSystem\fP & \fBoperator=\fP (const \fBAudioSystem\fP &)=delete"
+.br
+.ti -1c
+.RI "\fB~AudioSystem\fP ()"
 .br
 .ti -1c
 .RI "bool \fBisValid\fP () const"
@@ -57,14 +62,61 @@ S3GF::AudioSystem
 .RI "const \fBAudio\fP & \fBaudio\fP (uint64_t audio_id) const"
 .br
 .in -1c
-.SS "Static Public Member Functions"
+.SS "静态 Public 成员函数"
 
 .in +1c
 .ti -1c
 .RI "static \fBAudioSystem\fP * \fBglobal\fP ()"
 .br
 .in -1c
-
-.SH "Author"
+.SH "成员枚举类型说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "enum class \fBS3GF::AudioSystem::Status\fP\fR [strong]\fP"
+
+.PP
+\fB枚举值\fP
+.in +1c
+.TP
+\f(BIUnknown \fP
+.TP
+\f(BINoLoaded \fP
+.TP
+\f(BILoading \fP
+.TP
+\f(BIInvalid \fP
+.TP
+\f(BILoaded \fP
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::AudioSystem::AudioSystem (\fBAudioSystem\fP && )\fR [delete]\fP"
+
+.SS "S3GF::AudioSystem::AudioSystem (const \fBAudioSystem\fP & )\fR [delete]\fP"
+
+.SS "S3GF::AudioSystem::~AudioSystem ()"
+
+.SH "成员函数说明"
+.PP 
+.SS "const \fBAudio\fP & S3GF::AudioSystem::audio (uint64_t audio_id) const"
+
+.SS "void S3GF::AudioSystem::clear ()"
+
+.SS "\fBAudioSystem\fP * S3GF::AudioSystem::global ()\fR [static]\fP"
+
+.SS "bool S3GF::AudioSystem::isValid () const"
+
+.SS "bool S3GF::AudioSystem::load ()"
+
+.SS "uint64_t S3GF::AudioSystem::newAudio ()"
+
+.SS "\fBAudioSystem\fP & S3GF::AudioSystem::operator= (\fBAudioSystem\fP && )\fR [delete]\fP"
+
+.SS "\fBAudioSystem\fP & S3GF::AudioSystem::operator= (const \fBAudioSystem\fP & )\fR [delete]\fP"
+
+.SS "bool S3GF::AudioSystem::remove (uint64_t audio_id)"
+
+.SS "void S3GF::AudioSystem::unload ()"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

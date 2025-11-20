@@ -1,4 +1,4 @@
-.TH "S3GF::Texture" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Texture" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,7 +6,9 @@ S3GF::Texture
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Components\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -31,6 +33,9 @@ S3GF::Texture
 .RI "\fBTexture\fP (\fBRenderer\fP *renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access)"
 .br
 .ti -1c
+.RI "\fB~Texture\fP ()"
+.br
+.ti -1c
 .RI "bool \fBsetImagePath\fP (const std::string &path)"
 .br
 .ti -1c
@@ -43,7 +48,35 @@ S3GF::Texture
 .RI "void \fBdraw\fP () const"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Texture::Texture (const \fBTexture\fP & )\fR [delete]\fP"
+
+.SS "S3GF::Texture::Texture (\fBTexture\fP && )\fR [delete]\fP"
+
+.SS "S3GF::Texture::Texture (const std::string & path, \fBRenderer\fP * renderer)\fR [explicit]\fP"
+
+.SS "S3GF::Texture::Texture (SDL_Surface * surface, \fBRenderer\fP * renderer, bool deep_copy = \fRfalse\fP)\fR [explicit]\fP"
+
+.SS "S3GF::Texture::Texture (\fBRenderer\fP * renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access)\fR [explicit]\fP"
+
+.SS "S3GF::Texture::~Texture ()"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::Texture::draw () const"
+
+.SS "\fBTexture\fP & S3GF::Texture::operator= (const \fBTexture\fP & )\fR [delete]\fP"
+
+.SS "\fBTexture\fP & S3GF::Texture::operator= (\fBTexture\fP && )\fR [delete]\fP"
+
+.SS "\fBProperty\fP * S3GF::Texture::property ()"
+
+.SS "SDL_Texture * S3GF::Texture::self () const"
+
+.SS "bool S3GF::Texture::setImagePath (const std::string & path)"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

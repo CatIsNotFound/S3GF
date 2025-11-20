@@ -5,7 +5,7 @@
 <simplesect>
     <title>Public Member Functions    </title>
         <itemizedlist>
-            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1adc4a8b8160d7ce7a5967014da08def52"/><emphasis role="strong">Rectangle</emphasis> (float x, float y, float w, float h, uint16_t border=1, const SDL_Color &amp;border_color=StdColor::Black, const SDL_Color &amp;background_color=<link linkend="__basic_8h_1a3948d783c2e9ea1aaa19703d78afd84e">StdColor::Transparent</link>)</para>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1adc4a8b8160d7ce7a5967014da08def52"/><emphasis role="strong">Rectangle</emphasis> (float x, float y, float w, float h, uint16_t border=1, const SDL_Color &amp;border_color=<link linkend="__basic_8h_1a00b679b260574e983176649636e9ac48">StdColor::Black</link>, const SDL_Color &amp;background_color=StdColor::Transparent)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1ac827c68022ac7394a6e5e0406585c68a"/>void <emphasis role="strong">reset</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp;geometry, uint16_t border, const SDL_Color &amp;border_color, const SDL_Color &amp;background_color)</para>
 </listitem>
@@ -18,6 +18,14 @@
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1ae90db98d1df27eac3538504cbeb54d87"/>void <emphasis role="strong">setGeometry</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;pos, const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;size)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1ab197c3307e2a9c575a27b0db1a26dde0"/>void <emphasis role="strong">setGeometry</emphasis> (const <link linkend="_struct_s3_g_f_1_1_geometry_f">GeometryF</link> &amp;geometry)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1a0ee02a31b11bec0479ce38e2ff5aaa70"/>void <emphasis role="strong">move</emphasis> (const <link linkend="_struct_s3_g_f_1_1_vector2">Vector2</link> &amp;pos)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1a19582b0b7d8a03c7b8f8c98f4814c3a4"/>void <emphasis role="strong">move</emphasis> (float x, float y)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1a1c685d8acb2fdb51523ae9044e2299f2"/>void <emphasis role="strong">resize</emphasis> (const <link linkend="_struct_s3_g_f_1_1_size">Size</link> &amp;size)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1ae70481ab7486a3915d81fe54276bfa66"/>void <emphasis role="strong">resize</emphasis> (float w, float h)</para>
 </listitem>
             <listitem><para><anchor xml:id="_class_s3_g_f_1_1_graphics_1_1_rectangle_1a29ba7daaf645d4404604827907ded95b"/>void <emphasis role="strong">setBorderSize</emphasis> (uint16_t border_size)</para>
 </listitem>

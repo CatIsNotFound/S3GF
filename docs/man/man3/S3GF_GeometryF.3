@@ -1,4 +1,4 @@
-.TH "S3GF::GeometryF" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::GeometryF" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,20 +9,23 @@ S3GF::GeometryF \- 位置、大小
 .PP
 .PP
 \fR#include <Basic\&.h>\fP
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
 .RI "\fBGeometryF\fP (float x, float y, float w, float h)"
 .br
 .ti -1c
-.RI "\fBGeometryF\fP (const \fBVector2\fP &pos, const \fBSize\fP &size)"
+.RI "\fBGeometryF\fP (const \fBVector2\fP &\fBpos\fP, const \fBSize\fP &\fBsize\fP)"
 .br
 .ti -1c
-.RI "\fBGeometryF\fP (\fBVector2\fP &&pos, \fBSize\fP &&size)"
+.RI "\fBGeometryF\fP (\fBVector2\fP &&\fBpos\fP, \fBSize\fP &&\fBsize\fP)"
 .br
 .ti -1c
-.RI "void \fBreset\fP (const \fBVector2\fP &pos, const \fBSize\fP &size)"
+.RI "\fBGeometryF\fP ()"
+.br
+.ti -1c
+.RI "void \fBreset\fP (const \fBVector2\fP &\fBpos\fP, const \fBSize\fP &\fBsize\fP)"
 .br
 .ti -1c
 .RI "void \fBreset\fP (float x, float y, float width, float height)"
@@ -31,13 +34,13 @@ S3GF::GeometryF \- 位置、大小
 .RI "void \fBreset\fP (const \fBGeometryF\fP &geometry)"
 .br
 .ti -1c
-.RI "void \fBresetPos\fP (const \fBVector2\fP &pos)"
+.RI "void \fBresetPos\fP (const \fBVector2\fP &\fBpos\fP)"
 .br
 .ti -1c
-.RI "void \fBresetSize\fP (const \fBSize\fP &size)"
+.RI "void \fBresetSize\fP (const \fBSize\fP &\fBsize\fP)"
 .br
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -47,12 +50,40 @@ S3GF::GeometryF \- 位置、大小
 .RI "\fBSize\fP \fBsize\fP"
 .br
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 位置、大小 
 
 针对于 \fBVector2\fP 和 \fBSize\fP 组成，用于调整位置、大小 
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::GeometryF::GeometryF (float x, float y, float w, float h)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::GeometryF::GeometryF (const \fBVector2\fP & pos, const \fBSize\fP & size)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::GeometryF::GeometryF (\fBVector2\fP && pos, \fBSize\fP && size)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::GeometryF::GeometryF ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "void S3GF::GeometryF::reset (const \fBGeometryF\fP & geometry)\fR [inline]\fP"
+
+.SS "void S3GF::GeometryF::reset (const \fBVector2\fP & pos, const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::GeometryF::reset (float x, float y, float width, float height)\fR [inline]\fP"
+
+.SS "void S3GF::GeometryF::resetPos (const \fBVector2\fP & pos)\fR [inline]\fP"
+
+.SS "void S3GF::GeometryF::resetSize (const \fBSize\fP & size)\fR [inline]\fP"
+
+.SH "类成员变量说明"
+.PP 
+.SS "\fBVector2\fP S3GF::GeometryF::pos"
+
+.SS "\fBSize\fP S3GF::GeometryF::size"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

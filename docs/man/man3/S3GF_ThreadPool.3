@@ -1,0 +1,84 @@
+.TH "S3GF::ThreadPool" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+S3GF::ThreadPool
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ThreadPool\&.h>\fP
+.PP
+被 \fBS3GF::TasksManager\fP\fR [private]\fP 继承\&.
+.SS "Public 成员函数"
+
+.in +1c
+.ti -1c
+.RI "\fBThreadPool\fP (uint32_t max_waiting, uint32_t max_running=std::thread::hardware_concurrency())"
+.br
+.ti -1c
+.RI "\fB~ThreadPool\fP ()"
+.br
+.ti -1c
+.RI "bool \fBappend\fP (std::function< void()> function)"
+.br
+.ti -1c
+.RI "void \fBstartAll\fP ()"
+.br
+.ti -1c
+.RI "void \fBwait\fP (bool clear_queue=false)"
+.br
+.ti -1c
+.RI "void \fBstopAll\fP ()"
+.br
+.ti -1c
+.RI "void \fBrestartAll\fP ()"
+.br
+.ti -1c
+.RI "bool \fBisRunning\fP () const"
+.br
+.ti -1c
+.RI "uint32_t \fBthreadsCount\fP () const"
+.br
+.ti -1c
+.RI "uint32_t \fBwaitingQueueCount\fP ()"
+.br
+.ti -1c
+.RI "uint32_t \fBmaxWaitingQueueCount\fP () const"
+.br
+.ti -1c
+.RI "uint32_t \fBrunningThreadsCount\fP () const"
+.br
+.in -1c
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::ThreadPool::ThreadPool (uint32_t max_waiting, uint32_t max_running = \fRstd::thread::hardware_concurrency()\fP)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::ThreadPool::~ThreadPool ()\fR [inline]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "bool S3GF::ThreadPool::append (std::function< void()> function)\fR [inline]\fP"
+
+.SS "bool S3GF::ThreadPool::isRunning () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "uint32_t S3GF::ThreadPool::maxWaitingQueueCount () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::ThreadPool::restartAll ()\fR [inline]\fP"
+
+.SS "uint32_t S3GF::ThreadPool::runningThreadsCount () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::ThreadPool::startAll ()\fR [inline]\fP"
+
+.SS "void S3GF::ThreadPool::stopAll ()\fR [inline]\fP"
+
+.SS "uint32_t S3GF::ThreadPool::threadsCount () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::ThreadPool::wait (bool clear_queue = \fRfalse\fP)\fR [inline]\fP"
+
+.SS "uint32_t S3GF::ThreadPool::waitingQueueCount ()\fR [inline]\fP, \fR [nodiscard]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

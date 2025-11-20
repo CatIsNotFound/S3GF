@@ -1,4 +1,4 @@
-.TH "S3GF::Graphics::Line" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Graphics::Line" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,14 +6,19 @@ S3GF::Graphics::Line
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Basic\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBLine\fP (float x1, float y1, float x2, float y2, uint16_t size, const SDL_Color &color)"
+.RI "\fBLine\fP ()"
 .br
 .ti -1c
-.RI "\fBLine\fP (const \fBVector2\fP &start, const \fBVector2\fP &end, uint16_t size, const SDL_Color &color)"
+.RI "\fBLine\fP (float x1, float y1, float x2, float y2, uint16_t \fBsize\fP, const SDL_Color &\fBcolor\fP)"
+.br
+.ti -1c
+.RI "\fBLine\fP (const \fBVector2\fP &start, const \fBVector2\fP &end, uint16_t \fBsize\fP, const SDL_Color &\fBcolor\fP)"
 .br
 .ti -1c
 .RI "const int * \fBindices\fP ()"
@@ -55,16 +60,58 @@ S3GF::Graphics::Line
 .RI "const SDL_Color & \fBcolor\fP () const"
 .br
 .ti -1c
-.RI "void \fBsetColor\fP (const SDL_Color &color)"
+.RI "void \fBsetColor\fP (const SDL_Color &\fBcolor\fP)"
 .br
 .ti -1c
-.RI "void \fBreset\fP (float sx, float sy, float ex, float ey, uint8_t size, const SDL_Color &color)"
+.RI "void \fBreset\fP (float sx, float sy, float ex, float ey, uint8_t \fBsize\fP, const SDL_Color &\fBcolor\fP)"
 .br
 .ti -1c
-.RI "void \fBreset\fP (const \fBVector2\fP &start, const \fBVector2\fP &end, uint8_t size, const SDL_Color &color)"
+.RI "void \fBreset\fP (const \fBVector2\fP &start, const \fBVector2\fP &end, uint8_t \fBsize\fP, const SDL_Color &\fBcolor\fP)"
 .br
 .in -1c
-
-.SH "Author"
+.SH "构造及析构函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "S3GF::Graphics::Line::Line ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::Graphics::Line::Line (float x1, float y1, float x2, float y2, uint16_t size, const SDL_Color & color)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::Graphics::Line::Line (const \fBVector2\fP & start, const \fBVector2\fP & end, uint16_t size, const SDL_Color & color)\fR [inline]\fP, \fR [explicit]\fP"
+
+.SH "成员函数说明"
+.PP 
+.SS "const SDL_Color & S3GF::Graphics::Line::color () const\fR [inline]\fP"
+
+.SS "const \fBVector2\fP & S3GF::Graphics::Line::endPosition () const\fR [inline]\fP"
+
+.SS "const int * S3GF::Graphics::Line::indices ()\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Line::indicesCount () const\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::reset (const \fBVector2\fP & start, const \fBVector2\fP & end, uint8_t size, const SDL_Color & color)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::reset (float sx, float sy, float ex, float ey, uint8_t size, const SDL_Color & color)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setColor (const SDL_Color & color)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setEndPosition (const \fBVector2\fP & pos)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setEndPosition (float x, float y)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setSize (uint8_t new_size)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setStartPosition (const \fBVector2\fP & pos)\fR [inline]\fP"
+
+.SS "void S3GF::Graphics::Line::setStartPosition (float x, float y)\fR [inline]\fP"
+
+.SS "uint8_t S3GF::Graphics::Line::size () const\fR [inline]\fP"
+
+.SS "const \fBVector2\fP & S3GF::Graphics::Line::startPosition () const\fR [inline]\fP"
+
+.SS "size_t S3GF::Graphics::Line::vertexCount () const\fR [inline]\fP"
+
+.SS "const SDL_Vertex * S3GF::Graphics::Line::vertices ()\fR [inline]\fP"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

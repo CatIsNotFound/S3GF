@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__logger_8h_source" xml:lang="en-US">
+<title>Logger.h</title>
+<indexterm><primary>D:/Coding/S3GF/src/Utils/Logger.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">1 
+2 <emphasis role="preprocessor">#ifndef&#32;S3GF_LOGGER_H</emphasis>
+3 <emphasis role="preprocessor">#define&#32;S3GF_LOGGER_H</emphasis>
+4 <emphasis role="preprocessor">#include&#32;&quot;Libs.h&quot;</emphasis>
+5 
+6 <emphasis role="keyword">namespace&#32;</emphasis><link linkend="_namespace_s3_g_f">S3GF</link>&#32;{
+7 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Logger&#32;{
+8 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+9 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">enum</emphasis>&#32;LogLevel&#32;{
+10 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;DEBUG,
+11 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;INFO,
+12 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;WARN,
+13 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ERROR,
+14 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;FATAL
+15 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+16 
+17 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger()&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+18 
+19 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger(Logger&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+20 
+21 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger(<emphasis role="keyword">const</emphasis>&#32;Logger&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+22 
+23 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger&#32;&amp;operator=(Logger&#32;&amp;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+24 
+25 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger&#32;&amp;operator=(<emphasis role="keyword">const</emphasis>&#32;Logger&#32;&amp;)&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+26 
+27 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;~Logger()&#32;=&#32;<emphasis role="keyword">delete</emphasis>;
+28 
+29 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;log(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;&amp;message,&#32;LogLevel&#32;level&#32;=&#32;DEBUG)&#32;{
+30 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_running_time&#32;=&#32;SDL_GetTicksNS();
+31 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(level&#32;&lt;&#32;_base_level)&#32;<emphasis role="keywordflow">return</emphasis>;
+32 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;_real_time&#32;=&#32;(float)&#32;(_running_time&#32;-&#32;_started_time)&#32;/&#32;1e9;
+33 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(level&#32;&gt;=&#32;WARN)&#32;{
+34 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cerr&#32;&lt;&lt;&#32;std::format(<emphasis role="stringliteral">&quot;[{:.06f}]&#32;[{}]&#32;{}\n&quot;</emphasis>,&#32;_real_time,&#32;_logLevelToString(level),&#32;message);
+35 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+36 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;std::format(<emphasis role="stringliteral">&quot;[{:.06f}]&#32;[{}]&#32;{}\n&quot;</emphasis>,&#32;_real_time,&#32;_logLevelToString(level),&#32;message);
+37 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_last_log_level&#32;=&#32;level;
+39 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_last_log_info&#32;=&#32;message;
+40 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+41 
+42 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;setBaseLogLevel(LogLevel&#32;level)&#32;{
+43 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_base_level&#32;=&#32;level;
+44 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+45 
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;lastError()&#32;{
+47 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(_last_log_level&#32;&gt;=&#32;ERROR&#32;?&#32;_last_log_info&#32;:&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>);
+48 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+49 
+50 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+51 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;_logLevelToString(LogLevel&#32;level)&#32;{
+52 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(level)&#32;{
+53 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;DEBUG:
+54 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;DEBUG&quot;</emphasis>;
+55 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;INFO:
+56 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;INFO&quot;</emphasis>;
+57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;WARN:
+58 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;WARN&quot;</emphasis>;
+59 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;ERROR:
+60 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;ERROR&quot;</emphasis>;
+61 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;FATAL:
+62 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;FATAL&quot;</emphasis>;
+63 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:
+64 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;UNKNOWN&quot;</emphasis>;
+65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+66 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+67 
+68 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;LogLevel&#32;_base_level;
+69 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;LogLevel&#32;_last_log_level;
+70 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;_last_log_info;
+71 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;_started_time;
+72 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;_running_time;
+73 &#32;&#32;&#32;&#32;};
+74 
+75 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;Logger::LogLevel&#32;Logger::_base_level&#32;=&#32;Logger::INFO;
+76 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;Logger::LogLevel&#32;Logger::_last_log_level&#32;=&#32;Logger::DEBUG;
+77 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;uint64_t&#32;Logger::_started_time&#32;=&#32;SDL_GetTicksNS();
+78 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;uint64_t&#32;Logger::_running_time&#32;=&#32;0;
+79 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;std::string&#32;Logger::_last_log_info;
+80 }
+81 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_LOGGER_H</emphasis>
+</programlisting></section>

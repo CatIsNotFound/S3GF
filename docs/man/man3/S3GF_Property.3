@@ -1,4 +1,4 @@
-.TH "S3GF::Property" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Property" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,7 +6,9 @@ S3GF::Property
 .SH SYNOPSIS
 .br
 .PP
-.SS "Public Member Functions"
+.PP
+\fR#include <Components\&.h>\fP
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
@@ -19,7 +21,7 @@ S3GF::Property
 .RI "const \fBVector2\fP \fBposition\fP () const"
 .br
 .ti -1c
-.RI "void \fBresize\fP (const \fBSize\fP &size)"
+.RI "void \fBresize\fP (const \fBSize\fP &\fBsize\fP)"
 .br
 .ti -1c
 .RI "void \fBresize\fP (float width, float height)"
@@ -28,7 +30,7 @@ S3GF::Property
 .RI "const \fBSize\fP \fBsize\fP () const"
 .br
 .ti -1c
-.RI "void \fBsetGeomentry\fP (const \fBVector2\fP &pos, const \fBSize\fP &size)"
+.RI "void \fBsetGeomentry\fP (const \fBVector2\fP &pos, const \fBSize\fP &\fBsize\fP)"
 .br
 .ti -1c
 .RI "void \fBsetGeomentry\fP (float x, float y, float width, float height)"
@@ -37,7 +39,7 @@ S3GF::Property
 .RI "const \fBGeometryF\fP \fBgeomentry\fP () const"
 .br
 .ti -1c
-.RI "void \fBsetScale\fP (float scale=1\&.0f)"
+.RI "void \fBsetScale\fP (float \fBscale\fP=1\&.0f)"
 .br
 .ti -1c
 .RI "float \fBscale\fP () const"
@@ -46,7 +48,7 @@ S3GF::Property
 .RI "\fBGeometryF\fP \fBscaledGeometry\fP () const"
 .br
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -62,7 +64,43 @@ S3GF::Property
 .RI "double \fBrotate_angle\fP"
 .br
 .in -1c
-
-.SH "Author"
+.SH "成员函数说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "const \fBGeometryF\fP S3GF::Property::geomentry () const\fR [inline]\fP"
+
+.SS "void S3GF::Property::move (const \fBVector2\fP & pos)\fR [inline]\fP"
+
+.SS "void S3GF::Property::move (float x, float y)\fR [inline]\fP"
+
+.SS "const \fBVector2\fP S3GF::Property::position () const\fR [inline]\fP"
+
+.SS "void S3GF::Property::resize (const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::Property::resize (float width, float height)\fR [inline]\fP"
+
+.SS "float S3GF::Property::scale () const\fR [inline]\fP"
+
+.SS "\fBGeometryF\fP S3GF::Property::scaledGeometry () const\fR [inline]\fP"
+
+.SS "void S3GF::Property::setGeomentry (const \fBVector2\fP & pos, const \fBSize\fP & size)\fR [inline]\fP"
+
+.SS "void S3GF::Property::setGeomentry (float x, float y, float width, float height)\fR [inline]\fP"
+
+.SS "void S3GF::Property::setScale (float scale = \fR1\&.0f\fP)\fR [inline]\fP"
+
+.SS "const \fBSize\fP S3GF::Property::size () const\fR [inline]\fP"
+
+.SH "类成员变量说明"
+.PP 
+.SS "SDL_FRect S3GF::Property::clip_area"
+
+.SS "bool S3GF::Property::clip_mode"
+
+.SS "SDL_Color S3GF::Property::color_alpha"
+
+.SS "double S3GF::Property::rotate_angle"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

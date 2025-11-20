@@ -158,180 +158,185 @@
 154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;timezone;
 155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
 156 
-157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;now()&#32;{
+157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;currentTimestamp()&#32;{
 158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::system_clock::now();
-159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;std::chrono::zoned_time(timezone,&#32;now);
-160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;zoned);
-161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-162 
-163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;currentDateTime()&#32;{
-164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
-165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;system_clock::now();
-166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;zoned_time(timezone,&#32;now);
-167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;local_time&#32;=&#32;zoned.get_local_time();
-168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;day_time&#32;=&#32;floor&lt;days&gt;(local_time);
-169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymy{day_time};
-170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hh_mm_ss&#32;time{local_time&#32;-&#32;day_time};
-171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;_ret{};
-172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.year&#32;=&#32;int(ymy.year());
-173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.month&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.month()));
-174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.day&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.day()));
-175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.hour&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.hours().count());
-176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.minute&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.minutes().count());
-177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.second&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.seconds().count());
-178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_ret;
-179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-180 
-181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;generateTimestamp(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&amp;&#32;datetime)&#32;{
-182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
-183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year&#32;y(datetime.year);
-184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;month&#32;m(datetime.month);
-185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;day&#32;d(datetime.day);
-186 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymd(y,&#32;m,&#32;d);
-187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;days&#32;=&#32;sys_days{ymd};
-188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!ymd.ok())&#32;{
-189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;DateTime:&#32;Current&#32;date&#32;is&#32;not&#32;valid!&quot;</emphasis>,&#32;Logger::ERROR);
-190 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
-191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;time&#32;=&#32;hours(datetime.hour)&#32;+&#32;minutes(datetime.minute)&#32;+&#32;seconds(datetime.second);
-193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;time_point&#32;=&#32;days&#32;+&#32;time;
-194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;time_point.time_since_epoch().count();
-195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-196 
-197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;parseFromTimestamp(uint64_t&#32;timestamp)&#32;{
-198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
-199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;system_clock::time_point(seconds(timestamp));
-200 
-201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;day_time&#32;=&#32;floor&lt;days&gt;(now);
-202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymy{day_time};
-203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hh_mm_ss&#32;time{now&#32;-&#32;day_time};
-204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;_ret{};
-205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.year&#32;=&#32;int(ymy.year());
-206 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.month&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.month()));
-207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.day&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.day()));
-208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.hour&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.hours().count());
-209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.minute&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.minutes().count());
-210 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.second&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.seconds().count());
-211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_ret;
-212 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-213 
-214 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;formatDateTime(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&amp;&#32;datetime,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;format)&#32;{
-215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
-216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year&#32;y(datetime.year);
-217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;month&#32;m(datetime.month);
-218 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;day&#32;d(datetime.day);
-219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymd(y,&#32;m,&#32;d);
-220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!ymd.ok())&#32;{
-221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;DateTime:&#32;Current&#32;date&#32;is&#32;not&#32;valid!&quot;</emphasis>,&#32;Logger::ERROR);
-222 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
-223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-224 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;t_sys&#32;=&#32;sys_days{ymd};
-225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;weekday&#32;w_day&#32;=&#32;weekday{t_sys};
-226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;output;
-227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">size_t</emphasis>&#32;p&#32;=&#32;0;&#32;p&#32;&lt;&#32;format.size();)&#32;{
-228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(format[p]&#32;!=&#32;<emphasis role="charliteral">&apos;%&apos;</emphasis>)&#32;{
-229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;format[p++];
-230 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">continue</emphasis>;
-231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-232 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;sub_str&#32;=&#32;format.substr(p,&#32;2);
-233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p&#32;+=&#32;2;
-234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Y&quot;</emphasis>)&#32;{
-235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::to_string(datetime.year);
-236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%y&quot;</emphasis>)&#32;{
-237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;(datetime.year&#32;%&#32;100));
-238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%m&quot;</emphasis>)&#32;{
-239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.month);
-240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%d&quot;</emphasis>)&#32;{
-241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.day);
-242 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%H&quot;</emphasis>)&#32;{
-243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.hour);
-244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%I&quot;</emphasis>)&#32;{
-245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.hour&#32;%&#32;12);
-246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%M&quot;</emphasis>)&#32;{
-247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.minute);
-248 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%S&quot;</emphasis>)&#32;{
-249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.second);
-250 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%a&quot;</emphasis>)&#32;{
-251 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">true</emphasis>));
-252 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%A&quot;</emphasis>)&#32;{
-253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">false</emphasis>));
-254 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%b&quot;</emphasis>)&#32;{
-255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">true</emphasis>));
-256 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%B&quot;</emphasis>)&#32;{
-257 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">false</emphasis>));
-258 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%C&quot;</emphasis>)&#32;{
-259 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:04d}/{:02d}/{:02d}&#32;{:02d}:{:02d}:{:02d}&quot;</emphasis>,
-260 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.year,&#32;datetime.month,&#32;datetime.day,
-261 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.hour,&#32;datetime.minute,&#32;datetime.second);
-262 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%E&quot;</emphasis>)&#32;{
-263 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&#32;{}&#32;{:02d}&#32;{:02d}:{:02d}:{:02d}&#32;{}&#32;{:04d}&quot;</emphasis>,
-264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">true</emphasis>),
-265 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">true</emphasis>),
-266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.day,
-267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.hour,
-268 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.minute,
-269 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.second,
-270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(datetime.hour&#32;/&#32;12&#32;?&#32;<emphasis role="stringliteral">&quot;PM&quot;</emphasis>&#32;:&#32;<emphasis role="stringliteral">&quot;AM&quot;</emphasis>),
-271 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.year);
-272 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-273 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;output;
-275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-276 
-277 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;formatCurrentDateTime(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;format)&#32;{
-278 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::system_clock::now();
-279 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;std::chrono::zoned_time(timezone,&#32;now);
-280 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;output;
-281 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;p&#32;=&#32;0;
-282 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(;&#32;p&#32;&lt;&#32;format.size();)&#32;{
-283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(format[p]&#32;!=&#32;<emphasis role="charliteral">&apos;%&apos;</emphasis>)&#32;{
-284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;format[p++];
-285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">continue</emphasis>;
-286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;sub_str&#32;=&#32;format.substr(p,&#32;2);
-288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p&#32;+=&#32;2;
-289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Y&quot;</emphasis>)&#32;{
-290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Y}&quot;</emphasis>,&#32;zoned);
-291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%y&quot;</emphasis>)&#32;{
-292 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%y}&quot;</emphasis>,&#32;zoned);
-293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%m&quot;</emphasis>)&#32;{
-294 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%m}&quot;</emphasis>,&#32;zoned);
-295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%d&quot;</emphasis>)&#32;{
-296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%d}&quot;</emphasis>,&#32;zoned);
-297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%H&quot;</emphasis>)&#32;{
-298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%H}&quot;</emphasis>,&#32;zoned);
-299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%p&quot;</emphasis>)&#32;{
-300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%p}&quot;</emphasis>,&#32;zoned);
-301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%I&quot;</emphasis>)&#32;{
-302 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%I}&quot;</emphasis>,&#32;zoned);
-303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%M&quot;</emphasis>)&#32;{
-304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%M}&quot;</emphasis>,&#32;zoned);
-305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%S&quot;</emphasis>)&#32;{
-306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%S}&quot;</emphasis>,&#32;zoned);
-307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%a&quot;</emphasis>)&#32;{
-308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%a}&quot;</emphasis>,&#32;zoned);
-309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%A&quot;</emphasis>)&#32;{
-310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%A}&quot;</emphasis>,&#32;zoned);
-311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%b&quot;</emphasis>)&#32;{
-312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%b}&quot;</emphasis>,&#32;zoned);
-313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%B&quot;</emphasis>)&#32;{
-314 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%B}&quot;</emphasis>,&#32;zoned);
-315 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Z&quot;</emphasis>)&#32;{
-316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Z}&quot;</emphasis>,&#32;zoned);
-317 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%C&quot;</emphasis>)&#32;{
-318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Y/%m/%d&#32;%H:%M:%S}&quot;</emphasis>,&#32;zoned);
-319 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%E&quot;</emphasis>)&#32;{
-320 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%a&#32;%b&#32;%d&#32;%I:%M:%S&#32;%p&#32;%Z&#32;%Y}&quot;</emphasis>,&#32;zoned);
-321 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-322 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;output;
-324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-325 
-326 
-327 &#32;&#32;&#32;&#32;};
-328 
-329 &#32;&#32;&#32;&#32;std::string&#32;DateTime::timezone{std::chrono::current_zone()-&gt;name()};
-330 }
+159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;now.time_since_epoch().count();
+160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+161 
+162 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;now()&#32;{
+163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::system_clock::now();
+164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;std::chrono::zoned_time(timezone,&#32;now);
+165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;zoned);
+166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+167 
+168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;currentDateTime()&#32;{
+169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
+170 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;system_clock::now();
+171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;zoned_time(timezone,&#32;now);
+172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;local_time&#32;=&#32;zoned.get_local_time();
+173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;day_time&#32;=&#32;floor&lt;days&gt;(local_time);
+174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymy{day_time};
+175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hh_mm_ss&#32;time{local_time&#32;-&#32;day_time};
+176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;_ret{};
+177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.year&#32;=&#32;int(ymy.year());
+178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.month&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.month()));
+179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.day&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.day()));
+180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.hour&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.hours().count());
+181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.minute&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.minutes().count());
+182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.second&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.seconds().count());
+183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_ret;
+184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+185 
+186 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;uint64_t&#32;generateTimestamp(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&amp;&#32;datetime)&#32;{
+187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
+188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year&#32;y(datetime.year);
+189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;month&#32;m(datetime.month);
+190 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;day&#32;d(datetime.day);
+191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymd(y,&#32;m,&#32;d);
+192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;days&#32;=&#32;sys_days{ymd};
+193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!ymd.ok())&#32;{
+194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;DateTime:&#32;Current&#32;date&#32;is&#32;not&#32;valid!&quot;</emphasis>,&#32;Logger::ERROR);
+195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;time&#32;=&#32;hours(datetime.hour)&#32;+&#32;minutes(datetime.minute)&#32;+&#32;seconds(datetime.second);
+198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;time_point&#32;=&#32;days&#32;+&#32;time;
+199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;time_point.time_since_epoch().count();
+200 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+201 
+202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;parseFromTimestamp(uint64_t&#32;timestamp)&#32;{
+203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
+204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;system_clock::time_point(seconds(timestamp));
+205 
+206 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;day_time&#32;=&#32;floor&lt;days&gt;(now);
+207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymy{day_time};
+208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hh_mm_ss&#32;time{now&#32;-&#32;day_time};
+209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&#32;_ret{};
+210 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.year&#32;=&#32;int(ymy.year());
+211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.month&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.month()));
+212 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.day&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">unsigned</emphasis><emphasis role="keyword">&gt;</emphasis>(ymy.day()));
+213 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.hour&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.hours().count());
+214 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.minute&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.minutes().count());
+215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;_ret.second&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis>uint8_t<emphasis role="keyword">&gt;</emphasis>(time.seconds().count());
+216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;_ret;
+217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+218 
+219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;formatDateTime(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_struct_s3_g_f_1_1_date_time_1_1_d_t">DT</link>&amp;&#32;datetime,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;format)&#32;{
+220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">using&#32;namespace&#32;</emphasis>std::chrono;
+221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year&#32;y(datetime.year);
+222 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;month&#32;m(datetime.month);
+223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;day&#32;d(datetime.day);
+224 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;year_month_day&#32;ymd(y,&#32;m,&#32;d);
+225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!ymd.ok())&#32;{
+226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Logger::log(<emphasis role="stringliteral">&quot;DateTime:&#32;Current&#32;date&#32;is&#32;not&#32;valid!&quot;</emphasis>,&#32;Logger::ERROR);
+227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;t_sys&#32;=&#32;sys_days{ymd};
+230 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;weekday&#32;w_day&#32;=&#32;weekday{t_sys};
+231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;output;
+232 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">size_t</emphasis>&#32;p&#32;=&#32;0;&#32;p&#32;&lt;&#32;format.size();)&#32;{
+233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(format[p]&#32;!=&#32;<emphasis role="charliteral">&apos;%&apos;</emphasis>)&#32;{
+234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;format[p++];
+235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">continue</emphasis>;
+236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;sub_str&#32;=&#32;format.substr(p,&#32;2);
+238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p&#32;+=&#32;2;
+239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Y&quot;</emphasis>)&#32;{
+240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::to_string(datetime.year);
+241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%y&quot;</emphasis>)&#32;{
+242 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;(datetime.year&#32;%&#32;100));
+243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%m&quot;</emphasis>)&#32;{
+244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.month);
+245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%d&quot;</emphasis>)&#32;{
+246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.day);
+247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%H&quot;</emphasis>)&#32;{
+248 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.hour);
+249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%I&quot;</emphasis>)&#32;{
+250 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.hour&#32;%&#32;12);
+251 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%M&quot;</emphasis>)&#32;{
+252 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.minute);
+253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%S&quot;</emphasis>)&#32;{
+254 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:02d}&quot;</emphasis>,&#32;datetime.second);
+255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%a&quot;</emphasis>)&#32;{
+256 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">true</emphasis>));
+257 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%A&quot;</emphasis>)&#32;{
+258 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">false</emphasis>));
+259 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%b&quot;</emphasis>)&#32;{
+260 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">true</emphasis>));
+261 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%B&quot;</emphasis>)&#32;{
+262 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&quot;</emphasis>,&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">false</emphasis>));
+263 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%C&quot;</emphasis>)&#32;{
+264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:04d}/{:02d}/{:02d}&#32;{:02d}:{:02d}:{:02d}&quot;</emphasis>,
+265 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.year,&#32;datetime.month,&#32;datetime.day,
+266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.hour,&#32;datetime.minute,&#32;datetime.second);
+267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%E&quot;</emphasis>)&#32;{
+268 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{}&#32;{}&#32;{:02d}&#32;{:02d}:{:02d}:{:02d}&#32;{}&#32;{:04d}&quot;</emphasis>,
+269 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;weekdayStr(<emphasis role="keyword">static_cast&lt;</emphasis>Weekday<emphasis role="keyword">&gt;</emphasis>(w_day.iso_encoding()),&#32;<emphasis role="keyword">true</emphasis>),
+270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;monthStr(<emphasis role="keyword">static_cast&lt;</emphasis>Month<emphasis role="keyword">&gt;</emphasis>(datetime.month),&#32;<emphasis role="keyword">true</emphasis>),
+271 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.day,
+272 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.hour,
+273 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.minute,
+274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.second,
+275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(datetime.hour&#32;/&#32;12&#32;?&#32;<emphasis role="stringliteral">&quot;PM&quot;</emphasis>&#32;:&#32;<emphasis role="stringliteral">&quot;AM&quot;</emphasis>),
+276 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;datetime.year);
+277 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+278 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+279 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;output;
+280 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+281 
+282 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">static</emphasis>&#32;std::string&#32;formatCurrentDateTime(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;format)&#32;{
+283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::system_clock::now();
+284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;zoned&#32;=&#32;std::chrono::zoned_time(timezone,&#32;now);
+285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;output;
+286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;p&#32;=&#32;0;
+287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(;&#32;p&#32;&lt;&#32;format.size();)&#32;{
+288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(format[p]&#32;!=&#32;<emphasis role="charliteral">&apos;%&apos;</emphasis>)&#32;{
+289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;format[p++];
+290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">continue</emphasis>;
+291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+292 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;sub_str&#32;=&#32;format.substr(p,&#32;2);
+293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p&#32;+=&#32;2;
+294 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Y&quot;</emphasis>)&#32;{
+295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Y}&quot;</emphasis>,&#32;zoned);
+296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%y&quot;</emphasis>)&#32;{
+297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%y}&quot;</emphasis>,&#32;zoned);
+298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%m&quot;</emphasis>)&#32;{
+299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%m}&quot;</emphasis>,&#32;zoned);
+300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%d&quot;</emphasis>)&#32;{
+301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%d}&quot;</emphasis>,&#32;zoned);
+302 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%H&quot;</emphasis>)&#32;{
+303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%H}&quot;</emphasis>,&#32;zoned);
+304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%p&quot;</emphasis>)&#32;{
+305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%p}&quot;</emphasis>,&#32;zoned);
+306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%I&quot;</emphasis>)&#32;{
+307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%I}&quot;</emphasis>,&#32;zoned);
+308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%M&quot;</emphasis>)&#32;{
+309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%M}&quot;</emphasis>,&#32;zoned);
+310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%S&quot;</emphasis>)&#32;{
+311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%S}&quot;</emphasis>,&#32;zoned);
+312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%a&quot;</emphasis>)&#32;{
+313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%a}&quot;</emphasis>,&#32;zoned);
+314 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%A&quot;</emphasis>)&#32;{
+315 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%A}&quot;</emphasis>,&#32;zoned);
+316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%b&quot;</emphasis>)&#32;{
+317 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%b}&quot;</emphasis>,&#32;zoned);
+318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%B&quot;</emphasis>)&#32;{
+319 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%B}&quot;</emphasis>,&#32;zoned);
+320 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%Z&quot;</emphasis>)&#32;{
+321 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Z}&quot;</emphasis>,&#32;zoned);
+322 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%C&quot;</emphasis>)&#32;{
+323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%Y/%m/%d&#32;%H:%M:%S}&quot;</emphasis>,&#32;zoned);
+324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(sub_str&#32;==&#32;<emphasis role="stringliteral">&quot;%E&quot;</emphasis>)&#32;{
+325 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;output&#32;+=&#32;std::format(<emphasis role="stringliteral">&quot;{:%a&#32;%b&#32;%d&#32;%I:%M:%S&#32;%p&#32;%Z&#32;%Y}&quot;</emphasis>,&#32;zoned);
+326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+327 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;output;
+329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+330 
 331 
-332 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_DATETIME_H</emphasis>
+332 &#32;&#32;&#32;&#32;};
+333 
+334 &#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;std::string&#32;DateTime::timezone{std::chrono::current_zone()-&gt;name()};
+335 }
+336 
+337 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">//S3GF_DATETIME_H</emphasis>
 </programlisting></section>

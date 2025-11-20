@@ -16,7 +16,7 @@ namespace S3GF {
         SDL_Renderer* self() const;
         Window* window() const;
         void _update();
-        void fillBackground(const SDL_Color& color);
+        void fillBackground(const SDL_Color& color, bool covered = false);
         void drawPoint(const Graphics::Point& point);
         void drawPoint(Graphics::Point&& point);
         void drawLine(const Graphics::Line& line);
@@ -33,15 +33,19 @@ namespace S3GF {
         void setClipView(const Geometry& geometry);
         void setBlendMode(const SDL_BlendMode& blend_mode);
     private:
+        static void updateBackground(const SDL_Color& color) {
+            _background_color = color;
+        }
         struct Command {
             explicit Command(SDL_Renderer* renderer) : renderer(renderer) {}
             virtual void exec() = 0;
             SDL_Renderer* renderer;
         };
         struct FillCMD : public Command {
-            explicit FillCMD(SDL_Renderer* renderer, SDL_Color color = StdColor::Black) 
-                : Command(renderer), bg_color(color) {}
+            explicit FillCMD(SDL_Renderer* renderer, SDL_Color color = StdColor::Black, bool covered = false)
+                : Command(renderer), bg_color(color), _covered(covered) {}
             SDL_Color bg_color;
+            bool _covered;
             void exec() override;
         };
         struct ClipCMD : public Command {
@@ -112,6 +116,7 @@ namespace S3GF {
         
         SDL_Renderer* _renderer{nullptr};
         Window* _window{nullptr};
+        static SDL_Color _background_color;
         std::vector<std::unique_ptr<Command>> _cmd_list;
     };
 
@@ -139,6 +144,7 @@ namespace S3GF {
         bool show();
         bool hide();
         bool visible() const;
+        void close();
 
         bool setResizable(bool enabled);
         bool resizable() const;
@@ -175,7 +181,7 @@ namespace S3GF {
         bool _borderless{false};
         bool _fullscreen{false};
         Vector2 _mouse_pos{0, 0};
-        std::function<void(Renderer*)> _paint_event;
+        std::vector<std::function<void(Renderer*)>> _paint_event_list;
         Engine* _engine;
     };
 
@@ -193,10 +199,13 @@ namespace S3GF {
         void removeEvent(uint64_t id);
         void clearEvent();
         bool run();
+        [[nodiscard]] bool isKeyDown() const;
+        [[nodiscard]] bool isMouseButtonDown() const;
     private:
         explicit EventSystem(Engine* engine) : _engine(engine) {}
         static std::unique_ptr<EventSystem> _instance;
         Engine* _engine{nullptr};
+        bool _is_mouse_down{false}, _is_key_down{false};
         std::map<uint64_t, std::function<void(SDL_Event)>> _event_list;
     };
 

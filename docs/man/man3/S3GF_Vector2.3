@@ -1,4 +1,4 @@
-.TH "S3GF::Vector2" 3 "Version v0.0.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Vector2" 3 "2025年 十一月 20日 星期四 19:39:35" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,14 +9,17 @@ S3GF::Vector2 \- 向量坐标
 .PP
 .PP
 \fR#include <Basic\&.h>\fP
-.SS "Public Member Functions"
+.SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBVector2\fP (float x, float y)"
+.RI "\fBVector2\fP ()"
 .br
 .ti -1c
-.RI "void \fBreset\fP (float x, float y)"
+.RI "\fBVector2\fP (float \fBx\fP, float \fBy\fP)"
+.br
+.ti -1c
+.RI "void \fBreset\fP (float \fBx\fP, float \fBy\fP)"
 .br
 .RI "重新设置新的向量 "
 .ti -1c
@@ -81,7 +84,7 @@ S3GF::Vector2 \- 向量坐标
 .br
 .RI "判断两个坐标位置是否大致相等 "
 .in -1c
-.SS "Public Attributes"
+.SS "Public 属性"
 
 .in +1c
 .ti -1c
@@ -91,26 +94,32 @@ S3GF::Vector2 \- 向量坐标
 .RI "float \fBy\fP"
 .br
 .in -1c
-.SH "Detailed Description"
+.SH "详细描述"
 .PP 
 向量坐标 
 
 用于指定某对象的位置 
-.SH "Member Function Documentation"
+.SH "构造及析构函数说明"
+.PP 
+.SS "S3GF::Vector2::Vector2 ()\fR [inline]\fP, \fR [explicit]\fP"
+
+.SS "S3GF::Vector2::Vector2 (float x, float y)\fR [inline]\fP"
+
+.SH "成员函数说明"
 .PP 
 .SS "bool S3GF::Vector2::isEqual (const \fBVector2\fP & v, const float EPISON = \fR1e\-6f\fP) const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .PP
 判断两个坐标位置是否大致相等 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIv\fP 指定另一个坐标 
 .br
 \fIEPISON\fP 允许的误差数 （默认 0\&.000001f 误差） 
 .RE
 .PP
-\fBReturn values\fP
+\fB返回值\fP
 .RS 4
 \fItrue\fP 表示相等 
 .br
@@ -118,12 +127,50 @@ S3GF::Vector2 \- 向量坐标
 .RE
 .PP
 
+.SS "bool S3GF::Vector2::operator!= (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator* (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator* (float v) const\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator*= (const \fBVector2\fP & v)\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator*= (float v)\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator+ (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator+= (const \fBVector2\fP & v)\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator\- (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator\-= (const \fBVector2\fP & v)\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator/ (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "\fBVector2\fP S3GF::Vector2::operator/ (float v) const\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator/= (const \fBVector2\fP & v)\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::operator/= (float v)\fR [inline]\fP"
+
+.SS "bool S3GF::Vector2::operator< (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "bool S3GF::Vector2::operator<= (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "bool S3GF::Vector2::operator== (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "bool S3GF::Vector2::operator> (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "bool S3GF::Vector2::operator>= (const \fBVector2\fP & v) const\fR [inline]\fP"
+
+.SS "void S3GF::Vector2::reset (const \fBVector2\fP & vector2)\fR [inline]\fP"
+
 .SS "void S3GF::Vector2::reset (float x, float y)\fR [inline]\fP"
 
 .PP
 重新设置新的向量 
 .PP
-\fBParameters\fP
+\fB参数\fP
 .RS 4
 \fIx\fP 
 .br
@@ -131,7 +178,13 @@ S3GF::Vector2 \- 向量坐标
 .RE
 .PP
 
-
-.SH "Author"
+.SH "类成员变量说明"
 .PP 
-Generated automatically by Doxygen for S3GF from the source code\&.
+.SS "float S3GF::Vector2::x"
+
+.SS "float S3GF::Vector2::y"
+
+
+.SH "作者"
+.PP 
+由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.
