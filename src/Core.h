@@ -1,4 +1,5 @@
 #pragma once
+#include "Basic.h"
 #ifndef S3GF_CORE_H
 #define S3GF_CORE_H
 #include "Components.h"
@@ -391,7 +392,7 @@ namespace S3GF {
         TTF_TextEngine* _text_engine{nullptr};
     };
 
-    using FontList = std::unordered_map<std::string, std::string>;
+    using FontMap = std::unordered_map<std::string, std::string>;
     class FontDatabase {
     public:
         FontDatabase() = delete;
@@ -400,12 +401,17 @@ namespace S3GF {
         ~FontDatabase() = delete;
         FontDatabase& operator=(const FontDatabase&) = delete;
         FontDatabase& operator=(FontDatabase&&) = delete;
+        struct FontInfo {
+            std::string font_name;
+            std::string font_path;
+        };
 
-        static FontList getFontDatabaseFromSystem();
+        static FontMap getFontDatabaseFromSystem();
         static std::string findFontFromSystem(const std::string &font_name);
+        static std::vector<FontInfo> getSystemDefaultFont();
     private:
         static bool _is_loaded;
-        static FontList _font_db;
+        static FontMap _font_db;
     };
 
     class AudioSystem {

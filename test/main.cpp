@@ -12,18 +12,19 @@ int main() {
     auto bg_color = StdColor::GreenLight;
     auto main_win = new Window(&engine, "我的第一个窗口");
     main_win->setResizable(true);
-    auto font_path = FontDatabase::findFontFromSystem("arial");
-    TextSystem::global()->addFont("arial1", font_path, main_win->renderer());
-    TextSystem::global()->addFont("arial2", font_path, main_win->renderer());
+    auto default_fonts = FontDatabase::getSystemDefaultFont();
+    auto font1 = default_fonts.empty() ? FontDatabase::FontInfo() : default_fonts[0];
+    auto font2 = default_fonts.empty() ? FontDatabase::FontInfo() : default_fonts[1];
+    TextSystem::global()->addFont(font1.font_name, font1.font_path, main_win->renderer());
+    TextSystem::global()->addFont(font2.font_name, font2.font_path, main_win->renderer());
     Button button("btn", main_win->renderer());
-    button.setFont("arial1");
-    TextSystem::global()->font("arial1")->setFontSize(24.f);
+    button.setFont(font1.font_name);
+    TextSystem::global()->font(font1.font_name)->setFontSize(24.f);
     button.setText("Button 1");
     button.setKey(SDLK_SPACE);
     button.setActive();
     button.move(60, 60);
     button.resize(120, 70);
-    button.setCheckable(true);
     button.setEnabled(false);
     button.setEvent([&bg_color] {
         bg_color = StdColor::RedLightPink;
@@ -40,8 +41,8 @@ int main() {
     textureButton.move(400.f - textureButton.size().width / 2 + 40, 300.f - textureButton.size().height);
     textureButton.setKey(SDLK_RETURN);
     textureButton.setActive();
-    textureButton.setFont("arial2");
-    TextSystem::global()->font("arial2")->setFontSize(40.f);
+    textureButton.setFont(font2.font_name);
+    TextSystem::global()->font(font2.font_name)->setFontSize(40.f);
     textureButton.setText("Hello!");
     auto& text_color_status = textureButton.textColor();
     text_color_status.active = StdColor::BlueDark;

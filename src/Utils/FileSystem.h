@@ -159,6 +159,10 @@ namespace S3GF {
                                                       const std::vector<std::string>& file_ext_list = {},
                                                       bool ignore_error = false);
 
+        static std::vector<std::string> listFilesRecursively(const std::string& path, 
+                                                            const std::vector<std::string>& file_ext_list = {},
+                                                            bool ignore_error = false);
+
         /**
          * @brief 获取指定路径下的所有文件或目录
          * @param path 指定路径

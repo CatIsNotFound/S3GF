@@ -250,7 +250,7 @@ namespace S3GF {
     }
 
     std::string FileSystem::getAbsolutePath(const std::string &path) {
-        if (path[1] == ':') return path;
+        if (path[1] == ':' || path[0] == '~' || path[0] == '/') return path;
         if (path.front() == '.') {
             auto pos = path.find_first_of('/');
             if (pos != std::string::npos)
@@ -325,6 +325,48 @@ namespace S3GF {
                     if (std::filesystem::is_directory(file_path)) continue;
                 }
                 if (file_ext_list.empty()) out.emplace_back(file_path);
+                auto filename = getShortFileName(file_path);
+                std::string ext_name;
+                auto pos = filename.find_last_of('.');
+                if (pos != std::string::npos && pos > 0) ext_name = filename.substr(pos);
+                for (auto &ext: file_ext_list) {
+                    if (ext_name == ext) {
+                        out.emplace_back(file_path);
+                        break;
+                    }
+                }
+            } catch (const std::filesystem::filesystem_error& e) {
+                if (!ignore_error) {
+                    Logger::log(std::format("FileSystem: Access file '{}' error! Exception: {}",
+                                            real_path, e.what()), Logger::ERROR);
+                }
+            }
+        }
+        return out;
+    }
+
+    std::vector<std::string> FileSystem::listFilesRecursively(const std::string &path,
+                                                            const std::vector<std::string> &file_ext_list,
+                                                            bool ignore_error) {
+        auto real_path = getAbsolutePath(path);
+        std::vector<std::string> out;
+        if (!std::filesystem::is_directory(real_path)) {
+            if (!ignore_error) Logger::log(std::format("FileSystem: Path '{}' is not found! ",
+                                                       real_path), Logger::ERROR);
+            return {};
+        }
+        for (const auto& file : std::filesystem::recursive_directory_iterator(real_path)) {
+            try {
+                auto file_path = file.path().string();
+                if (std::filesystem::is_directory(file_path)) {
+                    auto sub_res = listFilesRecursively(file_path, file_ext_list, ignore_error);
+                    out.insert(out.end(), sub_res.begin(), sub_res.end());
+                    continue;
+                }
+                if (file_ext_list.empty()) {
+                    out.emplace_back(file_path);
+                    continue;
+                }
                 auto filename = getShortFileName(file_path);
                 std::string ext_name;
                 auto pos = filename.find_last_of('.');

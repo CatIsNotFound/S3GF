@@ -2,4 +2,5 @@ build
 cmake-build-*
 .i*
 .v*
+.cache
 

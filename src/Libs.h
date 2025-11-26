@@ -9,6 +9,7 @@
 #include <fstream>
 #include <format>
 #include <string>
+#include <variant>
 #include <vector>
 #include <deque>
 #include <queue>

@@ -2,6 +2,7 @@
 #include "Core.h"
 
 #include <memory>
+#include "Basic.h"
 #include "Utils/All"
 #include "MultiThread/All"
 
@@ -12,7 +13,7 @@ namespace S3GF {
     bool Engine::_quit_requested{false};
     int Engine::_return_code{0};
     bool FontDatabase::_is_loaded{false};
-    FontList FontDatabase::_font_db{};
+    FontMap FontDatabase::_font_db{};
 
     std::unique_ptr<TextSystem> TextSystem::_instance{};
     std::unique_ptr<AudioSystem> AudioSystem::_instance{};
@@ -525,6 +526,7 @@ namespace S3GF {
         if (SDL_PollEvent(&ev)) {
             _is_key_down = (ev.key.type == SDL_EVENT_KEY_DOWN);
             _is_mouse_down = (ev.button.type == SDL_EVENT_MOUSE_BUTTON_DOWN);
+            if (!_engine->windowCount()) return false;
             for (auto i = _engine->begin(); i != _engine->end(); i++) {
                 if (ev.window.windowID != i->first) continue;
                 if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
@@ -1081,9 +1083,9 @@ namespace S3GF {
     }
 
 
-    FontList FontDatabase::getFontDatabaseFromSystem() {
+    FontMap FontDatabase::getFontDatabaseFromSystem() {
         if (!_is_loaded) {
-            StringList find_font_dir(8);
+            StringList find_font_dir;
 #ifdef _WIN32
             find_font_dir.emplace_back("C:/Windows/Fonts");
 #endif
@@ -1108,7 +1110,7 @@ namespace S3GF {
             }
 #endif
             for (auto& font_dir : find_font_dir) {
-                StringList font_files = FileSystem::listFilePaths(font_dir, FileSystem::FilesOnly,
+                StringList font_files = FileSystem::listFilesRecursively(font_dir,
                                                             {".ttf", ".otf", ".ttc", ".woff", ".eot"});
                 for (auto& file : font_files) {
                     auto short_file = FileSystem::getShortFileName(file, true);
@@ -1127,6 +1129,33 @@ namespace S3GF {
         if (!_is_loaded) getFontDatabaseFromSystem();
         if (!_font_db.contains(font_name)) return {};
         return _font_db[font_name];
+    }
+
+    std::vector<FontDatabase::FontInfo> FontDatabase::getSystemDefaultFont() {
+        if (!_is_loaded) getFontDatabaseFromSystem();
+        std::vector<FontDatabase::FontInfo> default_fonts;
+#ifdef _WIN32
+        StringList common_fonts = { "arial", "segoeui", "tahoma", "verdana", "calibri" };
+        for (auto& font_name : common_fonts) {
+            auto path = findFontFromSystem(font_name);
+            if (!path.empty()) default_fonts.push_back({font_name, path});
+        }
+#endif
+#ifdef __linux__
+        StringList common_fonts = { "AdwaitaSans-Regular", "DejaVuSans", "Roboto-Regular", "Ubuntu-R" };
+        for (auto& font_name : common_fonts) {
+            auto path = findFontFromSystem(font_name);
+            if (!path.empty()) default_fonts.push_back({font_name, path});
+        }
+#endif
+#ifdef __APPLE__
+        StringList common_fonts = { "SanFrancisco-Regular", "HelveticaNeue", "ArialMT", "TimesNewRomanPSMT" };
+        for (auto& font_name : common_fonts) {
+            auto path = findFontFromSystem(font_name);
+            if (!path.empty()) default_fonts.push_back({font_name, path});
+        }
+#endif
+        return default_fonts;
     }
 
     AudioSystem* AudioSystem::global() {
