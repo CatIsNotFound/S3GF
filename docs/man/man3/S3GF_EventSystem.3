@@ -1,4 +1,4 @@
-.TH "S3GF::EventSystem" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::EventSystem" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -36,6 +36,9 @@ S3GF::EventSystem
 .RI "void \fBclearEvent\fP ()"
 .br
 .ti -1c
+.RI "size_t \fBeventCount\fP () const"
+.br
+.ti -1c
 .RI "bool \fBrun\fP ()"
 .br
 .ti -1c
@@ -68,6 +71,8 @@ S3GF::EventSystem
 .SS "void S3GF::EventSystem::appendEvent (uint64_t id, const std::function< void(SDL_Event)> & event)"
 
 .SS "void S3GF::EventSystem::clearEvent ()"
+
+.SS "size_t S3GF::EventSystem::eventCount () const"
 
 .SS "\fBEventSystem\fP * S3GF::EventSystem::global ()\fR [static]\fP"
 

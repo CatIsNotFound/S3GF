@@ -1,4 +1,4 @@
-.TH "S3GF::Property" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Property" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -11,6 +11,12 @@ S3GF::Property
 .SS "Public 成员函数"
 
 .in +1c
+.ti -1c
+.RI "void \fBreset\fP (const \fBProperty\fP &property)"
+.br
+.ti -1c
+.RI "void \fBreset\fP (\fBProperty\fP &&property)"
+.br
 .ti -1c
 .RI "void \fBmove\fP (const \fBVector2\fP &pos)"
 .br
@@ -66,21 +72,25 @@ S3GF::Property
 .in -1c
 .SH "成员函数说明"
 .PP 
-.SS "const \fBGeometryF\fP S3GF::Property::geomentry () const\fR [inline]\fP"
+.SS "const \fBGeometryF\fP S3GF::Property::geomentry () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SS "void S3GF::Property::move (const \fBVector2\fP & pos)\fR [inline]\fP"
 
 .SS "void S3GF::Property::move (float x, float y)\fR [inline]\fP"
 
-.SS "const \fBVector2\fP S3GF::Property::position () const\fR [inline]\fP"
+.SS "const \fBVector2\fP S3GF::Property::position () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "void S3GF::Property::reset (const \fBProperty\fP & property)\fR [inline]\fP"
+
+.SS "void S3GF::Property::reset (\fBProperty\fP && property)\fR [inline]\fP"
 
 .SS "void S3GF::Property::resize (const \fBSize\fP & size)\fR [inline]\fP"
 
 .SS "void S3GF::Property::resize (float width, float height)\fR [inline]\fP"
 
-.SS "float S3GF::Property::scale () const\fR [inline]\fP"
+.SS "float S3GF::Property::scale () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
-.SS "\fBGeometryF\fP S3GF::Property::scaledGeometry () const\fR [inline]\fP"
+.SS "\fBGeometryF\fP S3GF::Property::scaledGeometry () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SS "void S3GF::Property::setGeomentry (const \fBVector2\fP & pos, const \fBSize\fP & size)\fR [inline]\fP"
 
@@ -88,7 +98,7 @@ S3GF::Property
 
 .SS "void S3GF::Property::setScale (float scale = \fR1\&.0f\fP)\fR [inline]\fP"
 
-.SS "const \fBSize\fP S3GF::Property::size () const\fR [inline]\fP"
+.SS "const \fBSize\fP S3GF::Property::size () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SH "类成员变量说明"
 .PP 

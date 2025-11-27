@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.1-beta</span>
    </div>
    <div id="projectbrief">SDL3 Graphics Framework</div>
   </td>
@@ -94,6 +94,15 @@ $(function(){initNavTree('class_s3_g_f_1_1_texture.html','','class_s3_g_f_1_1_te
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_components_8h_source.html">Components.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for S3GF::Texture:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_s3_g_f_1_1_texture.png" usemap="#S3GF_3A_3ATexture_map" alt=""/>
+  <map id="S3GF_3A_3ATexture_map" name="S3GF_3A_3ATexture_map">
+<area href="class_s3_g_f_1_1_texture_atlas.html" alt="S3GF::TextureAtlas" shape="rect" coords="0,56,120,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -105,10 +114,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9974321e3641fe0bda5f447e90d2f233" id="r_a9974321e3641fe0bda5f447e90d2f233"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9974321e3641fe0bda5f447e90d2f233">Texture</a> (SDL_Surface *surface, <a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *renderer, bool deep_copy=false)</td></tr>
 <tr class="memitem:acd89035b8a1ee80ab9e335d1a72d5f68" id="r_acd89035b8a1ee80ab9e335d1a72d5f68"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd89035b8a1ee80ab9e335d1a72d5f68">Texture</a> (<a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access)</td></tr>
 <tr class="memitem:a0ef577ae0b6972e96502abc54193f268" id="r_a0ef577ae0b6972e96502abc54193f268"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ef577ae0b6972e96502abc54193f268">~Texture</a> ()</td></tr>
+<tr class="memitem:afa2d47d5030461deac93e279a30eb5ad" id="r_afa2d47d5030461deac93e279a30eb5ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa2d47d5030461deac93e279a30eb5ad">render</a> () const</td></tr>
 <tr class="memitem:abcb9a3e41b6f56ff5309d1d69352ce01" id="r_abcb9a3e41b6f56ff5309d1d69352ce01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcb9a3e41b6f56ff5309d1d69352ce01">setImagePath</a> (const std::string &amp;path)</td></tr>
+<tr class="memitem:aad5837755274bdd09ad79245f6c42045" id="r_aad5837755274bdd09ad79245f6c42045"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad5837755274bdd09ad79245f6c42045">imagePath</a> () const</td></tr>
+<tr class="memitem:aebf603581b58fb047502bd9cd5bfda91" id="r_aebf603581b58fb047502bd9cd5bfda91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebf603581b58fb047502bd9cd5bfda91">setImageFromSurface</a> (SDL_Surface *surface, bool deep_copy=false)</td></tr>
 <tr class="memitem:aa3ae6aef038b8310419e42ccbb41d914" id="r_aa3ae6aef038b8310419e42ccbb41d914"><td class="memItemLeft" align="right" valign="top">SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3ae6aef038b8310419e42ccbb41d914">self</a> () const</td></tr>
+<tr class="memitem:afc8d33b764a44f742c483a637006fcea" id="r_afc8d33b764a44f742c483a637006fcea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc8d33b764a44f742c483a637006fcea">isValid</a> () const</td></tr>
 <tr class="memitem:a80db068e8f5eaaf54d1abdd0da75772b" id="r_a80db068e8f5eaaf54d1abdd0da75772b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_s3_g_f_1_1_property.html">Property</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80db068e8f5eaaf54d1abdd0da75772b">property</a> ()</td></tr>
-<tr class="memitem:a171ca9548310ef8c6ca99cbc11691aee" id="r_a171ca9548310ef8c6ca99cbc11691aee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a171ca9548310ef8c6ca99cbc11691aee">draw</a> () const</td></tr>
+<tr class="memitem:a171ca9548310ef8c6ca99cbc11691aee" id="r_a171ca9548310ef8c6ca99cbc11691aee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a171ca9548310ef8c6ca99cbc11691aee">draw</a> () const</td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abe83735fe74f17e5b823b85d036e3fe8" name="abe83735fe74f17e5b823b85d036e3fe8"></a>
@@ -291,6 +304,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void S3GF::Texture::draw </td>
@@ -299,6 +315,63 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="class_s3_g_f_1_1_texture_atlas.html#a5a57ed10eac64ec74aad7f529b08515a">S3GF::TextureAtlas</a>.</p>
+
+</div>
+</div>
+<a id="aad5837755274bdd09ad79245f6c42045" name="aad5837755274bdd09ad79245f6c42045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad5837755274bdd09ad79245f6c42045">&#9670;&#160;</a></span>imagePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; S3GF::Texture::imagePath </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afc8d33b764a44f742c483a637006fcea" name="afc8d33b764a44f742c483a637006fcea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8d33b764a44f742c483a637006fcea">&#9670;&#160;</a></span>isValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::Texture::isValid </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -370,17 +443,63 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="afa2d47d5030461deac93e279a30eb5ad" name="afa2d47d5030461deac93e279a30eb5ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa2d47d5030461deac93e279a30eb5ad">&#9670;&#160;</a></span>render()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> * S3GF::Texture::render </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa3ae6aef038b8310419e42ccbb41d914" name="aa3ae6aef038b8310419e42ccbb41d914"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3ae6aef038b8310419e42ccbb41d914">&#9670;&#160;</a></span>self()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">SDL_Texture * S3GF::Texture::self </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aebf603581b58fb047502bd9cd5bfda91" name="aebf603581b58fb047502bd9cd5bfda91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebf603581b58fb047502bd9cd5bfda91">&#9670;&#160;</a></span>setImageFromSurface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::Texture::setImageFromSurface </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Surface *</td>          <td class="paramname"><span class="paramname"><em>surface</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>deep_copy</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,4 +1,4 @@
-.TH "D:/Coding/S3GF/src/Core.h" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "D:/Coding/S3GF/src/Core.h" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,6 +6,8 @@ D:/Coding/S3GF/src/Core.h
 .SH SYNOPSIS
 .br
 .PP
+\fR#include 'Basic\&.h'\fP
+.br
 \fR#include 'Components\&.h'\fP
 .br
 
@@ -43,6 +45,9 @@ D:/Coding/S3GF/src/Core.h
 .RI "class \fBS3GF::FontDatabase\fP"
 .br
 .ti -1c
+.RI "struct \fBS3GF::FontDatabase::FontInfo\fP"
+.br
+.ti -1c
 .RI "class \fBS3GF::AudioSystem\fP"
 .br
 .ti -1c
@@ -55,7 +60,7 @@ D:/Coding/S3GF/src/Core.h
 .ti -1c
 .RI "namespace \fBS3GF\fP"
 .br
-.RI "\fBS3GF\fP 空间 "
+.RI "\fBS3GF\fP Namespace "
 .in -1c
 .SS "宏定义"
 
@@ -63,17 +68,22 @@ D:/Coding/S3GF/src/Core.h
 .ti -1c
 .RI "#define \fBS3GF_CORE_H\fP"
 .br
+.ti -1c
+.RI "#define \fBS3GF_FULL_VERSION\fP   'v0\&.1\&.1\-beta'"
+.br
 .in -1c
 .SS "类型定义"
 
 .in +1c
 .ti -1c
-.RI "using \fBS3GF::FontList\fP = std::unordered_map<std::string, std::string>"
+.RI "using \fBS3GF::FontMap\fP = std::unordered_map<std::string, std::string>"
 .br
 .in -1c
 .SH "宏定义说明"
 .PP 
 .SS "#define S3GF_CORE_H"
+
+.SS "#define S3GF_FULL_VERSION   'v0\&.1\&.1\-beta'"
 
 .SH "作者"
 .PP 

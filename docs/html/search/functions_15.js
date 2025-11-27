@@ -16,8 +16,10 @@ var searchData=
   ['_7etaskqueue_13',['~TaskQueue',['../class_s3_g_f_1_1_task_queue.html#a19428dc98f455b7c7ee02ef09914cd48',1,'S3GF::TaskQueue']]],
   ['_7etextsystem_14',['~TextSystem',['../class_s3_g_f_1_1_text_system.html#a5335ee93777e05bfe24bb280c6c8020f',1,'S3GF::TextSystem']]],
   ['_7etexture_15',['~Texture',['../class_s3_g_f_1_1_texture.html#a0ef577ae0b6972e96502abc54193f268',1,'S3GF::Texture']]],
-  ['_7ethreadpool_16',['~ThreadPool',['../class_s3_g_f_1_1_thread_pool.html#a26384b09a505fcc66351feaa1a559fe9',1,'S3GF::ThreadPool']]],
-  ['_7etimer_17',['~Timer',['../class_s3_g_f_1_1_timer.html#af97899af8e052d65b008bff1928f673b',1,'S3GF::Timer']]],
-  ['_7etrigger_18',['~Trigger',['../class_s3_g_f_1_1_trigger.html#a2906d5364851b14463378a66ac3f548e',1,'S3GF::Trigger']]],
-  ['_7ewindow_19',['~Window',['../class_s3_g_f_1_1_window.html#a0bdbfc1f3918ca3241f5e4d8c19b1973',1,'S3GF::Window']]]
+  ['_7etextureatlas_16',['~TextureAtlas',['../class_s3_g_f_1_1_texture_atlas.html#abf35152404c5cfd2efcef7d5a6b8f682',1,'S3GF::TextureAtlas']]],
+  ['_7etexturebutton_17',['~TextureButton',['../class_s3_g_f_1_1_texture_button.html#a7f538eb54e094b1f3ac427d312e1e239',1,'S3GF::TextureButton']]],
+  ['_7ethreadpool_18',['~ThreadPool',['../class_s3_g_f_1_1_thread_pool.html#a26384b09a505fcc66351feaa1a559fe9',1,'S3GF::ThreadPool']]],
+  ['_7etimer_19',['~Timer',['../class_s3_g_f_1_1_timer.html#af97899af8e052d65b008bff1928f673b',1,'S3GF::Timer']]],
+  ['_7etrigger_20',['~Trigger',['../class_s3_g_f_1_1_trigger.html#a2906d5364851b14463378a66ac3f548e',1,'S3GF::Trigger']]],
+  ['_7ewindow_21',['~Window',['../class_s3_g_f_1_1_window.html#a0bdbfc1f3918ca3241f5e4d8c19b1973',1,'S3GF::Window']]]
 ];

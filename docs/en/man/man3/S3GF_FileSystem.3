@@ -1,4 +1,4 @@
-.TH "S3GF::FileSystem" 3 "Fri Nov 21 2025 16:18:19" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::FileSystem" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -104,6 +104,9 @@ S3GF::FileSystem \- 文件系统
 .RI "static std::vector< std::string > \fBlistFilePaths\fP (const std::string &path, \fBFilter\fP filter=\fBAll\fP, const std::vector< std::string > &file_ext_list={}, bool ignore_error=false)"
 .br
 .RI "获取指定路径下的所有文件或目录 "
+.ti -1c
+.RI "static std::vector< std::string > \fBlistFilesRecursively\fP (const std::string &path, const std::vector< std::string > &file_ext_list={}, bool ignore_error=false)"
+.br
 .ti -1c
 .RI "static std::vector< std::string > \fBlistFiles\fP (const std::string &path, \fBFilter\fP filter=\fBAll\fP, const std::vector< std::string > &file_ext_list={}, bool ignore_error=false)"
 .br
@@ -260,6 +263,8 @@ To avoid the hidden files (e\&.g: \&.bashrc) in Linux!
 \fBlistFilePaths\fP 
 .RE
 .PP
+
+.SS "std::vector< std::string > S3GF::FileSystem::listFilesRecursively (const std::string & path, const std::vector< std::string > & file_ext_list = \fR{}\fP, bool ignore_error = \fRfalse\fP)\fR [static]\fP"
 
 .SS "bool S3GF::FileSystem::mkDir (const std::string & path, bool ignore_error = \fRfalse\fP, bool recursive_create = \fRfalse\fP)\fR [static]\fP"
 

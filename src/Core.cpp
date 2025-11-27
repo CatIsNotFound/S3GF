@@ -8,10 +8,11 @@
 
 namespace S3GF {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
-    SDL_Color Renderer::_background_color{StdColor::Black};
+    SDL_Color Renderer::_background_color{RGBAColor::Black};
     SDL_WindowID Engine::_main_window_id{0};
     bool Engine::_quit_requested{false};
     int Engine::_return_code{0};
+    bool Engine::_show_app_info{true};
     bool FontDatabase::_is_loaded{false};
     FontMap FontDatabase::_font_db{};
 
@@ -22,6 +23,7 @@ namespace S3GF {
         _renderer = SDL_CreateRenderer(_window->self(), nullptr);
         if (!_renderer) {
             Logger::log("The renderer is not created!", Logger::FATAL);
+            Engine::throwFatalError();
         }
     }
 
@@ -133,38 +135,68 @@ namespace S3GF {
     }
 
     void Renderer::FillCMD::exec() {
+        bool _ret = false;
         if (_covered) {
-            SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
-            SDL_RenderClear(renderer);
+            _ret = SDL_SetRenderDrawColor(renderer, bg_color.r, bg_color.g, bg_color.b, bg_color.a);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                        SDL_GetError()), Logger::WARN);
+            }
+            _ret = SDL_RenderClear(renderer);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Render clear failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         } else {
             Renderer::updateBackground(bg_color);
         }
     }
 
     void Renderer::ClipCMD::exec() {
-        SDL_SetRenderClipRect(renderer, (_reset ? nullptr : &_clip_area));
+        bool _ret = SDL_SetRenderClipRect(renderer, (_reset ? nullptr : &_clip_area));
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set renderer clip area failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
     }
 
     void Renderer::ViewportCMD::exec() {
-        SDL_SetRenderViewport(renderer, (_reset ? nullptr : &_viewport_area));
+        bool _ret = SDL_SetRenderViewport(renderer, (_reset ? nullptr : &_viewport_area));
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set renderer viewport failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
     }
 
     void Renderer::BlendModeCMD::exec() {
-        SDL_SetRenderDrawBlendMode(renderer, _blend_mode);
+        bool _ret = SDL_SetRenderDrawBlendMode(renderer, _blend_mode);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render draw blend mode failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
     }
 
     void Renderer::PointCMD::exec() {
         if (!point.size()) return;
         const auto color = point.color();
         const auto pos = point.position();
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        auto _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set renderer draw color failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
         if (point.size() == 1) {
-            SDL_RenderPoint(renderer, pos.x, pos.y);
+            _ret = SDL_RenderPoint(renderer, pos.x, pos.y);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render point failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         } else {
-            auto _ret = SDL_RenderGeometry(renderer, nullptr, point.vertices(), point.verticesCount(),
+            _ret = SDL_RenderGeometry(renderer, nullptr, point.vertices(), point.verticesCount(),
                                point.indices(), point.indicesCount());
             if (!_ret) {
-                Logger::log(std::format("Renderer Error: {}", SDL_GetError()), Logger::ERROR);
+                Logger::log(std::format("Renderer: Set render geometry failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
             }
         }
     }
@@ -175,14 +207,26 @@ namespace S3GF {
         const auto END = line.endPosition();
         if (!SIZE) return;
         const auto color = line.color();
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        if (SIZE == 1) {
-            SDL_RenderLine(renderer, START.x, START.y,
-                           END.x, END.y);
-            return;
+        auto _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
         }
-        SDL_RenderGeometry(renderer, nullptr, line.vertices(),
+        if (SIZE == 1) {
+            _ret = SDL_RenderLine(renderer, START.x, START.y,
+                           END.x, END.y);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render line failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
+        } else {
+            _ret = SDL_RenderGeometry(renderer, nullptr, line.vertices(),
                            line.vertexCount(), line.indices(), line.indicesCount());
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render geometry failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
+        }
     }
 
     void Renderer::RectCMD::exec() {
@@ -191,18 +235,39 @@ namespace S3GF {
         GeometryF geometry = rectangle.geometry();
         SDL_FRect r(geometry.pos.x, geometry.pos.y,
                     geometry.size.width, geometry.size.height);
+        bool _ret = false;
         if (fill_rect) {
             SDL_Color color = rectangle.backgroundColor();
-            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-            SDL_RenderFillRect(renderer, &r);
+            _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                        SDL_GetError()), Logger::WARN);
+            }
+            _ret = SDL_RenderFillRect(renderer, &r);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render fill rectangle failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         }
         if (draw_bordered) {
             SDL_Color color = rectangle.borderColor();
-            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                        SDL_GetError()), Logger::WARN);
+            }
             if (rectangle.borderSize() == 1) {
-                SDL_RenderRect(renderer, &r);
+                _ret = SDL_RenderRect(renderer, &r);
+                if (!_ret) {
+                    Logger::log(std::format("Renderer: Set render rectangle failed! Exception: {}",
+                                            SDL_GetError()), Logger::ERROR);
+                }
             } else {
-                SDL_RenderFillRects(renderer, rectangle.bordersRect(), 4);
+                _ret = SDL_RenderFillRects(renderer, rectangle.bordersRect(), 4);
+                if (!_ret) {
+                    Logger::log(std::format("Renderer: Set render fill rectangles failed! Exception: {}",
+                                            SDL_GetError()), Logger::ERROR);
+                }
             }
         }
     }
@@ -210,29 +275,46 @@ namespace S3GF {
     void Renderer::TriangleCMD::exec() {
         bool filled = (triangle.backgroundColor().a >= 0);
         bool bordered = (triangle.borderSize() > 0);
-
+        bool _ret = false;
         if (filled) {
-            SDL_RenderGeometry(renderer, nullptr, triangle.vertices(), 3,
+            _ret = SDL_RenderGeometry(renderer, nullptr, triangle.vertices(), 3,
                                triangle.indices(), 3);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render geometry failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         }
-        if (bordered){
+        if (bordered) {
             const auto SIZE = triangle.borderSize();
             const auto color = triangle.borderColor();
-            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                        SDL_GetError()), Logger::WARN);
+            }
+            int err_cnt = 0;
             if (SIZE == 1) {
                 auto p1 = triangle.position(0),
                      p2 = triangle.position(1),
                      p3 = triangle.position(2);
-                SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y);
-                SDL_RenderLine(renderer, p3.x, p3.y, p2.x, p2.y);
-                SDL_RenderLine(renderer, p1.x, p1.y, p3.x, p3.y);
+                err_cnt += SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y);
+                err_cnt += SDL_RenderLine(renderer, p3.x, p3.y, p2.x, p2.y);
+                err_cnt += SDL_RenderLine(renderer, p1.x, p1.y, p3.x, p3.y);
+                if (err_cnt < 3) {
+                    Logger::log(std::format("Renderer: Set render triangle failed! Exception: {}",
+                                            SDL_GetError()), Logger::ERROR);
+                }
             } else {
-                SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices1(), triangle.borderVerticesCount(),
+                err_cnt += SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices1(), triangle.borderVerticesCount(),
                                    triangle.borderIndices1(), triangle.borderIndicesCount());
-                SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices2(), triangle.borderVerticesCount(),
+                err_cnt += SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices2(), triangle.borderVerticesCount(),
                                    triangle.borderIndices2(), triangle.borderIndicesCount());
-                SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices3(), triangle.borderVerticesCount(),
+                err_cnt += SDL_RenderGeometry(renderer, nullptr, triangle.borderVertices3(), triangle.borderVerticesCount(),
                                    triangle.borderIndices3(), triangle.borderIndicesCount());
+                if (err_cnt < 3) {
+                    Logger::log(std::format("Renderer: Set render triangle failed! Exception: {}",
+                                            SDL_GetError()), Logger::ERROR);
+                }
             }
         }
     }
@@ -240,44 +322,91 @@ namespace S3GF {
     void Renderer::EllipseCMD::exec() {
         bool filled = (ellipse.backgroundColor().a >= 0);
         bool bordered = (ellipse.borderSize() > 0);
+        bool _ret = false;
         if (filled) {
-            SDL_RenderGeometry(renderer, nullptr, ellipse.vertices(), ellipse.vertexCount(),
+            _ret = SDL_RenderGeometry(renderer, nullptr, ellipse.vertices(), ellipse.vertexCount(),
                                ellipse.indices(), ellipse.indicesCount());
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render geometry failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         }
         if (bordered) {
-            SDL_RenderGeometry(renderer, nullptr, ellipse.borderVertices(), ellipse.borderVerticesCount(),
+            _ret = SDL_RenderGeometry(renderer, nullptr, ellipse.borderVertices(), ellipse.borderVerticesCount(),
                                ellipse.borderIndices(), ellipse.borderIndicesCount());
+            if (!_ret) {
+                Logger::log(std::format("Renderer: Set render geometry failed! Exception: {}",
+                                        SDL_GetError()), Logger::ERROR);
+            }
         }
     }
 
     void Renderer::TextureCMD::exec() {
+        if (!_texture || !_property) {
+            Logger::log(std::format("Renderer: The texture or texture property is not valid!"),
+                        Logger::ERROR);
+            return;
+        }
         auto color = _property->color_alpha;
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        SDL_SetTextureColorMod(_texture, color.r, color.g, color.b);
-        SDL_SetTextureAlphaMod(_texture, color.a);
+        bool _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
+        _ret = SDL_SetTextureColorMod(_texture, color.r, color.g, color.b);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set texture color failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
+        _ret = SDL_SetTextureAlphaMod(_texture, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set texture alpha failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
         auto scaled = _property->scaledGeometry();
         auto scaled_pos = scaled.pos;
         auto scaled_size = scaled.size;
         SDL_FRect rect_dest = {scaled_pos.x, scaled_pos.y,
                         scaled_size.width, scaled_size.height};
-        if (_property->clip_mode) {
-            SDL_RenderTextureRotated(renderer, _texture, &_property->clip_area,
+        _ret = SDL_RenderTextureRotated(renderer, _texture, 
+                         _property->clip_mode ? &_property->clip_area : nullptr,
                          &rect_dest, _property->rotate_angle, nullptr, SDL_FLIP_NONE);
-        } else {
-            SDL_RenderTextureRotated(renderer, _texture, nullptr,
-                             &rect_dest, _property->rotate_angle, nullptr, SDL_FLIP_NONE);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render texture failed! Exception: {}",
+                                    SDL_GetError()), Logger::ERROR);
+            return;
         }
     }
 
     void Renderer::TextCMD::exec() {
-        TTF_DrawRendererText(text, position.x, position.y);
+        bool _ret = TTF_DrawRendererText(text, position.x, position.y);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render text failed! Exception: {}",
+                                    SDL_GetError()), Logger::ERROR);
+        }
     }
 
     void Renderer::PixelTextCMD::exec() {
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-        SDL_SetRenderScale(renderer, scaled.x, scaled.y);
-        SDL_RenderDebugText(renderer, pos.x, pos.y, text.c_str());
-        SDL_SetRenderScale(renderer, 1.0f, 1.0f);
+        bool _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
+        _ret = SDL_SetRenderScale(renderer, scaled.x, scaled.y);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render scale failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
+        _ret = SDL_RenderDebugText(renderer, pos.x, pos.y, text.c_str());
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render debug text failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
+        _ret = SDL_SetRenderScale(renderer, 1.0f, 1.0f);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render scale failed! Exception: {}",
+                                    SDL_GetError()), Logger::WARN);
+        }
     }
 
     Window::Window(Engine* object, const std::string& title, int width, int height,  GraphicEngine engine)
@@ -527,29 +656,29 @@ namespace S3GF {
             _is_key_down = (ev.key.type == SDL_EVENT_KEY_DOWN);
             _is_mouse_down = (ev.button.type == SDL_EVENT_MOUSE_BUTTON_DOWN);
             if (!_engine->windowCount()) return false;
-            for (auto i = _engine->begin(); i != _engine->end(); i++) {
-                if (ev.window.windowID != i->first) continue;
-                if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
-                    i->second->unloadEvent();
-                }
+            auto win_id_list = _engine->windowIDList();
+            std::for_each(win_id_list.begin(), win_id_list.end(), [this, &ev](uint32_t id) {
+                auto win = _engine->window(id);
+                if (!win || ev.window.windowID != id) return;
                 if (ev.type == SDL_EVENT_WINDOW_MOVED) {
-                    i->second->moveEvent();
+                    win->moveEvent();
                 }
                 if (ev.type == SDL_EVENT_WINDOW_RESIZED) {
-                    i->second->resizeEvent();
+                    win->resizeEvent();
                 }
                 if (ev.type == SDL_EVENT_WINDOW_FOCUS_GAINED) {
-                    i->second->getFocusEvent();
+                    win->getFocusEvent();
                 }
                 if (ev.type == SDL_EVENT_WINDOW_FOCUS_LOST) {
-                    i->second->lostFocusEvent();
+                    win->lostFocusEvent();
                 }
-            }
+                if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
+                    win->unloadEvent();
+                }
+            });
 
             for (auto& event : _event_list) {
-                if (event.second) {
-                    event.second(ev);
-                }
+                if (event.second) event.second(ev);
             }
         }
         return true;
@@ -558,10 +687,20 @@ namespace S3GF {
     bool EventSystem::isKeyDown() const { return _is_key_down; }
     bool EventSystem::isMouseButtonDown() const { return _is_mouse_down; }
 
-    Engine::Engine() : _running(true) {
+    Engine::Engine(std::string&& app_name, std::string&& app_version, std::string&& app_id)
+        : _app_id(app_id), _app_name(app_name), _app_version(app_version), _running(true) {
+        if (_show_app_info) {
+            std::cout << std::format("S3GF {} (Based on SDL {}.{}.{})\n",
+                                     S3GF_FULL_VERSION, SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
+                      << "For more information, visit: https://github.com/CatIsNotFound/S3GF \n"
+                         "                             https://gitee.com/CatIsNotFound/S3GF\n" << std::endl;
+            std::cout << std::format("=== Application Info ===\nID: {} \nName: {} \nVersion: {} \n",
+                                     app_id, app_name, app_version) << std::endl;
+        }
         if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
             throwFatalError();
         }
+        SDL_SetAppMetadata(app_name.c_str(), app_version.c_str(), app_id.c_str());
         TextSystem::global();
         EventSystem::global(this);
         // AudioSystem::global();
@@ -571,6 +710,39 @@ namespace S3GF {
     Engine::~Engine() {
         cleanUp();
     }
+
+    void Engine::disabledShowAppInfo() {
+        _show_app_info = false;
+    }
+
+    void Engine::setApplicationID(std::string &&app_id) {
+        _app_id = std::move(app_id);
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+    void Engine::setApplicationID(const std::string &app_id) {
+        _app_id = app_id;
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+    void Engine::setApplicationName(std::string &&app_name) {
+        _app_name = std::move(app_name);
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+    void Engine::setApplicationName(const std::string &app_name) {
+        _app_name = app_name;
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+    void Engine::setApplicationVersion(std::string &&app_version) {
+        _app_version = std::move(app_version);
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+    void Engine::setApplicationVersion(const std::string &app_version) {
+        _app_version = app_version;
+        SDL_SetAppMetadata(_app_name.c_str(), _app_version.c_str(), _app_id.c_str());
+    }
+
+    const std::string& Engine::applicationID() const { return _app_id; }
+    const std::string& Engine::applicationName() const { return _app_name; }
+    const std::string& Engine::applicationVersion() const { return _app_version; }
 
     bool Engine::isRunning() const {
         return _running;
@@ -600,7 +772,10 @@ namespace S3GF {
     }
 
     Window* Engine::window(SDL_WindowID id) const {
-        return _window_list.at(id).get();
+        if (_window_list.contains(id))
+            return _window_list.at(id).get();
+        else
+            return nullptr;
     }
 
     std::vector<uint32_t> Engine::windowIDList() const {

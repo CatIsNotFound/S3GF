@@ -65,7 +65,7 @@ namespace S3GF {
     void Timer::running() {
         while (_enabled) {
             _lock.lock();
-            sleepMS(1);
+            SLEEP_MS(1);
             _current_time = SDL_GetTicks();
             auto current_delay = _current_time - _start_time;
             if (current_delay >= _delay) {
@@ -140,7 +140,7 @@ namespace S3GF {
     void Trigger::running() {
         while (_enabled) {
             _mutex.lock();
-            sleepMS(1);
+            SLEEP_MS(1);
             bool c_switch = false;
             if (_condition_function) {
                 c_switch = _condition_function();

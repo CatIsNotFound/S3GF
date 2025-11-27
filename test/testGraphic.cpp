@@ -14,9 +14,9 @@ int testGraphic(int argc, char* argv[]) {
         win->setWindowTitle(std::format("FPS: {}", engine.fps()));
     });
 
-    Graphics::Rectangle rect1(0, 0, 100, 100, 2, StdColor::RedDark, StdColor::RedLightTrans);
-    Graphics::Rectangle rect2(300, 200, 200, 150, 4, StdColor::BlueDark, StdColor::BlueSeaTrans);
-    Graphics::Ellipse ellipse(400, 300, 100, 50, 6, StdColor::RedLightPink, StdColor::MixOrangeYellow);
+    Graphics::Rectangle rect1(0, 0, 100, 100, 2, RGBAColor::RedDark, RGBAColor::RedLightTrans);
+    Graphics::Rectangle rect2(300, 200, 200, 150, 4, RGBAColor::BlueDark, RGBAColor::BlueSeaTrans);
+    Graphics::Ellipse ellipse(400, 300, 100, 50, 6, RGBAColor::RedLightPink, RGBAColor::MixOrangeYellow);
     Geometry clip_area(0, 0, 300, 300);
     engine.window()->installPaintEvent([&rect1, &rect2, &ellipse](Renderer* r) {
         // r->setClipView(clip_area);
@@ -50,11 +50,11 @@ int testGraphic(int argc, char* argv[]) {
         // auto cur_pos = Cursor::global()->position();
         // rect1.setGeometry(cur_pos, rect1.geometry().size);
         if (Algorithm::compareRects(rect1, rect2) >= 0) {
-            rect1.setBackgroundColor(StdColor::MixYellowTrans);
-            rect2.setBackgroundColor(StdColor::MixPurpleTrans);
+            rect1.setBackgroundColor(RGBAColor::MixYellowTrans);
+            rect2.setBackgroundColor(RGBAColor::MixPurpleTrans);
         } else {
-            rect1.setBackgroundColor(StdColor::RedLightTrans);
-            rect2.setBackgroundColor(StdColor::BlueSeaTrans);
+            rect1.setBackgroundColor(RGBAColor::RedLightTrans);
+            rect2.setBackgroundColor(RGBAColor::BlueSeaTrans);
         }
 //        if (Algorithm::comparePosInRect(cur_pos, rect2) >= 0) {
 //            Cursor::global()->setCursor(Cursor::Hand);

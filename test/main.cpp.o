@@ -1,0 +1,28 @@
+#include "Basic.h"
+#include "Utils/Logger.h"
+#include "Core.h"
+#include <format>
+
+using namespace S3GF;
+
+int main() {
+    Logger::setBaseLogLevel(Logger::INFO);
+    Engine engine;
+    auto main_win = new Window(&engine, "Main Window");
+    main_win->setResizable(true);
+    auto fonts = FontDatabase::getFontDatabaseFromSystem();
+    if (fonts.empty()) {
+        Logger::log("No fonts found in the system!", Logger::WARN);
+    } else {
+        for (const auto& font : fonts) {
+            Logger::log(std::format("Found font: {}, Located in: {}", font.first, font.second), S3GF::Logger::INFO);
+        }
+    }
+    main_win->installPaintEvent([&engine](Renderer* r) {
+        r->fillBackground(StdColor::BlueLake);
+        r->drawPixelText(std::format("FPS: {}", engine.fps()), {20, 20});
+    });
+    
+    
+    return engine.exec();
+}

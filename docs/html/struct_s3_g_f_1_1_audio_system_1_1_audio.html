@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.1-beta</span>
    </div>
    <div id="projectbrief">SDL3 Graphics Framework</div>
   </td>
@@ -100,11 +100,12 @@ Public 属性</h2></td></tr>
 <tr class="memitem:a9f8194b1f78363f5e7b5ca4f4ae0b24b" id="r_a9f8194b1f78363f5e7b5ca4f4ae0b24b"><td class="memItemLeft" align="right" valign="top">MIX_Audio *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f8194b1f78363f5e7b5ca4f4ae0b24b">self</a></td></tr>
 <tr class="memitem:aad511939e0811c180263d3cfc78e86f9" id="r_aad511939e0811c180263d3cfc78e86f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_audio_system.html#a3910242e5a4f7bdf51ca2e434a23743e">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad511939e0811c180263d3cfc78e86f9">status</a></td></tr>
 <tr class="memitem:a72759d7becf16beac0003afec01153cf" id="r_a72759d7becf16beac0003afec01153cf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72759d7becf16beac0003afec01153cf">url</a></td></tr>
-<tr class="memitem:"><td class="memItemLeft anon">struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a28e40da2d3e55fcecddfb231af6fd980" id="r_a28e40da2d3e55fcecddfb231af6fd980"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e40da2d3e55fcecddfb231af6fd980">is_stream</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft anon">union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memitem:a770cde7a8db77035ab97c1f95a651337" id="r_a770cde7a8db77035ab97c1f95a651337"><td class="memItemLeft anon">&#160;&#160;&#160;MIX_Track *&#160;&#160;&#160;<a class="el" href="#a755d9c8e33ea2b39ace28ab41fc8de00">self</a> {nullptr}&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memitem:afcfc307e8c98f40eb50fba700e4676b0" id="r_afcfc307e8c98f40eb50fba700e4676b0"><td class="memItemLeft anon">&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<a class="el" href="#ae8c6bf598ecbe564a88d9ae056f5c68b">duration</a> {0}&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memitem:a46d97b145daffb6bb5babad979f943d1" id="r_a46d97b145daffb6bb5babad979f943d1"><td class="memItemLeft anon">&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<a class="el" href="#a377615924bb5cb11cd67edf65847569b">position</a> {0}&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memitem:ad426d2115e671c53ac4d4dd91ccb69d1" id="r_ad426d2115e671c53ac4d4dd91ccb69d1"><td class="memItemLeft anonEnd" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad426d2115e671c53ac4d4dd91ccb69d1">track</a></td></tr>
+<tr class="memitem:afcfc307e8c98f40eb50fba700e4676b0" id="r_afcfc307e8c98f40eb50fba700e4676b0"><td class="memItemLeft anon">&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<a class="el" href="#ae8c6bf598ecbe564a88d9ae056f5c68b">duration</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a46d97b145daffb6bb5babad979f943d1" id="r_a46d97b145daffb6bb5babad979f943d1"><td class="memItemLeft anon">&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<a class="el" href="#a377615924bb5cb11cd67edf65847569b">position</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:aa86a3ca9af44acee1a4a77143286bd1f" id="r_aa86a3ca9af44acee1a4a77143286bd1f"><td class="memItemLeft anonEnd" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa86a3ca9af44acee1a4a77143286bd1f">track</a></td></tr>
 </table>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">类成员变量说明</h2>
 <a id="ae8c6bf598ecbe564a88d9ae056f5c68b" name="ae8c6bf598ecbe564a88d9ae056f5c68b"></a>
@@ -114,7 +115,21 @@ Public 属性</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t S3GF::AudioSystem::Audio::duration {0}</td>
+          <td class="memname">uint64_t S3GF::AudioSystem::Audio::duration</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28e40da2d3e55fcecddfb231af6fd980" name="a28e40da2d3e55fcecddfb231af6fd980"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28e40da2d3e55fcecddfb231af6fd980">&#9670;&#160;</a></span>is_stream</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::AudioSystem::Audio::is_stream</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -128,7 +143,7 @@ Public 属性</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t S3GF::AudioSystem::Audio::position {0}</td>
+          <td class="memname">uint64_t S3GF::AudioSystem::Audio::position</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -177,14 +192,14 @@ Public 属性</h2></td></tr>
 
 </div>
 </div>
-<a id="ad426d2115e671c53ac4d4dd91ccb69d1" name="ad426d2115e671c53ac4d4dd91ccb69d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad426d2115e671c53ac4d4dd91ccb69d1">&#9670;&#160;</a></span>[struct]</h2>
+<a id="aa86a3ca9af44acee1a4a77143286bd1f" name="aa86a3ca9af44acee1a4a77143286bd1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa86a3ca9af44acee1a4a77143286bd1f">&#9670;&#160;</a></span>[union]</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct  { ... }  S3GF::AudioSystem::Audio::track</td>
+          <td class="memname">union  { ... }  S3GF::AudioSystem::Audio::track</td>
         </tr>
       </table>
 </div><div class="memdoc">

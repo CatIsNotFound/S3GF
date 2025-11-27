@@ -1,4 +1,4 @@
-.TH "S3GF::Renderer" 3 "Fri Nov 21 2025 16:18:19" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Renderer" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -66,6 +66,9 @@ S3GF::Renderer
 .RI "void \fBdrawText\fP (TTF_Text *text, const \fBVector2\fP &position)"
 .br
 .ti -1c
+.RI "void \fBdrawPixelText\fP (const std::string &text, const \fBVector2\fP &position, const \fBVector2\fP &scaled={1\&.f, 1\&.f}, const SDL_Color &color=\fBStdColor::White\fP)"
+.br
+.ti -1c
 .RI "void \fBsetViewport\fP (const \fBGeometry\fP &geometry)"
 .br
 .ti -1c
@@ -93,6 +96,8 @@ S3GF::Renderer
 
 .SS "void S3GF::Renderer::drawLine (\fBGraphics::Line\fP && line)"
 
+.SS "void S3GF::Renderer::drawPixelText (const std::string & text, const \fBVector2\fP & position, const \fBVector2\fP & scaled = \fR{1\&.f, 1\&.f}\fP, const SDL_Color & color = \fR\fBStdColor::White\fP\fP)"
+
 .SS "void S3GF::Renderer::drawPoint (const \fBGraphics::Point\fP & point)"
 
 .SS "void S3GF::Renderer::drawPoint (\fBGraphics::Point\fP && point)"
@@ -111,7 +116,7 @@ S3GF::Renderer
 
 .SS "void S3GF::Renderer::fillBackground (const SDL_Color & color, bool covered = \fRfalse\fP)"
 
-.SS "SDL_Renderer * S3GF::Renderer::self () const"
+.SS "SDL_Renderer * S3GF::Renderer::self () const\fR [nodiscard]\fP"
 
 .SS "void S3GF::Renderer::setBlendMode (const SDL_BlendMode & blend_mode)"
 
@@ -119,7 +124,7 @@ S3GF::Renderer
 
 .SS "void S3GF::Renderer::setViewport (const \fBGeometry\fP & geometry)"
 
-.SS "\fBWindow\fP * S3GF::Renderer::window () const"
+.SS "\fBWindow\fP * S3GF::Renderer::window () const\fR [nodiscard]\fP"
 
 
 .SH "Author"

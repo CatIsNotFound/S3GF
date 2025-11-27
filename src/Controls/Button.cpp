@@ -6,14 +6,14 @@ namespace S3GF {
     Button::Button(const std::string &name, Renderer *renderer, AbstractControl *parent)
         : AbstractControl(name, renderer, parent, Graphics::Rectangle()),
           _btn_text(), _is_valid(false) {
-        _btn_skin.border = {StdColor::MixGrayDark, StdColor::BlueDark,StdColor::MixGrayDark,
-                            StdColor::MixGrayLight, StdColor::BlueDark};
-        _btn_skin.background = {StdColor::BlueIce, StdColor::BlueLight, StdColor::MixGray,
-                                StdColor::MixGray, StdColor::BlueLight};
-        _btn_skin.font = {StdColor::MixGrayDark, StdColor::BlueDark, StdColor::MixGrayDark,
-                          StdColor::MixGrayLight, StdColor::BlueDark};
+        _btn_skin.border = {RGBAColor::MixGrayDark, RGBAColor::BlueDark, RGBAColor::MixGrayDark,
+                            RGBAColor::MixGrayLight, RGBAColor::BlueDark};
+        _btn_skin.background = {RGBAColor::BlueIce, RGBAColor::BlueLight, RGBAColor::MixGray,
+                                RGBAColor::MixGray, RGBAColor::BlueLight};
+        _btn_skin.font = {RGBAColor::MixGrayDark, RGBAColor::BlueDark, RGBAColor::MixGrayDark,
+                          RGBAColor::MixGrayLight, RGBAColor::BlueDark};
         _geometry.reset(0, 0, 80, 60);
-        _rect.reset(_geometry, 1, StdColor::Black, StdColor::MixGrayLight);
+        _rect.reset(_geometry, 1, RGBAColor::Black, RGBAColor::MixGrayLight);
         _click_area.setGraphic(_rect);
     }
 
@@ -177,20 +177,25 @@ namespace S3GF {
     TextureButton::TextureButton(const std::string &name, Renderer* renderer,
                                  AbstractControl* parent)
              : AbstractControl(name, renderer, parent, Graphics::Rectangle()) {
-        _font.normal = StdColor::Black;
-        _font.active = StdColor::Black;
-        _font.pressed = StdColor::Black;
-        _font.invalid = StdColor::MixGrayLight;
-        _font.checked = StdColor::MixGray;
+        _font.normal = RGBAColor::Black;
+        _font.active = RGBAColor::Black;
+        _font.pressed = RGBAColor::Black;
+        _font.invalid = RGBAColor::MixGrayLight;
+        _font.checked = RGBAColor::MixGray;
     }
 
     TextureButton::~TextureButton() {}
     
     void TextureButton::setTextures(Texture *normal, Texture *active, Texture *pressed,
                                     Texture *invalid, Texture *checked) {
-        if (!normal || !normal->self()) {
-            Logger::log("TextureButton: The specified texture is not valid!", Logger::ERROR);
-            return;
+        if (!normal) {
+            Logger::log("TextureButton: The specified texture is not valid!", Logger::FATAL);
+            Engine::throwFatalError();
+        }
+        if (!normal->isValid()) {
+            Logger::log(std::format("TextureButton: The specified texture path '{}' is not valid!",
+                                    normal->imagePath()), Logger::FATAL);
+            Engine::throwFatalError();
         }
         if (!_textures) {
             _textures = std::make_unique<TextureStatus>(normal, active, pressed, invalid, checked);
@@ -374,7 +379,7 @@ namespace S3GF {
     void TextureButton::paintEvent(Renderer *r) {
         AbstractControl::paintEvent(r);
         if (_textures_loaded) {
-            if (_cur_texture) {
+            if (_cur_texture->isValid()) {
                 r->drawTexture(_cur_texture->self(), _cur_texture->property());
             } else {
                 r->drawTexture(_textures->normal->self(), _textures->normal->property());

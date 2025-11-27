@@ -8,10 +8,11 @@ var searchData=
   ['get_5',['get',['../struct_s3_g_f_1_1_matrix2_d.html#a2cf6c039cd92a178461dcb74e6c0a58e',1,'S3GF::Matrix2D']]],
   ['getabsolutepath_6',['getAbsolutePath',['../class_s3_g_f_1_1_file_system.html#acac1dc3bea68d3b1a0d233d549e08522',1,'S3GF::FileSystem']]],
   ['getfocusevent_7',['getFocusEvent',['../class_s3_g_f_1_1_window.html#a2bb1f1c94b034dad4d4f0b195295529a',1,'S3GF::Window']]],
-  ['getfontdatabasefromsystem_8',['getFontDatabaseFromSystem',['../class_s3_g_f_1_1_font_database.html#ad406f612bfd6f12a1ffbab4a1c7fafd2',1,'S3GF::FontDatabase']]],
+  ['getfontdatabasefromsystem_8',['getFontDatabaseFromSystem',['../class_s3_g_f_1_1_font_database.html#a5620430aa09ab7b11c147e4d7f0f38fe',1,'S3GF::FontDatabase']]],
   ['getpoint_9',['getPoint',['../class_s3_g_f_1_1_click_area.html#a9156ac7bd5b9a5d62fbfefb25bc3afce',1,'S3GF::ClickArea']]],
   ['getrect_10',['getRect',['../class_s3_g_f_1_1_click_area.html#ac3157bed441e1e79bc80d29fda372c17',1,'S3GF::ClickArea']]],
   ['getshortfilename_11',['getShortFileName',['../class_s3_g_f_1_1_file_system.html#a06221ef455599b6cc332b82d11c755af',1,'S3GF::FileSystem']]],
-  ['global_12',['global',['../class_s3_g_f_1_1_event_system.html#a7de155af30300fbdc50189ee659cea08',1,'S3GF::EventSystem::global(Engine *engine)'],['../class_s3_g_f_1_1_event_system.html#a51ff19248fa6edb1df89ea38b96b97b1',1,'S3GF::EventSystem::global()'],['../class_s3_g_f_1_1_text_system.html#ae052d127810e5e062c515991e0d27057',1,'S3GF::TextSystem::global()'],['../class_s3_g_f_1_1_audio_system.html#ab27b4bc682479185c9d4e5b8121a190a',1,'S3GF::AudioSystem::global()'],['../class_s3_g_f_1_1_cursor.html#a984a03baa8c281afb7b0829f39e48c46',1,'S3GF::Cursor::global()']]],
-  ['globalposition_13',['globalPosition',['../class_s3_g_f_1_1_cursor.html#abb15d202ab9526d82382c26ef2180d82',1,'S3GF::Cursor']]]
+  ['getsystemdefaultfont_12',['getSystemDefaultFont',['../class_s3_g_f_1_1_font_database.html#aeadade452d300b79e651582f792f8234',1,'S3GF::FontDatabase']]],
+  ['global_13',['global',['../class_s3_g_f_1_1_event_system.html#a7de155af30300fbdc50189ee659cea08',1,'S3GF::EventSystem::global(Engine *engine)'],['../class_s3_g_f_1_1_event_system.html#a51ff19248fa6edb1df89ea38b96b97b1',1,'S3GF::EventSystem::global()'],['../class_s3_g_f_1_1_text_system.html#ae052d127810e5e062c515991e0d27057',1,'S3GF::TextSystem::global()'],['../class_s3_g_f_1_1_audio_system.html#ab27b4bc682479185c9d4e5b8121a190a',1,'S3GF::AudioSystem::global()'],['../class_s3_g_f_1_1_cursor.html#a984a03baa8c281afb7b0829f39e48c46',1,'S3GF::Cursor::global()']]],
+  ['globalposition_14',['globalPosition',['../class_s3_g_f_1_1_cursor.html#abb15d202ab9526d82382c26ef2180d82',1,'S3GF::Cursor']]]
 ];

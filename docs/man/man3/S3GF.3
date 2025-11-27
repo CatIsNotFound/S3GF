@@ -1,8 +1,8 @@
-.TH "S3GF" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-S3GF \- \fBS3GF\fP 空间  
+S3GF \- \fBS3GF\fP Namespace  
 
 .SH SYNOPSIS
 .br
@@ -15,6 +15,9 @@ S3GF \- \fBS3GF\fP 空间
 .br
 .ti -1c
 .RI "namespace \fBGraphics\fP"
+.br
+.ti -1c
+.RI "namespace \fBRGBAColor\fP"
 .br
 .ti -1c
 .RI "namespace \fBStdColor\fP"
@@ -34,6 +37,9 @@ S3GF \- \fBS3GF\fP 空间
 .br
 .ti -1c
 .RI "class \fBClickArea\fP"
+.br
+.ti -1c
+.RI "struct \fBColorStatus\fP"
 .br
 .ti -1c
 .RI "class \fBCursor\fP"
@@ -61,7 +67,7 @@ S3GF \- \fBS3GF\fP 空间
 .ti -1c
 .RI "struct \fBGeometry\fP"
 .br
-.RI "位置、大小 "
+.RI "Including position and size\&. "
 .ti -1c
 .RI "struct \fBGeometryF\fP"
 .br
@@ -99,6 +105,12 @@ S3GF \- \fBS3GF\fP 空间
 .RI "class \fBTexture\fP"
 .br
 .ti -1c
+.RI "class \fBTextureAtlas\fP"
+.br
+.ti -1c
+.RI "class \fBTextureButton\fP"
+.br
+.ti -1c
 .RI "class \fBThreadPool\fP"
 .br
 .ti -1c
@@ -122,7 +134,17 @@ S3GF \- \fBS3GF\fP 空间
 .RI "using \fBGT\fP = std::variant<std::monostate, \fBGraphics::Point\fP, \fBGraphics::Rectangle\fP>"
 .br
 .ti -1c
-.RI "using \fBFontList\fP = std::unordered_map<std::string, std::string>"
+.RI "using \fBFontMap\fP = std::unordered_map<std::string, std::string>"
+.br
+.in -1c
+.SS "函数"
+
+.in +1c
+.ti -1c
+.RI "\fBGeometry\fP \fBtoGeometryInt\fP (const \fBGeometryF\fP &geo)"
+.br
+.ti -1c
+.RI "\fBGeometryF\fP \fBtoGeometryFloat\fP (const \fBGeometry\fP &geo)"
 .br
 .in -1c
 .SS "变量"
@@ -134,14 +156,20 @@ S3GF \- \fBS3GF\fP 空间
 .in -1c
 .SH "详细描述"
 .PP 
-\fBS3GF\fP 空间 
+\fBS3GF\fP Namespace 
 
-所有库都将被存储于此命名空间 
+All libraries will be stored in this namespace\&. 
 .SH "类型定义说明"
 .PP 
-.SS "using \fBS3GF::FontList\fP = std::unordered_map<std::string, std::string>"
+.SS "using \fBS3GF::FontMap\fP = std::unordered_map<std::string, std::string>"
 
 .SS "using \fBS3GF::GT\fP = std::variant<std::monostate, \fBGraphics::Point\fP, \fBGraphics::Rectangle\fP>"
+
+.SH "函数说明"
+.PP 
+.SS "\fBGeometryF\fP S3GF::toGeometryFloat (const \fBGeometry\fP & geo)\fR [inline]\fP"
+
+.SS "\fBGeometry\fP S3GF::toGeometryInt (const \fBGeometryF\fP & geo)\fR [inline]\fP"
 
 .SH "变量说明"
 .PP 

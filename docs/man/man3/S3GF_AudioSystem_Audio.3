@@ -1,4 +1,4 @@
-.TH "S3GF::AudioSystem::Audio" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::AudioSystem::Audio" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -21,16 +21,19 @@ S3GF::AudioSystem::Audio
 .RI "std::string \fBurl\fP"
 .br
 .ti -1c
-.RI "struct {"
+.RI "bool \fBis_stream\fP"
+.br
+.ti -1c
+.RI "union {"
 .br
 .ti -1c
 .RI "   MIX_Track * \fBself\fP {nullptr}"
 .br
 .ti -1c
-.RI "   uint64_t \fBduration\fP {0}"
+.RI "   uint64_t \fBduration\fP"
 .br
 .ti -1c
-.RI "   uint64_t \fBposition\fP {0}"
+.RI "   uint64_t \fBposition\fP"
 .br
 .ti -1c
 .RI "} \fBtrack\fP"
@@ -38,9 +41,11 @@ S3GF::AudioSystem::Audio
 .in -1c
 .SH "类成员变量说明"
 .PP 
-.SS "uint64_t S3GF::AudioSystem::Audio::duration {0}"
+.SS "uint64_t S3GF::AudioSystem::Audio::duration"
 
-.SS "uint64_t S3GF::AudioSystem::Audio::position {0}"
+.SS "bool S3GF::AudioSystem::Audio::is_stream"
+
+.SS "uint64_t S3GF::AudioSystem::Audio::position"
 
 .SS "MIX_Audio* S3GF::AudioSystem::Audio::self"
 
@@ -48,7 +53,7 @@ S3GF::AudioSystem::Audio
 
 .SS "\fBStatus\fP S3GF::AudioSystem::Audio::status"
 
-.SS "struct  { \&.\&.\&. }  S3GF::AudioSystem::Audio::track"
+.SS "union  { \&.\&.\&. }  S3GF::AudioSystem::Audio::track"
 
 .SS "std::string S3GF::AudioSystem::Audio::url"
 

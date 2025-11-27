@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['text_0',['text',['../struct_s3_g_f_1_1_text_system_1_1_text.html#ad9ae6f072a3e0aa9603af8010982aaeb',1,'S3GF::TextSystem::Text']]],
-  ['track_1',['track',['../struct_s3_g_f_1_1_audio_system_1_1_audio.html#ad426d2115e671c53ac4d4dd91ccb69d1',1,'S3GF::AudioSystem::Audio']]],
-  ['transparent_2',['Transparent',['../namespace_s3_g_f_1_1_std_color.html#a3948d783c2e9ea1aaa19703d78afd84e',1,'S3GF::StdColor']]]
+  ['navy_0',['Navy',['../namespace_s3_g_f_1_1_std_color.html#aa7a0948634087065f93c2f822ffd61b3',1,'S3GF::StdColor']]],
+  ['normal_1',['normal',['../struct_s3_g_f_1_1_texture_button_1_1_texture_status.html#a37106aac74285e2ad70a414839c6bd5f',1,'S3GF::TextureButton::TextureStatus::normal'],['../struct_s3_g_f_1_1_color_status.html#ad18f4825e7d675e5a3e0d2d5712b8ca6',1,'S3GF::ColorStatus::normal']]]
 ];

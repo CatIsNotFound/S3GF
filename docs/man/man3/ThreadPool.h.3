@@ -1,4 +1,4 @@
-.TH "D:/Coding/S3GF/src/MultiThread/ThreadPool.h" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "D:/Coding/S3GF/src/MultiThread/ThreadPool.h" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -33,44 +33,8 @@ D:/Coding/S3GF/src/MultiThread/ThreadPool.h
 .ti -1c
 .RI "namespace \fBS3GF\fP"
 .br
-.RI "\fBS3GF\fP 空间 "
+.RI "\fBS3GF\fP Namespace "
 .in -1c
-.SS "宏定义"
-
-.in +1c
-.ti -1c
-.RI "#define \fBsleep\fP(sec)"
-.br
-.ti -1c
-.RI "#define \fBsleepMS\fP(millisec)"
-.br
-.ti -1c
-.RI "#define \fBsleepNS\fP(nanosec)"
-.br
-.in -1c
-.SH "宏定义说明"
-.PP 
-.SS "#define sleep( sec)"
-\fB值:\fP
-.nf
-std::this_thread::sleep_for(std::chrono::seconds(sec))
-.PP
-.fi
-
-.SS "#define sleepMS( millisec)"
-\fB值:\fP
-.nf
-std::this_thread::sleep_for(std::chrono::milliseconds(millisec))
-.PP
-.fi
-
-.SS "#define sleepNS( nanosec)"
-\fB值:\fP
-.nf
-std::this_thread::sleep_for(std::chrono::nanoseconds(nanosec))
-.PP
-.fi
-
 .SH "作者"
 .PP 
 由 Doyxgen 通过分析 S3GF 的 源代码自动生成\&.

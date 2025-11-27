@@ -1,4 +1,4 @@
-.TH "S3GF::FontDatabase" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::FontDatabase" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -8,6 +8,13 @@ S3GF::FontDatabase
 .PP
 .PP
 \fR#include <Core\&.h>\fP
+.SS "类"
+
+.in +1c
+.ti -1c
+.RI "struct \fBFontInfo\fP"
+.br
+.in -1c
 .SS "Public 成员函数"
 
 .in +1c
@@ -34,10 +41,13 @@ S3GF::FontDatabase
 
 .in +1c
 .ti -1c
-.RI "static \fBFontList\fP \fBgetFontDatabaseFromSystem\fP ()"
+.RI "static \fBFontMap\fP \fBgetFontDatabaseFromSystem\fP ()"
 .br
 .ti -1c
-.RI "static bool \fBfindFontFromSystem\fP (const std::string &font_name, std::string &output_file_path, std::string &output_font_name)"
+.RI "static std::string \fBfindFontFromSystem\fP (const std::string &font_name)"
+.br
+.ti -1c
+.RI "static std::vector< \fBFontInfo\fP > \fBgetSystemDefaultFont\fP ()"
 .br
 .in -1c
 .SH "构造及析构函数说明"
@@ -52,9 +62,11 @@ S3GF::FontDatabase
 
 .SH "成员函数说明"
 .PP 
-.SS "bool S3GF::FontDatabase::findFontFromSystem (const std::string & font_name, std::string & output_file_path, std::string & output_font_name)\fR [static]\fP"
+.SS "std::string S3GF::FontDatabase::findFontFromSystem (const std::string & font_name)\fR [static]\fP"
 
-.SS "\fBFontList\fP S3GF::FontDatabase::getFontDatabaseFromSystem ()\fR [static]\fP"
+.SS "\fBFontMap\fP S3GF::FontDatabase::getFontDatabaseFromSystem ()\fR [static]\fP"
+
+.SS "std::vector< \fBFontDatabase::FontInfo\fP > S3GF::FontDatabase::getSystemDefaultFont ()\fR [static]\fP"
 
 .SS "\fBFontDatabase\fP & S3GF::FontDatabase::operator= (const \fBFontDatabase\fP & )\fR [delete]\fP"
 

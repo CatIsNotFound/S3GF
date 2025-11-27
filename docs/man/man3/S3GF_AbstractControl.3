@@ -1,4 +1,4 @@
-.TH "S3GF::AbstractControl" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::AbstractControl" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -9,19 +9,12 @@ S3GF::AbstractControl
 .PP
 \fR#include <Control\&.h>\fP
 .PP
-被 \fBS3GF::Button\fP 继承\&.
-.SS "Public 类型"
-
-.in +1c
-.ti -1c
-.RI "enum \fBState\fP { \fBNormal\fP, \fBHover\fP, \fBPressed\fP, \fBDisabled\fP, \fBSelected\fP }"
-.br
-.in -1c
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 继承\&.
 .SS "Public 成员函数"
 
 .in +1c
 .ti -1c
-.RI "\fBAbstractControl\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBGT\fP click_area=\fBGraphics::Rectangle\fP(), \fBAbstractControl\fP *parent=nullptr)"
+.RI "\fBAbstractControl\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBAbstractControl\fP *parent=nullptr, \fBGT\fP click_area=\fBGraphics::Rectangle\fP())"
 .br
 .ti -1c
 .RI "\fB~AbstractControl\fP ()=default"
@@ -86,6 +79,30 @@ S3GF::AbstractControl
 .ti -1c
 .RI "bool \fBenabled\fP () const"
 .br
+.ti -1c
+.RI "void \fBsetActive\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetInactive\fP ()"
+.br
+.ti -1c
+.RI "bool \fBactive\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetKey\fP (SDL_Keycode key)"
+.br
+.ti -1c
+.RI "void \fBsetCheckable\fP (bool \fBcheckable\fP)"
+.br
+.ti -1c
+.RI "void \fBsetChecked\fP (bool checked)"
+.br
+.ti -1c
+.RI "bool \fBcheckable\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisChecked\fP () const"
+.br
 .in -1c
 .SS "Protected 成员函数"
 
@@ -116,6 +133,18 @@ S3GF::AbstractControl
 .br
 .ti -1c
 .RI "virtual void \fBonLeft\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonKeyPressed\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonKeyReleased\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBonChecked\fP (bool checked)"
+.br
+.ti -1c
+.RI "virtual void \fBactiveChanged\fP (bool \fBactive\fP)"
 .br
 .ti -1c
 .RI "virtual void \fBenabledChanged\fP (bool \fBenabled\fP)"
@@ -149,7 +178,16 @@ S3GF::AbstractControl
 .RI "\fBClickArea\fP \fB_click_area\fP"
 .br
 .ti -1c
+.RI "SDL_Keycode \fB_key_code\fP {SDLK_UNKNOWN}"
+.br
+.ti -1c
 .RI "bool \fB_is_down\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_is_hovered\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_is_checked\fP {false}"
 .br
 .ti -1c
 .RI "bool \fB_visible\fP {true}"
@@ -160,27 +198,16 @@ S3GF::AbstractControl
 .ti -1c
 .RI "bool \fB_entered\fP {false}"
 .br
+.ti -1c
+.RI "bool \fB_active\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_checkable\fP {false}"
+.br
 .in -1c
-.SH "成员枚举类型说明"
-.PP 
-.SS "enum \fBS3GF::AbstractControl::State\fP"
-
-.PP
-\fB枚举值\fP
-.in +1c
-.TP
-\f(BINormal \fP
-.TP
-\f(BIHover \fP
-.TP
-\f(BIPressed \fP
-.TP
-\f(BIDisabled \fP
-.TP
-\f(BISelected \fP
 .SH "构造及析构函数说明"
 .PP 
-.SS "S3GF::AbstractControl::AbstractControl (const std::string & name, \fBRenderer\fP * renderer, \fBGT\fP click_area = \fR\fBGraphics::Rectangle\fP()\fP, \fBAbstractControl\fP * parent = \fRnullptr\fP)\fR [explicit]\fP"
+.SS "S3GF::AbstractControl::AbstractControl (const std::string & name, \fBRenderer\fP * renderer, \fBAbstractControl\fP * parent = \fRnullptr\fP, \fBGT\fP click_area = \fR\fBGraphics::Rectangle\fP()\fP)\fR [explicit]\fP"
 
 .SS "S3GF::AbstractControl::~AbstractControl ()\fR [default]\fP"
 
@@ -188,11 +215,21 @@ S3GF::AbstractControl
 .PP 
 .SS "void S3GF::AbstractControl::_update_click_area ()\fR [protected]\fP"
 
+.SS "bool S3GF::AbstractControl::active () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "virtual void S3GF::AbstractControl::activeChanged (bool active)\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.SS "bool S3GF::AbstractControl::checkable () const\fR [nodiscard]\fP"
+
 .SS "bool S3GF::AbstractControl::enabled () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SS "virtual void S3GF::AbstractControl::enabledChanged (bool enabled)\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "const \fBGeometryF\fP & S3GF::AbstractControl::geometry () const\fR [inline]\fP, \fR [nodiscard]\fP"
+
+.SS "bool S3GF::AbstractControl::isChecked () const\fR [nodiscard]\fP"
 
 .SS "void S3GF::AbstractControl::move (const \fBVector2\fP & pos)"
 
@@ -203,33 +240,49 @@ S3GF::AbstractControl
 .SS "virtual void S3GF::AbstractControl::moveEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "const std::string & S3GF::AbstractControl::name () const\fR [nodiscard]\fP"
 
+.SS "virtual void S3GF::AbstractControl::onChecked (bool checked)\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onEntered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onHovered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
+.SS "virtual void S3GF::AbstractControl::onKeyPressed ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
+.SS "virtual void S3GF::AbstractControl::onKeyReleased ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onLeft ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onPressed ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onReleased ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::onTriggered ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
+.PP
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "virtual void S3GF::AbstractControl::paintEvent (\fBRenderer\fP * )\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
 .SS "const \fBVector2\fP & S3GF::AbstractControl::position () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SS "void S3GF::AbstractControl::resize (const \fBSize\fP & size)"
@@ -241,7 +294,13 @@ S3GF::AbstractControl
 .SS "virtual void S3GF::AbstractControl::resizeEvent ()\fR [inline]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
-被 \fBS3GF::Button\fP 重载\&.
+被 \fBS3GF::Button\fP , 以及 \fBS3GF::TextureButton\fP 重载\&.
+.SS "void S3GF::AbstractControl::setActive ()\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setCheckable (bool checkable)"
+
+.SS "void S3GF::AbstractControl::setChecked (bool checked)"
+
 .SS "void S3GF::AbstractControl::setEnabled (bool enabled)"
 
 .SS "void S3GF::AbstractControl::setGeometry (const \fBGeometryF\fP & geometry)"
@@ -253,6 +312,10 @@ S3GF::AbstractControl
 .SS "void S3GF::AbstractControl::setGeometry (\fBGeometryF\fP && geometry)"
 
 .SS "void S3GF::AbstractControl::setGeometry (\fBVector2\fP && pos, \fBSize\fP && size)"
+
+.SS "void S3GF::AbstractControl::setInactive ()\fR [inline]\fP"
+
+.SS "void S3GF::AbstractControl::setKey (SDL_Keycode key)"
 
 .SS "void S3GF::AbstractControl::setName (const std::string & name)"
 
@@ -266,6 +329,10 @@ S3GF::AbstractControl
 
 .SH "类成员变量说明"
 .PP 
+.SS "bool S3GF::AbstractControl::_active {false}\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_checkable {false}\fR [protected]\fP"
+
 .SS "\fBClickArea\fP S3GF::AbstractControl::_click_area\fR [protected]\fP"
 
 .SS "bool S3GF::AbstractControl::_enabled {true}\fR [protected]\fP"
@@ -276,7 +343,13 @@ S3GF::AbstractControl
 
 .SS "uint64_t S3GF::AbstractControl::_id {0}\fR [protected]\fP"
 
+.SS "bool S3GF::AbstractControl::_is_checked {false}\fR [protected]\fP"
+
 .SS "bool S3GF::AbstractControl::_is_down {false}\fR [protected]\fP"
+
+.SS "bool S3GF::AbstractControl::_is_hovered {false}\fR [protected]\fP"
+
+.SS "SDL_Keycode S3GF::AbstractControl::_key_code {SDLK_UNKNOWN}\fR [protected]\fP"
 
 .SS "std::string S3GF::AbstractControl::_name\fR [protected]\fP"
 

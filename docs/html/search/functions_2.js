@@ -17,5 +17,6 @@ var searchData=
   ['bordervertices2_14',['borderVertices2',['../class_s3_g_f_1_1_graphics_1_1_triangle.html#ac8e639e5c7dc4630c64e4634ba67f203',1,'S3GF::Graphics::Triangle']]],
   ['bordervertices3_15',['borderVertices3',['../class_s3_g_f_1_1_graphics_1_1_triangle.html#a1ce1ce0fe86933256ce18a42d0a672e3',1,'S3GF::Graphics::Triangle']]],
   ['borderverticescount_16',['borderVerticesCount',['../class_s3_g_f_1_1_graphics_1_1_triangle.html#acb5a5a681cf39d2d4117f49c1e6fbaa6',1,'S3GF::Graphics::Triangle::borderVerticesCount()'],['../class_s3_g_f_1_1_graphics_1_1_ellipse.html#a5f9a11eec8e1c204be88c74b58ec1b12',1,'S3GF::Graphics::Ellipse::borderVerticesCount()']]],
-  ['button_17',['Button',['../class_s3_g_f_1_1_button.html#a35255c592c953cbf44120e83d1141c5a',1,'S3GF::Button']]]
+  ['button_17',['Button',['../class_s3_g_f_1_1_button.html#a9b87e5d704e51cf8c0fd90216b79b78a',1,'S3GF::Button']]],
+  ['buttonskin_18',['buttonSkin',['../class_s3_g_f_1_1_button.html#a776c632edbd248201899a84ef1219cfa',1,'S3GF::Button']]]
 ];

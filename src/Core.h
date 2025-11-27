@@ -2,6 +2,7 @@
 #include "Basic.h"
 #ifndef S3GF_CORE_H
 #define S3GF_CORE_H
+#define S3GF_FULL_VERSION "v0.1.1-beta"
 #include "Components.h"
 
 namespace S3GF {
@@ -143,7 +144,8 @@ namespace S3GF {
             OPENGL,
             VULKAN
         };
-        explicit Window(Engine* object, const std::string& title, int width = 800, int height = 600, GraphicEngine engine = OPENGL);
+        explicit Window(Engine* object, const std::string& title,
+                        int width = 800, int height = 600, GraphicEngine engine = OPENGL);
         ~Window();
 
         bool move(int x, int y);
@@ -226,8 +228,22 @@ namespace S3GF {
     public:
         using constIter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::const_iterator;
         using iter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::iterator;
-        explicit Engine(); 
+        explicit Engine(std::string&& app_name = "Hello world", std::string&& app_version = "v1.0.0",
+                        std::string&& app_id = "HelloWorld.app");
         ~Engine();
+        static void disabledShowAppInfo();
+
+        void setApplicationID(const std::string& app_id);
+        void setApplicationID(std::string&& app_id);
+        void setApplicationName(const std::string& app_id);
+        void setApplicationName(std::string&& app_id);
+        void setApplicationVersion(const std::string& app_version);
+        void setApplicationVersion(std::string&& app_version);
+
+
+        [[nodiscard]] const std::string& applicationID() const;
+        [[nodiscard]] const std::string& applicationName() const;
+        [[nodiscard]] const std::string& applicationVersion() const;
 
         bool isRunning() const;
         static void exit(int code = 0);
@@ -259,8 +275,10 @@ namespace S3GF {
         double _frame_in_ns{0};
         uint32_t _real_fps{0};
         static SDL_WindowID _main_window_id;
+        static bool _show_app_info;
         std::unordered_map<SDL_WindowID, std::unique_ptr<Window>> _window_list;
         std::function<void()> _clean_up_event;
+        std::string _app_name, _app_id, _app_version;
     };
 
     class Font {

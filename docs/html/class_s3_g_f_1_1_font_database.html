@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.1-beta</span>
    </div>
    <div id="projectbrief">SDL3 Graphics Framework</div>
   </td>
@@ -95,6 +95,10 @@ $(function(){initNavTree('class_s3_g_f_1_1_font_database.html','','class_s3_g_f_
 
 <p><code>#include &lt;<a class="el" href="_core_8h_source.html">Core.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+类</h2></td></tr>
+<tr class="memitem:FontInfo" id="r_FontInfo"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s3_g_f_1_1_font_database_1_1_font_info.html">FontInfo</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 成员函数</h2></td></tr>
 <tr class="memitem:a0fdf057aa525436c3e61e7d1a0565674" id="r_a0fdf057aa525436c3e61e7d1a0565674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fdf057aa525436c3e61e7d1a0565674">FontDatabase</a> ()=delete</td></tr>
@@ -106,8 +110,9 @@ Public 成员函数</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 静态 Public 成员函数</h2></td></tr>
-<tr class="memitem:ad406f612bfd6f12a1ffbab4a1c7fafd2" id="r_ad406f612bfd6f12a1ffbab4a1c7fafd2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_s3_g_f.html#a3359fcf5fa196713e5dab561a0524dcf">FontList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad406f612bfd6f12a1ffbab4a1c7fafd2">getFontDatabaseFromSystem</a> ()</td></tr>
-<tr class="memitem:ab4bf5072f14b8844318b199e023a906d" id="r_ab4bf5072f14b8844318b199e023a906d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4bf5072f14b8844318b199e023a906d">findFontFromSystem</a> (const std::string &amp;font_name, std::string &amp;output_file_path, std::string &amp;output_font_name)</td></tr>
+<tr class="memitem:a5620430aa09ab7b11c147e4d7f0f38fe" id="r_a5620430aa09ab7b11c147e4d7f0f38fe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_s3_g_f.html#abb6c19e096d60e85535cb851cc4516c5">FontMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5620430aa09ab7b11c147e4d7f0f38fe">getFontDatabaseFromSystem</a> ()</td></tr>
+<tr class="memitem:a8df0282c77f385023761b44e154376f0" id="r_a8df0282c77f385023761b44e154376f0"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8df0282c77f385023761b44e154376f0">findFontFromSystem</a> (const std::string &amp;font_name)</td></tr>
+<tr class="memitem:aeadade452d300b79e651582f792f8234" id="r_aeadade452d300b79e651582f792f8234"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="struct_s3_g_f_1_1_font_database_1_1_font_info.html">FontInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeadade452d300b79e651582f792f8234">getSystemDefaultFont</a> ()</td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">构造及析构函数说明</h2>
 <a id="a0fdf057aa525436c3e61e7d1a0565674" name="a0fdf057aa525436c3e61e7d1a0565674"></a>
@@ -211,8 +216,8 @@ Public 成员函数</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">成员函数说明</h2>
-<a id="ab4bf5072f14b8844318b199e023a906d" name="ab4bf5072f14b8844318b199e023a906d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4bf5072f14b8844318b199e023a906d">&#9670;&#160;</a></span>findFontFromSystem()</h2>
+<a id="a8df0282c77f385023761b44e154376f0" name="a8df0282c77f385023761b44e154376f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8df0282c77f385023761b44e154376f0">&#9670;&#160;</a></span>findFontFromSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,19 +226,10 @@ Public 成员函数</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool S3GF::FontDatabase::findFontFromSystem </td>
+          <td class="memname">std::string S3GF::FontDatabase::findFontFromSystem </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>font_name</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>font_name</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>output_file_path</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>output_font_name</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -245,8 +241,8 @@ Public 成员函数</h2></td></tr>
 
 </div>
 </div>
-<a id="ad406f612bfd6f12a1ffbab4a1c7fafd2" name="ad406f612bfd6f12a1ffbab4a1c7fafd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad406f612bfd6f12a1ffbab4a1c7fafd2">&#9670;&#160;</a></span>getFontDatabaseFromSystem()</h2>
+<a id="a5620430aa09ab7b11c147e4d7f0f38fe" name="a5620430aa09ab7b11c147e4d7f0f38fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5620430aa09ab7b11c147e4d7f0f38fe">&#9670;&#160;</a></span>getFontDatabaseFromSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +251,32 @@ Public 成员函数</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_s3_g_f.html#a3359fcf5fa196713e5dab561a0524dcf">FontList</a> S3GF::FontDatabase::getFontDatabaseFromSystem </td>
+          <td class="memname"><a class="el" href="namespace_s3_g_f.html#abb6c19e096d60e85535cb851cc4516c5">FontMap</a> S3GF::FontDatabase::getFontDatabaseFromSystem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeadade452d300b79e651582f792f8234" name="aeadade452d300b79e651582f792f8234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeadade452d300b79e651582f792f8234">&#9670;&#160;</a></span>getSystemDefaultFont()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="struct_s3_g_f_1_1_font_database_1_1_font_info.html">FontDatabase::FontInfo</a> &gt; S3GF::FontDatabase::getSystemDefaultFont </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>

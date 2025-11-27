@@ -1,11 +1,14 @@
 var hierarchy =
 [
     [ "S3GF::AbstractControl", "class_s3_g_f_1_1_abstract_control.html", [
-      [ "S3GF::Button", "class_s3_g_f_1_1_button.html", null ]
+      [ "S3GF::Button", "class_s3_g_f_1_1_button.html", null ],
+      [ "S3GF::TextureButton", "class_s3_g_f_1_1_texture_button.html", null ]
     ] ],
     [ "S3GF::AudioSystem::Audio", "struct_s3_g_f_1_1_audio_system_1_1_audio.html", null ],
     [ "S3GF::AudioSystem", "class_s3_g_f_1_1_audio_system.html", null ],
+    [ "S3GF::Button::ButtonSkin", "struct_s3_g_f_1_1_button_1_1_button_skin.html", null ],
     [ "S3GF::ClickArea", "class_s3_g_f_1_1_click_area.html", null ],
+    [ "S3GF::ColorStatus", "struct_s3_g_f_1_1_color_status.html", null ],
     [ "S3GF::Cursor", "class_s3_g_f_1_1_cursor.html", null ],
     [ "S3GF::DateTime", "class_s3_g_f_1_1_date_time.html", null ],
     [ "S3GF::DateTime::DT", "struct_s3_g_f_1_1_date_time_1_1_d_t.html", null ],
@@ -16,6 +19,7 @@ var hierarchy =
     [ "S3GF::Font", "class_s3_g_f_1_1_font.html", null ],
     [ "S3GF::FontDatabase", "class_s3_g_f_1_1_font_database.html", null ],
     [ "S3GF::TextSystem::FontEngine", "struct_s3_g_f_1_1_text_system_1_1_font_engine.html", null ],
+    [ "S3GF::FontDatabase::FontInfo", "struct_s3_g_f_1_1_font_database_1_1_font_info.html", null ],
     [ "S3GF::Geometry", "struct_s3_g_f_1_1_geometry.html", null ],
     [ "S3GF::Window::Geometry", "struct_s3_g_f_1_1_window_1_1_geometry.html", null ],
     [ "S3GF::GeometryF", "struct_s3_g_f_1_1_geometry_f.html", null ],
@@ -35,7 +39,10 @@ var hierarchy =
     [ "S3GF::TaskQueue< T >", "class_s3_g_f_1_1_task_queue.html", null ],
     [ "S3GF::TextSystem::Text", "struct_s3_g_f_1_1_text_system_1_1_text.html", null ],
     [ "S3GF::TextSystem", "class_s3_g_f_1_1_text_system.html", null ],
-    [ "S3GF::Texture", "class_s3_g_f_1_1_texture.html", null ],
+    [ "S3GF::Texture", "class_s3_g_f_1_1_texture.html", [
+      [ "S3GF::TextureAtlas", "class_s3_g_f_1_1_texture_atlas.html", null ]
+    ] ],
+    [ "S3GF::TextureButton::TextureStatus", "struct_s3_g_f_1_1_texture_button_1_1_texture_status.html", null ],
     [ "S3GF::ThreadPool", "class_s3_g_f_1_1_thread_pool.html", [
       [ "S3GF::TasksManager", "class_s3_g_f_1_1_tasks_manager.html", null ]
     ] ],

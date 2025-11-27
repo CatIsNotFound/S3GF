@@ -14,7 +14,9 @@
  */
 
 #include "Libs.h"
-
+#define SLEEP(sec) std::this_thread::sleep_for(std::chrono::seconds(sec))
+#define SLEEP_MS(millisec) std::this_thread::sleep_for(std::chrono::milliseconds(millisec))
+#define SLEEP_NS(nanosec) std::this_thread::sleep_for(std::chrono::nanoseconds(nanosec))
 
 using SRenderer     = SDL_Renderer;
 using SSurface      = SDL_Surface;
@@ -32,295 +34,214 @@ using StringList    = std::vector<std::string>;
 
 /**
  * @namespace S3GF
- * @brief S3GF 空间
+ * @brief S3GF Namespace
  * 
- * 所有库都将被存储于此命名空间
+ * All libraries will be stored in this namespace.
  */
 namespace S3GF {
     /**
      * @namespace StdColor
-     * @brief 预定义颜色（130 色）
-     * @see Basic.h
+     * @brief Predefined Standard Color (40 colors)
      */
     namespace StdColor {
+        constexpr SColor Black = {0, 0, 0, 255};
+        constexpr SColor White = {255, 255, 255, 255};
+        constexpr SColor Red = {255, 0, 0, 255};
+        constexpr SColor Green = {0, 255, 0, 255};
+        constexpr SColor Blue = {0, 0, 255, 255};
+        constexpr SColor Yellow = {255, 255, 0, 255};
+        constexpr SColor Cyan = {0, 255, 255, 255};
+        constexpr SColor Magenta = {255, 0, 255, 255};
+
+        constexpr SColor DarkRed = {128, 0, 0, 255};
+        constexpr SColor FireRed = {200, 0, 0, 255};
+        constexpr SColor BrightRed = {255, 50, 50, 255};
+        constexpr SColor Coral = {255, 127, 80, 255};
+        constexpr SColor Salmon = {250, 128, 114, 255};
+        constexpr SColor LightPink = {255, 174, 185, 255};
+
+        constexpr SColor DarkGreen = {0, 128, 0, 255};
+        constexpr SColor ForestGreen = {34, 139, 34, 255};
+        constexpr SColor LimeGreen = {50, 205, 50, 255};
+        constexpr SColor Mint = {189, 252, 201, 255};
+        constexpr SColor LightGreen = {144, 238, 144, 255};
+        constexpr SColor Olive = {128, 128, 0, 255};
+
+        constexpr SColor DarkBlue = {0, 0, 128, 255};
+        constexpr SColor Navy = {0, 32, 64, 255};
+        constexpr SColor SkyBlue = {135, 206, 235, 255};
+        constexpr SColor LightBlue = {173, 216, 230, 255};
+        constexpr SColor RoyalBlue = {65, 105, 225, 255};
+        constexpr SColor Indigo = {75, 0, 130, 255};
+
+        constexpr SColor Gold = {255, 215, 0, 255};
+        constexpr SColor Orange = {255, 165, 0, 255};
+        constexpr SColor DarkOrange = {255, 140, 0, 255};
+        constexpr SColor Peach = {255, 218, 185, 255};
+        constexpr SColor Amber = {255, 193, 37, 255};
+        constexpr SColor Khaki = {240, 230, 140, 255};
+
+        constexpr SColor Purple = {128, 0, 128, 255};
+        constexpr SColor DarkPurple = {72, 61, 139, 255};
+        constexpr SColor Violet = {148, 0, 211, 255};
+        constexpr SColor Fuchsia = {255, 0, 255, 255};
+        constexpr SColor Pink = {255, 192, 203, 255};
+        constexpr SColor Lavender = {230, 230, 250, 255};
+
+        constexpr SColor Gray = {128, 128, 128, 255};
+        constexpr SColor LightGray = {200, 200, 200, 255};
+        constexpr SColor DarkGray = {64, 64, 64, 255};
+    }
+
+    /**
+     * @namespace RGBAColor
+     * @brief Predefined colors, named in RGBA format
+     * @see Basic.h
+     */
+    namespace RGBAColor {
         constexpr SColor Transparent = {255, 255, 255, 0};
         constexpr SColor HalfTransparent = {255, 255, 255, 128};
-        /// 纯黑
         constexpr SColor Black = {0, 0, 0, 255};
-        /// 纯白
         constexpr SColor White = {255, 255, 255, 255};
 
-        // ==================== 红色系（32种）====================
-        /// 纯红
         constexpr SColor RedPure = {255, 0, 0, 255};
-        /// 深红
         constexpr SColor RedDark = {153, 0, 0, 255};
-        /// 暗红
         constexpr SColor RedDarker = {102, 0, 0, 255};
-        /// 酒红
         constexpr SColor RedWine = {85, 0, 34, 255};
-        /// 玫瑰红
         constexpr SColor RedRose = {255, 26, 99, 255};
-        /// 粉红
         constexpr SColor RedPink = {255, 105, 180, 255};
-        /// 浅粉
         constexpr SColor RedLightPink = {255, 179, 217, 255};
-        /// 淡粉
         constexpr SColor RedPalePink = {255, 218, 232, 255};
-        /// 珊瑚红
         constexpr SColor RedCoral = {255, 114, 86, 255};
-        /// 橙红
         constexpr SColor RedOrange = {255, 69, 0, 255};
-        /// 砖红
         constexpr SColor RedBrick = {178, 34, 34, 255};
-        /// 铁锈红
         constexpr SColor RedRust = {183, 65, 14, 255};
-        /// 绯红
         constexpr SColor RedScarlet = {255, 36, 0, 255};
-        /// 洋红
         constexpr SColor RedMagenta = {255, 0, 255, 255};
-        /// 品红
         constexpr SColor RedFuchsia = {219, 112, 219, 255};
-        /// 玫瑰粉
         constexpr SColor RedRosePink = {255, 52, 179, 255};
-        /// 深粉
         constexpr SColor RedDeepPink = {255, 20, 147, 255};
-        /// 桃粉
         constexpr SColor RedPeachPink = {255, 153, 170, 255};
-        /// 樱花粉
         constexpr SColor RedCherryBlossom = {255, 228, 225, 255};
-        /// 胭脂红
         constexpr SColor RedRouge = {210, 0, 82, 255};
-        /// 朱砂红
         constexpr SColor RedVermilion = {227, 38, 54, 255};
-        /// 海棠红
         constexpr SColor RedBegonia = {255, 99, 71, 255};
-        /// 石榴红
         constexpr SColor RedPomegranate = {204, 0, 0, 255};
-        /// 浅红（半透明）
         constexpr SColor RedLightTrans = {255, 192, 192, 192};
-        /// 淡红（半透明）
         constexpr SColor RedPaleTrans = {255, 224, 224, 192};
-        /// 暗红（半透明）
         constexpr SColor RedDarkTrans = {153, 50, 50, 192};
-        /// 玫瑰红（半透明）
         constexpr SColor RedRoseTrans = {255, 105, 180, 192};
-        /// 洋红（半透明）
         constexpr SColor RedMagentaTrans = {255, 153, 255, 192};
-        /// 珊瑚红（半透明）
         constexpr SColor RedCoralTrans = {255, 160, 122, 192};
-        /// 橙红（半透明）
         constexpr SColor RedOrangeTrans = {255, 127, 80, 192};
-        /// 品红（半透明）
         constexpr SColor RedFuchsiaTrans = {230, 145, 230, 192};
-        /// 砖红（半透明）
         constexpr SColor RedBrickTrans = {199, 21, 133, 192};
-
-        // ==================== 绿色系（32种）====================
-        /// 纯绿
+        
         constexpr SColor GreenPure = {0, 255, 0, 255};
-        /// 深绿
         constexpr SColor GreenDark = {0, 153, 0, 255};
-        /// 墨绿
         constexpr SColor GreenInk = {0, 102, 51, 255};
-        /// 橄榄绿
         constexpr SColor GreenOlive = {107, 142, 35, 255};
-        /// 草绿
         constexpr SColor GreenGrass = {34, 139, 34, 255};
-        /// 浅绿
         constexpr SColor GreenLight = {144, 238, 144, 255};
-        /// 淡绿
         constexpr SColor GreenPale = {152, 251, 152, 255};
-        /// 薄荷绿
         constexpr SColor GreenMint = {189, 252, 201, 255};
-        /// 翠绿
         constexpr SColor GreenEmerald = {0, 201, 87, 255};
-        /// 翡翠绿
         constexpr SColor GreenJade = {50, 205, 50, 255};
-        /// 松绿
         constexpr SColor GreenPine = {2, 94, 47, 255};
-        /// 柳绿
         constexpr SColor GreenWillow = {134, 204, 204, 255};
-        /// 豆绿
         constexpr SColor GreenBean = {194, 231, 181, 255};
-        /// 苔绿
         constexpr SColor GreenMoss = {115, 147, 115, 255};
-        /// 竹绿
         constexpr SColor GreenBamboo = {0, 168, 107, 255};
-        /// 青柠绿
         constexpr SColor GreenLime = {50, 205, 50, 255};
-        /// 苹果绿
         constexpr SColor GreenApple = {145, 238, 145, 255};
-        /// 森林绿
         constexpr SColor GreenForest = {34, 139, 34, 255};
-        /// 常春藤绿
         constexpr SColor GreenIvy = {7, 101, 68, 255};
-        /// 孔雀绿
         constexpr SColor GreenPeacock = {0, 166, 166, 255};
-        /// 蓝绿
         constexpr SColor GreenCyan = {0, 255, 255, 255};
-        /// 绿松石绿
         constexpr SColor GreenTurquoise = {64, 224, 208, 255};
-        /// 薄荷蓝绿
         constexpr SColor GreenMintCyan = {102, 255, 204, 255};
-        /// 浅绿（半透明）
         constexpr SColor GreenLightTrans = {173, 255, 173, 192};
-        /// 淡绿（半透明）
         constexpr SColor GreenPaleTrans = {204, 255, 204, 192};
-        /// 深绿（半透明）
         constexpr SColor GreenDarkTrans = {50, 153, 50, 192};
-        /// 橄榄绿（半透明）
         constexpr SColor GreenOliveTrans = {138, 154, 70, 192};
-        /// 翡翠绿（半透明）
         constexpr SColor GreenJadeTrans = {102, 255, 102, 192};
-        /// 青柠绿（半透明）
         constexpr SColor GreenLimeTrans = {127, 255, 0, 192};
-        /// 蓝绿（半透明）
         constexpr SColor GreenCyanTrans = {102, 255, 255, 192};
-        /// 绿松石绿（半透明）
         constexpr SColor GreenTurquoiseTrans = {128, 240, 224, 192};
-        /// 苔绿（半透明）
         constexpr SColor GreenMossTrans = {143, 188, 143, 192};
-        /// 竹绿（半透明）
         constexpr SColor GreenBambooTrans = {51, 204, 153, 192};
 
-        // ==================== 蓝色系（32种）====================
-        /// 纯蓝
         constexpr SColor BluePure = {0, 0, 255, 255};
-        /// 深蓝
         constexpr SColor BlueDark = {0, 0, 153, 255};
-        /// 藏蓝
         constexpr SColor BlueNavy = {0, 32, 96, 255};
-        /// 宝蓝
         constexpr SColor BlueSapphire = {0, 102, 204, 255};
-        /// 天蓝
         constexpr SColor BlueSky = {135, 206, 235, 255};
-        /// 浅蓝
         constexpr SColor BlueLight = {173, 216, 230, 255};
-        /// 淡蓝
         constexpr SColor BluePale = {204, 232, 255, 255};
-        /// 婴儿蓝
         constexpr SColor BlueBaby = {176, 224, 230, 255};
-        /// 海蓝
         constexpr SColor BlueSea = {28, 134, 238, 255};
-        /// 湖蓝
         constexpr SColor BlueLake = {0, 191, 255, 255};
-        /// 钴蓝
         constexpr SColor BlueCobalt = {65, 105, 225, 255};
-        /// 靛蓝
         constexpr SColor BlueIndigo = {75, 0, 130, 255};
-        /// 紫罗兰蓝
         constexpr SColor BlueViolet = {138, 43, 226, 255};
-        /// 薰衣草蓝
         constexpr SColor BlueLavender = {191, 211, 254, 255};
-        /// 石蓝
         constexpr SColor BlueStone = {100, 149, 237, 255};
-        /// 冰蓝
         constexpr SColor BlueIce = {240, 248, 255, 255};
-        /// 钢蓝
         constexpr SColor BlueSteel = {70, 130, 180, 255};
-        /// 普鲁士蓝
         constexpr SColor BluePrussian = {29, 53, 87, 255};
-        /// 皇家蓝
         constexpr SColor BlueRoyal = {0, 64, 128, 255};
-        /// 孔雀蓝
         constexpr SColor BluePeacock = {30, 144, 255, 255};
-        /// 青蓝
         constexpr SColor BlueCyan = {0, 255, 255, 255};
-        /// 淡紫蓝
         constexpr SColor BlueLilac = {169, 184, 208, 255};
-        /// 天空蓝（深）
         constexpr SColor BlueDeepSky = {0, 191, 255, 255};
-        /// 浅蓝（半透明）
         constexpr SColor BlueLightTrans = {173, 216, 230, 192};
-        /// 淡蓝（半透明）
         constexpr SColor BluePaleTrans = {211, 235, 250, 192};
-        /// 深蓝（半透明）
         constexpr SColor BlueDarkTrans = {65, 105, 225, 192};
-        /// 藏蓝（半透明）
         constexpr SColor BlueNavyTrans = {30, 144, 255, 192};
-        /// 宝蓝（半透明）
         constexpr SColor BlueSapphireTrans = {0, 128, 255, 192};
-        /// 靛蓝（半透明）
         constexpr SColor BlueIndigoTrans = {106, 90, 205, 192};
-        /// 紫罗兰蓝（半透明）
         constexpr SColor BlueVioletTrans = {153, 102, 255, 192};
-        /// 海蓝（半透明）
         constexpr SColor BlueSeaTrans = {64, 170, 255, 192};
-        /// 钢蓝（半透明）
         constexpr SColor BlueSteelTrans = {100, 149, 237, 192};
 
-        // ==================== 三原色混合系（32种）====================
-        /// 黄色（红+绿）
         constexpr SColor MixYellow = {255, 255, 0, 255};
-        /// 深黄
         constexpr SColor MixYellowDark = {204, 204, 0, 255};
-        /// 柠檬黄
         constexpr SColor MixYellowLemon = {255, 246, 143, 255};
-        /// 橙黄（红+绿+少量蓝）
         constexpr SColor MixOrangeYellow = {255, 165, 0, 255};
-        /// 琥珀黄
         constexpr SColor MixAmber = {255, 193, 37, 255};
-        /// 金色（黄+少量红）
         constexpr SColor MixGold = {255, 215, 0, 255};
-        /// 紫色（红+蓝）
         constexpr SColor MixPurple = {128, 0, 128, 255};
-        /// 深紫
         constexpr SColor MixPurpleDark = {72, 61, 139, 255};
-        /// 浅紫
         constexpr SColor MixPurpleLight = {199, 21, 133, 255};
-        /// 淡紫
         constexpr SColor MixPurplePale = {216, 191, 216, 255};
-        /// 紫罗兰
         constexpr SColor MixViolet = {143, 0, 255, 255};
-        /// 紫红色（红+蓝+少量绿）
         constexpr SColor MixFuchsia = {255, 0, 255, 255};
-        /// 青色（绿+蓝）
         constexpr SColor MixCyan = {0, 255, 255, 255};
-        /// 深青
         constexpr SColor MixCyanDark = {0, 139, 139, 255};
-        /// 浅青
         constexpr SColor MixCyanLight = {175, 238, 238, 255};
-        /// 灰色（三原色等比）
         constexpr SColor MixGray = {128, 128, 128, 255};
-        /// 深灰
         constexpr SColor MixGrayDark = {64, 64, 64, 255};
-        /// 浅灰
         constexpr SColor MixGrayLight = {192, 192, 192, 255};
-        /// 银灰
         constexpr SColor MixSilver = {192, 192, 192, 255};
-        /// 棕褐色（红+绿+蓝不等比）
         constexpr SColor MixBrown = {165, 42, 42, 255};
-        /// 深棕
         constexpr SColor MixBrownDark = {101, 67, 33, 255};
-        /// 浅棕
         constexpr SColor MixBrownLight = {210, 180, 140, 255};
-        /// 卡其色
         constexpr SColor MixKhaki = {240, 230, 140, 255};
-        /// 米色
         constexpr SColor MixBeige = {245, 245, 220, 255};
-        /// 奶油色
         constexpr SColor MixCream = {255, 253, 208, 255};
-        /// 黄色（半透明）
         constexpr SColor MixYellowTrans = {255, 255, 153, 192};
-        /// 紫色（半透明）
         constexpr SColor MixPurpleTrans = {204, 153, 255, 192};
-        /// 青色（半透明）
         constexpr SColor MixCyanTrans = {153, 255, 255, 192};
-        /// 灰色（半透明）
         constexpr SColor MixGrayTrans = {192, 192, 192, 192};
-        /// 棕色（半透明）
         constexpr SColor MixBrownTrans = {205, 133, 63, 192};
-        /// 卡其色（半透明）
         constexpr SColor MixKhakiTrans = {245, 245, 205, 192};
-        /// 琥珀黄（半透明）
         constexpr SColor MixAmberTrans = {255, 215, 105, 192};
     }
 
     struct GeometryF;
     /**
      * @struct Geometry
-     * @brief 位置、大小
+     * @brief Including position and size.
      */
     struct Geometry {
         int x, y, width, height;
@@ -623,13 +544,13 @@ namespace S3GF {
     template<typename T>
     struct Matrix2D {
     private:
-        /// 矩阵数据
+        
         std::vector<T> _datas;
-        /// 行
+        
         uint32_t _row;
-        /// 列
+        
         uint32_t _col;
-        /// 删除器
+        
         std::function<void(T &)> _deleter;
     public:
         using iterator = typename std::vector<T>::iterator;
@@ -1474,8 +1395,8 @@ namespace S3GF {
             std::vector<int> _indices;
             uint16_t _count{32};
         public:
-            explicit Point() : _position(0, 0), _size(1), _color(StdColor::Black), _count(32) { update(); }
-            Point(float x, float y, uint16_t size = 1, const SDL_Color& color = StdColor::Black,
+            explicit Point() : _position(0, 0), _size(1), _color(RGBAColor::Black), _count(32) { update(); }
+            Point(float x, float y, uint16_t size = 1, const SDL_Color& color = RGBAColor::Black,
                   uint16_t count = 32)
                 : _position(x, y), _size(size), _color(color), _count(count) { update(); }
             void move(float x, float y) { _position.reset(x, y); update(); }
@@ -1508,7 +1429,7 @@ namespace S3GF {
 
         class Line {
         public:
-            explicit Line() : _start_position(), _end_position(), _size(1), _color(StdColor::Black) {}
+            explicit Line() : _start_position(), _end_position(), _size(1), _color(RGBAColor::Black) {}
             explicit Line(float x1, float y1, float x2, float y2, uint16_t size, const SDL_Color& color)
                 : _start_position(x1, y1), _end_position(x2, y2), _size(size), _color(color) {update();}
             explicit Line(const Vector2& start, const Vector2& end, uint16_t size, const SDL_Color &color)
@@ -1566,10 +1487,10 @@ namespace S3GF {
 
         public:
             explicit Rectangle() : _geometry(0, 0, 0, 0), _border_size(0),
-                _border_color(StdColor::Transparent), _background_color(StdColor::Transparent) {}
+                                   _border_color(RGBAColor::Transparent), _background_color(RGBAColor::Transparent) {}
             explicit Rectangle(float x, float y, float w, float h,
-                               uint16_t border = 1, const SDL_Color& border_color = StdColor::Black,
-                               const SDL_Color& background_color = StdColor::Transparent)
+                               uint16_t border = 1, const SDL_Color& border_color = RGBAColor::Black,
+                               const SDL_Color& background_color = RGBAColor::Transparent)
                                : _geometry(x, y, w, h), _border_size(border),
                                  _border_color(border_color), _background_color(background_color) {
                 S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
@@ -1647,10 +1568,10 @@ namespace S3GF {
         class Triangle {
         public:
             explicit Triangle() : _p1(0, 0), _p2(0, 0), _p3(0, 0),
-                _border_size(0), _border_color(StdColor::Transparent), _background_color(StdColor::Black) {}
+                                  _border_size(0), _border_color(RGBAColor::Transparent), _background_color(RGBAColor::Black) {}
             explicit Triangle(float x1, float y1, float x2, float y2, float x3, float y3,
-                              uint16_t border_size = 0, const SDL_Color& border_color = StdColor::Transparent,
-                              const SDL_Color& back_color = StdColor::Black)
+                              uint16_t border_size = 0, const SDL_Color& border_color = RGBAColor::Transparent,
+                              const SDL_Color& back_color = RGBAColor::Black)
                 : _p1(x1, y1), _p2(x2, y2), _p3(x3, y3),
                   _border_size(border_size), _border_color(border_color), _background_color(back_color)
                 { updateTri(); updateBorder(); }
@@ -1752,12 +1673,12 @@ namespace S3GF {
         class Ellipse {
         public:
             explicit Ellipse() : _center_point(0, 0), _radius(0, 0),
-                _border_size(0), _border_color(StdColor::Transparent), _background_color(StdColor::Transparent),
-                _degree(0.f), _count(0) {}
+                                 _border_size(0), _border_color(RGBAColor::Transparent), _background_color(RGBAColor::Transparent),
+                                 _degree(0.f), _count(0) {}
 
             Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,
-                    const SDL_Color& border_color = StdColor::Black,
-                    const SDL_Color& back_color = StdColor::Transparent,
+                    const SDL_Color& border_color = RGBAColor::Black,
+                    const SDL_Color& back_color = RGBAColor::Transparent,
                     float degree = 0.f, uint16_t segment = 32)
                     : _center_point(cx, cy), _radius(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),

@@ -48,7 +48,7 @@ void task4() {
 
 void task5() {
     Logger::log("Task 5 is started!", S3GF::Logger::INFO);
-    sleep(5);
+    SLEEP(5);
     Logger::log("Task 5 is finished!", S3GF::Logger::INFO);
 }
 

@@ -104,7 +104,7 @@ namespace S3GF {
         Vector2 _text_pos{};
         bool _text_visible{false};
         ColorStatus _font{StdColor::Black, StdColor::Black,
-                          StdColor::Black, StdColor::MixGrayLight};
+                          StdColor::Black, StdColor::LightGray};
         std::unique_ptr<TextureStatus> _textures;
         std::function<void()> _event;
         Texture* _cur_texture{nullptr};

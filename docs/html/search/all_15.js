@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['vector2_0',['Vector2',['../struct_s3_g_f_1_1_vector2.html',1,'S3GF::Vector2'],['../struct_s3_g_f_1_1_vector2.html#a5ecd6f24f4f024022f6759bcffd656ae',1,'S3GF::Vector2::Vector2()'],['../struct_s3_g_f_1_1_vector2.html#a5b51c5466cdc66933bebb1ff459a7809',1,'S3GF::Vector2::Vector2(float x, float y)']]],
-  ['vertexcount_1',['vertexCount',['../class_s3_g_f_1_1_graphics_1_1_line.html#a3a4d6535c4e7708f64eb9970a2c139e2',1,'S3GF::Graphics::Line::vertexCount()'],['../class_s3_g_f_1_1_graphics_1_1_triangle.html#a79e4f10566bd558363918ef6de571ed0',1,'S3GF::Graphics::Triangle::vertexCount()'],['../class_s3_g_f_1_1_graphics_1_1_ellipse.html#a4b69f007e1bb4402255c67f6076d4870',1,'S3GF::Graphics::Ellipse::vertexCount()']]],
-  ['vertices_2',['vertices',['../class_s3_g_f_1_1_graphics_1_1_point.html#a1cf25b372d79aeafe9e9df4c97626520',1,'S3GF::Graphics::Point::vertices()'],['../class_s3_g_f_1_1_graphics_1_1_line.html#a0eebdafb9914c8eb71d96d43e99d4b32',1,'S3GF::Graphics::Line::vertices()'],['../class_s3_g_f_1_1_graphics_1_1_triangle.html#afdf678d3dcc8d0c9cd25500daadb253d',1,'S3GF::Graphics::Triangle::vertices()'],['../class_s3_g_f_1_1_graphics_1_1_ellipse.html#ac63f216752df051280c8e1c7669a080e',1,'S3GF::Graphics::Ellipse::vertices()']]],
-  ['verticescount_3',['verticesCount',['../class_s3_g_f_1_1_graphics_1_1_point.html#a954957210727e067dde8d6112d8f26b7',1,'S3GF::Graphics::Point']]],
-  ['visible_4',['visible',['../class_s3_g_f_1_1_abstract_control.html#a232a76be1751810e4f7309dd4250080e',1,'S3GF::AbstractControl::visible()'],['../class_s3_g_f_1_1_window.html#ae4cee5b6a7c35f701c0ffea3bde86f5f',1,'S3GF::Window::visible()'],['../class_s3_g_f_1_1_cursor.html#a380fa8bdbc24a9ef4beedce724ba918d',1,'S3GF::Cursor::visible()']]],
-  ['visiblechanged_5',['visibleChanged',['../class_s3_g_f_1_1_abstract_control.html#ab97693f615e51699500f40d5b026784e',1,'S3GF::AbstractControl']]],
-  ['vulkan_6',['VULKAN',['../class_s3_g_f_1_1_window.html#a7bbb4819c14c9970cb09b554877eb75fa86b9856c838f14bffbe9ac115f9d4998',1,'S3GF::Window']]]
+  ['underline_0',['Underline',['../class_s3_g_f_1_1_font.html#adae219183f4d93eac0ccc1acee291d6faf130e6ae979f642e09688c5167405f73',1,'S3GF::Font']]],
+  ['unknown_1',['Unknown',['../class_s3_g_f_1_1_audio_system.html#a3910242e5a4f7bdf51ca2e434a23743ea88183b946cc5f0e8c96b2e66e1c74a7e',1,'S3GF::AudioSystem']]],
+  ['unload_2',['unload',['../class_s3_g_f_1_1_text_system.html#a253b6080c8ff4638db6a41c861ed41fd',1,'S3GF::TextSystem::unload()'],['../class_s3_g_f_1_1_audio_system.html#a7e2789ca9136108e648c63f30d610ae4',1,'S3GF::AudioSystem::unload()'],['../class_s3_g_f_1_1_cursor.html#aae92ff2e842e773bf4355d1a17e03d3d',1,'S3GF::Cursor::unload()']]],
+  ['unloadevent_3',['unloadEvent',['../class_s3_g_f_1_1_window.html#abb3ade9405cff3344fed7a0267a2385c',1,'S3GF::Window']]],
+  ['url_4',['url',['../struct_s3_g_f_1_1_audio_system_1_1_audio.html#a72759d7becf16beac0003afec01153cf',1,'S3GF::AudioSystem::Audio']]],
+  ['usercustom_5',['UserCustom',['../struct_s3_g_f_1_1_cursor_1_1_user_custom.html',1,'S3GF::Cursor::UserCustom'],['../struct_s3_g_f_1_1_cursor_1_1_user_custom.html#a5fa4c8260c5ed6662ad79f526cbab55c',1,'S3GF::Cursor::UserCustom::UserCustom(const HotPoint &amp;hot_point, SSurface *cursor)'],['../struct_s3_g_f_1_1_cursor_1_1_user_custom.html#a2291a5eb254a4e4510430c9adee1a688',1,'S3GF::Cursor::UserCustom::UserCustom(const UserCustom &amp;copy)']]],
+  ['usercustomenabled_6',['userCustomEnabled',['../class_s3_g_f_1_1_cursor.html#a3766a5cb1663341f562d72fcbf3a8ff2',1,'S3GF::Cursor']]]
 ];

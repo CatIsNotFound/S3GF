@@ -1,4 +1,4 @@
-.TH "S3GF::TextSystem::FontEngine" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::TextSystem::FontEngine" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -18,14 +18,14 @@ S3GF::TextSystem::FontEngine
 .RI "TTF_TextEngine * \fBsurface_engine\fP"
 .br
 .ti -1c
-.RI "std::unique_ptr< \fBFont\fP > \fBfont\fP"
+.RI "std::shared_ptr< \fBFont\fP > \fBfont\fP"
 .br
 .in -1c
 .SH "类成员变量说明"
 .PP 
 .SS "TTF_TextEngine* S3GF::TextSystem::FontEngine::engine"
 
-.SS "std::unique_ptr<\fBFont\fP> S3GF::TextSystem::FontEngine::font"
+.SS "std::shared_ptr<\fBFont\fP> S3GF::TextSystem::FontEngine::font"
 
 .SS "TTF_TextEngine* S3GF::TextSystem::FontEngine::surface_engine"
 

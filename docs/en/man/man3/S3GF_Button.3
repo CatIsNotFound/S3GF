@@ -1,4 +1,4 @@
-.TH "S3GF::Button" 3 "Fri Nov 21 2025 16:18:19" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Button" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -10,18 +10,46 @@ S3GF::Button
 \fR#include <Button\&.h>\fP
 .PP
 Inherits \fBS3GF::AbstractControl\fP\&.
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBButtonSkin\fP"
+.br
+.in -1c
 .SS "Public Member Functions"
 
 .in +1c
 .ti -1c
-.RI "\fBButton\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, const \fBVector2\fP &\fBposition\fP={0, 0}, \fBAbstractControl\fP *parent=nullptr)"
+.RI "\fBButton\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBAbstractControl\fP *parent=nullptr)"
+.br
+.ti -1c
+.RI "void \fBsetFont\fP (const std::string &font_name, const std::string &font_path={})"
+.br
+.ti -1c
+.RI "const std::string & \fBfontName\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetText\fP (const std::string &\fBtext\fP)"
+.br
+.ti -1c
+.RI "const std::string & \fBtext\fP () const"
+.br
+.ti -1c
+.RI "\fBSize\fP \fBtextSize\fP () const"
+.br
+.ti -1c
+.RI "\fBButtonSkin\fP & \fBbuttonSkin\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetEvent\fP (const std::function< void()> &event)"
 .br
 .in -1c
 
 Public Member Functions inherited from \fBS3GF::AbstractControl\fP
 .in +1c
 .ti -1c
-.RI "\fBAbstractControl\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBGT\fP click_area=\fBGraphics::Rectangle\fP(), \fBAbstractControl\fP *parent=nullptr)"
+.RI "\fBAbstractControl\fP (const std::string &\fBname\fP, \fBRenderer\fP *renderer, \fBAbstractControl\fP *parent=nullptr, \fBGT\fP click_area=\fBGraphics::Rectangle\fP())"
 .br
 .ti -1c
 .RI "\fB~AbstractControl\fP ()=default"
@@ -86,6 +114,30 @@ Public Member Functions inherited from \fBS3GF::AbstractControl\fP
 .ti -1c
 .RI "bool \fBenabled\fP () const"
 .br
+.ti -1c
+.RI "void \fBsetActive\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetInactive\fP ()"
+.br
+.ti -1c
+.RI "bool \fBactive\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetKey\fP (SDL_Keycode key)"
+.br
+.ti -1c
+.RI "void \fBsetCheckable\fP (bool \fBcheckable\fP)"
+.br
+.ti -1c
+.RI "void \fBsetChecked\fP (bool checked)"
+.br
+.ti -1c
+.RI "bool \fBcheckable\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisChecked\fP () const"
+.br
 .in -1c
 .SS "Protected Member Functions"
 
@@ -103,26 +155,38 @@ Public Member Functions inherited from \fBS3GF::AbstractControl\fP
 .RI "void \fBonPressed\fP () override"
 .br
 .ti -1c
+.RI "void \fBonReleased\fP () override"
+.br
+.ti -1c
+.RI "void \fBonTriggered\fP () override"
+.br
+.ti -1c
+.RI "void \fBonKeyPressed\fP () override"
+.br
+.ti -1c
+.RI "void \fBonKeyReleased\fP () override"
+.br
+.ti -1c
 .RI "void \fBresizeEvent\fP () override"
 .br
 .ti -1c
 .RI "void \fBmoveEvent\fP () override"
 .br
 .ti -1c
-.RI "void \fBpaintEvent\fP (\fBRenderer\fP *ren) override"
+.RI "void \fBonChecked\fP (bool checked) override"
+.br
+.ti -1c
+.RI "void \fBenabledChanged\fP (bool \fBenabled\fP) override"
+.br
+.ti -1c
+.RI "void \fBpaintEvent\fP (\fBRenderer\fP *r) override"
 .br
 .in -1c
 
 Protected Member Functions inherited from \fBS3GF::AbstractControl\fP
 .in +1c
 .ti -1c
-.RI "virtual void \fBonReleased\fP ()"
-.br
-.ti -1c
-.RI "virtual void \fBonTriggered\fP ()"
-.br
-.ti -1c
-.RI "virtual void \fBenabledChanged\fP (bool \fBenabled\fP)"
+.RI "virtual void \fBactiveChanged\fP (bool \fBactive\fP)"
 .br
 .ti -1c
 .RI "virtual void \fBvisibleChanged\fP (bool \fBvisible\fP)"
@@ -133,13 +197,6 @@ Protected Member Functions inherited from \fBS3GF::AbstractControl\fP
 .in -1c
 .SS "Additional Inherited Members"
 
-
-Public Types inherited from \fBS3GF::AbstractControl\fP
-.in +1c
-.ti -1c
-.RI "enum \fBState\fP { \fBNormal\fP, \fBHover\fP, \fBPressed\fP, \fBDisabled\fP, \fBSelected\fP }"
-.br
-.in -1c
 
 Protected Attributes inherited from \fBS3GF::AbstractControl\fP
 .in +1c
@@ -162,7 +219,16 @@ Protected Attributes inherited from \fBS3GF::AbstractControl\fP
 .RI "\fBClickArea\fP \fB_click_area\fP"
 .br
 .ti -1c
+.RI "SDL_Keycode \fB_key_code\fP {SDLK_UNKNOWN}"
+.br
+.ti -1c
 .RI "bool \fB_is_down\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_is_hovered\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_is_checked\fP {false}"
 .br
 .ti -1c
 .RI "bool \fB_visible\fP {true}"
@@ -173,14 +239,32 @@ Protected Attributes inherited from \fBS3GF::AbstractControl\fP
 .ti -1c
 .RI "bool \fB_entered\fP {false}"
 .br
+.ti -1c
+.RI "bool \fB_active\fP {false}"
+.br
+.ti -1c
+.RI "bool \fB_checkable\fP {false}"
+.br
 .in -1c
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "S3GF::Button::Button (const std::string & name, \fBRenderer\fP * renderer, const \fBVector2\fP & position = \fR{0, 0}\fP, \fBAbstractControl\fP * parent = \fRnullptr\fP)\fR [explicit]\fP"
+.SS "S3GF::Button::Button (const std::string & name, \fBRenderer\fP * renderer, \fBAbstractControl\fP * parent = \fRnullptr\fP)\fR [explicit]\fP"
 
 .SH "Member Function Documentation"
 .PP 
+.SS "\fBButton::ButtonSkin\fP & S3GF::Button::buttonSkin ()"
+
+.SS "void S3GF::Button::enabledChanged (bool enabled)\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "const std::string & S3GF::Button::fontName () const\fR [nodiscard]\fP"
+
 .SS "void S3GF::Button::moveEvent ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::onChecked (bool checked)\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
 Reimplemented from \fBS3GF::AbstractControl\fP\&.
@@ -192,6 +276,14 @@ Reimplemented from \fBS3GF::AbstractControl\fP\&.
 
 .PP
 Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::onKeyPressed ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::onKeyReleased ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
 .SS "void S3GF::Button::onLeft ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
@@ -200,7 +292,15 @@ Reimplemented from \fBS3GF::AbstractControl\fP\&.
 
 .PP
 Reimplemented from \fBS3GF::AbstractControl\fP\&.
-.SS "void S3GF::Button::paintEvent (\fBRenderer\fP * ren)\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+.SS "void S3GF::Button::onReleased ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::onTriggered ()\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::paintEvent (\fBRenderer\fP * r)\fR [override]\fP, \fR [protected]\fP, \fR [virtual]\fP"
 
 .PP
 Reimplemented from \fBS3GF::AbstractControl\fP\&.
@@ -208,6 +308,16 @@ Reimplemented from \fBS3GF::AbstractControl\fP\&.
 
 .PP
 Reimplemented from \fBS3GF::AbstractControl\fP\&.
+.SS "void S3GF::Button::setEvent (const std::function< void()> & event)"
+
+.SS "void S3GF::Button::setFont (const std::string & font_name, const std::string & font_path = \fR{}\fP)"
+
+.SS "void S3GF::Button::setText (const std::string & text)"
+
+.SS "const std::string & S3GF::Button::text () const\fR [nodiscard]\fP"
+
+.SS "\fBSize\fP S3GF::Button::textSize () const\fR [nodiscard]\fP"
+
 
 .SH "Author"
 .PP 

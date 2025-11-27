@@ -8,6 +8,7 @@ var class_s3_g_f_1_1_click_area =
     [ "isDown", "class_s3_g_f_1_1_click_area.html#a466d035a7da0fa36393497c34c7e2ee9", null ],
     [ "isEntered", "class_s3_g_f_1_1_click_area.html#af0a1e507ab9bcf42d1cff0225fedf0c1", null ],
     [ "isHovered", "class_s3_g_f_1_1_click_area.html#ac4337e1c438e76b590a871eb8317e93a", null ],
+    [ "isLeft", "class_s3_g_f_1_1_click_area.html#a682fe9bd539fef6a1c8b07fb606bd059", null ],
     [ "isPressed", "class_s3_g_f_1_1_click_area.html#a63097ed5052059914cb885d5a0b071ac", null ],
     [ "point", "class_s3_g_f_1_1_click_area.html#af21e3e2c6802b2bb959a0bf82999b91e", null ],
     [ "rectangle", "class_s3_g_f_1_1_click_area.html#a4bbe88f67b66b5fa07b286107d996dea", null ],

@@ -1,4 +1,4 @@
-.TH "S3GF::Engine" 3 "2025年 十一月 21日 星期五 16:18:24" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Engine" 3 "2025年 十一月 27日 星期四 19:54:22" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -22,10 +22,37 @@ S3GF::Engine
 
 .in +1c
 .ti -1c
-.RI "\fBEngine\fP ()"
+.RI "\fBEngine\fP (std::string &&app_name='Hello world', std::string &&app_version='v1\&.0\&.0', std::string &&app_id='HelloWorld\&.app')"
 .br
 .ti -1c
 .RI "\fB~Engine\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetApplicationID\fP (const std::string &app_id)"
+.br
+.ti -1c
+.RI "void \fBsetApplicationID\fP (std::string &&app_id)"
+.br
+.ti -1c
+.RI "void \fBsetApplicationName\fP (const std::string &app_id)"
+.br
+.ti -1c
+.RI "void \fBsetApplicationName\fP (std::string &&app_id)"
+.br
+.ti -1c
+.RI "void \fBsetApplicationVersion\fP (const std::string &app_version)"
+.br
+.ti -1c
+.RI "void \fBsetApplicationVersion\fP (std::string &&app_version)"
+.br
+.ti -1c
+.RI "const std::string & \fBapplicationID\fP () const"
+.br
+.ti -1c
+.RI "const std::string & \fBapplicationName\fP () const"
+.br
+.ti -1c
+.RI "const std::string & \fBapplicationVersion\fP () const"
 .br
 .ti -1c
 .RI "bool \fBisRunning\fP () const"
@@ -66,10 +93,16 @@ S3GF::Engine
 .ti -1c
 .RI "uint32_t \fBfps\fP () const"
 .br
+.ti -1c
+.RI "void \fBinstallCleanUpEvent\fP (const std::function< void()> &event)"
+.br
 .in -1c
 .SS "静态 Public 成员函数"
 
 .in +1c
+.ti -1c
+.RI "static void \fBdisabledShowAppInfo\fP ()"
+.br
 .ti -1c
 .RI "static void \fBexit\fP (int code=0)"
 .br
@@ -85,15 +118,23 @@ S3GF::Engine
 
 .SH "构造及析构函数说明"
 .PP 
-.SS "S3GF::Engine::Engine ()\fR [explicit]\fP"
+.SS "S3GF::Engine::Engine (std::string && app_name = \fR'Hello world'\fP, std::string && app_version = \fR'v1\&.0\&.0'\fP, std::string && app_id = \fR'HelloWorld\&.app'\fP)\fR [explicit]\fP"
 
 .SS "S3GF::Engine::~Engine ()"
 
 .SH "成员函数说明"
 .PP 
+.SS "const std::string & S3GF::Engine::applicationID () const\fR [nodiscard]\fP"
+
+.SS "const std::string & S3GF::Engine::applicationName () const\fR [nodiscard]\fP"
+
+.SS "const std::string & S3GF::Engine::applicationVersion () const\fR [nodiscard]\fP"
+
 .SS "\fBiter\fP S3GF::Engine::begin ()\fR [inline]\fP"
 
 .SS "\fBconstIter\fP S3GF::Engine::begin () const\fR [inline]\fP"
+
+.SS "void S3GF::Engine::disabledShowAppInfo ()\fR [static]\fP"
 
 .SS "\fBiter\fP S3GF::Engine::end ()\fR [inline]\fP"
 
@@ -105,11 +146,25 @@ S3GF::Engine
 
 .SS "uint32_t S3GF::Engine::fps () const"
 
+.SS "void S3GF::Engine::installCleanUpEvent (const std::function< void()> & event)"
+
 .SS "bool S3GF::Engine::isRunning () const"
 
 .SS "void S3GF::Engine::newWindow (\fBWindow\fP * window)"
 
 .SS "void S3GF::Engine::removeWindow (SDL_WindowID id)"
+
+.SS "void S3GF::Engine::setApplicationID (const std::string & app_id)"
+
+.SS "void S3GF::Engine::setApplicationID (std::string && app_id)"
+
+.SS "void S3GF::Engine::setApplicationName (const std::string & app_id)"
+
+.SS "void S3GF::Engine::setApplicationName (std::string && app_id)"
+
+.SS "void S3GF::Engine::setApplicationVersion (const std::string & app_version)"
+
+.SS "void S3GF::Engine::setApplicationVersion (std::string && app_version)"
 
 .SS "void S3GF::Engine::setFPS (uint32_t fps)"
 

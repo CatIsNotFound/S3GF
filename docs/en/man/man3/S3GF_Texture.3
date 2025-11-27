@@ -1,4 +1,4 @@
-.TH "S3GF::Texture" 3 "Fri Nov 21 2025 16:18:19" "Version v0.1.0-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::Texture" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -8,6 +8,8 @@ S3GF::Texture
 .PP
 .PP
 \fR#include <Components\&.h>\fP
+.PP
+Inherited by \fBS3GF::TextureAtlas\fP\&.
 .SS "Public Member Functions"
 
 .in +1c
@@ -36,16 +38,28 @@ S3GF::Texture
 .RI "\fB~Texture\fP ()"
 .br
 .ti -1c
+.RI "\fBRenderer\fP * \fBrender\fP () const"
+.br
+.ti -1c
 .RI "bool \fBsetImagePath\fP (const std::string &path)"
+.br
+.ti -1c
+.RI "const std::string & \fBimagePath\fP () const"
+.br
+.ti -1c
+.RI "bool \fBsetImageFromSurface\fP (SDL_Surface *surface, bool deep_copy=false)"
 .br
 .ti -1c
 .RI "SDL_Texture * \fBself\fP () const"
 .br
 .ti -1c
+.RI "bool \fBisValid\fP () const"
+.br
+.ti -1c
 .RI "\fBProperty\fP * \fBproperty\fP ()"
 .br
 .ti -1c
-.RI "void \fBdraw\fP () const"
+.RI "virtual void \fBdraw\fP () const"
 .br
 .in -1c
 .SH "Constructor & Destructor Documentation"
@@ -64,7 +78,13 @@ S3GF::Texture
 
 .SH "Member Function Documentation"
 .PP 
-.SS "void S3GF::Texture::draw () const"
+.SS "void S3GF::Texture::draw () const\fR [virtual]\fP"
+
+.PP
+Reimplemented in \fBS3GF::TextureAtlas\fP\&.
+.SS "const std::string & S3GF::Texture::imagePath () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::Texture::isValid () const\fR [nodiscard]\fP"
 
 .SS "\fBTexture\fP & S3GF::Texture::operator= (const \fBTexture\fP & )\fR [delete]\fP"
 
@@ -72,7 +92,11 @@ S3GF::Texture
 
 .SS "\fBProperty\fP * S3GF::Texture::property ()"
 
-.SS "SDL_Texture * S3GF::Texture::self () const"
+.SS "\fBRenderer\fP * S3GF::Texture::render () const"
+
+.SS "SDL_Texture * S3GF::Texture::self () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::Texture::setImageFromSurface (SDL_Surface * surface, bool deep_copy = \fRfalse\fP)"
 
 .SS "bool S3GF::Texture::setImagePath (const std::string & path)"
 

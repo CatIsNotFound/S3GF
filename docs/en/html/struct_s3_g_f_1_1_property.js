@@ -4,6 +4,8 @@ var struct_s3_g_f_1_1_property =
     [ "move", "struct_s3_g_f_1_1_property.html#ae462980a3ad9ace7a929d6880c485859", null ],
     [ "move", "struct_s3_g_f_1_1_property.html#a28c467b9395d517f9912133fca2b9233", null ],
     [ "position", "struct_s3_g_f_1_1_property.html#a9548b8bc537ce7079f2e2811383f194f", null ],
+    [ "reset", "struct_s3_g_f_1_1_property.html#ad344d843ab41050b1076d8dd093e8a0a", null ],
+    [ "reset", "struct_s3_g_f_1_1_property.html#a01256486c4817de08e4b1af1427a9499", null ],
     [ "resize", "struct_s3_g_f_1_1_property.html#a260b1ea3620acd672fc25432bf4399b0", null ],
     [ "resize", "struct_s3_g_f_1_1_property.html#ae3565c0cf8b8443dc8dbdd406518e13d", null ],
     [ "scale", "struct_s3_g_f_1_1_property.html#a2a34de4e7504f1f0371c3e04291437cf", null ],

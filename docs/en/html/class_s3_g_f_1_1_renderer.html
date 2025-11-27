@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.1-beta</span>
    </div>
    <div id="projectbrief">SDL3 Graphics Framework</div>
   </td>
@@ -115,6 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb16a81974174721009b6f3e5b150f45" id="r_abb16a81974174721009b6f3e5b150f45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb16a81974174721009b6f3e5b150f45">drawEllipse</a> (<a class="el" href="class_s3_g_f_1_1_graphics_1_1_ellipse.html">Graphics::Ellipse</a> &amp;&amp;ellipse)</td></tr>
 <tr class="memitem:a16227bd62e7cde596178431f2e052535" id="r_a16227bd62e7cde596178431f2e052535"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16227bd62e7cde596178431f2e052535">drawTexture</a> (SDL_Texture *texture, <a class="el" href="struct_s3_g_f_1_1_property.html">Property</a> *property)</td></tr>
 <tr class="memitem:a3ba676fa181fd1236b369e960c36034a" id="r_a3ba676fa181fd1236b369e960c36034a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ba676fa181fd1236b369e960c36034a">drawText</a> (TTF_Text *text, const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;position)</td></tr>
+<tr class="memitem:ada08eafbcbd889e4708b6abf9b84aabe" id="r_ada08eafbcbd889e4708b6abf9b84aabe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada08eafbcbd889e4708b6abf9b84aabe">drawPixelText</a> (const std::string &amp;text, const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;position, const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;scaled={1.f, 1.f}, const SDL_Color &amp;color=<a class="el" href="namespace_s3_g_f_1_1_std_color.html#aab700477e0f1115aca5815c545bce5e8">StdColor::White</a>)</td></tr>
 <tr class="memitem:a95ba98f12654b7cab21f83bf81202df2" id="r_a95ba98f12654b7cab21f83bf81202df2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95ba98f12654b7cab21f83bf81202df2">setViewport</a> (const <a class="el" href="struct_s3_g_f_1_1_geometry.html">Geometry</a> &amp;geometry)</td></tr>
 <tr class="memitem:ad439d010b4731b9eef6ced87c090b8ae" id="r_ad439d010b4731b9eef6ced87c090b8ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad439d010b4731b9eef6ced87c090b8ae">setClipView</a> (const <a class="el" href="struct_s3_g_f_1_1_geometry.html">Geometry</a> &amp;geometry)</td></tr>
 <tr class="memitem:a0d1440227a05c1912e8a99f758cd3388" id="r_a0d1440227a05c1912e8a99f758cd3388"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d1440227a05c1912e8a99f758cd3388">setBlendMode</a> (const SDL_BlendMode &amp;blend_mode)</td></tr>
@@ -242,6 +243,37 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_s3_g_f_1_1_graphics_1_1_line.html">Graphics::Line</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>line</em></span></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ada08eafbcbd889e4708b6abf9b84aabe" name="ada08eafbcbd889e4708b6abf9b84aabe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada08eafbcbd889e4708b6abf9b84aabe">&#9670;&#160;</a></span>drawPixelText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::Renderer::drawPixelText </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_vector2.html">Vector2</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>scaled</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{1.f,&#160;1.f}</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Color &amp;</td>          <td class="paramname"><span class="paramname"><em>color</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespace_s3_g_f_1_1_std_color.html#aab700477e0f1115aca5815c545bce5e8">StdColor::White</a></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -418,6 +450,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">SDL_Renderer * S3GF::Renderer::self </td>
@@ -426,6 +461,11 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -486,6 +526,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_s3_g_f_1_1_window.html">Window</a> * S3GF::Renderer::window </td>
@@ -494,6 +537,11 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

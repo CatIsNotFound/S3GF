@@ -1,0 +1,140 @@
+.TH "S3GF::TextureAtlas" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+S3GF::TextureAtlas
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <Components\&.h>\fP
+.PP
+Inherits \fBS3GF::Texture\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTextureAtlas\fP (const \fBTextureAtlas\fP &)=delete"
+.br
+.ti -1c
+.RI "\fBTextureAtlas\fP (\fBTextureAtlas\fP &&)=delete"
+.br
+.ti -1c
+.RI "\fBTextureAtlas\fP & \fBoperator=\fP (const \fBTextureAtlas\fP &)=delete"
+.br
+.ti -1c
+.RI "\fBTextureAtlas\fP & \fBoperator=\fP (\fBTextureAtlas\fP &&)=delete"
+.br
+.ti -1c
+.RI "\fBTextureAtlas\fP (const std::string &path, \fBRenderer\fP *renderer)"
+.br
+.ti -1c
+.RI "\fBTextureAtlas\fP (SDL_Surface *surface, \fBRenderer\fP *renderer, bool deep_copy=false)"
+.br
+.ti -1c
+.RI "\fB~TextureAtlas\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetTiles\fP (const std::string &tiles_name, \fBProperty\fP &&tiles_property)"
+.br
+.ti -1c
+.RI "\fBProperty\fP * \fBtilesProperty\fP (const std::string &tiles_name)"
+.br
+.ti -1c
+.RI "void \fBsetCurrentTiles\fP (const std::string &tiles_name)"
+.br
+.ti -1c
+.RI "const std::string & \fBcurrentTiles\fP () const"
+.br
+.ti -1c
+.RI "void \fBdraw\fP () const override"
+.br
+.ti -1c
+.RI "void \fBdraw\fP (const std::string &tiles_name) const"
+.br
+.in -1c
+
+Public Member Functions inherited from \fBS3GF::Texture\fP
+.in +1c
+.ti -1c
+.RI "\fBTexture\fP (const \fBTexture\fP &)=delete"
+.br
+.ti -1c
+.RI "\fBTexture\fP (\fBTexture\fP &&)=delete"
+.br
+.ti -1c
+.RI "\fBTexture\fP & \fBoperator=\fP (const \fBTexture\fP &)=delete"
+.br
+.ti -1c
+.RI "\fBTexture\fP & \fBoperator=\fP (\fBTexture\fP &&)=delete"
+.br
+.ti -1c
+.RI "\fBTexture\fP (const std::string &path, \fBRenderer\fP *renderer)"
+.br
+.ti -1c
+.RI "\fBTexture\fP (SDL_Surface *surface, \fBRenderer\fP *renderer, bool deep_copy=false)"
+.br
+.ti -1c
+.RI "\fBTexture\fP (\fBRenderer\fP *renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access)"
+.br
+.ti -1c
+.RI "\fB~Texture\fP ()"
+.br
+.ti -1c
+.RI "\fBRenderer\fP * \fBrender\fP () const"
+.br
+.ti -1c
+.RI "bool \fBsetImagePath\fP (const std::string &path)"
+.br
+.ti -1c
+.RI "const std::string & \fBimagePath\fP () const"
+.br
+.ti -1c
+.RI "bool \fBsetImageFromSurface\fP (SDL_Surface *surface, bool deep_copy=false)"
+.br
+.ti -1c
+.RI "SDL_Texture * \fBself\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisValid\fP () const"
+.br
+.ti -1c
+.RI "\fBProperty\fP * \fBproperty\fP ()"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "S3GF::TextureAtlas::TextureAtlas (const \fBTextureAtlas\fP & )\fR [delete]\fP"
+
+.SS "S3GF::TextureAtlas::TextureAtlas (\fBTextureAtlas\fP && )\fR [delete]\fP"
+
+.SS "S3GF::TextureAtlas::TextureAtlas (const std::string & path, \fBRenderer\fP * renderer)\fR [explicit]\fP"
+
+.SS "S3GF::TextureAtlas::TextureAtlas (SDL_Surface * surface, \fBRenderer\fP * renderer, bool deep_copy = \fRfalse\fP)\fR [explicit]\fP"
+
+.SS "S3GF::TextureAtlas::~TextureAtlas ()"
+
+.SH "Member Function Documentation"
+.PP 
+.SS "const std::string & S3GF::TextureAtlas::currentTiles () const\fR [nodiscard]\fP"
+
+.SS "void S3GF::TextureAtlas::draw () const\fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Reimplemented from \fBS3GF::Texture\fP\&.
+.SS "void S3GF::TextureAtlas::draw (const std::string & tiles_name) const"
+
+.SS "\fBTextureAtlas\fP & S3GF::TextureAtlas::operator= (const \fBTextureAtlas\fP & )\fR [delete]\fP"
+
+.SS "\fBTextureAtlas\fP & S3GF::TextureAtlas::operator= (\fBTextureAtlas\fP && )\fR [delete]\fP"
+
+.SS "void S3GF::TextureAtlas::setCurrentTiles (const std::string & tiles_name)"
+
+.SS "void S3GF::TextureAtlas::setTiles (const std::string & tiles_name, \fBProperty\fP && tiles_property)"
+
+.SS "\fBProperty\fP * S3GF::TextureAtlas::tilesProperty (const std::string & tiles_name)"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for S3GF from the source code\&.

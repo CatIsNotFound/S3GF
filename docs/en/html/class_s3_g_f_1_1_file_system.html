@@ -26,7 +26,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.0-beta</span>
+   <div id="projectname">S3GF<span id="projectnumber">&#160;v0.1.1-beta</span>
    </div>
    <div id="projectbrief">SDL3 Graphics Framework</div>
   </td>
@@ -149,6 +149,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a06221ef455599b6cc332b82d11c755af"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取文件名  <br /></td></tr>
 <tr class="memitem:a6e18cf8d22774bcc3ca035928e40ea3d" id="r_a6e18cf8d22774bcc3ca035928e40ea3d"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e18cf8d22774bcc3ca035928e40ea3d">listFilePaths</a> (const std::string &amp;path, <a class="el" href="#aa01285d70b3663e2d5d51c5b874ae26c">Filter</a> filter=<a class="el" href="#aa01285d70b3663e2d5d51c5b874ae26ca2a488e0ab5344ce55bb004cf9b4df197">All</a>, const std::vector&lt; std::string &gt; &amp;file_ext_list={}, bool ignore_error=false)</td></tr>
 <tr class="memdesc:a6e18cf8d22774bcc3ca035928e40ea3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取指定路径下的所有文件或目录  <br /></td></tr>
+<tr class="memitem:a64927d9e1070a7b5225849bec55da0d0" id="r_a64927d9e1070a7b5225849bec55da0d0"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64927d9e1070a7b5225849bec55da0d0">listFilesRecursively</a> (const std::string &amp;path, const std::vector&lt; std::string &gt; &amp;file_ext_list={}, bool ignore_error=false)</td></tr>
 <tr class="memitem:aa36bfa4fe81de890326961ab022703d5" id="r_aa36bfa4fe81de890326961ab022703d5"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa36bfa4fe81de890326961ab022703d5">listFiles</a> (const std::string &amp;path, <a class="el" href="#aa01285d70b3663e2d5d51c5b874ae26c">Filter</a> filter=<a class="el" href="#aa01285d70b3663e2d5d51c5b874ae26ca2a488e0ab5344ce55bb004cf9b4df197">All</a>, const std::vector&lt; std::string &gt; &amp;file_ext_list={}, bool ignore_error=false)</td></tr>
 <tr class="memdesc:aa36bfa4fe81de890326961ab022703d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取指定路径下的所有文件或目录  <br /></td></tr>
 </table>
@@ -523,6 +524,40 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>返回一个文件名列表 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6e18cf8d22774bcc3ca035928e40ea3d" title="获取指定路径下的所有文件或目录">listFilePaths</a> </dd></dl>
+
+</div>
+</div>
+<a id="a64927d9e1070a7b5225849bec55da0d0" name="a64927d9e1070a7b5225849bec55da0d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64927d9e1070a7b5225849bec55da0d0">&#9670;&#160;</a></span>listFilesRecursively()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; S3GF::FileSystem::listFilesRecursively </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>file_ext_list</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>ignore_error</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

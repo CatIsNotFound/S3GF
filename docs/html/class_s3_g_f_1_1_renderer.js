@@ -7,6 +7,7 @@ var class_s3_g_f_1_1_renderer =
     [ "drawEllipse", "class_s3_g_f_1_1_renderer.html#abb16a81974174721009b6f3e5b150f45", null ],
     [ "drawLine", "class_s3_g_f_1_1_renderer.html#a9c51cf861e158786dfc51634d292a0e4", null ],
     [ "drawLine", "class_s3_g_f_1_1_renderer.html#a29234c3f7d58d2cc3e15684a0d6ebee0", null ],
+    [ "drawPixelText", "class_s3_g_f_1_1_renderer.html#ada08eafbcbd889e4708b6abf9b84aabe", null ],
     [ "drawPoint", "class_s3_g_f_1_1_renderer.html#af4653958d9ed34428643e73d3858df1f", null ],
     [ "drawPoint", "class_s3_g_f_1_1_renderer.html#a11e0788656b167e17f45bcc197c25686", null ],
     [ "drawRectangle", "class_s3_g_f_1_1_renderer.html#aa8854e9ea5636089ecabe2f3d8970967", null ],
