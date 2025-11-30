@@ -5,7 +5,7 @@ var searchData=
   ['peach_2',['Peach',['../namespace_s3_g_f_1_1_std_color.html#a56faf44599ca6ef4071258c0c7f60773',1,'S3GF::StdColor']]],
   ['pink_3',['Pink',['../namespace_s3_g_f_1_1_std_color.html#abbc9b929de7bdbb1220baaa88b644130',1,'S3GF::StdColor']]],
   ['point_4',['Point',['../class_s3_g_f_1_1_graphics_1_1_point.html',1,'S3GF::Graphics::Point'],['../class_s3_g_f_1_1_graphics_1_1_point.html#a2c0ec102e57df37417c03dcfd995c3c4',1,'S3GF::Graphics::Point::Point()'],['../class_s3_g_f_1_1_graphics_1_1_point.html#a770013059d3c4a4046e992c5d571b994',1,'S3GF::Graphics::Point::Point(float x, float y, uint16_t size=1, const SDL_Color &amp;color=RGBAColor::Black, uint16_t count=32)']]],
-  ['point_5',['point',['../class_s3_g_f_1_1_click_area.html#af21e3e2c6802b2bb959a0bf82999b91e',1,'S3GF::ClickArea']]],
+  ['point_5',['point',['../class_s3_g_f_1_1_click_area.html#af21e3e2c6802b2bb959a0bf82999b91e',1,'S3GF::ClickArea::point()'],['../class_s3_g_f_1_1_holdable_area.html#ad95d28cc6d56eebe7a8262729e07503e',1,'S3GF::HoldableArea::point()']]],
   ['pointer_6',['Pointer',['../class_s3_g_f_1_1_cursor.html#a800fcc8d85908d269af72d416a76001baa7243f87ad82abfcd69720a727f208d5',1,'S3GF::Cursor']]],
   ['pop_7',['pop',['../class_s3_g_f_1_1_task_queue.html#a859b778e04615c02a1e80c26023fef82',1,'S3GF::TaskQueue']]],
   ['pos_8',['pos',['../struct_s3_g_f_1_1_geometry_f.html#ab8929abf4cb61f092322370280ad6231',1,'S3GF::GeometryF']]],

@@ -34,6 +34,7 @@ int main() {
     Texture hovered("./back_button_2.png", main_win->renderer());
     Texture pressed("./back_button_3.png", main_win->renderer());
     Texture invalid("./back_button_4.png", main_win->renderer());
+
     normal.property()->color_alpha = RGBAColor::RGBAValue2Color(0xa66b4b);
     hovered.property()->color_alpha = RGBAColor::RGBAValue2Color(0xfff8f8);
     pressed.property()->color_alpha = RGBAColor::BlueDark;
@@ -56,8 +57,10 @@ int main() {
     textureButton.setEvent([&bg_color]{ bg_color = RGBAColor::BlueLight; });
     Graphics::Rectangle cr(200, 300, 100, 100, 2, StdColor::LightGray, StdColor::Orange);
     HoldableArea holdableArea(main_win->windowID(), cr);
-    holdableArea.setRect(GeometryF{100, 100, 300, 300});
+    holdableArea.setRect(GeometryF{0, 0, 300, 300});
     holdableArea.getRect(cr);
+    holdableArea.setViewportEnabled(true);
+    holdableArea.setViewportArea(200, 200, 100, 100);
     EventSystem::global()->appendEvent(5544, [&textureButton, &button, &cr, &holdableArea](SDL_Event e) {
         bool a = holdableArea.isDown(),
              b = holdableArea.isHovered(),
@@ -83,9 +86,11 @@ int main() {
         Logger::log(std::format("Size: {}x{}", size.width, size.height));
     });
     timer.start(0);
-    main_win->installPaintEvent([&engine, &bg_color, &cr](Renderer* r) {
+    main_win->installPaintEvent([&engine, &bg_color, &cr, &holdableArea](Renderer* r) {
         r->fillBackground(bg_color);
+        r->setViewport(holdableArea.viewportArea());
         r->drawRectangle(cr);
+        r->setViewport({});
         r->drawPixelText(std::format("FPS: {}, Button: {}",
                                      engine.fps(), EventSystem::global()->isMouseButtonDown() ? "true" : "false"), {20, 20});
     });

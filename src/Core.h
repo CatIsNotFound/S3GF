@@ -11,6 +11,7 @@ namespace S3GF {
     struct Property;
     class Texture;
     class EventSystem;
+
     class Renderer {
     public:
         explicit Renderer(Window* window = nullptr);
@@ -176,6 +177,7 @@ namespace S3GF {
         const std::string& windowTitle() const; 
 
         SDL_Window* self() const;
+        Engine* engine() const;
         void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event);
     protected:
         virtual void paintEvent();

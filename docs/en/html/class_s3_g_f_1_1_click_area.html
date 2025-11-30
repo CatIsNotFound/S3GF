@@ -100,6 +100,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a937ecf2191c0bff97f4e4e9f90ab61f2" id="r_a937ecf2191c0bff97f4e4e9f90ab61f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a937ecf2191c0bff97f4e4e9f90ab61f2">ClickArea</a> (uint64_t window_id, <a class="el" href="namespace_s3_g_f.html#ae50a59a633c413747ceeebe8a6bc6e22">GT</a> graphic)</td></tr>
 <tr class="memitem:ab235ab18785cbfcf187c5cd9757bf064" id="r_ab235ab18785cbfcf187c5cd9757bf064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab235ab18785cbfcf187c5cd9757bf064">setEnabled</a> (bool <a class="el" href="#a1111169c533c283a931406f317bace79">enabled</a>)</td></tr>
 <tr class="memitem:a1111169c533c283a931406f317bace79" id="r_a1111169c533c283a931406f317bace79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1111169c533c283a931406f317bace79">enabled</a> ()</td></tr>
+<tr class="memitem:ae8df7d3ddeaed5655d3754293392a1f0" id="r_ae8df7d3ddeaed5655d3754293392a1f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8df7d3ddeaed5655d3754293392a1f0">setViewportEnabled</a> (bool <a class="el" href="#a1111169c533c283a931406f317bace79">enabled</a>)</td></tr>
+<tr class="memitem:acea6063718497641dd34149d0f06f707" id="r_acea6063718497641dd34149d0f06f707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acea6063718497641dd34149d0f06f707">setViewportArea</a> (int x, int y, int w, int h)</td></tr>
+<tr class="memitem:a57db7d71c8cfae721b27246afd30cebc" id="r_a57db7d71c8cfae721b27246afd30cebc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57db7d71c8cfae721b27246afd30cebc">viewportEnabled</a> () const</td></tr>
+<tr class="memitem:a240798b3addf8245cb702a709d3bdb34" id="r_a240798b3addf8245cb702a709d3bdb34"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_s3_g_f_1_1_geometry.html">Geometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a240798b3addf8245cb702a709d3bdb34">viewportArea</a> () const</td></tr>
 <tr class="memitem:a37ef970c10f03b359ee7801b7186a4c9" id="r_a37ef970c10f03b359ee7801b7186a4c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37ef970c10f03b359ee7801b7186a4c9">setPressedEvent</a> (std::function&lt; void()&gt; function)</td></tr>
 <tr class="memitem:ad92ac4463ff2a6bd81bc9aa407bfef17" id="r_ad92ac4463ff2a6bd81bc9aa407bfef17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad92ac4463ff2a6bd81bc9aa407bfef17">resetPress</a> ()</td></tr>
 <tr class="memitem:a74e7fe2952457d3e0c470148c8aa7d76" id="r_a74e7fe2952457d3e0c470148c8aa7d76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74e7fe2952457d3e0c470148c8aa7d76">setHover</a> (bool <a class="el" href="#a1111169c533c283a931406f317bace79">enabled</a>)</td></tr>
@@ -500,6 +504,88 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="struct_s3_g_f_1_1_geometry_f.html">GeometryF</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>geometry</em></span></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acea6063718497641dd34149d0f06f707" name="acea6063718497641dd34149d0f06f707"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acea6063718497641dd34149d0f06f707">&#9670;&#160;</a></span>setViewportArea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ClickArea::setViewportArea </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>w</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8df7d3ddeaed5655d3754293392a1f0" name="ae8df7d3ddeaed5655d3754293392a1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8df7d3ddeaed5655d3754293392a1f0">&#9670;&#160;</a></span>setViewportEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void S3GF::ClickArea::setViewportEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enabled</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a240798b3addf8245cb702a709d3bdb34" name="a240798b3addf8245cb702a709d3bdb34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a240798b3addf8245cb702a709d3bdb34">&#9670;&#160;</a></span>viewportArea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_s3_g_f_1_1_geometry.html">Geometry</a> &amp; S3GF::ClickArea::viewportArea </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57db7d71c8cfae721b27246afd30cebc" name="a57db7d71c8cfae721b27246afd30cebc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57db7d71c8cfae721b27246afd30cebc">&#9670;&#160;</a></span>viewportEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool S3GF::ClickArea::viewportEnabled </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">

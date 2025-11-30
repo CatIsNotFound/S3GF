@@ -1,0 +1,13 @@
+/**
+ * @defgroup basic_API
+ * @brief Basic Module API
+ * @file Basic.h
+ * @brief Basic Module
+ *
+ * Defining constants, basic data structures, fundamental abstract classes, graphic entities, etc., 
+ * forms the most basic data layer of the entire project.
+ *
+ * @copyright Copyright © 2025 CatIsNotFound
+ * @author CatIsNotFound
+ *
+ */

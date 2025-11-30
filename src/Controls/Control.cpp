@@ -15,10 +15,27 @@ namespace S3GF {
             int8_t tri = -1;
             switch (_base.index()) {
                 case 1:
-                    tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_base));
+                    if (viewportEnabled()) {
+                        auto pt = std::get<Graphics::Point>(_base);
+                        Graphics::Point real_base;
+                        real_base.move(_viewport.x + pt.position().x, _viewport.y + pt.position().y);
+                        real_base.resize((std::min(_viewport.width, _viewport.height)));
+                        tri = Algorithm::comparePosInPoint(cur_pos, real_base);
+                    } else {
+                        tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_base));
+                    }
                     break;
                 case 2:
-                    tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_base));
+                    if (_viewport_enabled) {
+                        auto rect = std::get<Graphics::Rectangle>(_base);
+                        Graphics::Rectangle real_base;
+                        real_base.setGeometry(_viewport.x + rect.geometry().pos.x,
+                                              _viewport.y + rect.geometry().pos.y,
+                                              _viewport.width, _viewport.height);
+                        tri = Algorithm::comparePosInRect(cur_pos, real_base);
+                    } else {
+                        tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_base));
+                    }
                     break;
                 default:
                     break;
@@ -27,7 +44,7 @@ namespace S3GF {
             // when the mouse moves into the clickable area before pressing the mouse button.
             if (tri > 0) {
                 _is_left = false;
-                auto state = SDL_GetMouseState(nullptr, nullptr);
+                // auto state = SDL_GetMouseState(nullptr, nullptr);
                 if (!_is_hovered) {
                     _is_hovered = true;
                 }
@@ -59,6 +76,22 @@ namespace S3GF {
 
     bool ClickArea::enabled() {
         return _enabled;
+    }
+
+    void ClickArea::setViewportEnabled(bool enabled) {
+        _viewport_enabled = enabled;
+    }
+
+    bool ClickArea::viewportEnabled() const {
+        return _viewport_enabled;
+    }
+
+    const Geometry& ClickArea::viewportArea() const {
+        return _viewport;
+    }
+
+    void ClickArea::setViewportArea(int x, int y, int w, int h) {
+        _viewport.setGeometry(x, y, w, h);
     }
 
     void ClickArea::setPressedEvent(std::function<void()> function) {
@@ -136,10 +169,27 @@ namespace S3GF {
             int8_t tri = -1;
             switch (_base.index()) {
                 case 1:
-                    tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_base));
+                    if (viewportEnabled()) {
+                        auto pt = std::get<Graphics::Point>(_base);
+                        Graphics::Point real_base;
+                        real_base.move(_viewport.x + pt.position().x, _viewport.y + pt.position().y);
+                        real_base.resize((std::min(_viewport.width, _viewport.height)));
+                        tri = Algorithm::comparePosInPoint(cur_pos, real_base);
+                    } else {
+                        tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_base));
+                    }
                     break;
                 case 2:
-                    tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_base));
+                    if (_viewport_enabled) {
+                        auto rect = std::get<Graphics::Rectangle>(_base);
+                        Graphics::Rectangle real_base;
+                        real_base.setGeometry(_viewport.x + rect.geometry().pos.x,
+                                              _viewport.y + rect.geometry().pos.y,
+                                              _viewport.width, _viewport.height);
+                        tri = Algorithm::comparePosInRect(cur_pos, real_base);
+                    } else {
+                        tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_base));
+                    }
                     break;
                 default:
                     break;
@@ -171,6 +221,22 @@ namespace S3GF {
 
     bool HoldableArea::enabled() {
         return _enabled;
+    }
+
+    void HoldableArea::setViewportEnabled(bool enabled) {
+        _viewport_enabled = enabled;
+    }
+
+    bool HoldableArea::viewportEnabled() const {
+        return _viewport_enabled;
+    }
+
+    const Geometry& HoldableArea::viewportArea() const {
+        return _viewport;
+    }
+
+    void HoldableArea::setViewportArea(int x, int y, int w, int h) {
+        _viewport.setGeometry(x, y, w, h);
     }
 
     void HoldableArea::setHover(bool enabled) {

@@ -575,6 +575,10 @@ namespace S3GF {
         return _window;
     }
 
+    Engine* Window::engine() const {
+        return _engine;
+    }
+
     void Window::installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event) {
         _paint_event_list.push_back(paint_event);
     }

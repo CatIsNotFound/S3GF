@@ -1,4 +1,4 @@
-.TH "S3GF::AbstractControl" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::AbstractControl" 3 "Sun Nov 30 2025 21:10:40" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -102,6 +102,12 @@ Inherited by \fBS3GF::Button\fP, and \fBS3GF::TextureButton\fP\&.
 .br
 .ti -1c
 .RI "bool \fBisChecked\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisDown\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisHovered\fP () const"
 .br
 .in -1c
 .SS "Protected Member Functions"
@@ -230,6 +236,10 @@ Reimplemented in \fBS3GF::Button\fP, and \fBS3GF::TextureButton\fP\&.
 .SS "const \fBGeometryF\fP & S3GF::AbstractControl::geometry () const\fR [inline]\fP, \fR [nodiscard]\fP"
 
 .SS "bool S3GF::AbstractControl::isChecked () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::AbstractControl::isDown () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::AbstractControl::isHovered () const\fR [nodiscard]\fP"
 
 .SS "void S3GF::AbstractControl::move (const \fBVector2\fP & pos)"
 

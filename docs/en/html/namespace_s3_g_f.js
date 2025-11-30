@@ -209,6 +209,7 @@ var namespace_s3_g_f =
     [ "FontDatabase", "class_s3_g_f_1_1_font_database.html", "class_s3_g_f_1_1_font_database" ],
     [ "Geometry", "struct_s3_g_f_1_1_geometry.html", "struct_s3_g_f_1_1_geometry" ],
     [ "GeometryF", "struct_s3_g_f_1_1_geometry_f.html", "struct_s3_g_f_1_1_geometry_f" ],
+    [ "HoldableArea", "class_s3_g_f_1_1_holdable_area.html", "class_s3_g_f_1_1_holdable_area" ],
     [ "Logger", "class_s3_g_f_1_1_logger.html", "class_s3_g_f_1_1_logger" ],
     [ "Matrix2D", "struct_s3_g_f_1_1_matrix2_d.html", "struct_s3_g_f_1_1_matrix2_d" ],
     [ "Property", "struct_s3_g_f_1_1_property.html", "struct_s3_g_f_1_1_property" ],
@@ -228,6 +229,7 @@ var namespace_s3_g_f =
     [ "Window", "class_s3_g_f_1_1_window.html", "class_s3_g_f_1_1_window" ],
     [ "FontMap", "namespace_s3_g_f.html#abb6c19e096d60e85535cb851cc4516c5", null ],
     [ "GT", "namespace_s3_g_f.html#ae50a59a633c413747ceeebe8a6bc6e22", null ],
+    [ "add", "namespace_s3_g_f.html#aeff22d081a1f5dd9e561560cfa1873e2", null ],
     [ "toGeometryFloat", "namespace_s3_g_f.html#ac5db2d01d9747cc01f4a28f701216785", null ],
     [ "toGeometryInt", "namespace_s3_g_f.html#a41aa3b506ea4fc4c3451c141d91b5bb5", null ],
     [ "_next_id", "namespace_s3_g_f.html#a25c566ab8ed729df7bacf4ba5b4b01c2", null ]

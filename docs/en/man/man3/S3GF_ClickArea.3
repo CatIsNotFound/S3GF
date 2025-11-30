@@ -1,4 +1,4 @@
-.TH "S3GF::ClickArea" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::ClickArea" 3 "Sun Nov 30 2025 21:10:40" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -19,6 +19,18 @@ S3GF::ClickArea
 .br
 .ti -1c
 .RI "bool \fBenabled\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetViewportEnabled\fP (bool \fBenabled\fP)"
+.br
+.ti -1c
+.RI "void \fBsetViewportArea\fP (int x, int y, int w, int h)"
+.br
+.ti -1c
+.RI "bool \fBviewportEnabled\fP () const"
+.br
+.ti -1c
+.RI "const \fBGeometry\fP & \fBviewportArea\fP () const"
 .br
 .ti -1c
 .RI "void \fBsetPressedEvent\fP (std::function< void()> function)"
@@ -110,6 +122,14 @@ S3GF::ClickArea
 .SS "void S3GF::ClickArea::setPressedEvent (std::function< void()> function)"
 
 .SS "bool S3GF::ClickArea::setRect (const \fBGeometryF\fP & geometry)"
+
+.SS "void S3GF::ClickArea::setViewportArea (int x, int y, int w, int h)"
+
+.SS "void S3GF::ClickArea::setViewportEnabled (bool enabled)"
+
+.SS "const \fBGeometry\fP & S3GF::ClickArea::viewportArea () const"
+
+.SS "bool S3GF::ClickArea::viewportEnabled () const"
 
 
 .SH "Author"

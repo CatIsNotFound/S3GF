@@ -1,6 +1,7 @@
 var _control_8h =
 [
     [ "S3GF::ClickArea", "class_s3_g_f_1_1_click_area.html", "class_s3_g_f_1_1_click_area" ],
+    [ "S3GF::HoldableArea", "class_s3_g_f_1_1_holdable_area.html", "class_s3_g_f_1_1_holdable_area" ],
     [ "S3GF::ColorStatus", "struct_s3_g_f_1_1_color_status.html", "struct_s3_g_f_1_1_color_status" ],
     [ "S3GF::AbstractControl", "class_s3_g_f_1_1_abstract_control.html", "class_s3_g_f_1_1_abstract_control" ],
     [ "S3GF::GT", "namespace_s3_g_f.html#ae50a59a633c413747ceeebe8a6bc6e22", null ],

@@ -1,0 +1,12 @@
+/**
+ * @defgroup basic_API
+ * @brief 基本模块 API 
+ * @file Basic.h
+ * @brief 基本模块
+ *
+ * 定义常量、基础数据结构、基本抽象类、图形实体等，是整个项目最基础的数据层。
+ *
+ * @copyright Copyright © 2025 CatIsNotFound
+ * @author CatIsNotFound
+ *
+ */

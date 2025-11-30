@@ -10,6 +10,8 @@ var class_s3_g_f_1_1_abstract_control =
     [ "enabledChanged", "class_s3_g_f_1_1_abstract_control.html#ab74cae787323c04de83dd2afc41992fc", null ],
     [ "geometry", "class_s3_g_f_1_1_abstract_control.html#ac7ff09eac6fdf57af0664529c708770c", null ],
     [ "isChecked", "class_s3_g_f_1_1_abstract_control.html#a0afc8ea6627f93553fe2d7004c370a16", null ],
+    [ "isDown", "class_s3_g_f_1_1_abstract_control.html#a4737bb6bcfd26d968d8ce12befe376b7", null ],
+    [ "isHovered", "class_s3_g_f_1_1_abstract_control.html#a662311fe1fcc4bf6fa4f03e0e42da2ef", null ],
     [ "move", "class_s3_g_f_1_1_abstract_control.html#a6c41e0546c77479d33a81e54417792e2", null ],
     [ "move", "class_s3_g_f_1_1_abstract_control.html#af1ccb1df1f1a7576a7a35c7b147e85e8", null ],
     [ "move", "class_s3_g_f_1_1_abstract_control.html#a50b3e050faed184aa568ba7f24a002be", null ],

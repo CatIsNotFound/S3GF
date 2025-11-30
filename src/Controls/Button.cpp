@@ -291,8 +291,8 @@ namespace S3GF {
 
     void TextureButton::onLeft() {
         AbstractControl::onLeft();
-        if (_textures_loaded) _cur_texture = _textures->normal;
-        if (_font_loaded) TextSystem::global()->setTextColor(_id, _font.normal);
+        if (_textures_loaded) _cur_texture = (_is_checked ? _textures->checked : _textures->normal);
+        if (_font_loaded) TextSystem::global()->setTextColor(_id, (_is_checked ? _font.checked : _font.normal));
     }
 
     void TextureButton::onPressed() {

@@ -22,6 +22,7 @@ var annotated_dup =
       [ "FontDatabase", "class_s3_g_f_1_1_font_database.html", "class_s3_g_f_1_1_font_database" ],
       [ "Geometry", "struct_s3_g_f_1_1_geometry.html", "struct_s3_g_f_1_1_geometry" ],
       [ "GeometryF", "struct_s3_g_f_1_1_geometry_f.html", "struct_s3_g_f_1_1_geometry_f" ],
+      [ "HoldableArea", "class_s3_g_f_1_1_holdable_area.html", "class_s3_g_f_1_1_holdable_area" ],
       [ "Logger", "class_s3_g_f_1_1_logger.html", "class_s3_g_f_1_1_logger" ],
       [ "Matrix2D", "struct_s3_g_f_1_1_matrix2_d.html", "struct_s3_g_f_1_1_matrix2_d" ],
       [ "Property", "struct_s3_g_f_1_1_property.html", "struct_s3_g_f_1_1_property" ],

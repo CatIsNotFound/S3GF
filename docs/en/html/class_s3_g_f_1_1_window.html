@@ -107,7 +107,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c1cf049ca9f53606241ca9e854775f8" id="r_a2c1cf049ca9f53606241ca9e854775f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c1cf049ca9f53606241ca9e854775f8">Window</a> (<a class="el" href="class_s3_g_f_1_1_engine.html">Engine</a> *object, const std::string &amp;title, int width=800, int height=600, <a class="el" href="#a7bbb4819c14c9970cb09b554877eb75f">GraphicEngine</a> engine=<a class="el" href="#a7bbb4819c14c9970cb09b554877eb75fa68a92fa074b1de2c5320bff63c5a6740">OPENGL</a>)</td></tr>
+<tr class="memitem:a2c1cf049ca9f53606241ca9e854775f8" id="r_a2c1cf049ca9f53606241ca9e854775f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c1cf049ca9f53606241ca9e854775f8">Window</a> (<a class="el" href="class_s3_g_f_1_1_engine.html">Engine</a> *object, const std::string &amp;title, int width=800, int height=600, <a class="el" href="#a7bbb4819c14c9970cb09b554877eb75f">GraphicEngine</a> <a class="el" href="#a62f557cd985048b8e0282a253b61989d">engine</a>=<a class="el" href="#a7bbb4819c14c9970cb09b554877eb75fa68a92fa074b1de2c5320bff63c5a6740">OPENGL</a>)</td></tr>
 <tr class="memitem:a0bdbfc1f3918ca3241f5e4d8c19b1973" id="r_a0bdbfc1f3918ca3241f5e4d8c19b1973"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bdbfc1f3918ca3241f5e4d8c19b1973">~Window</a> ()</td></tr>
 <tr class="memitem:ab539c7bd71aea612582486d60a732438" id="r_ab539c7bd71aea612582486d60a732438"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab539c7bd71aea612582486d60a732438">move</a> (int x, int y)</td></tr>
 <tr class="memitem:a7c36e55b43aa2bbc3bec18f749fa204b" id="r_a7c36e55b43aa2bbc3bec18f749fa204b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c36e55b43aa2bbc3bec18f749fa204b">resize</a> (int width, int height)</td></tr>
@@ -129,6 +129,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:affe01533b2da96d47f9aac9eeb64baab" id="r_affe01533b2da96d47f9aac9eeb64baab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affe01533b2da96d47f9aac9eeb64baab">setWindowTitle</a> (const std::string &amp;title)</td></tr>
 <tr class="memitem:abb19345a679a3881245e3eb90753d712" id="r_abb19345a679a3881245e3eb90753d712"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb19345a679a3881245e3eb90753d712">windowTitle</a> () const</td></tr>
 <tr class="memitem:a7bac049be8c4cb5521243e2dc6784ae8" id="r_a7bac049be8c4cb5521243e2dc6784ae8"><td class="memItemLeft" align="right" valign="top">SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bac049be8c4cb5521243e2dc6784ae8">self</a> () const</td></tr>
+<tr class="memitem:a62f557cd985048b8e0282a253b61989d" id="r_a62f557cd985048b8e0282a253b61989d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s3_g_f_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62f557cd985048b8e0282a253b61989d">engine</a> () const</td></tr>
 <tr class="memitem:a8b26495e67adad2883e06b8ed2163923" id="r_a8b26495e67adad2883e06b8ed2163923"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b26495e67adad2883e06b8ed2163923">installPaintEvent</a> (const std::function&lt; void(<a class="el" href="class_s3_g_f_1_1_renderer.html">Renderer</a> *<a class="el" href="#a781de017baa94449be949ef773ef24dd">renderer</a>)&gt; &amp;paint_event)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -255,6 +256,23 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62f557cd985048b8e0282a253b61989d" name="a62f557cd985048b8e0282a253b61989d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62f557cd985048b8e0282a253b61989d">&#9670;&#160;</a></span>engine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s3_g_f_1_1_engine.html">Engine</a> * S3GF::Window::engine </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">

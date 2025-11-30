@@ -412,7 +412,7 @@ BUILTIN_STL_SUPPORT    = YES
 # enable parsing support.
 # The default value is: NO.
 
-CPP_CLI_SUPPORT        = YES
+CPP_CLI_SUPPORT        = NO
 
 # Set the SIP_SUPPORT tag to YES if your project consists of sip (see:
 # https://www.riverbankcomputing.com/software) sources only. Doxygen will parse
@@ -992,7 +992,8 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = D:/Coding/S3GF/src \
-                         mainpage.md
+                         mainpage.md \
+                         ../comments/en.dox
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses

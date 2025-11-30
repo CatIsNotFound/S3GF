@@ -18,5 +18,9 @@ var class_s3_g_f_1_1_click_area =
     [ "setHover", "class_s3_g_f_1_1_click_area.html#a74e7fe2952457d3e0c470148c8aa7d76", null ],
     [ "setPoint", "class_s3_g_f_1_1_click_area.html#a80221e8c48eff94ead04c761d195b334", null ],
     [ "setPressedEvent", "class_s3_g_f_1_1_click_area.html#a37ef970c10f03b359ee7801b7186a4c9", null ],
-    [ "setRect", "class_s3_g_f_1_1_click_area.html#ab22f458bb31284f5cdc0c6255da2b2a1", null ]
+    [ "setRect", "class_s3_g_f_1_1_click_area.html#ab22f458bb31284f5cdc0c6255da2b2a1", null ],
+    [ "setViewportArea", "class_s3_g_f_1_1_click_area.html#acea6063718497641dd34149d0f06f707", null ],
+    [ "setViewportEnabled", "class_s3_g_f_1_1_click_area.html#ae8df7d3ddeaed5655d3754293392a1f0", null ],
+    [ "viewportArea", "class_s3_g_f_1_1_click_area.html#a240798b3addf8245cb702a709d3bdb34", null ],
+    [ "viewportEnabled", "class_s3_g_f_1_1_click_area.html#a57db7d71c8cfae721b27246afd30cebc", null ]
 ];

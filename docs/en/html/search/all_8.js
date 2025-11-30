@@ -6,7 +6,8 @@ var searchData=
   ['hide_3',['hide',['../class_s3_g_f_1_1_window.html#a667459e48c5debe0b68d4fcc2d18d563',1,'S3GF::Window']]],
   ['high_4',['High',['../class_s3_g_f_1_1_tasks_manager.html#ad3eac04a07a5b0e906806a957637ddfca3afaaf1b2253ec2c6ded748e3a5fb51c',1,'S3GF::TasksManager']]],
   ['hinting_5',['Hinting',['../class_s3_g_f_1_1_font.html#afe765eb7473b17db751515f0522824f9',1,'S3GF::Font']]],
-  ['hot_5fpoint_6',['hot_point',['../struct_s3_g_f_1_1_cursor_1_1_user_custom.html#a0bfd00782b9f5bbccc789b8a8fcf5fa6',1,'S3GF::Cursor::UserCustom']]],
-  ['hotpoint_7',['HotPoint',['../struct_s3_g_f_1_1_cursor_1_1_user_custom_1_1_hot_point.html',1,'S3GF::Cursor::UserCustom']]],
-  ['hour_8',['hour',['../struct_s3_g_f_1_1_date_time_1_1_d_t.html#abd9267697141e154d4d8a2b86598465f',1,'S3GF::DateTime::DT']]]
+  ['holdablearea_6',['HoldableArea',['../class_s3_g_f_1_1_holdable_area.html',1,'S3GF::HoldableArea'],['../class_s3_g_f_1_1_holdable_area.html#a085b24265a187a3b596b9583cd570a56',1,'S3GF::HoldableArea::HoldableArea()']]],
+  ['hot_5fpoint_7',['hot_point',['../struct_s3_g_f_1_1_cursor_1_1_user_custom.html#a0bfd00782b9f5bbccc789b8a8fcf5fa6',1,'S3GF::Cursor::UserCustom']]],
+  ['hotpoint_8',['HotPoint',['../struct_s3_g_f_1_1_cursor_1_1_user_custom_1_1_hot_point.html',1,'S3GF::Cursor::UserCustom']]],
+  ['hour_9',['hour',['../struct_s3_g_f_1_1_date_time_1_1_d_t.html#abd9267697141e154d4d8a2b86598465f',1,'S3GF::DateTime::DT']]]
 ];

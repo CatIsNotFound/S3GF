@@ -1,0 +1,127 @@
+.TH "S3GF::HoldableArea" 3 "Sun Nov 30 2025 21:10:40" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+S3GF::HoldableArea
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <Control\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBHoldableArea\fP (uint64_t window_id, \fBGT\fP graphic)"
+.br
+.ti -1c
+.RI "void \fBsetEnabled\fP (bool \fBenabled\fP)"
+.br
+.ti -1c
+.RI "bool \fBenabled\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetViewportEnabled\fP (bool \fBenabled\fP)"
+.br
+.ti -1c
+.RI "void \fBsetViewportArea\fP (int x, int y, int w, int h)"
+.br
+.ti -1c
+.RI "bool \fBviewportEnabled\fP () const"
+.br
+.ti -1c
+.RI "const \fBGeometry\fP & \fBviewportArea\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetHover\fP (bool \fBenabled\fP)"
+.br
+.ti -1c
+.RI "void \fBsetRelease\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetGraphic\fP (\fBGT\fP graphic)"
+.br
+.ti -1c
+.RI "bool \fBsetPoint\fP (const \fBVector2\fP &position, uint16_t size)"
+.br
+.ti -1c
+.RI "bool \fBsetRect\fP (const \fBGeometryF\fP &geometry)"
+.br
+.ti -1c
+.RI "\fBGraphics::Point\fP & \fBpoint\fP ()"
+.br
+.ti -1c
+.RI "\fBGraphics::Rectangle\fP & \fBrectangle\fP ()"
+.br
+.ti -1c
+.RI "bool \fBgetPoint\fP (\fBGraphics::Point\fP &\fBpoint\fP)"
+.br
+.ti -1c
+.RI "bool \fBgetRect\fP (\fBGraphics::Rectangle\fP &rect)"
+.br
+.ti -1c
+.RI "bool \fBisHovered\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisEntered\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisDown\fP () const"
+.br
+.ti -1c
+.RI "bool \fBisLeft\fP () const"
+.br
+.ti -1c
+.RI "size_t \fBindex\fP () const"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "S3GF::HoldableArea::HoldableArea (uint64_t window_id, \fBGT\fP graphic)\fR [explicit]\fP"
+
+.SH "Member Function Documentation"
+.PP 
+.SS "bool S3GF::HoldableArea::enabled ()"
+
+.SS "bool S3GF::HoldableArea::getPoint (\fBGraphics::Point\fP & point)"
+
+.SS "bool S3GF::HoldableArea::getRect (\fBGraphics::Rectangle\fP & rect)"
+
+.SS "size_t S3GF::HoldableArea::index () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::HoldableArea::isDown () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::HoldableArea::isEntered () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::HoldableArea::isHovered () const\fR [nodiscard]\fP"
+
+.SS "bool S3GF::HoldableArea::isLeft () const\fR [nodiscard]\fP"
+
+.SS "\fBGraphics::Point\fP & S3GF::HoldableArea::point ()"
+
+.SS "\fBGraphics::Rectangle\fP & S3GF::HoldableArea::rectangle ()"
+
+.SS "void S3GF::HoldableArea::setEnabled (bool enabled)"
+
+.SS "void S3GF::HoldableArea::setGraphic (\fBGT\fP graphic)"
+
+.SS "void S3GF::HoldableArea::setHover (bool enabled)"
+
+.SS "bool S3GF::HoldableArea::setPoint (const \fBVector2\fP & position, uint16_t size)"
+
+.SS "bool S3GF::HoldableArea::setRect (const \fBGeometryF\fP & geometry)"
+
+.SS "void S3GF::HoldableArea::setRelease ()"
+
+.SS "void S3GF::HoldableArea::setViewportArea (int x, int y, int w, int h)"
+
+.SS "void S3GF::HoldableArea::setViewportEnabled (bool enabled)"
+
+.SS "const \fBGeometry\fP & S3GF::HoldableArea::viewportArea () const"
+
+.SS "bool S3GF::HoldableArea::viewportEnabled () const"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for S3GF from the source code\&.

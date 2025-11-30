@@ -23,6 +23,7 @@ var hierarchy =
     [ "S3GF::Geometry", "struct_s3_g_f_1_1_geometry.html", null ],
     [ "S3GF::Window::Geometry", "struct_s3_g_f_1_1_window_1_1_geometry.html", null ],
     [ "S3GF::GeometryF", "struct_s3_g_f_1_1_geometry_f.html", null ],
+    [ "S3GF::HoldableArea", "class_s3_g_f_1_1_holdable_area.html", null ],
     [ "S3GF::Cursor::UserCustom::HotPoint", "struct_s3_g_f_1_1_cursor_1_1_user_custom_1_1_hot_point.html", null ],
     [ "S3GF::Graphics::Line", "class_s3_g_f_1_1_graphics_1_1_line.html", null ],
     [ "S3GF::Logger", "class_s3_g_f_1_1_logger.html", null ],

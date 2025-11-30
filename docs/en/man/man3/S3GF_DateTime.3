@@ -1,4 +1,4 @@
-.TH "S3GF::DateTime" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.TH "S3GF::DateTime" 3 "Sun Nov 30 2025 21:10:40" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -52,9 +52,6 @@ S3GF::DateTime
 .in +1c
 .ti -1c
 .RI "static const char * \fBweekdayStr\fP (\fBWeekday\fP weekday, bool short_name=false)"
-.br
-.ti -1c
-.RI "static const char * \fBweekdayChineseStr\fP (\fBWeekday\fP weekday)"
 .br
 .ti -1c
 .RI "static const char * \fBmonthStr\fP (\fBMonth\fP month, bool short_name=false)"
@@ -208,8 +205,6 @@ S3GF::DateTime
 .SS "\fBDT\fP S3GF::DateTime::parseFromTimestamp (uint64_t timestamp)\fR [inline]\fP, \fR [static]\fP"
 
 .SS "bool S3GF::DateTime::setDefaultTimezone (const std::string & tz)\fR [inline]\fP, \fR [static]\fP"
-
-.SS "const char * S3GF::DateTime::weekdayChineseStr (\fBWeekday\fP weekday)\fR [inline]\fP, \fR [static]\fP"
 
 .SS "const char * S3GF::DateTime::weekdayStr (\fBWeekday\fP weekday, bool short_name = \fRfalse\fP)\fR [inline]\fP, \fR [static]\fP"
 

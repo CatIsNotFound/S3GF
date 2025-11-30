@@ -1,8 +1,8 @@
-.TH "D:/Coding/S3GF/src/Basic.h" 3 "Thu Nov 27 2025 19:54:34" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
+.TH "D:/Coding/S3GF/src/Basic.h" 3 "Sun Nov 30 2025 21:10:40" "Version v0.1.1-beta" "S3GF" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-D:/Coding/S3GF/src/Basic.h \- 基本模块  
+D:/Coding/S3GF/src/Basic.h \- Basic Module\&.  
 
 .SH SYNOPSIS
 .br
@@ -142,6 +142,9 @@ D:/Coding/S3GF/src/Basic.h \- 基本模块
 .SS "Functions"
 
 .in +1c
+.ti -1c
+.RI "int \fBS3GF::add\fP (int a, int b)"
+.br
 .ti -1c
 .RI "\fBGeometry\fP \fBS3GF::toGeometryInt\fP (const \fBGeometryF\fP &geo)"
 .br
@@ -677,9 +680,9 @@ D:/Coding/S3GF/src/Basic.h \- 基本模块
 .in -1c
 .SH "Detailed Description"
 .PP 
-基本模块 
+Basic Module\&. 
 
-定义引擎基础数据结构和图形实体，是整个引擎的基础数据层。
+Defining constants, basic data structures, fundamental abstract classes, graphic entities, etc\&., forms the most basic data layer of the entire project\&.
 
 .PP
 \fBCopyright\fP
@@ -703,7 +706,7 @@ CatIsNotFound
 std::this_thread::sleep_for(std::chrono::seconds(sec))
 .PP
 .fi
-
+\fBBasic_API\fP 
 .SS "#define SLEEP_MS( millisec)"
 \fBValue:\fP
 .nf

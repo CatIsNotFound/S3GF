@@ -15,6 +15,11 @@ namespace S3GF {
         void setEnabled(bool enabled);
         bool enabled();
 
+        void setViewportEnabled(bool enabled);
+        void setViewportArea(int x, int y, int w, int h);
+        bool viewportEnabled() const;
+        const Geometry& viewportArea() const;
+
         void setPressedEvent(std::function<void()> function);
         void resetPress();
         void setHover(bool enabled);
@@ -39,6 +44,8 @@ namespace S3GF {
     private:
         GT _base;
         uint64_t _winID;
+        Geometry _viewport;
+        bool _viewport_enabled{false};
         bool _is_pressed{false}, _is_hovered{false}, _is_entered{false},
              _is_down{false}, _is_triggered{false}, _is_left{true};
         bool _enabled{true}, _need_triggered{false};
@@ -51,6 +58,11 @@ namespace S3GF {
 
         void setEnabled(bool enabled);
         bool enabled();
+
+        void setViewportEnabled(bool enabled);
+        void setViewportArea(int x, int y, int w, int h);
+        bool viewportEnabled() const;
+        const Geometry& viewportArea() const;
 
         void setHover(bool enabled);
         void setRelease();
@@ -72,6 +84,8 @@ namespace S3GF {
         [[nodiscard]] size_t index() const;
     private:
         GT _base;
+        Geometry _viewport;
+        bool _viewport_enabled{false};
         uint64_t _winID;
         bool _is_hovered{false}, _is_entered{false},
                 _is_down{false}, _is_left{true};

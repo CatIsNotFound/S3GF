@@ -27,6 +27,7 @@ var _basic_8h =
     [ "SWindow", "_basic_8h.html#ae229fdde9d8badf956e5f8a59d4ea1c0", null ],
     [ "SWindowID", "_basic_8h.html#a9f29487d0c223d2b32f8299da3fc128b", null ],
     [ "SWinEvent", "_basic_8h.html#a8bce9d82881ea1eba3add48568817dea", null ],
+    [ "S3GF::add", "namespace_s3_g_f.html#aeff22d081a1f5dd9e561560cfa1873e2", null ],
     [ "S3GF::toGeometryFloat", "namespace_s3_g_f.html#ac5db2d01d9747cc01f4a28f701216785", null ],
     [ "S3GF::toGeometryInt", "namespace_s3_g_f.html#a41aa3b506ea4fc4c3451c141d91b5bb5", null ],
     [ "S3GF::StdColor::Amber", "namespace_s3_g_f_1_1_std_color.html#a73bfbd443ac8ebe66413f39748d7fbf4", null ],

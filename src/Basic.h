@@ -4,13 +4,7 @@
 #define BASIC_H
 
 /**
- * @file Basic.h
- * @brief 基本模块
- *
- * 定义引擎基础数据结构和图形实体，是整个引擎的基础数据层。
- *
- * @copyright Copyright © 2025 CatIsNotFound
- * @author CatIsNotFound
+ * @ref basic_API
  */
 
 #include "Libs.h"
@@ -39,6 +33,13 @@ using StringList    = std::vector<std::string>;
  * All libraries will be stored in this namespace.
  */
 namespace S3GF {
+    /**
+     * @ref example_add_api_doc
+     */
+    int add(int a, int b) {
+        return a + b;
+    }
+
     /**
      * @namespace StdColor
      * @brief Predefined Standard Color (40 colors)

@@ -109,7 +109,6 @@ namespace S3GF {
         std::function<void()> _event;
         Texture* _cur_texture{nullptr};
     };
-
 } // S3GF
 
 #endif //S3GF_BUTTON_H
