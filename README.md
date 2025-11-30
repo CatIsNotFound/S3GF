@@ -1,6 +1,6 @@
 # S3GF
 
-![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.0_beta-red.svg)
+![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.1_beta-red.svg)
 
 S3GF (SDL3 Graphics Framework) is a graphics framework library developed based on SDL3 and its derivative libraries.
 This library is a third-party library built using modern C++20 features, object-oriented design, and modular architecture.
@@ -104,7 +104,7 @@ Currently, no official version has been released yet. It is expected to be relea
    using namespace S3GF;
    
    int main() {
-       Engine engine;
+       Engine engine("org.example.app", "Hello world", "v1.0.0");
        Window* win = new Window("Hello world!");
        return engine.exec();
    }
@@ -129,5 +129,5 @@ This project is licensed under the MIT open source license. See the [LICENSE](LI
 
 ## Getting Help
 
-1. Check the [documentation](docs/mainpage.md) for related API documentation. (Content not updated)
+1. Check the [documentation](https://github.com/CatIsNotFound/S3GF_Docs.git) for related API documentation. (Content not updated)
 2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF)

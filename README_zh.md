@@ -1,6 +1,6 @@
 # S3GF
 
-![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.0_beta-red.svg)
+![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![Version](https://img.shields.io/badge/Version-0.1.1_beta-red.svg)
 
 S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形框架库。
 本库基于 C++20 现代特性、面向对象思想、模块化结构等方式构建而成的第三方库。
@@ -104,7 +104,7 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
    using namespace S3GF;
    
    int main() {
-       Engine engine;
+       Engine engine("org.example.app", "Hello world", "v1.0.0");
        Window* win = new Window("Hello world!");
        return engine.exec();
    }
@@ -129,5 +129,5 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
 
 ## 获取帮助
 
-1. 通过[说明文档](docs/mainpage.md)进行查看相关 API 文档。（内容未更新）
+1. 通过[说明文档](https://github.com/CatIsNotFound/S3GF_Docs.git)进行查看相关 API 文档。（内容未更新）
 2. 通过 [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) 或 [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF) 提交遇到的问题
