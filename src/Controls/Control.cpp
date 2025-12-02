@@ -3,7 +3,7 @@
 
 namespace S3GF {
     ClickArea::ClickArea(uint64_t window_id, GT graphic)
-        : _base(std::move(graphic)), _winID(window_id) {
+        : _base(std::move(graphic)), _real_base(std::monostate()), _winID(window_id) {
         EventSystem::global()->appendEvent(_next_id++, [this](SDL_Event ev) {
             if (ev.window.windowID != _winID) {
                 _is_pressed = false;
@@ -16,23 +16,14 @@ namespace S3GF {
             switch (_base.index()) {
                 case 1:
                     if (viewportEnabled()) {
-                        auto pt = std::get<Graphics::Point>(_base);
-                        Graphics::Point real_base;
-                        real_base.move(_viewport.x + pt.position().x, _viewport.y + pt.position().y);
-                        real_base.resize((std::min(_viewport.width, _viewport.height)));
-                        tri = Algorithm::comparePosInPoint(cur_pos, real_base);
+                        tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_real_base));
                     } else {
                         tri = Algorithm::comparePosInPoint(cur_pos, std::get<Graphics::Point>(_base));
                     }
                     break;
                 case 2:
                     if (_viewport_enabled) {
-                        auto rect = std::get<Graphics::Rectangle>(_base);
-                        Graphics::Rectangle real_base;
-                        real_base.setGeometry(_viewport.x + rect.geometry().pos.x,
-                                              _viewport.y + rect.geometry().pos.y,
-                                              _viewport.width, _viewport.height);
-                        tri = Algorithm::comparePosInRect(cur_pos, real_base);
+                        tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_real_base));
                     } else {
                         tri = Algorithm::comparePosInRect(cur_pos, std::get<Graphics::Rectangle>(_base));
                     }
@@ -44,7 +35,6 @@ namespace S3GF {
             // when the mouse moves into the clickable area before pressing the mouse button.
             if (tri > 0) {
                 _is_left = false;
-                // auto state = SDL_GetMouseState(nullptr, nullptr);
                 if (!_is_hovered) {
                     _is_hovered = true;
                 }
@@ -80,6 +70,15 @@ namespace S3GF {
 
     void ClickArea::setViewportEnabled(bool enabled) {
         _viewport_enabled = enabled;
+        if (enabled) {
+            if (std::holds_alternative<Graphics::Point>(_base)) {
+                _real_base = Graphics::Point(std::get<Graphics::Point>(_base));
+            } else if (std::holds_alternative<Graphics::Rectangle>(_base)) {
+                _real_base = Graphics::Rectangle(std::get<Graphics::Rectangle>(_base));
+            }
+        } else {
+            _real_base = std::monostate();
+        }
     }
 
     bool ClickArea::viewportEnabled() const {
@@ -91,7 +90,23 @@ namespace S3GF {
     }
 
     void ClickArea::setViewportArea(int x, int y, int w, int h) {
+        /// Must enable the viewport and specified the valid size(width, height), otherwise it does not work.
+        if (!_viewport_enabled || w <= 0 || h <= 0) return;
         _viewport.setGeometry(x, y, w, h);
+        if (std::holds_alternative<Graphics::Point>(_real_base)) {
+            auto& base = std::get<Graphics::Point>(_real_base);
+            const auto& BASE = std::get<Graphics::Point>(_base);
+            Vector2 pos = BASE.position();
+            base.reset((float)(x + pos.x), (float)(y + pos.y), (float)(std::min(w, h)), StdColor::Black);
+        } else if (std::holds_alternative<Graphics::Rectangle>(_real_base)) {
+            auto& base = std::get<Graphics::Rectangle>(_real_base);
+            const auto& BASE = std::get<Graphics::Rectangle>(_base);
+            Vector2 pos = BASE.geometry().pos;
+            Size size = BASE.geometry().size;
+            base.setGeometry((float)(x + pos.x), (float)(y + pos.y), (float)w, (float)h);
+        } else {
+            Logger::log("ClickArea::setViewportArea: Failed to set viewport area! The graphic is not valid!", Logger::WARN);
+        }
     }
 
     void ClickArea::setPressedEvent(std::function<void()> function) {

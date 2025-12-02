@@ -6,7 +6,7 @@
 using namespace S3GF;
 
 int main() {
-    Logger::setBaseLogLevel(S3GF::Logger::DEBUG);
+//    Logger::setBaseLogLevel(S3GF::Logger::DEBUG);
     Engine::disabledShowAppInfo();
     Engine engine;
     engine.setFPS(60);
@@ -34,7 +34,6 @@ int main() {
     Texture hovered("./back_button_2.png", main_win->renderer());
     Texture pressed("./back_button_3.png", main_win->renderer());
     Texture invalid("./back_button_4.png", main_win->renderer());
-
     normal.property()->color_alpha = RGBAColor::RGBAValue2Color(0xa66b4b);
     hovered.property()->color_alpha = RGBAColor::RGBAValue2Color(0xfff8f8);
     pressed.property()->color_alpha = RGBAColor::BlueDark;
@@ -55,13 +54,17 @@ int main() {
     textureButton.setTextPosition({s_size.width / 2 - size.width / 2, s_size.height / 2 - size.height / 2});
     textureButton.setTextVisible(true);
     textureButton.setEvent([&bg_color]{ bg_color = RGBAColor::BlueLight; });
-    Graphics::Rectangle cr(200, 300, 100, 100, 2, StdColor::LightGray, StdColor::Orange);
+    Graphics::Rectangle cr(0, 0, 100, 100, 2, StdColor::LightGray, StdColor::Orange);
     HoldableArea holdableArea(main_win->windowID(), cr);
     holdableArea.setRect(GeometryF{0, 0, 300, 300});
     holdableArea.getRect(cr);
     holdableArea.setViewportEnabled(true);
     holdableArea.setViewportArea(200, 200, 100, 100);
-    EventSystem::global()->appendEvent(5544, [&textureButton, &button, &cr, &holdableArea](SDL_Event e) {
+    Graphics::Rectangle r2(100, 450, 300, 400, 1, RGBAColor::MixPurple, RGBAColor::MixYellow);
+    ClickArea clickArea(main_win->windowID(), r2);
+//    clickArea.setViewportEnabled(true);
+//    clickArea.setViewportArea(0, 0, 50, 200);
+    EventSystem::global()->appendEvent(5544, [&textureButton, &button, &cr, &holdableArea, &r2, &clickArea](SDL_Event e) {
         bool a = holdableArea.isDown(),
              b = holdableArea.isHovered(),
              c = holdableArea.isLeft();
@@ -77,6 +80,13 @@ int main() {
         } else if (b) {
             cr.setBackgroundColor(StdColor::Yellow);
         }
+        if (clickArea.isDown()) {
+            r2.setBackgroundColor(RGBAColor::RedDark);
+        } else if (clickArea.isEntered()) {
+            r2.setBackgroundColor(RGBAColor::MixOrangeYellow);
+        } else if (clickArea.isLeft()) {
+            r2.setBackgroundColor(RGBAColor::MixYellow);
+        }
 
     });
     Timer timer(3000, [&button, &textureButton] {
@@ -86,10 +96,14 @@ int main() {
         Logger::log(std::format("Size: {}x{}", size.width, size.height));
     });
     timer.start(0);
-    main_win->installPaintEvent([&engine, &bg_color, &cr, &holdableArea](Renderer* r) {
+    main_win->installPaintEvent([&engine, &bg_color, &cr, &holdableArea, &clickArea, &r2](Renderer* r) {
         r->fillBackground(bg_color);
         r->setViewport(holdableArea.viewportArea());
         r->drawRectangle(cr);
+        r->setViewport({});
+        r->drawPixelText("Test", {500, 20});
+        r->setViewport({20, 80, 100, 100});
+        r->drawRectangle(r2);
         r->setViewport({});
         r->drawPixelText(std::format("FPS: {}, Button: {}",
                                      engine.fps(), EventSystem::global()->isMouseButtonDown() ? "true" : "false"), {20, 20});

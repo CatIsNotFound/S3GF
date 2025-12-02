@@ -290,34 +290,18 @@ namespace S3GF {
          * @brief 字体样式
          */
         enum Style {
-            /// 常规样式
             Regular = 0x0,
-            /// 粗体样式
             Bold = 0x1,
-            /// 斜体样式
             Italic = 0x2,
-            /// 下划线样式
             Underline = 0x4,
-            /// 删除线样式
             Strikethrough = 0x8
         };
-        /**
-         * @enum Direction
-         * @brief 字体方向
-         */
         enum Direction {
-            /// 从左到右
             LeftToRight = 4,
-            /// 从右到左
             RightToLeft,
-            /// 从上到下
             TopToBottom,
-            /// 从下到上
             BottomToTop
         };
-        /**
-         * @enum 字体微调
-         */
         enum Hinting {
             Normal,
             Light,
@@ -466,11 +450,6 @@ namespace S3GF {
         bool load();
         void unload();
         
-        uint64_t newAudio();
-        bool remove(uint64_t audio_id);
-        void clear();
-
-        const Audio& audio(uint64_t audio_id) const; 
     private:
         explicit AudioSystem();
         static std::unique_ptr<AudioSystem> _instance;

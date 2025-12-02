@@ -34,9 +34,9 @@ using StringList    = std::vector<std::string>;
  */
 namespace S3GF {
     /**
-     * @ref example_add_api_doc
+     * @ref basic_func_add
      */
-    int add(int a, int b) {
+    inline int add(int a, int b) {
         return a + b;
     }
 
@@ -283,11 +283,6 @@ namespace S3GF {
 
         Vector2(float x, float y) : x(x), y(y) {}
 
-        /**
-         * @brief 重新设置新的向量
-         * @param x
-         * @param y
-         */
         void reset(float x, float y) {
             this->x = x;
             this->y = y;

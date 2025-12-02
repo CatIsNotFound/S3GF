@@ -42,7 +42,7 @@ namespace S3GF {
         [[nodiscard]] size_t index() const;
 
     private:
-        GT _base;
+        GT _base, _real_base;
         uint64_t _winID;
         Geometry _viewport;
         bool _viewport_enabled{false};
