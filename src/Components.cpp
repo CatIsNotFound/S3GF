@@ -637,12 +637,14 @@ namespace S3GF {
         return false;
     }
 
+    bool BGM::setLRChannel(float left, float right) {
+        _stereo_gains.left = (_stereo_gains.left > 0 ? std::min(left, 10.f) : 0.f);
+        _stereo_gains.right = (_stereo_gains.right > 0 ? std::min(right, 10.f) : 0.f);
+        return MIX_SetTrackStereo(_track, &_stereo_gains);
+    }
+
     bool BGM::set3DPosition(float x, float y, float z) {
-        _mix_3d = {
-                .x = x,
-                .y = y,
-                .z = z
-        };
+        _mix_3d = { .x = x, .y = y, .z = z };
         if (!MIX_SetTrack3DPosition(_track, &_mix_3d)) {
             Logger::log(std::format("BGM::set3DPosition: Failed to set 3D position! Exception: {}", SDL_GetError()), Logger::WARN);
             return false;
@@ -658,11 +660,13 @@ namespace S3GF {
         return _muted;
     }
 
+    const MIX_StereoGains& BGM::getLRChannel() const {
+        return _stereo_gains;
+    }
+
     const MIX_Point3D& BGM::get3DPosition() const {
         return _mix_3d;
     }
-
-
 
     void BGM::load() {
         _play_status = Loading;
@@ -724,7 +728,7 @@ namespace S3GF {
         return _is_load;
     }
 
-    bool SFX::play(bool loop) {
+    bool SFX::play(bool loop, int64_t fade_in_duration) {
         if (!_is_load) {
             Logger::log("BGM: Can't play current audio! Current audio is not valid!", Logger::ERROR);
             _is_playing = false;
@@ -732,6 +736,7 @@ namespace S3GF {
         }
         _prop_id = SDL_CreateProperties();
         SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_LOOPS_NUMBER, (loop ? -1 : 0));
+        SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, fade_in_duration);
         if (!MIX_PlayTrack(_track, _prop_id)) {
             Logger::log(std::format("BGM: Play audio failed! The file path '{}' is not valid! "
                                     "Exception: {}", _path, SDL_GetError()), Logger::ERROR);
@@ -769,6 +774,58 @@ namespace S3GF {
         return _is_loop;
     }
 
+    bool SFX::isPlaying() const {
+        return _is_playing;
+    }
+
+    bool SFX::setVolume(float volume) {
+        auto new_vol = volume < 0 ? 0 : std::min(volume, 10.f);
+        if (MIX_SetTrackGain(_track, new_vol)) {
+            _volume = new_vol;
+            return true;
+        }
+        return false;
+    }
+
+    bool SFX::setMuted(bool enabled) {
+        if (MIX_SetTrackGain(_track, (enabled ? 0.f : _volume))) {
+            _muted = enabled;
+            return true;
+        }
+        return false;
+    }
+
+    bool SFX::setLRChannel(float left, float right) {
+        _stereo_gains.left = (_stereo_gains.left > 0 ? std::min(left, 10.f) : 0.f);
+        _stereo_gains.right = (_stereo_gains.right > 0 ? std::min(right, 10.f) : 0.f);
+        return MIX_SetTrackStereo(_track, &_stereo_gains);
+    }
+
+    bool SFX::set3DPosition(float x, float y, float z) {
+        _mix_3d = { .x = x, .y = y, .z = z };
+        if (!MIX_SetTrack3DPosition(_track, &_mix_3d)) {
+            Logger::log(std::format("BGM::set3DPosition: Failed to set 3D position! Exception: {}", SDL_GetError()), Logger::WARN);
+            return false;
+        }
+        return true;
+    }
+
+    float SFX::volume() const {
+        return _volume;
+    }
+
+    bool SFX::isMuted() const {
+        return _muted;
+    }
+
+    const MIX_StereoGains& SFX::getLRChannel() const {
+        return _stereo_gains;
+    }
+
+    const MIX_Point3D& SFX::get3DPosition() const {
+        return _mix_3d;
+    }
+
     void SFX::load() {
         auto size = FileSystem::readableSize(_path, FileSystem::MB);
         _audio = MIX_LoadAudio(_mixer, _path.c_str(), (size >= MAX_AUDIO_FILE_SIZE));
@@ -804,4 +861,6 @@ namespace S3GF {
         SDL_DestroyProperties(_prop_id);
         _is_load = false;
     }
+
+
 }

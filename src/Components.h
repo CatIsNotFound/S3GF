@@ -121,19 +121,21 @@ namespace S3GF {
         [[nodiscard]] std::string playStatusText() const;
         bool setVolume(float volume);
         bool setMuted(bool enabled);
+        bool setLRChannel(float left, float right);
         bool set3DPosition(float x, float y, float z);
         [[nodiscard]] bool isMuted() const;
         [[nodiscard]] float volume() const;
+        [[nodiscard]] const MIX_StereoGains& getLRChannel() const;
         [[nodiscard]] const MIX_Point3D& get3DPosition() const;
         void load();
         void unload();
     private:
         PlayStatus _play_status;
         std::string _path;
-        int64_t _pos{};
         float _volume{1.f};
         bool _muted{false};
-        MIX_Point3D _mix_3d{0, 0, 0};
+        MIX_StereoGains _stereo_gains{1.f, 1.f};
+        MIX_Point3D _mix_3d{0.f, 1.f, 1.f};
         SDL_PropertiesID _prop_id{0};
         MIX_Mixer* _mixer;
         MIX_Audio* _audio{nullptr};
@@ -150,18 +152,31 @@ namespace S3GF {
         [[nodiscard]] const std::string& path() const;
         [[nodiscard]] bool isLoaded() const;
 
-        bool play(bool loop = false);
+        bool play(bool loop = false, int64_t fade_in_duration = 0);
         void stop(int64_t fade_out_duration = 0);
         [[nodiscard]] int64_t position() const;
         [[nodiscard]] int64_t duration() const;
-
         [[nodiscard]] bool isLoop() const;
+        [[nodiscard]] bool isPlaying() const;
+        bool setVolume(float volume);
+        bool setMuted(bool enabled);
+        bool setLRChannel(float left, float right);
+        bool set3DPosition(float x, float y, float z);
+        [[nodiscard]] bool isMuted() const;
+        [[nodiscard]] float volume() const;
+        [[nodiscard]] const MIX_StereoGains& getLRChannel() const;
+        [[nodiscard]] const MIX_Point3D& get3DPosition() const;
+
         void load();
         void unload();
     private:
         bool _is_load{false}, _is_loop{false}, _is_playing{false};
         std::string _path;
         SDL_PropertiesID _prop_id{0};
+        float _volume{1.f};
+        bool _muted{false};
+        MIX_StereoGains _stereo_gains{1.f, 1.f};
+        MIX_Point3D _mix_3d{0.f, 1.f, 1.f};
         MIX_Mixer* _mixer;
         MIX_Audio* _audio{nullptr};
         MIX_Track* _track{nullptr};
