@@ -61,13 +61,14 @@ Currently, no official version has been released yet. It is expected to be relea
 1. Create a new `CMakeLists.txt` file and write the following content:
 
    ```cmake
-    cmake_minimum_required(VERSION 3.31)
+    cmake_minimum_required(VERSION 3.24)
+    # Need to modify your project name.
     project(Demo)
     
     set(CMAKE_CXX_STANDARD 20)
     
     # Need to set these paths before cmake configuration.
-    set(SDL_DIR       "/path/to/SDL3_mingw")
+    set(SDL_DIR       "/path/to/SDL3")
     set(SDL_IMAGE_DIR "/path/to/SDL3_image")
     set(SDL_TTF_DIR   "/path/to/SDL3_ttf")
     set(SDL_MIXER_DIR "/path/to/SDL3_mixer")
@@ -103,11 +104,16 @@ Currently, no official version has been released yet. It is expected to be relea
 
    ```cpp
    #include <S3GF/S3GF>
+   
    using namespace S3GF;
    
    int main() {
-       Engine engine("org.example.app", "Hello world", "v1.0.0");
-       Window* win = new Window("Hello world!");
+       Engine engine;
+       auto win = new Window(&engine, "Hello world!");
+       win->installPaintEvent([](Renderer* r) {
+           r->fillBackground(StdColor::DarkBlue);
+           r->drawPixelText("Hello world!", {20, 20});		    
+       });
        return engine.exec();
    }
    ```
@@ -122,7 +128,8 @@ Currently, no official version has been released yet. It is expected to be relea
    ./YourProject
    ```
 
-4. A completely black window will be displayed. If it displays normally, it means you have succeeded!
+4. This will open the window shown in the figure below. If it displays successfully, it means that the operation has been successful!
+   ![screenshot.png](assets/screenshot.png)
 
 
 ## License
@@ -132,4 +139,4 @@ This project is licensed under the MIT open source license. See the [LICENSE](LI
 ## Getting Help
 
 1. Check the [documentation](https://github.com/CatIsNotFound/S3GF_Docs.git) for related API documentation. (Content not updated)
-2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF)
+2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF).

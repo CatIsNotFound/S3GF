@@ -22,6 +22,9 @@ else()
         set(SDL3_TTF_LIB "/usr/local/SDL3_ttf" CACHE PATH "SDL3 TTF Libs Path")
 endif()
 
+set(BUILD_TEST OFF CACHE BOOL "Build Test")
+set(BUILD_SHARED_LIBS_ONLY OFF CACHE BOOL "Build Shared Libraries Only")
+
 if (NOT EXISTS ${SDL3_LIB})
     message(FATAL_ERROR "SDL3 Libs path is not found! Use '-DSDL3_LIB=path/to/sdl3' to set the path.")
 endif()
@@ -45,7 +48,7 @@ find_package(SDL3_image REQUIRED)
 find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if (BUILD_SHARED_LIBS_ONLY)
     add_library(${PROJECT_NAME} SHARED
             src/S3GF
             src/Basic.h
@@ -73,6 +76,10 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
             src/Utils/FileSystem.cpp
             src/Utils/FileSystem.h
             src/Utils/RGBAColor.h
+            src/Sprite/Sprite.cpp
+            src/Sprite/Sprite.h
+            src/Sprite/SpriteSheet.cpp
+            src/Sprite/SpriteSheet.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -102,6 +109,10 @@ else ()
             src/Utils/FileSystem.cpp
             src/Utils/FileSystem.h
             src/Utils/RGBAColor.h
+            src/Sprite/Sprite.cpp
+            src/Sprite/Sprite.h
+            src/Sprite/SpriteSheet.cpp
+            src/Sprite/SpriteSheet.h
     )
 endif ()
 
@@ -172,7 +183,10 @@ install(
 )
 
 set(PARENT_PROJECT_NAME ${PROJECT_NAME})
-add_subdirectory(test)
+
+if (BUILD_TEST)
+    add_subdirectory(test)
+endif()
 
 message("================= Configuration Result ======================")
 message("Project version: ${PROJECT_VERSION}")
@@ -181,6 +195,7 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 else()
     message("Build type: Debug")
 endif()
+message("Build test: ${BUILD_TEST}")
 message("SDL3 libs  path: ${SDL3_LIB}")
 message("SDL3 image path: ${SDL3_IMAGE_LIB}")
 message("SDL3 mixer path: ${SDL3_MIXER_LIB}")

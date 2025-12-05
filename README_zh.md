@@ -59,13 +59,14 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
 1. 新建 `CMakeLists.txt` 文件，并写入如下内容：
 
    ```cmake
-    cmake_minimum_required(VERSION 3.31)
+    cmake_minimum_required(VERSION 3.24)
+    # Need to modify your project name.
     project(Demo)
     
     set(CMAKE_CXX_STANDARD 20)
     
     # Need to set these paths before cmake configuration.
-    set(SDL_DIR       "/path/to/SDL3_mingw")
+    set(SDL_DIR       "/path/to/SDL")
     set(SDL_IMAGE_DIR "/path/to/SDL3_image")
     set(SDL_TTF_DIR   "/path/to/SDL3_ttf")
     set(SDL_MIXER_DIR "/path/to/SDL3_mixer")
@@ -101,12 +102,17 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
 
    ```cpp
    #include <S3GF/S3GF>
+
    using namespace S3GF;
-   
+
    int main() {
-       Engine engine("org.example.app", "Hello world", "v1.0.0");
-       Window* win = new Window("Hello world!");
-       return engine.exec();
+      Engine engine;
+      auto win = new Window(&engine, "Hello world!");
+      win->installPaintEvent([](Renderer* r) {
+         r->fillBackground(StdColor::DarkBlue);
+         r->drawPixelText("Hello world!", {20, 20});		    
+      });
+      return engine.exec();
    }
    ```
 
@@ -120,8 +126,8 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
    ./YourProject
    ```
 
-4. 此时会显示一个完全黑色的窗口，若能正常显示，说明成功了！
-
+4. 此时会显示如下图所示的窗口，若能正常显示，说明成功了！
+   ![screenshot.png](assets/screenshot.png)
 
 ## 许可证
 

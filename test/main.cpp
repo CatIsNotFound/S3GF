@@ -12,7 +12,7 @@ int main() {
     Engine::disabledShowAppInfo();
     Engine engine;
     engine.setFPS(60);
-    AudioSystem::global()->appendNewMixer(2);
+    AudioSystem::global()->addNewMixer(2);
     Logger::log(std::format("Mixer count: {}", AudioSystem::global()->mixerCount()));
     std::vector<std::shared_ptr<BGM>> bgm_list;
     bgm_list.push_back(std::make_shared<BGM>(AudioSystem::global()->mixer(), "./bgm.mp3"));
@@ -20,7 +20,6 @@ int main() {
     SFX sfx(AudioSystem::global()->mixer(2), "./sound.oga");
     size_t index = 0;
     auto win = new Window(&engine, "Test window");
-//    win->setBorderless(true);
     Cursor::global()->setCursor(Cursor::Hand);
     win->installPaintEvent([&bgm_list, &index, &sfx](Renderer* r) {
         r->fillBackground(StdColor::DarkGray);
@@ -40,7 +39,10 @@ int main() {
         auto is_space_down = EventSystem::global()->captureKeyboard(SDL_SCANCODE_SPACE);
         auto is_mouse_down = EventSystem::global()->captureMouse(EventSystem::Left);
         r->drawPixelText(std::format("Get Mouse status: {}, Space: {}", is_mouse_down, is_space_down), {20, 50});
-
+        auto mouse_distance = EventSystem::global()->captureMouseAbsDistance();
+        auto mouse_pos = EventSystem::global()->captureMousePosition();
+        r->drawPixelText(std::format("Mouse distance: ({}, {}), Mouse pos: ({}, {})",
+             mouse_distance.x, mouse_distance.y, mouse_pos.x, mouse_pos.y), {20, 80});
     });
     EventSystem::global()->appendEvent(IDGenerator::getNewEventID(), [&bgm_list, &sfx, &index](SDL_Event ev) {
         if (ev.key.type == SDL_EVENT_KEY_DOWN) {

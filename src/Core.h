@@ -233,6 +233,8 @@ namespace S3GF {
         [[nodiscard]] bool captureKeyboard(SDL_Scancode code) const;
         [[nodiscard]] uint32_t captureMouseStatus() const;
         [[nodiscard]] bool captureMouse(MouseStatus mouse_status) const;
+        [[nodiscard]] const Vector2& captureMouseAbsDistance() const;
+        [[nodiscard]] const Vector2& captureMousePosition() const;
         bool run();
     private:
         explicit EventSystem(Engine* engine) : _engine(engine) {}
@@ -240,6 +242,8 @@ namespace S3GF {
         Engine* _engine{nullptr};
         bool* _kb_events{nullptr};
         uint32_t _mouse_events{0};
+        Vector2 _mouse_pos{0, 0}, _mouse_down_dis{0, 0}, _before_mouse_down_pos{0, 0};
+        bool _mouse_down_changed{false};
         std::map<uint64_t, std::function<void(SDL_Event)>> _event_list;
         std::map<uint64_t, std::function<void()>> _global_event_list;
     };
@@ -360,7 +364,7 @@ namespace S3GF {
         bool isValid() const;
         bool load();
         void unload();
-        void appendNewMixer(size_t count = 1);
+        void addNewMixer(size_t count = 1);
         [[nodiscard]] MIX_Mixer* mixer(size_t index = 0) const;
         [[nodiscard]] size_t mixerCount() const;
 

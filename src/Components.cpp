@@ -420,6 +420,14 @@ namespace S3GF {
         return _current_tiles;
     }
 
+    StringList TextureAtlas::tilesNameList() const {
+        StringList out;
+        for (auto& [name, t] : _tiles_map) {
+            out.emplace_back(name);
+        }
+        return out;
+    }
+
     void TextureAtlas::draw() const {
         if (_tiles_map.contains(_current_tiles)) {
             render()->drawTexture(self(), _tiles_map.at(_current_tiles).get());

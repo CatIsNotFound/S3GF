@@ -370,7 +370,7 @@ namespace S3GF {
                         scaled_size.width, scaled_size.height};
         _ret = SDL_RenderTextureRotated(renderer, _texture, 
                          _property->clip_mode ? &_property->clip_area : nullptr,
-                         &rect_dest, _property->rotate_angle, nullptr, SDL_FLIP_NONE);
+                         &rect_dest, _property->rotate_angle, nullptr, _property->flip_mode);
         if (!_ret) {
             Logger::log(std::format("Renderer: Set render texture failed! Exception: {}",
                                     SDL_GetError()), Logger::ERROR);
@@ -687,7 +687,21 @@ namespace S3GF {
         SDL_Event ev;
         if (SDL_PollEvent(&ev)) {
             _kb_events = const_cast<bool*>(SDL_GetKeyboardState(nullptr));
-            _mouse_events = SDL_GetMouseState(nullptr, nullptr);
+            _mouse_events = SDL_GetMouseState(&_mouse_pos.x, &_mouse_pos.y);
+            if (!_mouse_down_changed) {
+                /// When any of mouse buttons is pressed down, triggered...
+                if (_mouse_events > 0) {
+                    _mouse_down_changed = true;
+                    _before_mouse_down_pos.reset(_mouse_pos);
+                }
+            } else {
+                if (_mouse_events > 0) {
+                    _mouse_down_dis.reset(_mouse_pos - _before_mouse_down_pos);
+                } else {
+                    _mouse_down_changed = false;
+                    _mouse_down_dis.reset(0, 0);
+                }
+            }
             if (!_engine->windowCount()) return false;
             auto win_id_list = _engine->windowIDList();
             std::for_each(win_id_list.begin(), win_id_list.end(), [this, &ev](uint32_t id) {
@@ -730,6 +744,14 @@ namespace S3GF {
 
     bool EventSystem::captureMouse(EventSystem::MouseStatus mouse_status) const {
         return _mouse_events == mouse_status;
+    }
+
+    const Vector2& EventSystem::captureMouseAbsDistance() const {
+        return _mouse_down_dis;
+    }
+
+    const Vector2& EventSystem::captureMousePosition() const {
+        return _mouse_pos;
     }
 
     const bool *EventSystem::captureKeyboardStatus() const {
@@ -1190,7 +1212,7 @@ namespace S3GF {
         _is_init = false;
     }
 
-    void AudioSystem::appendNewMixer(size_t count) {
+    void AudioSystem::addNewMixer(size_t count) {
         if (!_is_init) return;
         while (count--) {
             SDL_AudioSpec _audio_spec(SDL_AUDIO_S16, 2, 44100);
@@ -1207,7 +1229,7 @@ namespace S3GF {
     MIX_Mixer *AudioSystem::mixer(size_t index) const {
         if (_mixer_list.size() <= index) {
             Logger::log(std::format("AudioSystem: Can't get index '{}' of mixer!"
-                                    " Did you forget to call `AudioSystem::appendNewMixer()` function?", index),
+                                    " Did you forget to call `AudioSystem::addNewMixer()` function?", index),
                         Logger::ERROR);
             return nullptr;
         }

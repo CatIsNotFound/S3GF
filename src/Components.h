@@ -183,11 +183,44 @@ namespace S3GF {
     };
 
     class Renderer;
-    struct TextureProperty {
-        bool clip_mode;
-        SDL_FRect clip_area;
-        SDL_Color color_alpha;
-        double rotate_angle;
+    class TextureProperty {
+    public:
+        bool clip_mode{false};
+        SDL_FRect clip_area{};
+        SDL_Color color_alpha{StdColor::Black};
+        double rotate_angle{0.0};
+        SDL_FlipMode flip_mode{SDL_FLIP_NONE};
+        TextureProperty() {
+            _position = {0, 0};
+            _size = {0, 0};
+            _scaled_position = {0, 0};
+            _scaled_size = {0, 0};
+            _scale = {1.f};
+        }
+        explicit TextureProperty(TextureProperty* textureProperty) {
+            _position = textureProperty->_position;
+            _size = textureProperty->_size;
+            _scaled_position = textureProperty->_scaled_position;
+            _scaled_size = textureProperty->_scaled_size;
+            _scale = textureProperty->_scale;
+            clip_mode = textureProperty->clip_mode;
+            clip_area = textureProperty->clip_area;
+            color_alpha = textureProperty->color_alpha;
+            rotate_angle = textureProperty->rotate_angle;
+            flip_mode = textureProperty->flip_mode;
+        }
+        TextureProperty(const TextureProperty& textureProperty) {
+            _position = textureProperty._position;
+            _size = textureProperty._size;
+            _scaled_position = textureProperty._scaled_position;
+            _scaled_size = textureProperty._scaled_size;
+            _scale = textureProperty._scale;
+            clip_mode = textureProperty.clip_mode;
+            clip_area = textureProperty.clip_area;
+            color_alpha = textureProperty.color_alpha;
+            rotate_angle = textureProperty.rotate_angle;
+            flip_mode = textureProperty.flip_mode;
+        }
         void reset(const TextureProperty& property) {
             _position = property._position;
             _size = property._size;
@@ -198,6 +231,7 @@ namespace S3GF {
             clip_area = property.clip_area;
             color_alpha = property.color_alpha;
             rotate_angle = property.rotate_angle;
+            flip_mode = property.flip_mode;
         }
         void reset(TextureProperty&& property) {
             _position = property._position;
@@ -209,6 +243,7 @@ namespace S3GF {
             clip_area = property.clip_area;
             color_alpha = property.color_alpha;
             rotate_angle = property.rotate_angle;
+            flip_mode = property.flip_mode;
         }
 
         void move(const Vector2& pos) {
@@ -219,7 +254,7 @@ namespace S3GF {
             _position.reset(x, y);
             setScale(_scale);
         }
-        [[nodiscard]] const Vector2 position() const {
+        [[nodiscard]] const Vector2& position() const {
             return _position;
         }
         void resize(const Size& size) {
@@ -230,7 +265,7 @@ namespace S3GF {
             _size.reset(width, height);
             setScale(_scale);
         }
-        [[nodiscard]] const Size size() const {
+        [[nodiscard]] const Size& size() const {
             return _size;
         }
         void setGeomentry(const Vector2& pos, const Size& size) {
@@ -243,7 +278,7 @@ namespace S3GF {
             _size.reset(width, height);
             setScale(_scale);
         }
-        [[nodiscard]] const GeometryF geomentry() const {
+        [[nodiscard]] GeometryF geomentry() const {
             return GeometryF{_position, _size};
         }
         void setScale(float scale = 1.0f) {
@@ -314,6 +349,7 @@ namespace S3GF {
         TextureProperty* tilesProperty(const std::string& tiles_name);
         void setCurrentTiles(const std::string& tiles_name);
         [[nodiscard]] const std::string& currentTiles() const;
+        StringList tilesNameList() const;
 
         void draw() const override;
         void draw(const std::string& tiles_name) const;
