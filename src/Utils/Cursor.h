@@ -1,10 +1,10 @@
 #pragma once
-#ifndef S3GF_CURSOR_H
-#define S3GF_CURSOR_H
+#ifndef MYENGINE_CURSOR_H
+#define MYENGINE_CURSOR_H
 #include "Logger.h"
 #include "../Components.h"
 
-namespace S3GF {
+namespace MyEngine {
     /**
      * @class Cursor
      * @brief 鼠标光标
@@ -348,4 +348,4 @@ namespace S3GF {
 }
 
 
-#endif //S3GF_CURSOR_H
+#endif //MYENGINE_CURSOR_H

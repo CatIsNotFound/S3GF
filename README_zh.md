@@ -1,9 +1,8 @@
-# S3GF
+# MyEngine
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形框架库。
-本库基于 C++20 现代特性、面向对象思想、模块化结构等方式构建而成的第三方库。
+MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 及其扩展之上。它以简洁和灵活为设计理念，提供直观的面向对象 API，使游戏和应用程序开发变得快速而愉悦。利用现代 C++20 特性，MyEngine 提供了模块化架构，允许开发人员以最少的样板代码轻松创建交互式图形应用程序。
 
 ## 环境依赖
 
@@ -27,19 +26,19 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
 1. 使用 Git 克隆项目
 
    ```shell
-   git clone https://github.com/CatIsNotFound/S3GF
+   git clone https://github.com/CatIsNotFound/MyEngine
    ```
    
    或者使用如下目录克隆项目：
 
    ```shell
-   git clone https://gitee.com/CatIsNotFound/S3GF
+   git clone https://gitee.com/CatIsNotFound/MyEngine
    ```
 
 2. 使用 CMake 配置项目
 
    ```shell
-   cd S3GF
+   cd MyEngine
    mkdir build ; cd build
    cmake .. -DCMAKE_BUILD_TYPE="Release" -DSDL3_LIB=/path/to/SDL3 -DSDL3_IMAGE_LIB=/path/to/SDL3_image -DSDL3_MIXER_LIB=/path/to/SDL3_mixer -DSDL3_TTF_LIB=/path/to/SDL3_ttf
    ```
@@ -70,20 +69,20 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
     set(SDL_IMAGE_DIR "/path/to/SDL3_image")
     set(SDL_TTF_DIR   "/path/to/SDL3_ttf")
     set(SDL_MIXER_DIR "/path/to/SDL3_mixer")
-    set(S3GF_DIR      "/path/to/S3GF")
+    set(MYENGINE_DIR      "/path/to/MyEngine")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     
     list(APPEND CMAKE_PREFIX_PATH ${SDL_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_IMAGE_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_TTF_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_MIXER_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${S3GF_DIR})
+    list(APPEND CMAKE_PREFIX_PATH ${MYENGINE_DIR})
     
     find_package(SDL3 REQUIRED)
     find_package(SDL3_image REQUIRED)
     find_package(SDL3_ttf REQUIRED)
     find_package(SDL3_mixer REQUIRED)
-    find_package(S3GF REQUIRED)
+    find_package(MyEngine REQUIRED)
     
     add_executable(${PROJECT_NAME}
             main.cpp
@@ -94,16 +93,16 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
             SDL3_image::SDL3_image
             SDL3_ttf::SDL3_ttf
             SDL3_mixer::SDL3_mixer
-            S3GF::S3GF
+            MyEngine::MyEngine
     )
    ```
 
 2. 编辑 `main.cpp` 文件：
 
    ```cpp
-   #include <S3GF/S3GF>
+   #include <MyEngine/MyEngine>
 
-   using namespace S3GF;
+   using namespace MyEngine;
 
    int main() {
       Engine engine;
@@ -135,5 +134,5 @@ S3GF（SDL3 Graphics Framework）是基于 SDL3 以及衍生库开发的图形�
 
 ## 获取帮助
 
-1. 通过[说明文档](https://github.com/CatIsNotFound/S3GF_Docs.git)进行查看相关 API 文档。（内容未更新）
-2. 通过 [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) 或 [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF) 提交遇到的问题
+1. 通过[说明文档](https://github.com/CatIsNotFound/MYENGINE_Docs.git)进行查看相关 API 文档。（内容未更新）
+2. 通过 [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) 或 [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine) 提交遇到的问题

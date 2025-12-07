@@ -1,9 +1,9 @@
 #pragma once
-#ifndef S3GF_RGBACOLOR_H
-#define S3GF_RGBACOLOR_H
+#ifndef MYENGINE_RGBACOLOR_H
+#define MYENGINE_RGBACOLOR_H
 #include "Libs.h"
 
-namespace S3GF {
+namespace MyEngine {
     /**
      * @namespace RGBAColor
      * @brief Predefined colors, named in RGBA format
@@ -160,4 +160,4 @@ namespace S3GF {
     }
 }
 
-#endif //S3GF_RGBACOLOR_H
+#endif //MYENGINE_RGBACOLOR_H

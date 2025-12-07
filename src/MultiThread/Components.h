@@ -1,8 +1,8 @@
 #pragma once
-#ifndef S3GF_COMPONENTS_H
-#define S3GF_COMPONENTS_H
+#ifndef MYENGINE_COMPONENTS_H
+#define MYENGINE_COMPONENTS_H
 #include "../Libs.h"
-namespace S3GF {
+namespace MyEngine {
     class Timer {
     public:
         Timer() = delete;
@@ -66,4 +66,4 @@ namespace S3GF {
     };
 }
 
-#endif //S3GF_COMPONENTS_H
+#endif //MYENGINE_COMPONENTS_H

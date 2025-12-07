@@ -1,9 +1,9 @@
 
-#ifndef S3GF_SPRITE_H
-#define S3GF_SPRITE_H
+#ifndef MYENGINE_SPRITE_H
+#define MYENGINE_SPRITE_H
 #include "../Components.h"
 
-namespace S3GF {
+namespace MyEngine {
     class Sprite {
     public:
         explicit Sprite(Texture* texture = nullptr);
@@ -50,4 +50,4 @@ namespace S3GF {
     };
 }
 
-#endif //S3GF_SPRITE_H
+#endif //MYENGINE_SPRITE_H

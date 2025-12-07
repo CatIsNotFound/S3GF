@@ -1,7 +1,7 @@
 #pragma once
-#ifndef S3GF_MULTITHREAD_H
-#define S3GF_MULTITHREAD_H
+#ifndef MYENGINE_MULTITHREAD_H
+#define MYENGINE_MULTITHREAD_H
 #include "Components.h"
 #include "ThreadPool.h"
 #include "Queue.h"
-#endif //S3GF_MULTITHREAD_H
+#endif //MYENGINE_MULTITHREAD_H

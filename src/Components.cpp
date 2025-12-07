@@ -6,7 +6,7 @@
 #include "Utils/DateTime.h"
 #define MAX_AUDIO_FILE_SIZE 2 * 1024 * 1024 /// Defined the larger audio file
 
-namespace S3GF {
+namespace MyEngine {
     Font::Font(const std::string& font_path, float font_size)
             : _font_size(font_size){
         _font = TTF_OpenFont(font_path.c_str(), font_size);
@@ -389,7 +389,7 @@ namespace S3GF {
 
     TextureAtlas::~TextureAtlas() {}
 
-    void TextureAtlas::setTiles(const std::string &tiles_name, const S3GF::GeometryF &clip_geometry) {
+    void TextureAtlas::setTiles(const std::string &tiles_name, const MyEngine::GeometryF &clip_geometry) {
         if (_tiles_map.contains(tiles_name)) {
             _tiles_map[tiles_name]->clip_area = {clip_geometry.pos.x, clip_geometry.pos.y,
                                                  clip_geometry.size.width, clip_geometry.size.height};

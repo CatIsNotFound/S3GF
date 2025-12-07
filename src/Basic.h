@@ -1,18 +1,14 @@
 
 #pragma once
-#ifndef BASIC_H
-#define BASIC_H
-
-/**
- * @ref basic_API
- */
+#ifndef MYENGINE_BASIC_H
+#define MYENGINE_BASIC_H
 
 #include "Libs.h"
-/// Use `S3GF::delay()` is better.
+/// Use `MyEngine::delay()` is better.
 #define SLEEP(sec) std::this_thread::sleep_for(std::chrono::seconds(sec))
-/// Use `S3GF::delayMS()` is better.
+/// Use `MyEngine::delayMS()` is better.
 #define SLEEP_MS(millisec) std::this_thread::sleep_for(std::chrono::milliseconds(millisec))
-/// Use `S3GF::delayNS()` is better.
+/// Use `MyEngine::delayNS()` is better.
 #define SLEEP_NS(nanosec) std::this_thread::sleep_for(std::chrono::nanoseconds(nanosec))
 
 using SRenderer     = SDL_Renderer;
@@ -34,12 +30,12 @@ using StringList    = std::vector<std::string>;
 #include "Utils/Logger.h"
 
 /**
- * @namespace S3GF
- * @brief S3GF Namespace
+ * @namespace MyEngine
+ * @brief MyEngine Namespace
  * 
  * All libraries will be stored in this namespace.
  */
-namespace S3GF {
+namespace MyEngine {
     /**
      * @namespace StdColor
      * @brief Predefined Standard Color (40 colors)
@@ -1268,7 +1264,7 @@ namespace S3GF {
 
 #include "Algorithm/Draw.h"
 
-namespace S3GF {
+namespace MyEngine {
     /**
      * @namespace Graphics
      * @brief 基本图形
@@ -1279,7 +1275,7 @@ namespace S3GF {
         class Point {
         private:
             void update() {
-                S3GF::Algorithm::calcPoint(_position, _size / 2.f,
+                MyEngine::Algorithm::calcPoint(_position, _size / 2.f,
                                            _color, _vertices, _indices, _count);
             }
             Vector2 _position;
@@ -1359,7 +1355,7 @@ namespace S3GF {
             }
         private:
             void update() {
-                S3GF::Algorithm::calcLine(_start_position.x, _start_position.y,
+                MyEngine::Algorithm::calcLine(_start_position.x, _start_position.y,
                                           _end_position.x, _end_position.y,
                                           _size, _color, _vertices, _indices);
             }
@@ -1387,7 +1383,7 @@ namespace S3GF {
                                const SDL_Color& background_color = StdColor::Black)
                                : _geometry(x, y, w, h), _border_size(border),
                                  _border_color(border_color), _background_color(background_color) {
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void reset(const GeometryF& geometry, uint16_t border,
                        const SDL_Color& border_color, const SDL_Color& background_color) {
@@ -1403,7 +1399,7 @@ namespace S3GF {
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void reset(float x, float y, float w, float h, uint16_t border,
                        const SDL_Color& border_color, const SDL_Color& background_color) {
@@ -1411,40 +1407,40 @@ namespace S3GF {
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(float x, float y, float w, float h) {
                 _geometry.reset(x, y, w, h);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(const Vector2& pos, const Size& size) {
                 _geometry.reset(pos, size);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(const GeometryF& geometry) {
                 _geometry = geometry;
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void move(const Vector2& pos) {
                 _geometry.pos.reset(pos);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void move(float x, float y) {
                 _geometry.pos.reset(x, y);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void resize(const Size& size) {
                 _geometry.size.reset(size);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void resize(float w, float h) {
                 _geometry.size.reset(w, h);
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
 
             void setBorderSize(uint16_t border_size) {
                 _border_size = border_size;
-                S3GF::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setBorderColor(const SDL_Color& color) {
                 _border_color = color;
@@ -1544,13 +1540,13 @@ namespace S3GF {
             size_t vertexCount() const { return _vertices.size(); }
         private:
             void updateTri() {
-                S3GF::Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
+                MyEngine::Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
             }
             void updateBorder() {
                 if (_border_size == 0) return;
-                S3GF::Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size, _border_color,_bd1, _bdi1);
-                S3GF::Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size, _border_color,_bd2, _bdi2);
-                S3GF::Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size, _border_color,_bd3, _bdi3);
+                MyEngine::Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size, _border_color,_bd1, _bdi1);
+                MyEngine::Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size, _border_color,_bd2, _bdi2);
+                MyEngine::Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size, _border_color,_bd3, _bdi3);
             }
             Vector2 _p1;
             Vector2 _p2;
@@ -1581,10 +1577,10 @@ namespace S3GF {
                     : _center_point(cx, cy), _radius(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),
                       _degree(degree), _count(segment) {
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1599,10 +1595,10 @@ namespace S3GF {
                 _background_color = back_color;
                 _degree = degree;
                 _count = segment;
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1617,10 +1613,10 @@ namespace S3GF {
                 _background_color = back_color;
                 _degree = degree;
                 _count = segment;
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1628,10 +1624,10 @@ namespace S3GF {
             void setGeometry(float x, float y, float rw, float rh) {
                 _center_point.reset(x, y);
                 _radius.reset(rw, rh);
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1639,10 +1635,10 @@ namespace S3GF {
             void setGeometry(const Vector2& position, const Size& size) {
                 _center_point.reset(position);
                 _radius.reset(size);
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1650,24 +1646,24 @@ namespace S3GF {
             void setBorder(uint16_t size, const SDL_Color& color) {
                 _border_size = size;
                 _border_color = color;
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
 
             void setBackground(const SDL_Color& color) {
                 _background_color = color;
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
             }
 
             void setRotate(float rotate) {
                 _degree = rotate;
-                S3GF::Algorithm::calcEllipse(_center_point, _radius,
+                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
                                              _background_color, _degree, _count,
                                              _vertices, _indices);
-                S3GF::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
                                                  _border_color, _degree, _count,
                                                  _border_vertices, _border_indices);
             }
@@ -1703,4 +1699,4 @@ namespace S3GF {
 
 
 
-#endif //BASIC_H
+#endif //MYENGINE_BASIC_H

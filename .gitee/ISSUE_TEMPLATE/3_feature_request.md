@@ -12,7 +12,7 @@ assignees: ''
 
 **Why do we need this feature? What needs to be addressed?**
 
-*p.s: If your feature request related to a problem, please use [#0000](https://github.com/CatIsNotFound/S3GF/issues/0000) as a link.*
+*p.s: If your feature request related to a problem, please use [#0000](https://github.com/CatIsNotFound/MyEngine/issues/0000) as a link.*
 
 <!-- Delete line and fill in here -->
 

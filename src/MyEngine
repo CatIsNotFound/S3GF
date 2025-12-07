@@ -1,10 +1,10 @@
 #pragma once
-#ifndef S3GF_S3GF
-#define S3GF_S3GF
+#ifndef MYENGINE_MYENGINE
+#define MYENGINE_MYENGINE
 
 #include "Core.h"
 #include "Algorithm/All"
 #include "MultiThread/All"
 #include "Utils/All"
 
-#endif //S3GF_S3GF
+#endif //MYENGINE_MYENGINE

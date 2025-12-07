@@ -1,7 +1,7 @@
 #pragma once
-#ifndef S3GF_ALGORITHM_H
-#define S3GF_ALGORITHM_H
+#ifndef MYENGINE_ALGORITHM_H
+#define MYENGINE_ALGORITHM_H
 #include "Collider.h"
 #include "Draw.h"
 
-#endif //S3GF_ALGORITHM_H
+#endif //MYENGINE_ALGORITHM_H

@@ -1,7 +1,7 @@
 
 #include "FileSystem.h"
 
-namespace S3GF {
+namespace MyEngine {
     std::string FileSystem::_main_path = std::filesystem::absolute(".").string();
     bool FileSystem::setCurrentPath(const std::string &main_directory) {
         if (std::filesystem::is_directory(main_directory)) {
@@ -258,7 +258,7 @@ namespace S3GF {
         }
     }
 
-    float FileSystem::readableSize(const std::string &file_path, S3GF::FileSystem::DataSize data_size) {
+    float FileSystem::readableSize(const std::string &file_path, MyEngine::FileSystem::DataSize data_size) {
         auto size = getFileSize(file_path);
         switch (data_size) {
             case KB:
@@ -327,7 +327,7 @@ namespace S3GF {
         return paths;
     }
 
-    std::vector<std::string> FileSystem::listFilePaths(const std::string &path, S3GF::FileSystem::Filter filter,
+    std::vector<std::string> FileSystem::listFilePaths(const std::string &path, MyEngine::FileSystem::Filter filter,
                                                        const std::vector<std::string> &file_ext_list,
                                                        bool ignore_error) {
         auto real_path = getAbsolutePath(path);

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(S3GF LANGUAGES C CXX VERSION 0.1.1)
+project(MyEngine LANGUAGES C CXX VERSION 0.1.1)
 
 include(CMakePackageConfigHelpers)
 include(CMakeFindDependencyMacro)
@@ -50,7 +50,7 @@ find_package(SDL3_ttf REQUIRED)
 
 if (BUILD_SHARED_LIBS_ONLY)
     add_library(${PROJECT_NAME} SHARED
-            src/S3GF
+            src/MyEngine
             src/Basic.h
             src/Libs.h
             src/Core.cpp
@@ -69,10 +69,10 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Algorithm/Collider.h
             src/MultiThread/ThreadPool.h
             src/Utils/Logger.h
-            src/Controls/Control.h
-            src/Controls/Control.cpp
-            src/Controls/Button.cpp
-            src/Controls/Button.h
+            src/UI/Control.h
+            src/UI/Control.cpp
+            src/UI/Button.cpp
+            src/UI/Button.h
             src/Utils/FileSystem.cpp
             src/Utils/FileSystem.h
             src/Utils/RGBAColor.h
@@ -83,7 +83,7 @@ if (BUILD_SHARED_LIBS_ONLY)
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
-            src/S3GF
+            src/MyEngine
             src/Basic.h
             src/Libs.h
             src/Core.cpp
@@ -102,10 +102,10 @@ else ()
             src/Algorithm/Collider.h
             src/MultiThread/ThreadPool.h
             src/Utils/Logger.h
-            src/Controls/Control.h
-            src/Controls/Control.cpp
-            src/Controls/Button.cpp
-            src/Controls/Button.h
+            src/UI/Control.h
+            src/UI/Control.cpp
+            src/UI/Button.cpp
+            src/UI/Button.h
             src/Utils/FileSystem.cpp
             src/Utils/FileSystem.h
             src/Utils/RGBAColor.h
@@ -137,14 +137,14 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 install(DIRECTORY src/
-        DESTINATION include/S3GF
+        DESTINATION include/MyEngine
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "All"
 )
 
-install(FILES src/S3GF
-    DESTINATION include/S3GF
+install(FILES src/MyEngine
+    DESTINATION include/MyEngine
 )
 
 install(FILES

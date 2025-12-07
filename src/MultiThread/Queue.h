@@ -1,9 +1,9 @@
 #pragma once
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef MYENGINE_QUEUE_H
+#define MYENGINE_QUEUE_H
 #include "../Libs.h"
 
-namespace S3GF {
+namespace MyEngine {
     template <typename T>
     class TaskQueue {
     public:

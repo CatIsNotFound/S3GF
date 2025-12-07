@@ -30,7 +30,7 @@ assignees: ''
 
 - Operating System:                    <!-- For example: Windows 10 22H2, Fedora 42, Ubuntu 25.04, ... -->
 - Project Build Tool:                 <!-- For example: cmake 3.31.4, cmake 4.2.0, ... -->
-- S3GF Project Version:                <!-- For example: v0.1.1-beta, usually can be found in terminal or command line interface when running your project -->
+- MyEngine Project Version:                <!-- For example: v0.1.1-beta, usually can be found in terminal or command line interface when running your project -->
 - Compiler:                      <!-- For example: gcc/g++ 13.1.0, mingw-w64 11.0, msvc 14.3, if unsure, just mark the compiler used -->
 - Other Configurations:                    <!-- Whether running in a virtual machine environment or briefly describe other running environments -->
 

@@ -1,9 +1,9 @@
 #pragma once
-#ifndef S3GF_RANDOM_H
-#define S3GF_RANDOM_H
+#ifndef MYENGINE_RANDOM_H
+#define MYENGINE_RANDOM_H
 #include "../Libs.h"
 
-namespace S3GF {
+namespace MyEngine {
     class RandomGenerator {
     public:
         RandomGenerator() = delete;
@@ -87,4 +87,4 @@ namespace S3GF {
 }
 
 
-#endif //S3GF_RANDOM_H
+#endif //MYENGINE_RANDOM_H

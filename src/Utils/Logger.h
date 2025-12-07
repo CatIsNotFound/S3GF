@@ -1,9 +1,9 @@
 #pragma once
-#ifndef S3GF_LOGGER_H
-#define S3GF_LOGGER_H
+#ifndef MYENGINE_LOGGER_H
+#define MYENGINE_LOGGER_H
 #include "../Libs.h"
 
-namespace S3GF {
+namespace MyEngine {
     class Logger {
     public:
         enum LogLevel {
@@ -78,4 +78,4 @@ namespace S3GF {
     inline uint64_t Logger::_running_time = 0;
     inline std::string Logger::_last_log_info;
 }
-#endif //S3GF_LOGGER_H
+#endif //MYENGINE_LOGGER_H

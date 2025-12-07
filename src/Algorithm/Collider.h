@@ -1,9 +1,9 @@
 
-#ifndef S3GF_COLLIDER_H
-#define S3GF_COLLIDER_H
+#ifndef MYENGINE_COLLIDER_H
+#define MYENGINE_COLLIDER_H
 #include "../Basic.h"
 
-namespace S3GF {
+namespace MyEngine {
     namespace Algorithm {
         inline int8_t comparePosInRect(const Vector2& vec, const Graphics::Rectangle& rect) {
             float left = rect.geometry().pos.x;
@@ -64,4 +64,4 @@ namespace S3GF {
     }
 }
 
-#endif //S3GF_COLLIDER_H
+#endif //MYENGINE_COLLIDER_H

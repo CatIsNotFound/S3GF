@@ -2,11 +2,11 @@
 #include "Sprite.h"
 #include "Utils/RGBAColor.h"
 
-S3GF::Sprite::Sprite(S3GF::Texture *texture) : _texture(texture) {
+MyEngine::Sprite::Sprite(MyEngine::Texture *texture) : _texture(texture) {
     _property = std::make_unique<TextureProperty>(texture->property());
 }
 
-S3GF::Sprite::Sprite(const std::string &path, S3GF::Renderer *renderer) {
+MyEngine::Sprite::Sprite(const std::string &path, MyEngine::Renderer *renderer) {
     _texture = new Texture(path, renderer);
     _delete_later = true;
     if (!_texture->isValid()) {
@@ -14,13 +14,13 @@ S3GF::Sprite::Sprite(const std::string &path, S3GF::Renderer *renderer) {
     }
 }
 
-S3GF::Sprite::~Sprite() {
+MyEngine::Sprite::~Sprite() {
     if (_delete_later) {
         delete _texture;
     }
 }
 
-void S3GF::Sprite::setTexture(S3GF::Texture *new_texture) {
+void MyEngine::Sprite::setTexture(MyEngine::Texture *new_texture) {
     if (_delete_later) {
         delete _texture;
         _delete_later = false;
@@ -34,92 +34,92 @@ void S3GF::Sprite::setTexture(S3GF::Texture *new_texture) {
     _property->reset(*new_texture->property());
 }
 
-S3GF::Texture *S3GF::Sprite::texture() const {
+MyEngine::Texture *MyEngine::Sprite::texture() const {
     return _texture;
 }
 
-void S3GF::Sprite::setPosition(float x, float y) {
+void MyEngine::Sprite::setPosition(float x, float y) {
     _property->move(x, y);
 }
 
-void S3GF::Sprite::setPosition(const S3GF::Vector2 &position) {
+void MyEngine::Sprite::setPosition(const MyEngine::Vector2 &position) {
     _property->move(position);
 }
 
-const S3GF::Vector2 &S3GF::Sprite::position() const {
+const MyEngine::Vector2 &MyEngine::Sprite::position() const {
     return _property->position();
 }
 
-void S3GF::Sprite::setSize(float w, float h) {
+void MyEngine::Sprite::setSize(float w, float h) {
     _property->resize(w, h);
 }
 
-void S3GF::Sprite::setSize(const S3GF::Size &size) {
+void MyEngine::Sprite::setSize(const MyEngine::Size &size) {
     _property->resize(size);
 }
 
-const S3GF::Size &S3GF::Sprite::size() const {
+const MyEngine::Size &MyEngine::Sprite::size() const {
     return _property->size();
 }
 
-void S3GF::Sprite::setScale(float scale) {
+void MyEngine::Sprite::setScale(float scale) {
     _property->setScale(scale);
 }
 
-float S3GF::Sprite::scale() const {
+float MyEngine::Sprite::scale() const {
     return _property->scale();
 }
 
-void S3GF::Sprite::setRotation(double rotation) {
+void MyEngine::Sprite::setRotation(double rotation) {
     _property->rotate_angle = rotation;
 }
 
-double S3GF::Sprite::rotation() const {
+double MyEngine::Sprite::rotation() const {
     return _property->rotate_angle;
 }
 
-void S3GF::Sprite::setOpacity(float opcacity) {
+void MyEngine::Sprite::setOpacity(float opcacity) {
     _property->color_alpha.a = static_cast<uint8_t>(255.f * opcacity);
 }
 
-float S3GF::Sprite::opacity() const {
+float MyEngine::Sprite::opacity() const {
     return static_cast<float>(_property->color_alpha.a) / 255.f;
 }
 
-void S3GF::Sprite::setColorAlpha(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+void MyEngine::Sprite::setColorAlpha(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     _property->color_alpha = { .r = r, .g = g, .b = b, .a = a };
 }
 
-void S3GF::Sprite::setColorAlpha(uint64_t hex_code) {
+void MyEngine::Sprite::setColorAlpha(uint64_t hex_code) {
     auto [r, g, b, a] = RGBAColor::RGBAValue2Color(hex_code, true);
     _property->color_alpha = { .r = r, .g = g, .b = b, .a = a };
 }
 
-void S3GF::Sprite::setColorAlpha(const SDL_Color &color) {
+void MyEngine::Sprite::setColorAlpha(const SDL_Color &color) {
     _property->color_alpha = color;
 }
 
-const SDL_Color& S3GF::Sprite::colorAlpha() const {
+const SDL_Color& MyEngine::Sprite::colorAlpha() const {
     return _property->color_alpha;
 }
 
-void S3GF::Sprite::setVisible(bool visible) {
+void MyEngine::Sprite::setVisible(bool visible) {
     _visible = visible;
 }
 
-bool S3GF::Sprite::visible() const {
+bool MyEngine::Sprite::visible() const {
     return _visible;
 }
 
-void S3GF::Sprite::setFlipMode(SDL_FlipMode flip_mode) {
+void MyEngine::Sprite::setFlipMode(SDL_FlipMode flip_mode) {
     _property->flip_mode = flip_mode;
 }
 
-SDL_FlipMode S3GF::Sprite::flipMode() const {
+SDL_FlipMode MyEngine::Sprite::flipMode() const {
     return _property->flip_mode;
 }
 
-void S3GF::Sprite::draw() const {
+void MyEngine::Sprite::draw() const {
     if (!_visible) return;
     if (!_texture) {
         Logger::log("Sprite: Current sprite is not valid! Maybe the texture is 'nullptr'?", Logger::FATAL);

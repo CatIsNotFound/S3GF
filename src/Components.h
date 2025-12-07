@@ -1,10 +1,10 @@
 #pragma once
-#ifndef S3GF_COMPONETS_H
-#define S3GF_COMPONETS_H
+#ifndef MYENGINE_COMPONETS_H
+#define MYENGINE_COMPONETS_H
 #include "Basic.h"
 #include "MultiThread/Components.h"
 
-namespace S3GF {
+namespace MyEngine {
     class Font {
     public:
         enum Style {
@@ -370,4 +370,4 @@ namespace S3GF {
     };
 }
 #include "Core.h"
-#endif // !S3GF_COMPONETS_H
+#endif // !MYENGINE_COMPONETS_H

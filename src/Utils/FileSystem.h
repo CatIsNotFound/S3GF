@@ -1,10 +1,10 @@
 #pragma once
-#ifndef S3GF_FILESYSTEM_H
-#define S3GF_FILESYSTEM_H
+#ifndef MYENGINE_FILESYSTEM_H
+#define MYENGINE_FILESYSTEM_H
 
 #include "../Utils/Logger.h"
 
-namespace S3GF {
+namespace MyEngine {
     /**
      * @class FileSystem
      * @brief 文件系统
@@ -200,4 +200,4 @@ namespace S3GF {
     };
 }
 
-#endif //S3GF_FILESYSTEM_H
+#endif //MYENGINE_FILESYSTEM_H

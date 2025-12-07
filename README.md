@@ -1,11 +1,10 @@
-# S3GF
+# MyEngine
 
 [简体中文](README_zh.md)
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-S3GF (SDL3 Graphics Framework) is a graphics framework library developed based on SDL3 and its derivative libraries.
-This library is a third-party library built using modern C++20 features, object-oriented design, and modular architecture.
+MyEngine is a lightweight yet powerful 2D graphics framework built on top of SDL3 and its extensions. Designed for simplicity and flexibility, it provides an intuitive object-oriented API that makes game and application development fast and enjoyable. Leveraging modern C++20 features, MyEngine offers a modular architecture that allows developers to easily create interactive graphics applications with minimal boilerplate code.
 
 ## Environment Dependencies
 
@@ -29,19 +28,19 @@ Currently, no official version has been released yet. It is expected to be relea
 1. Clone the project using Git
 
    ```shell
-   git clone https://github.com/CatIsNotFound/S3GF
+   git clone https://github.com/CatIsNotFound/MyEngine
    ```
    
    Or clone the project using the following URL:
 
    ```shell
-   git clone https://gitee.com/CatIsNotFound/S3GF
+   git clone https://gitee.com/CatIsNotFound/MyEngine
    ```
 
 2. Configure the project using CMake
 
    ```shell
-   cd S3GF
+   cd MyEngine
    mkdir build ; cd build
    cmake .. -DCMAKE_BUILD_TYPE="Release" -DSDL3_LIB=/path/to/SDL3 -DSDL3_IMAGE_LIB=/path/to/SDL3_image -DSDL3_MIXER_LIB=/path/to/SDL3_mixer -DSDL3_TTF_LIB=/path/to/SDL3_ttf
    ```
@@ -72,20 +71,20 @@ Currently, no official version has been released yet. It is expected to be relea
     set(SDL_IMAGE_DIR "/path/to/SDL3_image")
     set(SDL_TTF_DIR   "/path/to/SDL3_ttf")
     set(SDL_MIXER_DIR "/path/to/SDL3_mixer")
-    set(S3GF_DIR      "/path/to/S3GF")
+    set(MYENGINE_DIR      "/path/to/MyEngine")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     
     list(APPEND CMAKE_PREFIX_PATH ${SDL_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_IMAGE_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_TTF_DIR})
     list(APPEND CMAKE_PREFIX_PATH ${SDL_MIXER_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${S3GF_DIR})
+    list(APPEND CMAKE_PREFIX_PATH ${MYENGINE_DIR})
     
     find_package(SDL3 REQUIRED)
     find_package(SDL3_image REQUIRED)
     find_package(SDL3_ttf REQUIRED)
     find_package(SDL3_mixer REQUIRED)
-    find_package(S3GF REQUIRED)
+    find_package(MyEngine REQUIRED)
     
     add_executable(${PROJECT_NAME}
             main.cpp
@@ -96,16 +95,16 @@ Currently, no official version has been released yet. It is expected to be relea
             SDL3_image::SDL3_image
             SDL3_ttf::SDL3_ttf
             SDL3_mixer::SDL3_mixer
-            S3GF::S3GF
+            MyEngine::MyEngine
     )
    ```
 
 2. Edit the `main.cpp` file:
 
    ```cpp
-   #include <S3GF/S3GF>
+   #include <MyEngine/MyEngine>
    
-   using namespace S3GF;
+   using namespace MyEngine;
    
    int main() {
        Engine engine;
@@ -138,5 +137,5 @@ This project is licensed under the MIT open source license. See the [LICENSE](LI
 
 ## Getting Help
 
-1. Check the [documentation](https://github.com/CatIsNotFound/S3GF_Docs.git) for related API documentation. (Content not updated)
-2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/S3GF/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/S3GF).
+1. Check the [documentation](https://github.com/CatIsNotFound/MYENGINE_Docs.git) for related API documentation. (Content not updated)
+2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine).

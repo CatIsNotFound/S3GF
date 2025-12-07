@@ -6,7 +6,7 @@
 #include "Utils/All"
 #include "MultiThread/All"
 
-namespace S3GF {
+namespace MyEngine {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
     SDL_Color Renderer::_background_color{RGBAColor::Black};
     SDL_WindowID Engine::_main_window_id{0};
@@ -106,8 +106,8 @@ namespace S3GF {
         _cmd_list.push_back(std::make_unique<TextCMD>(_renderer, text, position));
     }
 
-    void Renderer::drawPixelText(const std::string &text, const S3GF::Vector2 &position,
-                                 const S3GF::Vector2 &scaled, const SDL_Color& color) {
+    void Renderer::drawPixelText(const std::string &text, const MyEngine::Vector2 &position,
+                                 const MyEngine::Vector2 &scaled, const SDL_Color& color) {
         if (text.empty() || scaled.x == 0 || scaled.y == 0) return;
         _cmd_list.push_back(std::make_unique<PixelTextCMD>(_renderer, text, position, scaled, color));
     }
@@ -765,10 +765,10 @@ namespace S3GF {
     Engine::Engine(std::string&& app_name, std::string&& app_version, std::string&& app_id)
         : _app_id(app_id), _app_name(app_name), _app_version(app_version), _running(true) {
         if (_show_app_info) {
-            std::cout << std::format("S3GF {} (Based on SDL {}.{}.{})\n",
-                                     S3GF_FULL_VERSION, SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
-                      << "For more information, visit: https://github.com/CatIsNotFound/S3GF \n"
-                         "                             https://gitee.com/CatIsNotFound/S3GF\n" << std::endl;
+            std::cout << std::format("MyEngine {} (Based on SDL {}.{}.{})\n",
+                                     MYENGINE_FULL_VERSION, SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
+                      << "For more information, visit: https://github.com/CatIsNotFound/MyEngine \n"
+                         "                             https://gitee.com/CatIsNotFound/MyEngine\n" << std::endl;
             std::cout << std::format("=== Application Info ===\nID: {} \nName: {} \nVersion: {} \n",
                                      app_id, app_name, app_version) << std::endl;
         }

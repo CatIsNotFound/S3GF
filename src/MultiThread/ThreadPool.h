@@ -1,10 +1,10 @@
 #pragma once
-#ifndef S3GF_THREADPOOL_H
-#define S3GF_THREADPOOL_H
+#ifndef MYENGINE_THREADPOOL_H
+#define MYENGINE_THREADPOOL_H
 #include "../Libs.h"
 #include "../Utils/Logger.h"
 
-namespace S3GF {
+namespace MyEngine {
     class ThreadPool {
     public:
         explicit ThreadPool(uint32_t max_waiting, uint32_t max_running = std::thread::hardware_concurrency())
@@ -203,4 +203,4 @@ namespace S3GF {
     };
 }
 
-#endif //S3GF_THREADPOOL_H
+#endif //MYENGINE_THREADPOOL_H

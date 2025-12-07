@@ -1,13 +1,13 @@
 
 #pragma once
-#ifndef S3GF_DRAW_H
-#define S3GF_DRAW_H
+#ifndef MYENGINE_DRAW_H
+#define MYENGINE_DRAW_H
 #ifndef M_PI
 #define M_PI		3.14159265358979323846
 #endif
 #include "../Libs.h"
 
-namespace S3GF {
+namespace MyEngine {
     namespace Algorithm {
         inline SDL_FColor convert2FColor(const SDL_Color &color) {
             return {color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f};
@@ -165,4 +165,4 @@ namespace S3GF {
     }
 }
 
-#endif //S3GF_DRAW_H
+#endif //MYENGINE_DRAW_H

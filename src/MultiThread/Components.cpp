@@ -4,7 +4,7 @@
 #include "Utils/Logger.h"
 #include "Utils/Random.h"
 
-namespace S3GF {
+namespace MyEngine {
     Timer::~Timer() {
         stop();
         if (_thread.joinable()) { _thread.join(); }

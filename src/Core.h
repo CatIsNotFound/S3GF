@@ -1,11 +1,11 @@
 #pragma once
 #include "Basic.h"
-#ifndef S3GF_CORE_H
-#define S3GF_CORE_H
-#define S3GF_FULL_VERSION "v0.1.1-beta"
+#ifndef MYENGINE_CORE_H
+#define MYENGINE_CORE_H
+#define MYENGINE_FULL_VERSION "v0.1.1-beta"
 #include "Components.h"
 
-namespace S3GF {
+namespace MyEngine {
     class Engine;
     class Window;
     struct TextureProperty;

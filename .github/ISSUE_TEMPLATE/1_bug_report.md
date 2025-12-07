@@ -25,7 +25,7 @@ e.g: - [x] option (Input `x` to filled in one of the `[ ]`)
 
 What is the currently developed version? Typically, you can view it in the terminal or command line interface when running your project.
 
-- S3GF version:                <!-- Delete line and fill in here (e.g: v0.1.1-beta) -->
+- MyEngine version:                <!-- Delete line and fill in here (e.g: v0.1.1-beta) -->
 - SDL version:                 <!-- Delete line and fill in here (e.g: 3.3.0)-->
 
 # Bug Report

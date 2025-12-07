@@ -12,7 +12,7 @@ assignees: ''
 
 **为什么我们需要这个功能？需要解决什么问题？**
 
-*注：如果你的功能请求与某个问题相关，请使用 [#0000](https://github.com/CatIsNotFound/S3GF/issues/0000) 作为链接。*
+*注：如果你的功能请求与某个问题相关，请使用 [#0000](https://github.com/CatIsNotFound/MyEngine/issues/0000) 作为链接。*
 
 <!-- 删除此行，并在此行填写 -->
 

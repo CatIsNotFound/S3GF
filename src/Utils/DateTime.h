@@ -1,9 +1,9 @@
 #pragma once
-#ifndef S3GF_DATETIME_H
-#define S3GF_DATETIME_H
+#ifndef MYENGINE_DATETIME_H
+#define MYENGINE_DATETIME_H
 #include "Logger.h"
 
-namespace S3GF {
+namespace MyEngine {
     class DateTime {
         static std::string timezone;
     public:
@@ -313,4 +313,4 @@ namespace S3GF {
     inline std::string DateTime::timezone{std::chrono::current_zone()->name()};
 }
 
-#endif //S3GF_DATETIME_H
+#endif //MYENGINE_DATETIME_H

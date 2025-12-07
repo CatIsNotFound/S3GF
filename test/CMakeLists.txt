@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(S3GF_TEST)
+project(MYENGINE_TEST)
 
 add_executable(${PROJECT_NAME}
         main.cpp

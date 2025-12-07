@@ -3,10 +3,10 @@
 #include "MultiThread/Components.h"
 #include "Utils/RGBAColor.h"
 #include "Utils/Random.h"
-#include "Controls/Button.h"
+#include "UI/Button.h"
 #include "Sprite/SpriteSheet.h"
 
-using namespace S3GF;
+using namespace MyEngine;
 
 int main() {
     Engine engine;
@@ -138,6 +138,6 @@ int main() {
     });
 
     engine.exec();
-    Logger::log("GoodBye!", S3GF::Logger::INFO);
+    Logger::log("GoodBye!", MyEngine::Logger::INFO);
     return 0;
 }

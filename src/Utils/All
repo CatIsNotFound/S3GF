@@ -1,6 +1,6 @@
 #pragma once
-#ifndef S3GF_UTILS_H
-#define S3GF_UTILS_H
+#ifndef MYENGINE_UTILS_H
+#define MYENGINE_UTILS_H
 #include "Cursor.h"
 #include "DateTime.h"
 #include "Logger.h"
@@ -8,4 +8,4 @@
 #include "FileSystem.h"
 #include "RGBAColor.h"
 
-#endif //S3GF_UTILS_H
+#endif //MYENGINE_UTILS_H

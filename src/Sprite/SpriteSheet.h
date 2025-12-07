@@ -1,9 +1,9 @@
 
-#ifndef S3GF_SPRITESHEET_H
-#define S3GF_SPRITESHEET_H
+#ifndef MYENGINE_SPRITESHEET_H
+#define MYENGINE_SPRITESHEET_H
 #include "Sprite.h"
 
-namespace S3GF {
+namespace MyEngine {
     class SpriteSheet {
         struct FrameAnimation {
             StringList sequence_list;
@@ -64,4 +64,4 @@ namespace S3GF {
     };
 }
 
-#endif //S3GF_SPRITESHEET_H
+#endif //MYENGINE_SPRITESHEET_H
