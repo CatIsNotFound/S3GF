@@ -41,6 +41,7 @@ namespace MyEngine {
      * @brief Predefined Standard Color (40 colors)
      */
     namespace StdColor {
+        constexpr SColor Transparent = {0, 0, 0, 0};
         constexpr SColor Black = {0, 0, 0, 255};
         constexpr SColor White = {255, 255, 255, 255};
         constexpr SColor Red = {255, 0, 0, 255};
@@ -1377,7 +1378,7 @@ namespace MyEngine {
 
         public:
             explicit Rectangle() : _geometry(0, 0, 0, 0), _border_size(0),
-                                   _border_color(StdColor::Black), _background_color(StdColor::Black) {}
+                                   _border_color(StdColor::Black), _background_color(StdColor::Transparent) {}
             explicit Rectangle(float x, float y, float w, float h,
                                uint16_t border = 1, const SDL_Color& border_color = StdColor::Black,
                                const SDL_Color& background_color = StdColor::Black)
@@ -1458,7 +1459,7 @@ namespace MyEngine {
         class Triangle {
         public:
             explicit Triangle() : _p1(0, 0), _p2(0, 0), _p3(0, 0),
-                                  _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::Black) {}
+                                  _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::Transparent) {}
             explicit Triangle(float x1, float y1, float x2, float y2, float x3, float y3,
                               uint16_t border_size = 0, const SDL_Color& border_color = StdColor::Black,
                               const SDL_Color& back_color = StdColor::Black)
@@ -1567,7 +1568,7 @@ namespace MyEngine {
         class Ellipse {
         public:
             explicit Ellipse() : _center_point(0, 0), _radius(0, 0),
-                                 _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::Black),
+                                 _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::Transparent),
                                  _degree(0.f), _count(0) {}
 
             Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,

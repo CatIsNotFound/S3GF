@@ -1,4 +1,3 @@
-
 #ifndef MYENGINE_ALGORITHM_COLLIDER_H
 #define MYENGINE_ALGORITHM_COLLIDER_H
 #include "../Basic.h"
@@ -57,9 +56,30 @@ namespace MyEngine {
                   y3 = rect2.geometry().pos.y, y4 = rect2.geometry().pos.y + rect2.geometry().size.height;
 
             if (x2 < x3 || x1 > x4 || y2 < y3 || y1 > y4) return -1;
-            if (x3 <= x1 && y3 <= y1 && x4 >= x2 && y4 >= y2) return 1;
-            if (x1 <= x3 && y1 <= y3 && x2 >= x4 && y2 >= y4) return 2;
-            return 0;
+            if (x3 <= x1 && y3 <= y1 && x4 >= x2 && y4 >= y2) return 2;
+            if (x1 <= x3 && y1 <= y3 && x2 >= x4 && y2 >= y4) return 3;
+            return 1;
+        }
+
+        inline int8_t compareCircleRect(const Graphics::Point& point,
+                                        const Graphics::Rectangle& rect) {
+            if (point.size() <= 1) return comparePosInRect(point.position(), rect);
+            const Vector2& p = point.position();
+            const GeometryF& g = rect.geometry();
+
+            float r = static_cast<float>(point.size()) * 0.5f;
+
+            float nx = std::clamp(p.x, g.pos.x, g.pos.x + g.size.width);
+            float ny = std::clamp(p.y, g.pos.y, g.pos.y + g.size.height);
+
+            float dx = p.x - nx;
+            float dy = p.y - ny;
+            float dd = dx * dx + dy * dy;
+            float rr = r * r;
+
+            if (dd > rr + 1e-5f) return -1;
+            if (std::abs(dd - rr) < 1e-5f) return 0;
+            return 1;
         }
     }
 }

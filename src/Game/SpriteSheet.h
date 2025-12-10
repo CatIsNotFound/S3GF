@@ -30,6 +30,12 @@ namespace MyEngine {
         void setColorAlpha(const SDL_Color& color);
         [[nodiscard]] const SDL_Color& colorAlpha() const;
 
+        void setOpacity(float opacity);
+        [[nodiscard]] float opacity() const;
+
+        void setVisible(bool visible);
+        [[nodiscard]] bool visible() const;
+
         void appendTiles(const std::string& tiles_name, const GeometryF& clip_geometry);
         void removeTiles(const std::string& tiles_name);
         [[nodiscard]] const TextureProperty* propertyOfTiles(const std::string& tiles_name) const;
@@ -60,7 +66,7 @@ namespace MyEngine {
         uint64_t _cur_frame{0};
         std::shared_ptr<TextureProperty> _global_prop;
         bool _delete_later{false};
-        bool _animate{false};
+        bool _animate{false}, _visible{true};
     };
 }
 

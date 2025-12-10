@@ -9,6 +9,7 @@ MyEngine::Sprite::Sprite(MyEngine::Texture *texture) : _texture(texture) {
 MyEngine::Sprite::Sprite(const std::string &path, MyEngine::Renderer *renderer) {
     _texture = new Texture(path, renderer);
     _delete_later = true;
+    _property = std::make_unique<TextureProperty>(*_texture->property());
     if (!_texture->isValid()) {
         Logger::log("Sprite: Current texture is not valid!", Logger::Error);
     }
@@ -38,11 +39,11 @@ MyEngine::Texture *MyEngine::Sprite::texture() const {
     return _texture;
 }
 
-void MyEngine::Sprite::setPosition(float x, float y) {
+void MyEngine::Sprite::move(float x, float y) {
     _property->move(x, y);
 }
 
-void MyEngine::Sprite::setPosition(const MyEngine::Vector2 &position) {
+void MyEngine::Sprite::move(const Vector2 &position) {
     _property->move(position);
 }
 
@@ -50,11 +51,11 @@ const MyEngine::Vector2 &MyEngine::Sprite::position() const {
     return _property->position();
 }
 
-void MyEngine::Sprite::setSize(float w, float h) {
+void MyEngine::Sprite::resize(float w, float h) {
     _property->resize(w, h);
 }
 
-void MyEngine::Sprite::setSize(const MyEngine::Size &size) {
+void MyEngine::Sprite::resize(const Size &size) {
     _property->resize(size);
 }
 

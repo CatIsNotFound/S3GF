@@ -707,6 +707,10 @@ namespace MyEngine {
         return _mix_3d;
     }
 
+    float BGM::speedAndPitch() const {
+        return MIX_GetTrackFrequencyRatio(_track);
+    }
+
     void BGM::load() {
         _play_status = Loading;
         _audio = MIX_LoadAudio(_mixer, _path.c_str(), false);

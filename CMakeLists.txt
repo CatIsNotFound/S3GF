@@ -82,8 +82,10 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Game/SpriteSheet.h
             src/Utils/SysMemory.h
             src/UI/All.h
-            src/Game/Object.cpp
-            src/Game/Object.h
+            src/Game/GObject.cpp
+            src/Game/GObject.h
+            src/Game/Collider.cpp
+            src/Game/Collider.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -119,8 +121,10 @@ else ()
             src/Game/SpriteSheet.h
             src/Utils/SysMemory.h
             src/UI/All.h
-            src/Game/Object.cpp
-            src/Game/Object.h
+            src/Game/GObject.cpp
+            src/Game/GObject.h
+            src/Game/Collider.cpp
+            src/Game/Collider.h
     )
 endif ()
 

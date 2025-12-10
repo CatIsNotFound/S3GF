@@ -133,6 +133,22 @@ const SDL_Color &MyEngine::SpriteSheet::colorAlpha() const {
     return _global_prop->color_alpha;
 }
 
+void MyEngine::SpriteSheet::setOpacity(float opacity) {
+    _global_prop->color_alpha.a = static_cast<uint8_t>(255.f * opacity);
+}
+
+float MyEngine::SpriteSheet::opacity() const {
+    return static_cast<float>(_global_prop->color_alpha.a) / 255.f;
+}
+
+void MyEngine::SpriteSheet::setVisible(bool visible) {
+    _visible = visible;
+}
+
+bool MyEngine::SpriteSheet::visible() const {
+    return _visible;
+}
+
 void MyEngine::SpriteSheet::appendTiles(const std::string &tiles_name, const MyEngine::GeometryF &clip_geometry) {
     _atlas->setTiles(tiles_name, clip_geometry);
     _atlas->tilesProperty(tiles_name)->move(_global_prop->position());
@@ -251,6 +267,7 @@ const std::string &MyEngine::SpriteSheet::currentAnimation() const {
 }
 
 void MyEngine::SpriteSheet::draw() {
+    if (!_visible) return;
     if (!_animation_map.contains(_cur_ani_name)) {
         Logger::log(std::format("SpriteSheet: Renderer failed! "
                                 "The animation named '{}' is not exist! "

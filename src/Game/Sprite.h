@@ -13,12 +13,12 @@ namespace MyEngine {
         void setTexture(Texture* new_texture);
         [[nodiscard]] Texture* texture() const;
 
-        void setPosition(float x, float y);
-        void setPosition(const Vector2& position);
+        void move(float x, float y);
+        void move(const Vector2& position);
         [[nodiscard]] const Vector2& position() const;
 
-        void setSize(float w, float h);
-        void setSize(const Size& size);
+        void resize(float w, float h);
+        void resize(const Size& size);
         [[nodiscard]] const Size& size() const;
 
         void setScale(float scale);
