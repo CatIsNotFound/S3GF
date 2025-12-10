@@ -73,8 +73,8 @@ jobs:
       run: |
         brew install cmake ninja pkg-config
 
-    - name: Build SDL3 from source (if not cached)
-      if: steps.cache-sdl.outputs.cache-hit != 'true'
+    - name: Build SDL3 from source (if not cached) - Linux/macOS
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
       run: |
         # Build SDL3
         git clone https://github.com/libsdl-org/SDL.git ${{github.workspace}}/SDL
@@ -85,9 +85,12 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_install \
           -DSDL_SHARED=ON \
           -DSDL_STATIC=ON
-        cmake --build build --config ${{ matrix.build_type }}
+        cmake --build build --config ${{ matrix.build_type }} --parallel 4
         cmake --install build --config ${{ matrix.build_type }}
 
+    - name: Build SDL3_image from source (if not cached) - Linux/macOS
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
+      run: |
         # Build SDL3_image
         git clone https://github.com/libsdl-org/SDL_image.git ${{github.workspace}}/SDL_image
         cd ${{github.workspace}}/SDL_image
@@ -99,9 +102,32 @@ jobs:
           -DSDL3IMAGE_VENDORED=ON \
           -DSDL3IMAGE_DEPS_SHARED=ON \
           -DSDL3IMAGE_SAMPLES=OFF
-        cmake --build build --config ${{ matrix.build_type }}
+        cmake --build build --config ${{ matrix.build_type }} --parallel 4
         cmake --install build --config ${{ matrix.build_type }}
 
+    - name: Build SDL3_image from source (if not cached) - Windows
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        # Build SDL3_image
+        git clone https://github.com/libsdl-org/SDL_image.git %GITHUB_WORKSPACE%\SDL_image
+        cd %GITHUB_WORKSPACE%\SDL_image
+        git checkout main
+        cmake -B build -G "Visual Studio 17 2022" -A x64 ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_image_install ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3IMAGE_VENDORED=ON ^
+          -DSDL3IMAGE_DEPS_SHARED=ON ^
+          -DSDL3IMAGE_SAMPLES=OFF
+        cmake --build build --config %BUILD_TYPE% --parallel 4
+        cmake --install build --config %BUILD_TYPE%
+      env:
+        BUILD_TYPE: ${{ matrix.build_type }}
+
+    - name: Build SDL3_mixer from source (if not cached) - Linux/macOS
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
+      run: |
         # Build SDL3_mixer
         git clone https://github.com/libsdl-org/SDL_mixer.git ${{github.workspace}}/SDL_mixer
         cd ${{github.workspace}}/SDL_mixer
@@ -113,9 +139,32 @@ jobs:
           -DSDL3MIXER_VENDORED=ON \
           -DSDL3MIXER_DEPS_SHARED=ON \
           -DSDL3MIXER_SAMPLES=OFF
-        cmake --build build --config ${{ matrix.build_type }}
+        cmake --build build --config ${{ matrix.build_type }} --parallel 4
         cmake --install build --config ${{ matrix.build_type }}
 
+    - name: Build SDL3_mixer from source (if not cached) - Windows
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        # Build SDL3_mixer
+        git clone https://github.com/libsdl-org/SDL_mixer.git %GITHUB_WORKSPACE%\SDL_mixer
+        cd %GITHUB_WORKSPACE%\SDL_mixer
+        git checkout main
+        cmake -B build -G "Visual Studio 17 2022" -A x64 ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_mixer_install ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3MIXER_VENDORED=ON ^
+          -DSDL3MIXER_DEPS_SHARED=ON ^
+          -DSDL3MIXER_SAMPLES=OFF
+        cmake --build build --config %BUILD_TYPE% --parallel 4
+        cmake --install build --config %BUILD_TYPE%
+      env:
+        BUILD_TYPE: ${{ matrix.build_type }}
+
+    - name: Build SDL3_ttf from source (if not cached) - Linux/macOS
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
+      run: |
         # Build SDL3_ttf
         git clone https://github.com/libsdl-org/SDL_ttf.git ${{github.workspace}}/SDL_ttf
         cd ${{github.workspace}}/SDL_ttf
@@ -127,14 +176,60 @@ jobs:
           -DSDL3TTF_VENDORED=ON \
           -DSDL3TTF_DEPS_SHARED=ON \
           -DSDL3TTF_SAMPLES=OFF
-        cmake --build build --config ${{ matrix.build_type }}
+        cmake --build build --config ${{ matrix.build_type }} --parallel 4
         cmake --install build --config ${{ matrix.build_type }}
 
-    - name: Upload dependency cache info
-      if: always()
+    - name: Build SDL3_ttf from source (if not cached) - Windows
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        # Build SDL3_ttf
+        git clone https://github.com/libsdl-org/SDL_ttf.git %GITHUB_WORKSPACE%\SDL_ttf
+        cd %GITHUB_WORKSPACE%\SDL_ttf
+        git checkout main
+        cmake -B build -G "Visual Studio 17 2022" -A x64 ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_ttf_install ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3TTF_VENDORED=ON ^
+          -DSDL3TTF_DEPS_SHARED=ON ^
+          -DSDL3TTF_SAMPLES=OFF
+        cmake --build build --config %BUILD_TYPE% --parallel 4
+        cmake --install build --config %BUILD_TYPE%
+      env:
+        BUILD_TYPE: ${{ matrix.build_type }}
+
+    - name: Upload dependency cache info - Linux/macOS
+      if: always() && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
       run: |
         echo "Cache updated for ${{ runner.os }}"
-        echo "SDL3 version: $(ls ${{github.workspace}}/SDL_install/lib/libSDL3* | head -1)"
-        echo "SDL3_image version: $(ls ${{github.workspace}}/SDL_image_install/lib/libSDL3_image* | head -1)"
-        echo "SDL3_mixer version: $(ls ${{github.workspace}}/SDL_mixer_install/lib/libSDL3_mixer* | head -1)"
-        echo "SDL3_ttf version: $(ls ${{github.workspace}}/SDL_ttf_install/lib/libSDL3_ttf* | head -1)"
+        if [ -d "${{github.workspace}}/SDL_install/lib" ]; then
+          echo "SDL3 files: $(ls ${{github.workspace}}/SDL_install/lib/libSDL3* 2>/dev/null | head -1 || echo 'Not found')"
+        fi
+        if [ -d "${{github.workspace}}/SDL_image_install/lib" ]; then
+          echo "SDL3_image files: $(ls ${{github.workspace}}/SDL_image_install/lib/libSDL3_image* 2>/dev/null | head -1 || echo 'Not found')"
+        fi
+        if [ -d "${{github.workspace}}/SDL_mixer_install/lib" ]; then
+          echo "SDL3_mixer files: $(ls ${{github.workspace}}/SDL_mixer_install/lib/libSDL3_mixer* 2>/dev/null | head -1 || echo 'Not found')"
+        fi
+        if [ -d "${{github.workspace}}/SDL_ttf_install/lib" ]; then
+          echo "SDL3_ttf files: $(ls ${{github.workspace}}/SDL_ttf_install/lib/libSDL3_ttf* 2>/dev/null | head -1 || echo 'Not found')"
+        fi
+
+    - name: Upload dependency cache info - Windows
+      if: always() && matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        echo "Cache updated for Windows"
+        if exist "%GITHUB_WORKSPACE%\SDL_install\lib" (
+          dir "%GITHUB_WORKSPACE%\SDL_install\lib\SDL3*.lib" 2>nul | find "SDL3" >nul && echo "SDL3 files found" || echo "SDL3 files not found"
+        )
+        if exist "%GITHUB_WORKSPACE%\SDL_image_install\lib" (
+          dir "%GITHUB_WORKSPACE%\SDL_image_install\lib\SDL3_image*.lib" 2>nul | find "SDL3_image" >nul && echo "SDL3_image files found" || echo "SDL3_image files not found"
+        )
+        if exist "%GITHUB_WORKSPACE%\SDL_mixer_install\lib" (
+          dir "%GITHUB_WORKSPACE%\SDL_mixer_install\lib\SDL3_mixer*.lib" 2>nul | find "SDL3_mixer" >nul && echo "SDL3_mixer files found" || echo "SDL3_mixer files not found"
+        )
+        if exist "%GITHUB_WORKSPACE%\SDL_ttf_install\lib" (
+          dir "%GITHUB_WORKSPACE%\SDL_ttf_install\lib\SDL3_ttf*.lib" 2>nul | find "SDL3_ttf" >nul && echo "SDL3_ttf files found" || echo "SDL3_ttf files not found"
+        )
