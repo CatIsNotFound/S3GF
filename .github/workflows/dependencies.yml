@@ -93,6 +93,11 @@ jobs:
         cmake --install build
         
         echo "SDL3 build completed"
+        
+        # Debug: Show SDL3 installation structure
+        echo "=== SDL3 Installation Debug ==="
+        find ${{github.workspace}}/SDL_install -name "*.cmake" -o -name "*SDL3*" | head -10
+        echo "================================"
 
     - name: Build SDL3 from source (if not cached) - Windows
       if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
@@ -118,6 +123,11 @@ jobs:
         cmake --install build --config %BUILD_TYPE%
         
         echo "SDL3 build completed"
+        
+        # Debug: Show SDL3 installation structure
+        echo "=== SDL3 Installation Debug ==="
+        dir "%GITHUB_WORKSPACE%\SDL_install" /s /b | findstr /i "cmake\|SDL3" | head -10
+        echo "================================"
       env:
         BUILD_TYPE: ${{ matrix.build_type }}
 
@@ -135,7 +145,7 @@ jobs:
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_image_install \
-          -DSDL3_DIR=${{github.workspace}}/SDL_install/lib/cmake/SDL3 \
+          -DSDL3_DIR=${{github.workspace}}/SDL_install \
           -DSDL3IMAGE_VENDORED=ON
         
         cmake --build build --parallel $(nproc 2>/dev/null || echo 2)
@@ -154,7 +164,7 @@ jobs:
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_image_install ^
-          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install ^
           -DSDL3IMAGE_VENDORED=ON ^
           -DSDL3IMAGE_DEPS_SHARED=ON ^
           -DSDL3IMAGE_SAMPLES=OFF
@@ -177,7 +187,7 @@ jobs:
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_mixer_install \
-          -DSDL3_DIR=${{github.workspace}}/SDL_install/lib/cmake/SDL3 \
+          -DSDL3_DIR=${{github.workspace}}/SDL_install \
           -DSDL3MIXER_VENDORED=ON
         
         cmake --build build --parallel $(nproc 2>/dev/null || echo 2)
@@ -196,7 +206,7 @@ jobs:
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_mixer_install ^
-          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install ^
           -DSDL3MIXER_VENDORED=ON ^
           -DSDL3MIXER_DEPS_SHARED=ON ^
           -DSDL3MIXER_SAMPLES=OFF
@@ -219,7 +229,7 @@ jobs:
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_ttf_install \
-          -DSDL3_DIR=${{github.workspace}}/SDL_install/lib/cmake/SDL3 \
+          -DSDL3_DIR=${{github.workspace}}/SDL_install \
           -DSDL3TTF_VENDORED=ON
         
         cmake --build build --parallel $(nproc 2>/dev/null || echo 2)
@@ -238,7 +248,7 @@ jobs:
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_ttf_install ^
-          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install\lib\cmake\SDL3 ^
+          -DSDL3_DIR=%GITHUB_WORKSPACE%\SDL_install ^
           -DSDL3TTF_VENDORED=ON ^
           -DSDL3TTF_DEPS_SHARED=ON ^
           -DSDL3TTF_SAMPLES=OFF
