@@ -94,6 +94,33 @@ jobs:
         
         echo "SDL3 build completed"
 
+    - name: Build SDL3 from source (if not cached) - Windows
+      if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        echo "Building SDL3 from source..."
+        
+        # Clone SDL3 and checkout stable release
+        git clone https://github.com/libsdl-org/SDL.git %GITHUB_WORKSPACE%\SDL
+        cd %GITHUB_WORKSPACE%\SDL
+        git checkout release-3.2.8 || git checkout main
+        
+        # Configure SDL3 with Visual Studio generator
+        cmake -B build -G "Visual Studio 17 2022" -A x64 ^
+          -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_install ^
+          -DSDL_SHARED=ON ^
+          -DSDL_STATIC=OFF ^
+          -DSDL_TEST=OFF
+        
+        # Build and install
+        cmake --build build --config %BUILD_TYPE% --parallel 4
+        cmake --install build --config %BUILD_TYPE%
+        
+        echo "SDL3 build completed"
+      env:
+        BUILD_TYPE: ${{ matrix.build_type }}
+
     - name: Build SDL3_image from source (if not cached) - Linux/macOS
       if: steps.cache-sdl.outputs.cache-hit != 'true' && (matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest')
       run: |
