@@ -43,21 +43,25 @@ jobs:
       run: |
         echo "Setting up Linux build environment..."
         
-        # Basic system update with error handling
-        sudo apt-get update || echo "Package update completed with warnings"
+        # Basic system update
+        sudo apt-get update
         
-        # Install only essential build tools
-        sudo apt-get install -y \
+        # Install only essential build tools - minimal set for SDL3
+        sudo apt-get install -y --no-install-recommends \
           build-essential \
           cmake \
           pkg-config \
-          git
-        
-        # Install basic X11 and audio support (minimal set)
-        sudo apt-get install -y \
+          git \
           libx11-dev \
+          libxext-dev \
+          libxrandr-dev \
+          libxcursor-dev \
+          libxi-dev \
           libasound2-dev \
-          libpulse-dev || echo "Audio libraries: some may be unavailable"
+          libgl1-mesa-dev \
+          libdbus-1-dev \
+          libudev-dev \
+          libwayland-dev || echo "Some Wayland packages may be unavailable"
         
         echo "Linux dependencies setup completed"
 
