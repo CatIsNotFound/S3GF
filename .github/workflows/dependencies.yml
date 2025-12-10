@@ -76,7 +76,9 @@ jobs:
         echo "Building SDL3 from source..."
         git clone https://github.com/libsdl-org/SDL.git ${{github.workspace}}/SDL
         cd ${{github.workspace}}/SDL
-        git checkout release-3.2.8 || git checkout main
+        git checkout main
+        echo "SDL3 version info:"
+        git log --oneline -1
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_install \
@@ -99,7 +101,9 @@ jobs:
         echo "Building SDL3 from source..."
         git clone https://github.com/libsdl-org/SDL.git %GITHUB_WORKSPACE%\SDL
         cd %GITHUB_WORKSPACE%\SDL
-        git checkout release-3.2.8 || git checkout main
+        git checkout main
+        echo "SDL3 version info:"
+        git log --oneline -1
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_install ^
@@ -123,7 +127,9 @@ jobs:
         echo "Building SDL3_image..."
         git clone https://github.com/libsdl-org/SDL_image.git ${{github.workspace}}/SDL_image
         cd ${{github.workspace}}/SDL_image
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_image version info:"
+        git log --oneline -1
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_image_install \
@@ -139,7 +145,9 @@ jobs:
       run: |
         git clone https://github.com/libsdl-org/SDL_image.git %GITHUB_WORKSPACE%\SDL_image
         cd %GITHUB_WORKSPACE%\SDL_image
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_image version info:"
+        git log --oneline -1
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_image_install ^
@@ -158,7 +166,9 @@ jobs:
         echo "Building SDL3_mixer..."
         git clone https://github.com/libsdl-org/SDL_mixer.git ${{github.workspace}}/SDL_mixer
         cd ${{github.workspace}}/SDL_mixer
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_mixer version info:"
+        git log --oneline -1
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_mixer_install \
@@ -174,7 +184,9 @@ jobs:
       run: |
         git clone https://github.com/libsdl-org/SDL_mixer.git %GITHUB_WORKSPACE%\SDL_mixer
         cd %GITHUB_WORKSPACE%\SDL_mixer
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_mixer version info:"
+        git log --oneline -1
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_mixer_install ^
@@ -193,7 +205,9 @@ jobs:
         echo "Building SDL3_ttf..."
         git clone https://github.com/libsdl-org/SDL_ttf.git ${{github.workspace}}/SDL_ttf
         cd ${{github.workspace}}/SDL_ttf
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_ttf version info:"
+        git log --oneline -1
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/SDL_ttf_install \
@@ -209,7 +223,9 @@ jobs:
       run: |
         git clone https://github.com/libsdl-org/SDL_ttf.git %GITHUB_WORKSPACE%\SDL_ttf
         cd %GITHUB_WORKSPACE%\SDL_ttf
-        git checkout main
+        git checkout main || git checkout SDL3
+        echo "SDL3_ttf version info:"
+        git log --oneline -1
         cmake -B build -G "Visual Studio 17 2022" -A x64 ^
           -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\SDL_ttf_install ^
