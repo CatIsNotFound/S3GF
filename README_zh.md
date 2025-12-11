@@ -158,5 +158,5 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
 
 ## 获取帮助
 
-1. 通过[说明文档](https://github.com/CatIsNotFound/MYENGINE_Docs.git)进行查看相关 API 文档。（内容未更新）
+1. 通过 [Wiki](https://gitee.com/CatIsNotFound/wiki) 进行查看文档说明。（内容未更新）
 2. 通过 [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) 或 [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine) 提交遇到的问题

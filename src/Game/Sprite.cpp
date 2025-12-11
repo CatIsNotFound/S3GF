@@ -120,12 +120,16 @@ SDL_FlipMode MyEngine::Sprite::flipMode() const {
     return _property->flip_mode;
 }
 
-void MyEngine::Sprite::setAnchors(const MyEngine::Vector2 &pos) {
-    _anchors.reset(pos);
+void MyEngine::Sprite::setAnchor(float x, float y) {
+    _property->setAnchor(x, y);
+}
+
+void MyEngine::Sprite::setAnchor(const MyEngine::Vector2 &pos) {
+    _property->setAnchor(pos);
 }
 
 const MyEngine::Vector2 &MyEngine::Sprite::anchors() const {
-    return _anchors;
+    return _property->anchor();
 }
 
 void MyEngine::Sprite::draw() const {

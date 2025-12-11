@@ -1,4 +1,6 @@
 #include "Components.h"
+
+#include <memory>
 #include "Utils/Logger.h"
 #include "Utils/FileSystem.h"
 #include "Utils/Random.h"
@@ -400,7 +402,7 @@ namespace MyEngine {
                               clip_geometry.size.width, clip_geometry.size.height};
             prop.color_alpha = StdColor::White;
             prop.resize(clip_geometry.size);
-            _tiles_map.emplace(tiles_name, std::shared_ptr<TextureProperty>(new TextureProperty(prop)));
+            _tiles_map.emplace(tiles_name, std::make_shared<TextureProperty>(prop));
         }
     }
 
@@ -408,7 +410,7 @@ namespace MyEngine {
         if (_tiles_map.contains(tiles_name)) {
             _tiles_map[tiles_name]->reset(tiles_property);
         } else {
-            _tiles_map.emplace(tiles_name, std::shared_ptr<TextureProperty>(new TextureProperty(tiles_property)));
+            _tiles_map.emplace(tiles_name, std::make_shared<TextureProperty>(tiles_property));
         }
     }
 

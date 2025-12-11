@@ -1,13 +1,13 @@
 
 #include "Core.h"
 
-#include <memory>
+#include <utility>
 #include "Basic.h"
 #include "Utils/All.h"
 
 namespace MyEngine {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
-    SDL_Color Renderer::_background_color{RGBAColor::Black};
+    SDL_Color Renderer::_background_color{RGBAColor::White};
     SDL_WindowID Engine::_main_window_id{0};
     bool Engine::_quit_requested{false};
     int Engine::_return_code{0};
@@ -473,6 +473,49 @@ namespace MyEngine {
         this->renderer = renderer;
         this->_texture = texture;
         this->_property = property;
+    }
+
+    void Renderer::TextureAtlasCMD::exec() {
+        if (!_texture || !_property) {
+            Logger::log(std::format("Renderer: The texture or texture property is not valid!"),
+                        Logger::Error);
+            return;
+        }
+        auto color = _property->color_alpha;
+        bool _ret = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render draw color failed! Exception: {}",
+                                    SDL_GetError()), Logger::Warn);
+        }
+        _ret = SDL_SetTextureColorMod(_texture, color.r, color.g, color.b);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set texture color failed! Exception: {}",
+                                    SDL_GetError()), Logger::Warn);
+        }
+        _ret = SDL_SetTextureAlphaMod(_texture, color.a);
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set texture alpha failed! Exception: {}",
+                                    SDL_GetError()), Logger::Warn);
+        }
+        for (size_t i = 0; i < _clip_area.size(); ++i) {
+            /// TODO: Use `SDL_RenderGeometry()` function to render.
+
+
+        }
+        if (!_ret) {
+            Logger::log(std::format("Renderer: Set render texture failed! Exception: {}",
+                                    SDL_GetError()), Logger::Error);
+            return;
+        }
+    }
+
+    void Renderer::TextureAtlasCMD::reset(SDL_Renderer* renderer, SDL_Texture* texture, TextureProperty* property,
+               std::vector<GeometryF> clip_area, std::vector<Vector2> pos_list) {
+        this->renderer = renderer;
+        this->_texture = texture;
+        this->_property = property;
+        this->_clip_area = std::move(clip_area);
+        this->_pos_list = std::move(pos_list);
     }
 
     void Renderer::TextCMD::exec() {

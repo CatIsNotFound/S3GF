@@ -49,7 +49,7 @@ Currently, no official version has been released yet. It is expected to be relea
    
    > ❗ Note:
    > 
-   > You need to replace the static library paths for `CMAKE_INSTALL_PREFIX`, `SDL3_LIB`, `SDL3_IMAGE_LIB`, `SDL3_TTF_LIB`, and `SDL3_MIXER_LIB`.
+   > You need to replace the shared library paths for `CMAKE_INSTALL_PREFIX`, `SDL3_LIB`, `SDL3_IMAGE_LIB`, `SDL3_TTF_LIB`, and `SDL3_MIXER_LIB`.
 
 3. Compile and install the project
 
@@ -161,5 +161,5 @@ This project is licensed under the MIT open source license. See the [LICENSE](LI
 
 ## Getting Help
 
-1. Check the [documentation](https://github.com/CatIsNotFound/MYENGINE_Docs.git) for related API documentation. (Content not updated)
+1. Check the [documentation](https://github.com/CatIsNotFound/MyEngine/wiki) for Wiki documentation. (Content not updated)
 2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine).

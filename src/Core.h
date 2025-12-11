@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "Basic.h"
 #ifndef MYENGINE_CORE_H
 #define MYENGINE_CORE_H
@@ -128,6 +130,19 @@ namespace MyEngine {
             TextureProperty* _property;
             void exec() override;
             void reset(SDL_Renderer* renderer, SDL_Texture* texture, TextureProperty* property);
+        };
+        struct TextureAtlasCMD : public Command {
+            explicit TextureAtlasCMD(SDL_Renderer* renderer, SDL_Texture* texture, TextureProperty* property,
+                                     std::vector<GeometryF> clip_area, std::vector<Vector2> pos_list)
+                 : Command(renderer), _texture(texture), _property(property), _clip_area(std::move(clip_area)),
+                    _pos_list(std::move(pos_list)) {}
+            SDL_Texture* _texture;
+            TextureProperty* _property;
+            std::vector<GeometryF> _clip_area;
+            std::vector<Vector2> _pos_list;
+            void exec() override;
+            void reset(SDL_Renderer* renderer, SDL_Texture* texture, TextureProperty* property,
+                       std::vector<GeometryF> clip_area, std::vector<Vector2> pos_list);
         };
         struct TextCMD : public Command {
             explicit TextCMD(SDL_Renderer* renderer, TTF_Text* text, const Vector2& position)

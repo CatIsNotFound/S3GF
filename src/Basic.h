@@ -2,7 +2,9 @@
 #pragma once
 #ifndef MYENGINE_BASIC_H
 #define MYENGINE_BASIC_H
-
+#ifndef M_PI
+#define M_PI		3.14159265358979323846
+#endif
 #include "Libs.h"
 /// Use `MyEngine::delay()` is better.
 #define SLEEP(sec) std::this_thread::sleep_for(std::chrono::seconds(sec))
@@ -426,14 +428,14 @@ namespace MyEngine {
     }
 
     /**
-     * @struct Matrix2D
+     * @class Matrix2D
      * @brief 二维矩阵
      * @since v1.1.0-alpha
      *
      * 支持使用基本数据类型及简单的结构体进行存储。
      */
     template<typename T>
-    struct Matrix2D {
+    class Matrix2D {
     private:
         
         std::vector<T> _datas;
@@ -1276,6 +1278,7 @@ namespace MyEngine {
         class Point {
         private:
             void update() {
+                _count = std::min(64, std::max(4, int(M_PI * _size / 2)));
                 MyEngine::Algorithm::calcPoint(_position, _size / 2.f,
                                            _color, _vertices, _indices, _count);
             }

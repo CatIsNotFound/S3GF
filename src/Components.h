@@ -307,9 +307,19 @@ namespace MyEngine {
         }
         void setAnchor(const Vector2& pos) {
             _anchor.reset(pos);
+            auto scaled_pos = _position + _anchor;
+            _scaled_position.reset((_position.x - scaled_pos.x) * _scale + scaled_pos.x,
+                                   (_position.y - scaled_pos.y) * _scale + scaled_pos.y);
+
+            _scaled_size.reset(_size.width * _scale, _size.height * _scale);
         }
         void setAnchor(float x, float y) {
             _anchor.reset(x, y);
+            auto scaled_pos = _position + _anchor;
+            _scaled_position.reset((_position.x - scaled_pos.x) * _scale + scaled_pos.x,
+                                   (_position.y - scaled_pos.y) * _scale + scaled_pos.y);
+
+            _scaled_size.reset(_size.width * _scale, _size.height * _scale);
         }
         [[nodiscard]] const Vector2& anchor() const {
             return _anchor;

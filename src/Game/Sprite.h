@@ -41,7 +41,8 @@ namespace MyEngine {
         void setFlipMode(SDL_FlipMode flip_mode);
         [[nodiscard]] SDL_FlipMode flipMode() const;
 
-        void setAnchors(const Vector2& pos);
+        void setAnchor(float x, float y);
+        void setAnchor(const MyEngine::Vector2 &pos);
         [[nodiscard]] const Vector2& anchors() const;
 
         void draw() const;
