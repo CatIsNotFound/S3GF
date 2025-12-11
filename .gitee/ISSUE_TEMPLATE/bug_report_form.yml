@@ -1,0 +1,124 @@
+name: Bug 问题报告
+description: 提交 Bug 问题报告以帮助我们改善项目
+title: '[BUG]: '
+labels: ['bug']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 感谢您提交 Bug 报告！
+        请尽可能详细地填写以下信息，这将帮助我们更快地定位和修复问题。
+
+  - type: checkboxes
+    id: operating-system
+    attributes:
+      label: 操作系统
+      description: 请选择您正在使用的操作系统（可多选）
+      options:
+        - label: Windows
+        - label: Linux
+        - label: macOS
+        - label: 其他
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: 操作系统版本
+      description: 请提供更详细的操作系统版本信息
+      placeholder: 例如：Windows 10 22H2, Ubuntu 24.04, macOS 14.0
+    validations:
+      required: false
+
+  - type: input
+    id: myengine-version
+    attributes:
+      label: MyEngine 版本
+      description: 当前使用的 MyEngine 版本
+      placeholder: 例如：v0.1.1-beta
+    validations:
+      required: true
+
+  - type: input
+    id: sdl-version
+    attributes:
+      label: SDL 版本
+      description: 当前使用的 SDL 版本
+      placeholder: 例如：3.3.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: 问题描述
+      description: 请详细描述您遇到的问题
+      placeholder: 请尽可能详细地描述问题，包括出现问题时的具体情况...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 复现步骤
+      description: 请提供复现该问题的详细步骤
+      placeholder: |
+        1. 
+        2. 
+        3. 
+        ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 预期行为
+      description: 描述您期望发生的行为
+      placeholder: 请描述在正常情况下应该发生什么...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 实际行为
+      description: 描述实际发生的行为
+      placeholder: 请描述实际上发生了什么，与预期有何不同...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志输出
+      description: 请复制粘贴任何相关的日志输出
+      placeholder: 请在此处粘贴任何相关的日志输出，包括错误信息、警告等...
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图或录屏
+      description: 如果可以，请提供相关的截图或录屏
+      placeholder: |
+        您可以：
+        - 直接粘贴图片
+        - 提供图片链接
+        - 描述您看到的内容
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 补充内容
+      description: 如果有其他补充内容，请在此说明
+      placeholder: 任何其他可能有用的信息，如相关配置、环境变量等...
+    validations:
+      required: false

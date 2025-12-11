@@ -1,0 +1,151 @@
+name: 问题求助
+description: 提出开发、安装、使用过程中遇到的问题
+title: '[Question] '
+labels: ['question']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 感谢您提出问题！
+        我们会尽力帮助您解决问题。请尽可能详细地提供相关信息。
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: 问题详细描述
+      description: 详细描述遇到的问题，包括报错信息和异常现象
+      placeholder: |
+        请详细描述：
+        - 遇到的具体问题
+        - 错误信息或异常现象
+        - 出现问题时的具体操作步骤
+        - 任何相关的截图或视频（可以在下方补充部分添加）
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 复现步骤
+      description: 如果适用，请提供复现问题的详细步骤
+      placeholder: |
+        1. 
+        2. 
+        3. 
+        ...
+        
+        请标注出现问题的那一步。
+    validations:
+      required: false
+
+  - type: textarea
+    id: attempted-solutions
+    attributes:
+      label: 已尝试的解决方法
+      description: 列出已尝试的解决方法及结果，避免重复建议
+      placeholder: |
+        例如：
+        1. 在 CMake 中添加 `-DSDL3_LIB_PATH=...` 选项以指定 SDL3 库目录，但配置项目时仍然报错
+        2. 重新安装依赖库，问题依然存在
+        3. 尝试使用不同的编译器版本
+        
+        请说明每种方法的结果。
+    validations:
+      required: false
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: 操作系统
+      description: 请选择您正在使用的操作系统
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: 操作系统版本
+      description: 请提供详细的操作系统版本信息
+      placeholder: 例如：Windows 10 22H2, Fedora 42, Ubuntu 25.04, macOS 14.0
+    validations:
+      required: true
+
+  - type: input
+    id: build-tool
+    attributes:
+      label: 项目构建工具
+      description: 使用的CMake或其他构建工具版本
+      placeholder: 例如：cmake 3.31.4, cmake 4.2.0
+    validations:
+      required: true
+
+  - type: input
+    id: myengine-version
+    attributes:
+      label: MyEngine 项目版本
+      description: 当前使用的MyEngine版本
+      placeholder: 例如：v0.1.1-beta
+    validations:
+      required: true
+
+  - type: input
+    id: compiler
+    attributes:
+      label: 编译器
+      description: 使用的编译器及版本
+      placeholder: 例如：gcc/g++ 13.1.0, mingw-w64 11.0, msvc 14.3
+    validations:
+      required: true
+
+  - type: textarea
+    id: other-config
+    attributes:
+      label: 其他配置
+      description: 其他相关的配置信息
+      placeholder: |
+        例如：
+        - 是否在虚拟机环境下运行
+        - 特殊的编译选项或环境变量
+        - 相关的硬件配置
+        - 任何其他可能影响问题的配置
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志输出
+      description: 请复制粘贴任何相关的日志输出、错误信息或警告
+      placeholder: 请在此处粘贴完整的错误信息、终端输出、构建日志等...
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图或录屏
+      description: 如果可以，请提供相关的截图或录屏
+      placeholder: |
+        您可以：
+        - 直接粘贴图片
+        - 提供图片链接
+        - 描述您看到的内容
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 补充内容
+      description: 如果有其他补充内容，请在此说明
+      placeholder: 任何其他可能有用的信息，如相关文档链接、参考资源等...
+    validations:
+      required: false

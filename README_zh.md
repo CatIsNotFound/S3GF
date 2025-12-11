@@ -2,6 +2,8 @@
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
+![cover](./assets/cover.jpg)
+
 MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 及其扩展之上。它以简洁和灵活为设计理念，提供直观的面向对象 API，使游戏和应用程序开发变得快速而愉悦。利用现代 C++20 特性，MyEngine 提供了模块化架构，允许开发人员以最少的样板代码轻松创建交互式图形应用程序。
 
 ## 环境依赖
@@ -95,6 +97,28 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
             SDL3_mixer::SDL3_mixer
             MyEngine::MyEngine
     )
+   
+    if (WIN32)
+    set(POST_BUILD_COMMANDS
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_MIXER_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+    )
+    if (MINGW)
+        list(APPEND POST_BUILD_COMMANDS
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
+        )
+    else ()
+        list(APPEND POST_BUILD_COMMANDS
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+        )
+    endif()
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            ${POST_BUILD_COMMANDS}
+    )
+    endif()
    ```
 
 2. 编辑 `main.cpp` 文件：
