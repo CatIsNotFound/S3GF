@@ -32,3 +32,4 @@
 #include <filesystem>
 #include <cstdint>
 #include <csignal>
+#include <cassert>

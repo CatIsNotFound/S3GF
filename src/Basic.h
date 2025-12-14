@@ -1270,16 +1270,16 @@ namespace MyEngine {
 namespace MyEngine {
     /**
      * @namespace Graphics
-     * @brief 基本图形
+     * @brief Basic Graphic
      *
-     * 包含所有基本图形，如：点、线段、矩形、椭圆等基本图形。
+     * Includes all basic shapes, such as points, line segments, rectangles, ellipses, and other basic shapes.
      */
     namespace Graphics {
         class Point {
         private:
             void update() {
                 _count = std::min(64, std::max(4, int(M_PI * _size / 2)));
-                MyEngine::Algorithm::calcPoint(_position, _size / 2.f,
+                Algorithm::calcPoint(_position, _size / 2.f,
                                            _color, _vertices, _indices, _count);
             }
             Vector2 _position;
@@ -1359,7 +1359,7 @@ namespace MyEngine {
             }
         private:
             void update() {
-                MyEngine::Algorithm::calcLine(_start_position.x, _start_position.y,
+                Algorithm::calcLine(_start_position.x, _start_position.y,
                                           _end_position.x, _end_position.y,
                                           _size, _color, _vertices, _indices);
             }
@@ -1369,6 +1369,137 @@ namespace MyEngine {
             SDL_Color _color;
             std::array<int, 6> _indices;
             std::array<SDL_Vertex, 4> _vertices;
+        };
+
+        class RectangleEX {
+        public:
+            explicit RectangleEX() : _geometry(), _border_size(0),
+                _border_color(StdColor::Black), _background_color(StdColor::Transparent), _degree(0) {}
+            explicit RectangleEX(const GeometryF& geometry, uint16_t border = 1,
+                                 const SDL_Color& border_color = StdColor::Black,
+                                 const SDL_Color& background_color = StdColor::White, float degree = 0)
+                : _geometry(geometry), _border_size(border), _border_color(border_color),
+                  _background_color(background_color), _degree(degree) {
+                updateGeometry();
+                updateBorderGeometry();
+            }
+            explicit RectangleEX(float x, float y, float w, float h, uint16_t border = 1,
+                                 const SDL_Color& border_color = StdColor::Black,
+                                 const SDL_Color& background_color = StdColor::White, float degree = 0)
+                    : _geometry(x, y, w, h), _border_size(border), _border_color(border_color),
+                      _background_color(background_color), _degree(degree) {
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            void reset(float x, float y, float w, float h, uint16_t border = 1,
+                       const SDL_Color& border_color = StdColor::Black,
+                       const SDL_Color& background_color = StdColor::White, float degree = 0) {
+                _geometry.reset(x, y, w, h);
+                _border_size = border;
+                _border_color = border_color;
+                _background_color = background_color;
+                _degree = degree;
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            void reset(const GeometryF& geometry, uint16_t border = 1,
+                       const SDL_Color& border_color = StdColor::Black,
+                       const SDL_Color& background_color = StdColor::White, float degree = 0) {
+                _geometry.reset(geometry);
+                _border_size = border;
+                _border_color = border_color;
+                _background_color = background_color;
+                _degree = degree;
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            void setBorder(uint16_t border_size, const SDL_Color& color) {
+                _border_size = border_size;
+                _border_color = color;
+                updateBorderGeometry();
+            }
+
+            [[nodiscard]] uint16_t borderSize() const { return _border_size; }
+
+            void setBorderColor(const SDL_Color& color) {
+                _border_color = color;
+                for (auto& vertex : _border_vertices) {
+                    vertex.color = Algorithm::convert2FColor(_border_color);
+                }
+            }
+
+            [[nodiscard]] const SDL_Color& borderColor() const {
+                return _border_color;
+            }
+
+            void setBackgroundColor(const SDL_Color& color) {
+                _background_color = color;
+                for (auto& vertex : _vertices) {
+                    vertex.color = Algorithm::convert2FColor(_background_color);
+                }
+            }
+
+            [[nodiscard]] const SDL_Color& backgroundColor() const {
+                return _background_color;
+            }
+
+            void setDegree(float degree) {
+                _degree = degree;
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            [[nodiscard]] float degree() const { return _degree; }
+
+            void setGeometry(float x, float y, float w, float h) {
+                _geometry.reset(x, y, w, h);
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            void setGeometry(const GeometryF& geometry) {
+                _geometry.reset(geometry);
+                updateGeometry();
+                updateBorderGeometry();
+            }
+
+            [[nodiscard]] const GeometryF& geometry() const { return _geometry; }
+
+            [[nodiscard]] const SDL_Vertex* vertices() const { return _vertices.data(); }
+            [[nodiscard]] size_t verticesCount() const { return _vertices.size(); }
+            [[nodiscard]] const int* indices() const { return _indices.data(); }
+            [[nodiscard]] size_t indicesCount() const { return _indices.size(); }
+            [[nodiscard]] const SDL_Vertex* borderVertices() const { return _border_vertices.data(); }
+            [[nodiscard]] size_t borderVerticesCount() const { return _border_vertices.size(); }
+            [[nodiscard]] const int* borderIndices() const { return _border_indices.data(); }
+            [[nodiscard]] size_t borderIndicesCount() const { return _border_indices.size(); }
+        private:
+            void updateGeometry() {
+                if (_background_color.a > 0 ) {
+                    Algorithm::calcFilledRectangleRotated(_geometry, _background_color, _degree,
+                                                          _vertices, _indices);
+                }
+            }
+
+            void updateBorderGeometry() {
+                if (_border_size > 0 && _border_color.a > 0) {
+                    Algorithm::calcRectangleRotated(_geometry, _border_color, _border_size, _degree,
+                                                    _border_vertices, _border_indices);
+                }
+            }
+
+            GeometryF _geometry;
+            uint16_t _border_size;
+            SDL_Color _border_color;
+            SDL_Color _background_color;
+            float _degree;
+            std::array<SDL_Vertex, 4> _vertices{};
+            std::array<SDL_Vertex, 8> _border_vertices{};
+            std::array<int, 6> _indices{};
+            std::array<int, 24> _border_indices{};
         };
 
         class Rectangle {
@@ -1387,7 +1518,7 @@ namespace MyEngine {
                                const SDL_Color& background_color = StdColor::Black)
                                : _geometry(x, y, w, h), _border_size(border),
                                  _border_color(border_color), _background_color(background_color) {
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void reset(const GeometryF& geometry, uint16_t border,
                        const SDL_Color& border_color, const SDL_Color& background_color) {
@@ -1403,7 +1534,7 @@ namespace MyEngine {
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void reset(float x, float y, float w, float h, uint16_t border,
                        const SDL_Color& border_color, const SDL_Color& background_color) {
@@ -1411,40 +1542,40 @@ namespace MyEngine {
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(float x, float y, float w, float h) {
                 _geometry.reset(x, y, w, h);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(const Vector2& pos, const Size& size) {
                 _geometry.reset(pos, size);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setGeometry(const GeometryF& geometry) {
                 _geometry = geometry;
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void move(const Vector2& pos) {
                 _geometry.pos.reset(pos);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void move(float x, float y) {
                 _geometry.pos.reset(x, y);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void resize(const Size& size) {
                 _geometry.size.reset(size);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void resize(float w, float h) {
                 _geometry.size.reset(w, h);
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
 
-            void setBorderSize(uint16_t border_size) {
+            void setBorder(uint16_t border_size) {
                 _border_size = border_size;
-                MyEngine::Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
+                Algorithm::calcRectangleBorder(_geometry, _border_size, _borders);
             }
             void setBorderColor(const SDL_Color& color) {
                 _border_color = color;
@@ -1512,9 +1643,15 @@ namespace MyEngine {
                 _border_color = color;
                 updateBorder();
             }
+            void setBorderColor(const SDL_Color& color) {
+                _border_color = color;
+                updateBorder();
+            }
             void setBackgroundColor(const SDL_Color& color) {
                 _background_color = color;
-                updateTri();
+                for (auto& vertex : _vertices) {
+                    vertex.color = Algorithm::convert2FColor(color);
+                }
             }
             [[nodiscard]] const Vector2& position(uint8_t index = 0) const {
                 switch (index % 3) {
@@ -1544,13 +1681,16 @@ namespace MyEngine {
             [[nodiscard]] size_t vertexCount() const { return _vertices.size(); }
         private:
             void updateTri() {
-                MyEngine::Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
+                if (_background_color.a > 0) {
+                    Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
+                }
             }
             void updateBorder() {
-                if (_border_size == 0) return;
-                MyEngine::Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size, _border_color,_bd1, _bdi1);
-                MyEngine::Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size, _border_color,_bd2, _bdi2);
-                MyEngine::Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size, _border_color,_bd3, _bdi3);
+                if (_border_size > 0 && _border_color.a > 0) {
+                    Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size, _border_color, _bd1, _bdi1);
+                    Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size, _border_color, _bd2, _bdi2);
+                    Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size, _border_color, _bd3, _bdi3);
+                }
             }
             Vector2 _p1;
             Vector2 _p2;
@@ -1581,12 +1721,8 @@ namespace MyEngine {
                     : _center_point(cx, cy), _radius(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),
                       _degree(degree), _count(segment) {
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             void reset(float cx, float cy, float rw, float rh, uint16_t border_size,
@@ -1599,12 +1735,8 @@ namespace MyEngine {
                 _background_color = back_color;
                 _degree = degree;
                 _count = segment;
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             void reset(const Vector2& center_pos, const Size& radius, uint16_t border_size,
@@ -1617,59 +1749,48 @@ namespace MyEngine {
                 _background_color = back_color;
                 _degree = degree;
                 _count = segment;
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             void setGeometry(float x, float y, float rw, float rh) {
                 _center_point.reset(x, y);
                 _radius.reset(rw, rh);
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             void setGeometry(const Vector2& position, const Size& size) {
                 _center_point.reset(position);
                 _radius.reset(size);
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             void setBorder(uint16_t size, const SDL_Color& color) {
                 _border_size = size;
                 _border_color = color;
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateEllipse();
+            }
+
+            void setBorderColor(const SDL_Color& color) {
+                _border_color = color;
+                for (auto& vertex : _border_vertices) {
+                    vertex.color = Algorithm::convert2FColor(color);
+                }
             }
 
             void setBackground(const SDL_Color& color) {
                 _background_color = color;
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
+                for (auto& vertex : _vertices) {
+                    vertex.color = Algorithm::convert2FColor(color);
+                }
             }
 
             void setRotate(float rotate) {
                 _degree = rotate;
-                MyEngine::Algorithm::calcEllipse(_center_point, _radius,
-                                             _background_color, _degree, _count,
-                                             _vertices, _indices);
-                MyEngine::Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                 _border_color, _degree, _count,
-                                                 _border_vertices, _border_indices);
+                updateFilledEllipse();
+                updateEllipse();
             }
 
             [[nodiscard]] const Vector2& centerPosition() const { return _center_point; }
@@ -1688,8 +1809,19 @@ namespace MyEngine {
             [[nodiscard]] size_t borderVerticesCount() const { return _border_vertices.size(); }
 
         private:
-            void update() {
-
+            void updateFilledEllipse() {
+                if (_background_color.a > 0) {
+                    Algorithm::calcEllipse(_center_point, _radius,
+                                                     _background_color, _degree, _count,
+                                                     _vertices, _indices);
+                }
+            }
+            void updateEllipse() {
+                if (_border_size > 0 && _border_color.a > 0) {
+                    Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
+                                                         _border_color, _degree, _count,
+                                                         _border_vertices, _border_indices);
+                }
             }
             Vector2 _center_point;
             Size _radius;

@@ -58,7 +58,7 @@ namespace MyEngine {
 
             float px = nx * (float) thickness * 0.5f;
             float py = ny * (float) thickness * 0.5f;
-            
+
             float extend = thickness * 0.5f;
             float ex1 = -dx / len * extend;
             float ey1 = -dy / len * extend;
@@ -89,6 +89,96 @@ namespace MyEngine {
             borders[1] = {X, Y + H - THICKNESS, W, THICKNESS };
             borders[2] = {X, Y + THICKNESS, THICKNESS, H - 2 * THICKNESS };
             borders[3] = {X + W - THICKNESS, Y + THICKNESS, THICKNESS, H - 2 * THICKNESS };
+        }
+
+        inline void calcFilledRectangleRotated(const GeometryF& geometry, const SDL_Color& color, float degree,
+                                               std::array<SDL_Vertex, 4>& vertices, std::array<int, 6>& indices) {
+            float cx = geometry.pos.x + geometry.size.width  * 0.5f;
+            float cy = geometry.pos.y + geometry.size.height * 0.5f;
+
+            float hw = geometry.size.width  * 0.5f;
+            float hh = geometry.size.height * 0.5f;
+
+            struct { float x, y; } local[4] = {
+                    { -hw, -hh },   // LT
+                    {  hw, -hh },   // RT
+                    {  hw,  hh },   // RB
+                    { -hw,  hh }    // LB
+            };
+
+            SDL_FColor fcolor = convert2FColor(color);
+
+            for (int i = 0; i < 4; ++i) {
+                float x = local[i].x;
+                float y = local[i].y;
+
+                float rad = degree;
+                float c = cosf(rad);
+                float s = sinf(rad);
+
+                float wx = cx + (x * c - y * s);
+                float wy = cy + (x * s + y * c);
+
+                vertices[i] = { {wx, wy}, fcolor, {0, 0} };
+            }
+
+            indices = { 0, 1, 2, 0, 2, 3 };
+        }
+
+        inline void calcRectangleRotated(const GeometryF& geometry, const SDL_Color& color, uint16_t size, float degree,
+                                         std::array<SDL_Vertex, 8>& vertices, std::array<int, 24>& indices) {
+            float cx = geometry.pos.x + geometry.size.width  * 0.5f;
+            float cy = geometry.pos.y + geometry.size.height * 0.5f;
+            float hw = geometry.size.width  * 0.5f;
+            float hh = geometry.size.height * 0.5f;
+            float halfW = size * 0.5f;
+
+            struct { float x, y; } outer[4] = {
+                    { -hw        , -hh         },
+                    {  hw        , -hh         },
+                    {  hw        ,  hh         },
+                    { -hw        ,  hh         }
+            };
+
+            struct { float x, y; } inner[4] = {
+                    { -hw + halfW, -hh + halfW },
+                    {  hw - halfW, -hh + halfW },
+                    {  hw - halfW,  hh - halfW },
+                    { -hw + halfW,  hh - halfW }
+            };
+
+            SDL_FColor fcolor = convert2FColor(color);
+
+            float rad = degree;
+            float c = cosf(rad), s = sinf(rad);
+
+            for (int i = 0; i < 4; ++i) {
+                float ox = cx + (outer[i].x * c - outer[i].y * s);
+                float oy = cy + (outer[i].x * s + outer[i].y * c);
+                float ix = cx + (inner[i].x * c - inner[i].y * s);
+                float iy = cy + (inner[i].x * s + inner[i].y * c);
+
+                vertices[i]     = { {ox, oy}, fcolor, {0, 0} };
+                vertices[i + 4] = { {ix, iy}, fcolor, {0, 0} };
+            }
+
+            int* idx = indices.data();
+            for (int i = 0; i < 4; ++i) {
+                int n = i * 6;
+                int o0 = i;
+                int o1 = (i + 1) & 3;
+                int i0 = i + 4;
+                int i1 = ((i + 1) & 3) + 4;
+
+                // Triangle 1
+                idx[n + 0] = o0;
+                idx[n + 1] = o1;
+                idx[n + 2] = i1;
+                // Triangle 2
+                idx[n + 3] = o0;
+                idx[n + 4] = i1;
+                idx[n + 5] = i0;
+            }
         }
 
         inline void calcTriangle(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const SDL_Color& color,

@@ -86,6 +86,11 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Game/GObject.h
             src/Game/Collider.cpp
             src/Game/Collider.h
+            src/Renderer/BaseCommand.cpp
+            src/Renderer/BaseCommand.h
+            src/Renderer/CommandPool.cpp
+            src/Renderer/CommandPool.h
+            src/Renderer/CommandFactory.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -125,6 +130,11 @@ else ()
             src/Game/GObject.h
             src/Game/Collider.cpp
             src/Game/Collider.h
+            src/Renderer/BaseCommand.cpp
+            src/Renderer/BaseCommand.h
+            src/Renderer/CommandPool.cpp
+            src/Renderer/CommandPool.h
+            src/Renderer/CommandFactory.h
     )
 endif ()
 

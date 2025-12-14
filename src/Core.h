@@ -6,6 +6,7 @@
 #define MYENGINE_CORE_H
 #define MYENGINE_FULL_VERSION "v0.1.2-beta"
 #include "Components.h"
+#include "Renderer/CommandFactory.h"
 
 namespace MyEngine {
     class Engine;
@@ -173,8 +174,13 @@ namespace MyEngine {
 
         void releaseCmd(std::unique_ptr<Command> command);
 
+        RenderCommand::CommandFactory& factory() {
+            return _factory;
+        }
+
         std::deque<std::unique_ptr<Command>> _cmd_list;
         DiscardStrategy _dis_st{DiscardStrategy::Oldest};
+        static RenderCommand::CommandFactory _factory;
         SDL_Renderer* _renderer{nullptr};
         Window* _window{nullptr};
         static SDL_Color _background_color;
