@@ -112,7 +112,7 @@ namespace MyEngine {
                 float x = local[i].x;
                 float y = local[i].y;
 
-                float rad = degree;
+                float rad = degree * M_PI / 180.0f;
                 float c = cosf(rad);
                 float s = sinf(rad);
 
@@ -149,7 +149,7 @@ namespace MyEngine {
 
             SDL_FColor fcolor = convert2FColor(color);
 
-            float rad = degree;
+            float rad = degree * M_PI / 180.0f;
             float c = cosf(rad), s = sinf(rad);
 
             for (int i = 0; i < 4; ++i) {

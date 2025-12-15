@@ -39,7 +39,6 @@ namespace MyEngine {
     }
 
     void Renderer::_update() {
-        SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_NONE);
         SDL_SetRenderDrawColor(_renderer, _background_color.r, _background_color.g,
                                 _background_color.b, _background_color.a);
         SDL_RenderClear(_renderer);
