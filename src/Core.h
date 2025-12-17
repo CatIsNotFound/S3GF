@@ -2,10 +2,21 @@
 #ifndef MYENGINE_CORE_H
 #define MYENGINE_CORE_H
 #define MYENGINE_FULL_VERSION "v0.1.2-beta"
+
 #include "Basic.h"
 #include "Components.h"
 
 namespace MyEngine {
+    class EngineException : public std::exception {
+    public:
+        explicit EngineException(std::string message) : _msg(std::move(message)) {}
+        [[nodiscard]] const char * what() const noexcept override {
+            return _msg.data();
+        }
+    private:
+        std::string _msg;
+    };
+
     class Engine;
     class Window;
     struct TextureProperty;
@@ -56,6 +67,7 @@ namespace MyEngine {
                            const SDL_Color& color = StdColor::White);
         void drawDebugTexts(const StringList& text_list, const std::vector<Vector2*>& position_list,
                            const SDL_Color& color = StdColor::White);
+        void drawDebugFPS(const Vector2& position = {20, 20}, const SDL_Color& color = StdColor::White);
         void setViewport(const Geometry& geometry);
         void setClipView(const Geometry& geometry);
         void setBlendMode(const SDL_BlendMode& blend_mode);
@@ -68,8 +80,8 @@ namespace MyEngine {
         friend class Renderer;
         friend class EventSystem;
     public:
-        struct Geometry {
-            int x, y, width, height;
+        struct WindowSize {
+            int width, height;
         };
         enum GraphicEngine {
             OPENGL,
@@ -81,9 +93,14 @@ namespace MyEngine {
 
         bool move(int x, int y);
         bool resize(int width, int height);
+        bool setMinimumSize(int width, int height);
+        bool setMaximumSize(int width, int height);
         bool setGeometry(int x, int y, int width, int height);
         
         [[nodiscard]] const Geometry& geometry() const;
+        [[nodiscard]] WindowSize minimumSize() const;
+        [[nodiscard]] WindowSize maximumSize() const;
+        [[nodiscard]] WindowSize windowSize() const;
         [[nodiscard]] uint32_t windowID() const;
 
         bool show();
@@ -94,17 +111,22 @@ namespace MyEngine {
         bool setResizable(bool enabled);
         [[nodiscard]] bool resizable() const;
 
-        void setRenderer(Renderer* renderer);
+        void setRenderer(Renderer *renderer);
         [[nodiscard]] Renderer* renderer() const;
 
         void setBorderless(bool enabled);
         [[nodiscard]] bool borderless() const;
+
+        void setWindowOpacity(float opacity);
+        [[nodiscard]] float windowOpacity() const;
 
         void setFullScreen(bool enabled, bool move_to_center = false);
         [[nodiscard]] bool fullScreen() const;
 
         void setWindowTitle(const std::string& title);
         [[nodiscard]] const std::string& windowTitle() const;
+
+        void setWindowIcon(const std::string& icon_path);
 
         [[nodiscard]] SDL_Window* self() const;
         [[nodiscard]] Engine* engine() const;
@@ -118,8 +140,10 @@ namespace MyEngine {
         virtual void unloadEvent();
     private:
         Geometry _window_geometry;
+
         std::shared_ptr<Renderer> _renderer; 
         SDL_Window* _window{nullptr};
+        SDL_Surface* _win_icon{nullptr};
         SDL_WindowID _winID;
         std::string _title;
         bool _visible{true};
@@ -214,6 +238,7 @@ namespace MyEngine {
         constIter end() const { return _window_list.cend(); }
         iter end() { return _window_list.end(); }
         size_t windowCount() { return _window_list.size(); }
+        [[nodiscard]] bool isWindowExist(uint32_t window_id) { return _window_list.contains(window_id); }
 
         void setFPS(uint32_t fps);
         uint32_t fps() const; 

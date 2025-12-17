@@ -17,6 +17,7 @@
 #include <list>
 #include <queue>
 #include <memory>
+#include <memory_resource>
 #include <functional>
 #include <map>
 #include <unordered_map>

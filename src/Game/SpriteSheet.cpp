@@ -66,14 +66,14 @@ MyEngine::SpriteSheet::~SpriteSheet() {
 void MyEngine::SpriteSheet::move(float x, float y) {
     _global_prop->move(x, y);
     for (auto& [name, prop] : *_atlas) {
-        prop.property->move(x, y);
+        prop.properties.front()->move(x, y);
     }
 }
 
 void MyEngine::SpriteSheet::move(const MyEngine::Vector2 &pos) {
     _global_prop->move(pos);
     for (auto& [name, prop] : *_atlas) {
-        prop.property->move(pos);
+        prop.properties.front()->move(pos);
     }
 }
 
@@ -84,14 +84,14 @@ const MyEngine::Vector2 &MyEngine::SpriteSheet::position() const {
 void MyEngine::SpriteSheet::resize(float w, float h) {
     _global_prop->resize(w, h);
     for (auto& [name, prop] : *_atlas) {
-        prop.property->resize(w, h);
+        prop.properties.front()->resize(w, h);
     }
 }
 
 void MyEngine::SpriteSheet::resize(const MyEngine::Size &size) {
     _global_prop->resize(size);
     for (auto& [name, prop] : *_atlas) {
-        prop.property->resize(size);
+        prop.properties.front()->resize(size);
     }
 }
 
@@ -102,7 +102,7 @@ const MyEngine::Size &MyEngine::SpriteSheet::size() const {
 void MyEngine::SpriteSheet::setScale(float scale) {
     _global_prop->setScale(scale);
     for (auto& [name, prop] : *_atlas) {
-        prop.property->setScale(scale);
+        prop.properties.front()->setScale(scale);
     }
 }
 
@@ -113,7 +113,7 @@ float MyEngine::SpriteSheet::scale() const {
 void MyEngine::SpriteSheet::setColorAlpha(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     _global_prop->color_alpha = { .r = r, .g = g, .b = b, .a = a };
     for (auto& [name, prop] : *_atlas) {
-        prop.property->color_alpha = { .r = r, .g = g, .b = b, .a = a };
+        prop.properties.front()->color_alpha = { .r = r, .g = g, .b = b, .a = a };
     }
 }
 
@@ -121,14 +121,14 @@ void MyEngine::SpriteSheet::setColorAlpha(uint64_t hex_code) {
     auto [r, g, b, a] = RGBAColor::RGBAValue2Color(hex_code, true);
     _global_prop->color_alpha = { .r = r, .g = g, .b = b, .a = a };
     for (auto& [name, prop] : *_atlas) {
-        prop.property->color_alpha = { .r = r, .g = g, .b = b, .a = a };
+        prop.properties.front()->color_alpha = { .r = r, .g = g, .b = b, .a = a };
     }
 }
 
 void MyEngine::SpriteSheet::setColorAlpha(const SDL_Color &color) {
     _global_prop->color_alpha = color;
     for (auto& [name, prop] : *_atlas) {
-        prop.property->color_alpha = color;
+        prop.properties.front()->color_alpha = color;
     }
 }
 
@@ -153,7 +153,13 @@ bool MyEngine::SpriteSheet::visible() const {
 }
 
 void MyEngine::SpriteSheet::appendTiles(const std::string &tiles_name, const MyEngine::GeometryF &clip_geometry) {
-    _atlas->setTiles(tiles_name, clip_geometry, _atlas->tilesProperty(tiles_name));
+    bool r = _atlas->addTiles(tiles_name, clip_geometry);
+    if (!r) {
+        auto& pos = clip_geometry.pos;
+        auto& size = clip_geometry.size;
+        _atlas->tilesProperty(tiles_name)->clip_mode = true;
+        _atlas->tilesProperty(tiles_name)->clip_area = { pos.x, pos.y, size.width, size.height };
+    }
     _atlas->tilesProperty(tiles_name)->move(_global_prop->position());
     _atlas->tilesProperty(tiles_name)->resize(_global_prop->size());
     _atlas->tilesProperty(tiles_name)->setScale(_global_prop->scale());

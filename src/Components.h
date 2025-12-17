@@ -391,9 +391,8 @@ namespace MyEngine {
     class TextureAtlas : public Texture {
     public:
         struct Tile {
-            std::vector<SDL_Vertex> vertex;
-            std::vector<int> indices;
-            std::unique_ptr<TextureProperty> property;
+            std::string name;
+            std::vector<std::unique_ptr<TextureProperty>> properties;
         };
         using constIter = std::unordered_map<std::string, Tile>::const_iterator;
         using iter = std::unordered_map<std::string, Tile>::iterator;
@@ -406,26 +405,25 @@ namespace MyEngine {
         explicit TextureAtlas(SDL_Surface* surface, Renderer *renderer, bool deep_copy = false);
         ~TextureAtlas();
 
-        std::vector<SDL_Vertex> vertices(const std::string& tiles_name) const;
-        std::vector<int> indices(const std::string& tiles_name) const;
-
         iter begin() { return _tiles_map.begin(); }
         constIter begin() const { return _tiles_map.cbegin(); }
         iter end() { return _tiles_map.end(); }
         constIter end() const { return _tiles_map.cend(); }
         size_t count() { return _tiles_map.size(); }
 
-        void setTiles(const std::string& tiles_name, const GeometryF& clip_geometry, TextureProperty* property);
+        bool addTiles(const std::string& tiles_name, const MyEngine::GeometryF &clip_geometry);
+        bool addTilesProperty(const std::string& tiles_name);
         bool eraseTiles(const std::string& tiles_name);
-        void setClipGeometryOfTiles(const std::string& tiles_name, const GeometryF& clip_geometry);
-        TextureProperty* tilesProperty(const std::string& tiles_name);
+        TextureProperty* tilesProperty(const std::string& tiles_name, size_t index = 0);
+        [[nodiscard]] size_t tilesPropertyCount(const std::string& tiles_name) const;
         void setCurrentTiles(const std::string& tiles_name);
         [[nodiscard]] const std::string& currentTiles() const;
         StringList tilesNameList() const;
         [[nodiscard]] bool isTilesNameExist(const std::string& tiles_name) const;
 
         void draw() override;
-        void draw(const std::string& tiles_name);
+        void draw(size_t index = 0);
+        void draw(const std::string& tiles_name, size_t index = 0);
     private:
         std::unordered_map<std::string, Tile> _tiles_map;
         std::string _current_tiles;

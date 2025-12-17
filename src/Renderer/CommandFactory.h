@@ -7,6 +7,13 @@ namespace MyEngine {
         template<typename T> class CommandPool;
         class CommandFactory {
         public:
+            CommandFactory() = delete;
+            ~CommandFactory() = delete;
+            CommandFactory(const CommandFactory&) = delete;
+            CommandFactory(CommandFactory&&) = delete;
+            CommandFactory& operator=(const CommandFactory&) = delete;
+            CommandFactory& operator=(CommandFactory&&) = delete;
+
             template<typename T, typename ...Args>
             static T* acquire(Args... args) {
                 return getPool<T>().acquire(args...);
@@ -22,6 +29,10 @@ namespace MyEngine {
                 getPool<T>();
             }
 
+            template<typename T>
+            static void getStatistics(size_t& current_size, size_t& max_size) {
+                getPool<T>().getStatistics(current_size, max_size);
+            }
         private:
             template<typename T>
             static CommandPool<T>& getPool() {

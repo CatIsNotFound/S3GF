@@ -43,10 +43,11 @@ namespace MyEngine {
                 if (!file) {
                     _write_log = false;
                     Logger::log(std::format("Logger: Can't open file '{}' to write log! ", _output_file_name), Warn);
+                } else {
+                    fprintf(file, "%s", log.c_str());
+                    fflush(file);
+                    fclose(file);
                 }
-                fprintf(file, "%s", log.c_str());
-                fflush(file);
-                fclose(file);
             }
             _last_log_level = level;
             _last_log_info = message;

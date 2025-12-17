@@ -13,7 +13,7 @@ int main() {
     auto size = atlas.property()->size() / 4;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j)
-            atlas.setTiles(std::format("test{}", i * 4 + j), GeometryF(size.width * j, size.height * i, size.width, size.height), atlas.property());
+            atlas.addTiles(std::format("test{}", i * 4 + j), GeometryF(size.width * j, size.height * i, size.width, size.height), atlas.property());
     }
     DateTime::setDefaultTimezone("Asia/Shanghai");
     atlas.setClipGeometryOfTiles("test4", GeometryF{0, 0, 200, 200});

@@ -97,6 +97,8 @@ namespace MyEngine {
     inline void delay(uint64_t sec) { std::this_thread::sleep_for(std::chrono::seconds(sec)); }
     /// Set how many milliseconds to delay on this process.
     inline void delayMS(uint64_t ms) { std::this_thread::sleep_for(std::chrono::milliseconds(ms)); }
+    /// Set how many microseconds to delay on this process.
+    inline void delayUS(uint64_t us) { std::this_thread::sleep_for(std::chrono::microseconds(us)); }
     /// Set how many nanoseconds to delay on this process.
     inline void delayNS(uint64_t ns) { std::this_thread::sleep_for(std::chrono::nanoseconds(ns)); }
 

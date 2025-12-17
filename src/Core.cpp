@@ -27,6 +27,11 @@ namespace MyEngine {
     }
 
     Renderer::~Renderer() {
+        if (!_cmd_list.empty()) {
+            for (auto& cmd : _cmd_list) {
+                RenderCommand::CommandFactory::release(std::move(cmd));
+            }
+        }
         if (_renderer) SDL_DestroyRenderer(_renderer);
     }
 
@@ -114,7 +119,7 @@ namespace MyEngine {
     }
 
     void Renderer::drawTexture(SDL_Texture* texture, const std::vector<TextureProperty*>& properties) {
-        if (!texture) return;
+        if (!texture || properties.empty()) return;
         addCommand<RenderCommand::TextureCMD>(_renderer, texture, nullptr, RenderCommand::BaseCommand::Mode::Multiple,
                                   properties.size(), properties);
     }
@@ -153,6 +158,11 @@ namespace MyEngine {
         addCommand<RenderCommand::DebugTextCMD>(_renderer, std::string(), Vector2(), color,
                             RenderCommand::BaseCommand::Mode::Multiple, position_list.size(),
                             text_list, position_list);
+    }
+
+    void Renderer::drawDebugFPS(const MyEngine::Vector2 &position, const SDL_Color &color) {
+        addCommand<RenderCommand::DebugTextCMD>(_renderer,
+                    std::format("FPS: {}", window()->_engine->fps()), position, color);
     }
 
     void Renderer::setViewport(const Geometry& geometry) {
@@ -200,6 +210,7 @@ namespace MyEngine {
         if (_renderer) {
             _renderer.reset();
         }
+        if (_win_icon) SDL_DestroySurface(_win_icon);
         if (_window) {
             SDL_DestroyWindow(_window);
             Logger::log(std::format("Window: ID {} destroyed",  _winID), Logger::Debug);
@@ -228,12 +239,50 @@ namespace MyEngine {
         return true;
     }
 
+    bool Window::setMinimumSize(int width, int height) {
+        bool _ret = SDL_SetWindowMinimumSize(_window, width, height);
+        if (!_ret) {
+            Logger::log(std::format("Window: Can't resize window! "
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
+            return false;
+        }
+        return true;
+    }
+
+    bool Window::setMaximumSize(int width, int height) {
+        bool _ret = SDL_SetWindowMaximumSize(_window, width, height);
+        if (!_ret) {
+            Logger::log(std::format("Window: Can't resize window! "
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
+            return false;
+        }
+        return true;
+    }
+
     bool Window::setGeometry(int x, int y, int width, int height) {
         return (!move(x, y) || !resize(width, height)); 
     }
 
-    const Window::Geometry& Window::geometry() const {
+    const Geometry& Window::geometry() const {
         return _window_geometry;
+    }
+
+    Window::WindowSize Window::minimumSize() const {
+        WindowSize ret(0, 0);
+        SDL_GetWindowMinimumSize(_window, &ret.width, &ret.height);
+        return ret;
+    }
+
+    Window::WindowSize Window::maximumSize() const {
+        WindowSize ret(0, 0);
+        SDL_GetWindowMaximumSize(_window, &ret.width, &ret.height);
+        return ret;
+    }
+
+    Window::WindowSize Window::windowSize() const {
+        WindowSize ret(0, 0);
+        SDL_GetWindowSize(_window, &ret.width, &ret.height);
+        return ret;
     }
 
     uint32_t Window::windowID() const {
@@ -287,7 +336,7 @@ namespace MyEngine {
             Logger::log("Window: The specified renderer is not valid!", Logger::Error);
             return;
         }
-        _renderer = std::shared_ptr<Renderer>(renderer);
+        if (!_renderer) _renderer = std::shared_ptr<Renderer>(renderer);
     }
 
     Renderer* Window::renderer() const {
@@ -297,12 +346,33 @@ namespace MyEngine {
     void Window::setBorderless(bool enabled) {
         bool _ok = SDL_SetWindowBordered(_window, !enabled);
         if (_ok) _borderless = enabled;
-        else Logger::log(std::format("Window (ID {}): Can't set borderless for this window!", _winID),
+        else Logger::log(std::format("Window (ID {}): Can't set borderless for this window! "
+                                     "Exception: {}", _winID, SDL_GetError()),
                          Logger::Error);
     }
 
     bool Window::borderless() const {
         return _borderless;
+    }
+
+    void Window::setWindowOpacity(float opacity) {
+        if (opacity < 0.f || opacity > 1.f) return;
+        bool _ok = SDL_SetWindowOpacity(_window, opacity);
+        if (!_ok) {
+            Logger::log(std::format("Window (ID {}): Can't set window opacity for this window! "
+                                    "Exception: {}", _winID, SDL_GetError()),
+                        Logger::Error);
+        }
+    }
+
+    float Window::windowOpacity() const {
+        float ret = SDL_GetWindowOpacity(_window);
+        if (ret == -1.0f) {
+            Logger::log(std::format("Window (ID {}): Can't get window opacity for this window! "
+                                    "Exception: {}", _winID, SDL_GetError()),
+                        Logger::Error);
+        }
+        return ret;
     }
 
     void Window::setFullScreen(bool enabled, bool move_to_center) {
@@ -332,7 +402,22 @@ namespace MyEngine {
 
     const std::string& Window::windowTitle() const {
         return _title;
-    } 
+    }
+
+    void Window::setWindowIcon(const std::string& icon_path) {
+        _win_icon = IMG_Load(icon_path.c_str());
+        if (!_win_icon) {
+            Logger::log(std::format("Window (ID {}): Can't set icon for this window!"
+                                    "Exception: {}", _winID, SDL_GetError()),
+                        Logger::Error);
+        }
+        bool ok = SDL_SetWindowIcon(_window, _win_icon);
+        if (!ok) {
+            Logger::log(std::format("Window (ID {}): Can't set icon for this window!"
+                                    "Exception: {}", _winID, SDL_GetError()),
+                        Logger::Error);
+        }
+    }
 
     SDL_Window* Window::self() const {
         if (!_window) {
@@ -657,7 +742,7 @@ namespace MyEngine {
         std::string err = std::format("An error has caused the entire program to crash.\nException: {}", get_err_info);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FATAL ERROR", err.c_str(), nullptr);
         Logger::log(err, Logger::Fatal);
-        throw std::runtime_error(err);
+        throw EngineException(err);
     }
 
     void Engine::installCleanUpEvent(const std::function<void()> &event) {
@@ -724,7 +809,8 @@ namespace MyEngine {
                     if (av_per <= 0.05f) {
                         Logger::log("Engine: The current system memory is less than 5%. "
                                     "The engine has crashed.", Logger::Fatal);
-                        throw std::runtime_error("The current available system memory is less than 5%. The engine has crashed.");
+                        throw EngineException("The current available system memory is less than 5%. "
+                                              "The engine has crashed.");
                     } else if (av_per <= 0.15f) {
                         Logger::log("Engine: The available memory space of the system is less than 15%. "
                                     "If it falls below 5%, the engine will be crashed!", Logger::Warn);
@@ -733,7 +819,9 @@ namespace MyEngine {
                 /// Update the render frame
                 _real_fps = frames;
                 if (_fps > 14 && _real_fps <= 14) {
-                    Logger::log(std::format("Low FPS detected: {} FPS", _real_fps), Logger::Warn);
+                    Logger::log(std::format("Engine: Low FPS detected: {} FPS, "
+                            "try to use `Engine::setFPS()` to limit the maximum frames in a second", _real_fps),
+                                Logger::Warn);
                 }
                 frames = 0;
                 start_time = SDL_GetTicks();

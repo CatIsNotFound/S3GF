@@ -389,58 +389,33 @@ namespace MyEngine {
 
     TextureAtlas::~TextureAtlas() {}
 
-    std::vector<SDL_Vertex> TextureAtlas::vertices(const std::string& tiles_name) const {
+    bool TextureAtlas::addTiles(const std::string &tiles_name, const MyEngine::GeometryF &clip_geometry) {
         if (_tiles_map.contains(tiles_name)) {
-            return _tiles_map.at(tiles_name).vertex;
+            Logger::log(std::format("TextureAtlas: Tiles '{}' is already in tiles map! "
+                                    , tiles_name), Logger::Error);
+            return false;
         }
-        return {};
+        std::vector<std::unique_ptr<TextureProperty>> new_list;
+        new_list.emplace_back(std::make_unique<TextureProperty>(property()));
+        auto* ptr = new_list.back().get();
+        ptr->resize(clip_geometry.size);
+        ptr->clip_mode = true;
+        ptr->clip_area = { clip_geometry.pos.x, clip_geometry.pos.y,
+                           clip_geometry.size.width, clip_geometry.size.height };
+
+        _tiles_map.insert({tiles_name, Tile(tiles_name, std::move(new_list))});
+        return true;
     }
 
-    std::vector<int> TextureAtlas::indices(const std::string& tiles_name) const {
+    bool TextureAtlas::addTilesProperty(const std::string &tiles_name) {
         if (_tiles_map.contains(tiles_name)) {
-            return _tiles_map.at(tiles_name).indices;
-        }
-        return {};
-    }
-
-    void TextureAtlas::setTiles(const std::string &tiles_name,
-                                const GeometryF& clip_geometry, TextureProperty* property) {
-        auto scaled = Texture::property()->size();
-        auto pos = property->position();
-        auto color_alpha = property->color_alpha;
-        std::array<float, 4> real_tex = {clip_geometry.pos.x / scaled.width,                                  //   0% L
-                                         clip_geometry.pos.y / scaled.height,                                 //   0% T
-                                         (clip_geometry.pos.x + clip_geometry.size.width) / scaled.width,     // 100% R
-                                         (clip_geometry.pos.y + clip_geometry.size.height) / scaled.height};  // 100% B
-        SDL_FColor output_color = {static_cast<float>(color_alpha.r) / 255.f,
-                                   static_cast<float>(color_alpha.g) / 255.f,
-                                   static_cast<float>(color_alpha.b) / 255.f,
-                                   static_cast<float>(color_alpha.a) / 255.f};
-        std::vector<SDL_Vertex> vertices = {
-                {{pos.x, pos.y}, output_color,
-                    {real_tex[0], real_tex[1]}},
-                {{pos.x + clip_geometry.size.width, pos.y}, output_color,
-                    {real_tex[2], real_tex[1]}},
-                {{pos.x, pos.y + clip_geometry.size.height},output_color,
-                    {real_tex[0], real_tex[3]}},
-                {{pos.x + clip_geometry.size.width,
-                  pos.y + clip_geometry.size.height},output_color,
-                    {real_tex[2], real_tex[3]}}
-        };
-
-        auto pos_offset = property->position();
-        std::vector<int> indices = {0, 1, 2, 1, 2, 3};
-        for (auto& v : vertices) {
-            v.position.x = (v.position.x - pos_offset.x) * property->scale() + pos_offset.x;
-            v.position.y = (v.position.y - pos_offset.y) * property->scale() + pos_offset.y;
-        }
-
-        if (_tiles_map.contains(tiles_name)) {
-            if (property) _tiles_map[tiles_name].property->reset(*property);
-            _tiles_map[tiles_name].vertex = vertices;
-            _tiles_map[tiles_name].indices = indices;
+            auto& temp = _tiles_map.at(tiles_name).properties.front();
+            _tiles_map.at(tiles_name).properties.push_back(std::make_unique<TextureProperty>(temp.get()));
+            return true;
         } else {
-            _tiles_map.emplace(tiles_name, Tile(vertices, indices, std::make_unique<TextureProperty>(property)));
+            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                                    "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
+            return false;
         }
     }
 
@@ -452,37 +427,28 @@ namespace MyEngine {
         return false;
     }
 
-    void TextureAtlas::setClipGeometryOfTiles(const std::string& tiles_name, const GeometryF& clip_geometry) {
-        auto* prop = _tiles_map[tiles_name].property.get();
-        auto scaled = prop->size();
-        auto pos = prop->position();
-        std::array<float, 4> real_tex = {clip_geometry.pos.x / scaled.width,                                  //   0% L
-                                         clip_geometry.pos.y / scaled.height,                                 //   0% T
-                                         (clip_geometry.pos.x + clip_geometry.size.width) / scaled.width,     // 100% R
-                                         (clip_geometry.pos.y + clip_geometry.size.height) / scaled.height};  // 100% B
-        auto& vertices = _tiles_map[tiles_name].vertex;
-        vertices[0].position = {pos.x, pos.y};
-        vertices[0].tex_coord = {real_tex[0], real_tex[1]};
-        vertices[1].position = {pos.x + clip_geometry.size.width, pos.y};
-        vertices[1].tex_coord = {real_tex[2], real_tex[1]};
-        vertices[2].position = {pos.x, pos.y + clip_geometry.size.height};
-        vertices[2].tex_coord = {real_tex[0], real_tex[3]};
-        vertices[3].position = {pos.x + clip_geometry.size.width, pos.y + clip_geometry.size.height};
-        vertices[3].tex_coord = {real_tex[2], real_tex[3]};
-        auto pos_offset = prop->position();
-        for (auto& v : vertices) {
-            v.position.x = (v.position.x - pos_offset.x) * prop->scale() + pos_offset.x;
-            v.position.y = (v.position.y - pos_offset.y) * prop->scale() + pos_offset.y;
+    TextureProperty *TextureAtlas::tilesProperty(const std::string &tiles_name, size_t index) {
+        if (_tiles_map.contains(tiles_name)) {
+            if (index >= _tiles_map[tiles_name].properties.size()) {
+                Logger::log(std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
+                            "Try to use `TextureAtlas::tilesPropertyCount()`?", tiles_name), Logger::Error);
+                return nullptr;
+            }
+            return _tiles_map[tiles_name].properties[index].get();
+        } else {
+            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                        "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
+            return nullptr;
         }
     }
 
-    TextureProperty *TextureAtlas::tilesProperty(const std::string &tiles_name) {
+    size_t TextureAtlas::tilesPropertyCount(const std::string& tiles_name) const {
         if (_tiles_map.contains(tiles_name)) {
-            return _tiles_map[tiles_name].property.get();
+            return _tiles_map.at(tiles_name).properties.size();
         } else {
             Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                        "Did you forget to use `TextureAtlas::setTiles()`?", tiles_name), Logger::Error);
-            return nullptr;
+                        "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
+            return 0;
         }
     }
 
@@ -491,7 +457,7 @@ namespace MyEngine {
             _current_tiles = tiles_name;
         } else {
             Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                        "Did you forget to use `TextureAtlas::setTiles()`?", tiles_name), Logger::Error);
+                        "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
         }
     }
 
@@ -513,25 +479,44 @@ namespace MyEngine {
 
     void TextureAtlas::draw() {
         if (_tiles_map.contains(_current_tiles)) {
-
+            render()->drawTexture(self(), _tiles_map[_current_tiles].properties[0].get());
         } else {
             Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                         "Did you forget to use `TextureAtlas::setTiles()`?", _current_tiles), Logger::Error);
+                         "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles), Logger::Error);
         }
     }
 
-    void TextureAtlas::draw(const std::string &tiles_name) {
-        if (_tiles_map.contains(tiles_name)) {
-//            render()->drawTextureTile(this, tiles_name);
+    void TextureAtlas::draw(size_t index) {
+        if (_tiles_map.contains(_current_tiles)) {
+            if (index >= _tiles_map[_current_tiles].properties.size()) {
+                Logger::log(std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
+                            "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles), Logger::Error);
+                return;
+            }
+            render()->drawTexture(self(), _tiles_map[_current_tiles].properties[index].get());
         } else {
             Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                         "Did you forget to use `TextureAtlas::setTiles()`?", tiles_name), Logger::Error);
+                                    "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles), Logger::Error);
+        }
+    }
+
+    void TextureAtlas::draw(const std::string &tiles_name, size_t index) {
+        if (_tiles_map.contains(tiles_name)) {
+            if (index >= _tiles_map[tiles_name].properties.size()) {
+                Logger::log(std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
+                                        "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles), Logger::Error);
+                return;
+            }
+            render()->drawTexture(self(), _tiles_map[tiles_name].properties[index].get());
+        } else {
+            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                         "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
         }
     }
 
 
     TextureAnimation::TextureAnimation(const std::string &file_path, Renderer* renderer)
-                        : _file_path(file_path), _renderer(renderer), _null(true) {
+                        : _file_path(file_path), _renderer(renderer), _null(true), _img_ani(nullptr) {
         _property = std::make_unique<TextureProperty>();
         loadAnimation(file_path);
         EventSystem::global()->appendGlobalEvent(IDGenerator::getNewGlobalEventID(), [this] {
@@ -539,7 +524,6 @@ namespace MyEngine {
             auto now = SDL_GetTicks();
             if (now - _start_time >= _textures[_cur_frame]->duration) {
                 _cur_frame = (_cur_frame + 1 >= _textures.size() ? 0 : _cur_frame + 1);
-                // if (_cur_frame + 1 >= _textures.size()) _cur_frame = 0; else _cur_frame++;
                 _start_time = SDL_GetTicks();
             }
         });

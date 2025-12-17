@@ -88,7 +88,6 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Game/Collider.h
             src/Renderer/BaseCommand.cpp
             src/Renderer/BaseCommand.h
-            src/Renderer/CommandPool.cpp
             src/Renderer/CommandPool.h
             src/Renderer/CommandFactory.h
             src/RCommand.h
@@ -133,7 +132,6 @@ else ()
             src/Game/Collider.h
             src/Renderer/BaseCommand.cpp
             src/Renderer/BaseCommand.h
-            src/Renderer/CommandPool.cpp
             src/Renderer/CommandPool.h
             src/Renderer/CommandFactory.h
             src/RCommand.h
