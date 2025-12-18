@@ -1,5 +1,5 @@
-#ifndef MYENGINE_COMMANDFACTORY_H
-#define MYENGINE_COMMANDFACTORY_H
+#ifndef MYENGINE_RENDERER_COMMANDFACTORY_H
+#define MYENGINE_RENDERER_COMMANDFACTORY_H
 #include "CommandPool.h"
 
 namespace MyEngine {
@@ -43,4 +43,4 @@ namespace MyEngine {
     }
 }
 
-#endif //MYENGINE_COMMANDFACTORY_H
+#endif //MYENGINE_RENDERER_COMMANDFACTORY_H

@@ -1,6 +1,6 @@
 
-#ifndef MYENGINE_BASECOMMAND_H
-#define MYENGINE_BASECOMMAND_H
+#ifndef MYENGINE_RENDERER_BASECOMMAND_H
+#define MYENGINE_RENDERER_BASECOMMAND_H
 #include "../Components.h"
 
 namespace MyEngine {
@@ -265,4 +265,4 @@ namespace MyEngine {
     }
 }
 
-#endif //MYENGINE_BASECOMMAND_H
+#endif //MYENGINE_RENDERER_BASECOMMAND_H

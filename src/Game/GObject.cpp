@@ -14,7 +14,7 @@ MyEngine::GObject::~GObject() {
         if (isTypeOf<Sprite*>()) delete std::get<Sprite*>(_object);
         if (isTypeOf<SpriteSheet*>()) delete std::get<SpriteSheet*>(_object);
     }
-    if (_del_later && !_collider) {
+    if (_del_later && _collider) {
         delete _collider;
     }
 }

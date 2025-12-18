@@ -228,7 +228,9 @@ namespace MyEngine {
                     nanoseconds_count = timestamp * 3600000000000;
                     break;
             }
-            auto now = system_clock::time_point(nanoseconds(nanoseconds_count));
+
+            const duration<long long int, std::ratio<1, 10000000>> NANO(nanoseconds_count);
+            auto now = system_clock::time_point(NANO);
 
             auto day_time = floor<days>(now);
             year_month_day ymy{day_time};

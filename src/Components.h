@@ -292,11 +292,6 @@ namespace MyEngine {
         }
         void setScale(float scale = 1.0f) {
             _scale = scale;
-//            Vector2 global_center_pos = {
-//                _position.x + _size.width / 2, _position.y + _size.height / 2
-//            };
-//            _scaled_position.reset((_position.x - global_center_pos.x) * _scale + global_center_pos.x,
-//                                    (_position.y - global_center_pos.y) * _scale + global_center_pos.y);
 
             auto scaled_pos = _position + _anchor;
             _scaled_position.reset((_position.x - scaled_pos.x) * _scale + scaled_pos.x,

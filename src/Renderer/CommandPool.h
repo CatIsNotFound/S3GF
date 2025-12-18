@@ -1,5 +1,5 @@
-#ifndef MYENGINE_COMMANDPOOL_H
-#define MYENGINE_COMMANDPOOL_H
+#ifndef MYENGINE_RENDERER_COMMANDPOOL_H
+#define MYENGINE_RENDERER_COMMANDPOOL_H
 #include "BaseCommand.h"
 
 namespace MyEngine {
@@ -54,6 +54,7 @@ namespace MyEngine {
                     /// Use custom memery allocator to create command.
                     void* ptr = _pool_res->allocate(sizeof(T), alignof(T));
                     cmd = new (ptr) T(args...);
+                    Logger::log("Created memory!");
                 }
                 return cmd;
             }
@@ -97,4 +98,4 @@ namespace MyEngine {
     }
 }
 
-#endif //MYENGINE_COMMANDPOOL_H
+#endif //MYENGINE_RENDERER_COMMANDPOOL_H
