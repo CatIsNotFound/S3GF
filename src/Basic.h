@@ -562,6 +562,7 @@ namespace MyEngine {
      * 
      * @details Supports basic data types and simple structs for storage.
      * \endif
+     * @ref related/Matrix2D.md
      */
     template<typename T>
     class Matrix2D {
@@ -705,18 +706,24 @@ namespace MyEngine {
          * @param col  Specified column (starting from 0)
          * @return Return the data under the corresponding row and column
          * @note You can directly use this function to modify the data.
-         * @see get
+         * @note If the specified position is out of range, a `MyEngine::OutOfRangeException` will be thrown
          * \endif
+         * @see get
+         * @throw OutOfRangeException
          */
         T &at(uint32_t row, uint32_t col);
 
         /**
+         * \if EN
          * @brief Get data from the specified position in the matrix
          * @param row  Specified line (starting from 0)
          * @param col  Specified column (starting from 0)
          * @return Return the data under the corresponding row and column
          * @note Different from 'at()' function, this function cannot modify the corresponding data!
+         * @note If the specified position is out of range, a `MyEngine::OutOfRangeException` will be thrown
+         * \endif
          * @see at
+         * @throw OutOfRangeException
          */
         const T &get(uint32_t row, uint32_t col);
 
@@ -724,31 +731,59 @@ namespace MyEngine {
          * \if EN
          * @brief Get the total number of rows in the current matrix
          * @return Return the corresponding row number
-         * @see cols
          * \endif
+         * @see cols
          */
         [[nodiscard]] uint32_t rows() const;
 
         /**
+         * \if EN
          * @brief Get the total number of columns in the current matrix
          * @return Return the corresponding column number
+         * \endif
          * @see rows
          */
         [[nodiscard]] uint32_t cols() const;
 
+        /**
+         * \if EN
+         * @brief Matrix Addition
+         * @param other The specified matrix
+         *
+         * @details Performs addition on all values within the matrices.
+         * @note Currently only supports integer and floating-point operations; other data types are not supported!
+         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @return Returns a new matrix.
+         * \endif
+         * @see add
+         */
         Matrix2D operator+(const Matrix2D<T> &other) const;
 
+        /**
+         * \if EN
+         * @brief Matrix Subtraction
+         * @param other The specified matrix
+         *
+         * @details Performs subtraction on all values within the matrices.
+         * @note Currently only supports integer and floating-point operations; other data types are not supported!
+         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @return Returns a new matrix.
+         * \endif
+         * @see sub
+         */
         Matrix2D operator-(const Matrix2D<T> &other) const;
 
         /**
          * \if EN
-         * @brief Matrix Multiplication
+         * @brief Hadamard Product (Element-wise Product)
          * @param other The specified matrix, whose number of rows must equal the current matrix's number of columns
          *
          * @details Performs multiplication on all values within the matrices
          * @note Currently only supports integer and floating-point operations; other data types are not supported!
-         * @note Both matrices must be of sizes m * n and n * p, respectively, to be usable!
+         * @note Both matrices must be of sizes m * n and n * p, respectively, to be usable! Otherwise, a `MyEngine::BadValueException` exception will be thrown.
          * \endif
+         * @throw BadValueException
+         * @see times
          */
         Matrix2D operator*(const Matrix2D<T> &other) const;
 
@@ -794,150 +829,183 @@ namespace MyEngine {
         [[nodiscard]] size_t size() const { return _datas.size(); }
 
         /**
-         * @brief 全局相加
-         * @param value     指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
-         *
-         * 将矩阵里的所有值进行相加操作
+         * \if EN
+         * @brief Matrix addition
+         * @param value Specified value
+         * @param function Function (this parameter must be specified for complex data types)
+         * @details Performs addition on all values in the matrix
+         * \endif
          */
         void add(T &value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 全局相加
-         * @param value     指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
-         *
-         * 将矩阵里的所有值进行相加操作
+         * \if EN
+         * @brief Matrix addition
+         * @param value Specified value
+         * @param function Function (this parameter must be specified for complex data types)
+         * @details Performs addition on all values in the matrix
+         * \endif
          */
         void add(T &&value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 全局相减
-         * @param value 指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
-         *
-         * 将矩阵里的所有值进行相减操作
+         * \if EN
+         * @brief Matrix subtraction
+         * @param value Specified value
+         * @param function Function (this parameter must be specified for complex data types)
+         * @details Performs subtraction on all values in the matrix
+         * \endif
          */
-        void minus(T &value, const std::function<void(T &, T &)> &function = {});
+        void sub(T &value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 全局相减
-         * @param value 指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
-         *
-         * 将矩阵里的所有值进行相减操作
+         * \if EN
+         * @brief Matrix subtraction
+         * @param value Specified value
+         * @param function Function (this parameter must be specified for complex data types)
+         * @details Performs subtraction on all values in the matrix
+         * \endif
          */
-        void minus(T &&value, const std::function<void(T &, T &)> &function = {});
+        void sub(T &&value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 全局乘法
-         * @param value     指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
+         * \if EN
+         * @brief Scalar multiplication
+         * @param value Specified value
+         * @param function Function
          *
-         * 将矩阵里的所有值进行相乘操作
+         * @details Perform multiplication on all values in the matrix.
+         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
+         * \endif
+         * @throw InvalidArgumentException
          */
         void times(T &value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 全局点乘
-         * @param value     指定值
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
+         * \if EN
+         * @brief Scalar multiplication
+         * @param value Specified value
+         * @param function Function
          *
-         * 将矩阵里的所有值进行点乘操作
+         * @details Perform multiplication on all values in the matrix.
+         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
+         * \endif
+         * @throw InvalidArgumentException
          */
         void times(T &&value, const std::function<void(T &, T &)> &function = {});
 
         /**
-         * @brief 矩阵点乘
-         * @param other     指定矩阵
-         * @param function  函数（对于复杂的数据类型，此参数必需指定）
-         * @note 两个矩阵的大小必需完全一样（即行列必需相等）！
+         * \if EN
+         * @brief Hadamard Product (Element-wise Product)
+         * @param other The specified matrix
+         *
+         * @details Performs multiplication on all values within the matrices.
+         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown.
+         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @return Returns a new matrix.
+         * \endif
+         * @throw InvalidArgumentException
          */
         void times(const Matrix2D<T> &other, const std::function<void(T &, const T &)> &function = {});
 
         /**
-         * @brief 矩阵乘法
+         * \if EN
+         * @brief Matrix Multiplication
          *
-         * 将矩阵里的所有值进行乘法操作
-         * @param other     指定矩阵，其指定的行数必需与现有的列数相等
-         * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
-         * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！
+         * @details Performs a cross multiplication operation on two matrices.
+         * @param other The specified matrix, whose number of rows must equal the original matrix's number of columns.
+         * @note Currently only supports integer and floating-point operations; other data types are not supported!
+         * @note The original matrix and the specified matrix must have sizes of `m * k` and `k * n`, respectively, to be valid! Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @return Generates a new matrix of size `m * n`.
+         * \endif
+         * @throw InvalidArgumentException
          */
-        void multiply(const Matrix2D<T> &other);
+        Matrix2D multiply(const Matrix2D<T> &other);
 
         /**
-         * @brief 转置矩阵
-         *
-         * 将原有的 m * n 大小的矩阵转置为 n * m 大小的矩阵。
+         * \if EN
+         * @brief Transpose Matrix
+         * @details Transpose the original `m * n` matrix into an `n * m` matrix.
+         * \endif
          * @see rotate
          */
         void transpose();
 
         /**
-         * @brief 翻转矩阵
-         *
-         * 当选择任何一个方向的逆序时，都会发生交换。
-         * @param reverse_row 行与行之间逆序（垂直翻转）
-         * @param reverse_col  列与列之间逆序（水平翻转）
-         * @note 当两个参数都为 `true` 时，矩阵将完全逆序
+         * \if EN
+         * @brief Reversed Matrix
+         * @details A swap occurs whenever a reverse is selected in any direction.
+         * @param reverse_row Reverse between rows (vertical flip)
+         * @param reverse_col Reverse between columns (horizontal flip)
+         * @note When both parameters are `true`, the matrix is completely reversed
+         * \endif
          * @see rotate
          */
         void reverse(bool reverse_row = true, bool reverse_col = false);
 
         /**
-         * @brief 旋转矩阵
-         * @param turn_right 是否向右旋转 90°，反之向左旋转 90°
+         * \if EN
+         * @brief Rotation matrix
+         * @param turn_right Whether to rotate 90° to the right; otherwise, rotate 90° to the left
+         * \endif
          * @see reverse
          * @see transpose
          */
         void rotate(bool turn_right = true);
 
         /**
-         * @brief 切割指定行矩阵
-         * @param start_row     起始行
-         * @param end_row       结束行
-         * @return 返回矩阵行位于 `[start_row, end_row)` 区间内的所有行矩阵
+         * \if EN
+         * @brief Extracts a specified range of rows from a matrix
+         * @param start_row Starting row
+         * @param end_row Ending row
+         * @return Returns all rows of the matrix within the `[start_row, end_row)` range
+         * \endif
          */
         Matrix2D splitRows(uint32_t start_row, uint32_t end_row);
 
         /**
-         * @brief 切割指定列矩阵
-         * @param start_col     起始列
-         * @param end_col       结束列
-         * @return 返回矩阵行位于 `[start_col, end_col)` 区间内的所有列矩阵
+         * \if EN
+         * @brief Extracts a specified range of columns from a matrix
+         * @param start_row Starting column
+         * @param end_row Ending column
+         * @return Returns all columns of the matrix within the `[start_row, end_row)` range
+         * \endif
          */
         Matrix2D splitCols(uint32_t start_col, uint32_t end_col);
 
         /**
-         * @brief 切割矩阵
+         * \if EN
+         * @brief Slice Matrix
+         * @details Slices the original matrix, starting from the `start_pos` position, takes `rows * cols` elements, and creates a new matrix.
+         * @param rows Number of rows in the new matrix
+         * @param cols Number of columns in the new matrix
+         * @param start_pos Position to start from
+         * @return Returns a new 2D matrix of size `(rows * cols)`.
          *
-         * 切割原有的矩阵，根据 `start_pos` 位置开始，取 `rows * cols` 个数据并创建成新的矩阵。
-         * @param rows      新的行数
-         * @param cols      新的列数
-         * @param start_pos 从哪个位置开始
-         * @return 返回新的大小为 `(rows * cols)` 的二维矩阵。
-         *
-         * @note 从 `start_pos` 位置起，若取得数据的总个数小于新的矩阵大小，则剩余部分自动填充为空数据。
-         * @note 指定的 `start_pos` 位置若超出原有矩阵的范围，将返回空矩阵。
+         * @note If the total number of elements taken from `start_pos` is less than the size of the new matrix, the remaining positions are automatically filled with empty data.
+         * @note If the specified `start_pos` exceeds the bounds of the original matrix, an empty matrix is returned.
+         * \endif
          */
         Matrix2D split(uint32_t rows, uint32_t cols, const Position &start_pos);
 
         /**
-         * @brief 按照矩形的方式切割矩阵
-         *
-         * 根据起始位置和结束位置包围成一个矩形，并将其切割成独立的矩阵。
-         * @param start_pos     起始位置
-         * @param end_pos       结束位置
-         * @return 返回切割后的矩阵。
-         *
+         * \if EN
+         * @brief Cut the matrix in a rectangular manner
+         * @details Form a rectangle based on the start and end positions, and cut it into an independent matrix.
+         * @param start_pos Start position
+         * @param end_pos End position
+         * @return Returns the cut matrix.
+         * \endif
          */
         Matrix2D split(Matrix2D::Position start_pos, Matrix2D::Position end_pos);
 
         /**
-         * @brief 逆矩阵
-         * @return 返回新的矩阵，用于存储求得的结果
-         * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
-         * @note 两个矩阵的大小必需完全一致！否则将返回空矩阵！
+         * \if EN
+         * @brief Inverse Matrix
+         * @return Returns a new matrix to store the calculated result
+         * @note Currently only supports integer and floating-point operations, other data types are not supported!
+         * @note The current matrix must be `n * n`, otherwise an empty matrix will be returned
+         * \endif
          */
         Matrix2D<T> inverse();
     };
@@ -1040,10 +1108,11 @@ namespace MyEngine {
             }
             return _ret;
         } else {
-            Logger::log(std::format("Matrix2D::operator+(): Matrix dimensions mismatch! "
-                                    "Original: ({}, {}), Specified: ({}, {})",
-                                    _row, _col, other._row, other._col), Logger::Error);
-            return Matrix2D<T>();
+            std::string err = std::format("Matrix2D::operator+(): Matrix dimensions mismatch! "
+                                          "Original: ({}, {}), Specified: ({}, {})",
+                                          _row, _col, other._row, other._col);
+            Logger::log(err, Logger::Error);
+            return InvalidArgumentException(err);
         }
     }
 
@@ -1056,24 +1125,25 @@ namespace MyEngine {
             }
             return _ret;
         } else {
-            Logger::log(std::format("Matrix2D::operator-(): Matrix dimensions mismatch! "
-                                    "Original: ({}, {}), Specified: ({}, {})",
-                                    _row, _col, other._row, other._col), Logger::Error);
-            return Matrix2D<T>();
+            std::string err = std::format("Matrix2D::operator-(): Matrix dimensions mismatch! "
+                                          "Original: ({}, {}), Specified: ({}, {})",
+                                          _row, _col, other._row, other._col);
+            Logger::log(err, Logger::Error);
+            return InvalidArgumentException(err);
         }
     }
 
     template<typename T>
     Matrix2D<T> Matrix2D<T>::operator*(const Matrix2D<T> &other) const {
         if (_col != other._row) {
-            Logger::log("Matrix2D::operator*(): Matrix dimensions incompatible for multiplication!", Logger::Error);
-            return Matrix2D<T>();
+            std::string err = "Matrix2D::operator*(): Matrix dimensions incompatible for multiplication!";
+            Logger::log(err, Logger::Fatal);
+            throw BadValueException(err);
         }
         if constexpr (!std::is_integral_v<std::decay_t<T>> &&
                       !std::is_floating_point_v<std::decay_t<T>>) {
-            static_assert(!std::is_integral_v<std::decay_t<T>> &&
-                          !std::is_floating_point_v<std::decay_t<T>>,
-                          "Matrix2D::operator*(): Can't support the current data type!");
+            static_assert(std::is_arithmetic_v<std::decay_t<T>>,
+                          "Matrix2D::operator*(): Only arithmetic types are supported!");
         }
         Matrix2D<T> result(_row, other._col, other._deleter);
         for (size_t i = 0; i < _row; ++i) {
@@ -1108,7 +1178,7 @@ namespace MyEngine {
     template<typename T>
     T &Matrix2D<T>::operator[](uint32_t index) {
         if (index >= _datas.size()) {
-            throw std::out_of_range(std::format("Matrix2D::operator[](): "
+            throw OutOfRangeException(std::format("Matrix2D::operator[](): "
                                                 "The index of {} is out of range!", index));
         }
         return _datas[index];
@@ -1159,7 +1229,7 @@ namespace MyEngine {
     }
 
     template<typename T>
-    void Matrix2D<T>::minus(T &value, const std::function<void(T &, T &)> &function) {
+    void Matrix2D<T>::sub(T &value, const std::function<void(T &, T &)> &function) {
         std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
@@ -1167,7 +1237,7 @@ namespace MyEngine {
                                  std::is_floating_point_v<std::decay_t<T>>) {
                 v -= value;
             } else {
-                std::string err = "Matrix2D::minus(): Unsupported data type! Did you forget to specify function?";
+                std::string err = "Matrix2D::sub(): Unsupported data type! Did you forget to specify function?";
                 Logger::log(err,Logger::Fatal);
                 throw InvalidArgumentException(err);
             }
@@ -1175,7 +1245,7 @@ namespace MyEngine {
     }
 
     template<typename T>
-    void Matrix2D<T>::minus(T &&value, const std::function<void(T &, T &)> &function) {
+    void Matrix2D<T>::sub(T &&value, const std::function<void(T &, T &)> &function) {
         std::for_each(_datas.begin(), _datas.end(), [&function, &value](T &v) {
             if (function) {
                 function(v, value);
@@ -1183,7 +1253,7 @@ namespace MyEngine {
                                  std::is_floating_point_v<std::decay_t<T>>) {
                 v -= value;
             } else {
-                std::string err = "Matrix2D::minus(): Unsupported data type! Did you forget to specify function?";
+                std::string err = "Matrix2D::sub(): Unsupported data type! Did you forget to specify function?";
                 Logger::log(err,Logger::Fatal);
                 throw InvalidArgumentException(err);
             }
@@ -1244,18 +1314,18 @@ namespace MyEngine {
                                           "Original: ({}, {}), Specified: ({}, {})",
                                           _row, _col, other._row, other._col);
             Logger::log(err,Logger::Fatal);
-            throw BadValueException(err);
+            throw InvalidArgumentException(err);
         }
     }
 
     template<typename T>
-    void Matrix2D<T>::multiply(const Matrix2D<T> &other) {
+    Matrix2D<T> Matrix2D<T>::multiply(const Matrix2D<T> &other) {
         if (_col != other._row) {
             std::string err = "Matrix2D::multiply(): Matrix dimensions incompatible for multiplication!";
             Logger::log(err,Logger::Fatal);
-            throw BadValueException(err);
+            throw InvalidArgumentException(err);
         }
-        std::vector<T> result(_row * other._col);
+        Matrix2D<T> result(_row, other._col);
         for (size_t i = 0; i < _row; ++i) {
             for (size_t k = 0; k < _col; ++k) {
                 const T &a_ik = _datas[i * _col + k];
@@ -1264,8 +1334,7 @@ namespace MyEngine {
                 }
             }
         }
-        _datas = std::move(result);
-        _col = other._col;
+        return result;
     }
 
     template<typename T>

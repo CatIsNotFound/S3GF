@@ -3,65 +3,75 @@
 using namespace MyEngine;
 
 int main() {
-//    Logger::setBaseLogLevel(Logger::Debug);
-//    Engine engine;
-////    engine.setLimitMaxMemorySize(200'000);
-//    engine.setFPS(60);
-//    Matrix2D<int>::Position pos;
-//    pos.row = 10;
-//    pos.col = 20;
-//    auto win2 = new Window(&engine, engine.applicationName());
-//    UI::Button button("btn1", win2->renderer());
-//    auto def = FontDatabase::getSystemDefaultFont();
-//    auto font = def.front();
-//    button.setText("Hello");
-//    button.setFont(font.font_name, font.font_path);
-//    button.setGeometry(200, 160, 200, 60);
-//    TextSystem::global()->font(button.fontName())->setFontSize(24.f);
-//    Logger::log(std::format("Loaded font: {} -> {}", font.font_name, font.font_path));
-//    button.buttonSkin().background.normal = {};
-//    button.setEvent([]{ Engine::exit(); });
-//    button.setVisible(true);
-//    button.resize(300, 60);
-//    Graphics::Rectangle rect(300, 200, 80, 40, 1, StdColor::Black, RGBAColor::GreenMossTrans);
-//    Graphics::Ellipse elli(300, 400, 100, 240, 1, StdColor::Red, {255, 255, 0, 128});
-//    win2->installPaintEvent([&rect, &elli](Renderer* r) {
-//        r->drawDebugFPS({20, 20}, StdColor::Black);
-//        r->drawDebugText(std::format("Current Used: {}kB", SysMemory::getCurProcUsedMemSize()), {20, 30}, StdColor::Black);
-//        static bool trigger = false;
-//        if (!trigger) {
-//            r->setBlendMode(SDL_BLENDMODE_BLEND);
-//            trigger = true;
-//        }
-//        GeometryF geo = rect.geometry();
-//        rect.move(EventSystem::global()->captureMousePosition() - Vector2{geo.size.width / 2, geo.size.height / 2});
-//        static int b = 1.f;
-//        auto border = rect.borderSize();
-//        if (border >= 32 | border < 1) b = -b;
-//        rect.setBorder(border + b, rect.borderColor());
-//        r->drawEllipse(&elli);
-//        r->drawRectangle(&rect);
-//    });
-//
-//    Timer timer(1000, [&button] {
-//        button.move(RandomGenerator::randFloat(0, 500), RandomGenerator::randFloat(0, 400));
-//    });
-//
-//    timer.start(0);
-//    return engine.exec();
-
-
-    Matrix2D<int*> test(4, 3, nullptr, [](const int* data){ delete data; });
-    Matrix2D<FontDatabase::FontInfo*> font2(3, 3, nullptr, [](FontDatabase::FontInfo* ptr){ delete ptr; });
-    for (int i = 0; i < 10; ++i) {
-        int* n = new int(RandomGenerator::randInt(0, 100));
-        test[i] = n;
+    Engine engine;
+    engine.setFPS(60);
+    auto window = new FilledWin("./tiny_block.png", &engine, engine.applicationName(), 1024, 800);
+    window->setResizable(true);
+    Graphics::Rectangle back((float)window->geometry().width - 300, 0, 300, 200, 0, {}, {0, 0, 0, 160});
+    Graphics::Rectangle fps_rect(back.geometry().pos.x + 20, 20, 260, 20, 1, StdColor::Green, {});
+    std::array<Vector2, 128> pos_list;
+    std::array<Graphics::Line, 127> line_list;
+    auto startX = back.geometry().pos.x + 20.f;
+    auto endX = (float)window->geometry().width - 20.f;
+    auto startY = 60;
+    auto endY = back.geometry().size.height - 20.f;
+    auto offset = (endX - startX) / 127.f;
+    for (int i = 0; i < 128; ++i) {
+        pos_list[i].reset({startX + offset * i, RandomGenerator::randFloat(startY, endY)});
+    }
+    for (int i = 0; i < 127; ++i) {
+        line_list[i].reset(pos_list[i], pos_list[i + 1], 1, RGBAColor::BlueSea);
     }
 
-    for (auto & i : test) {
-        std::cout << (i ? *i : 0 ) << ", ";
-    }
-    test(13, 23);
-    std::cout << std::endl;
-    return 0;
+    Timer timer(100, [&line_list, &pos_list, &back, &window, &startX, &endX, &startY, &endY, &offset] {
+        startX = back.geometry().pos.x + 20.f;
+        endX = (float)window->geometry().width - 20.f;
+        startY = 60.f;
+        endY = back.geometry().size.height - 20.f;
+        offset = (endX - startX) / 127.f;
+        for (int i = 0; i < 128; ++i) {
+            pos_list[i].reset({startX + offset * i, RandomGenerator::randFloat(startY, endY)});
+        }
+        for (int i = 0; i < 127; ++i) {
+            line_list[i].reset(pos_list[i], pos_list[i + 1], 1, RGBAColor::BlueSea);
+        }
+    });
+
+    window->installPaintEvent([&back, &fps_rect, &window, &line_list](Renderer* r) {
+        r->drawDebugText(std::format("RCount: {}", r->renderCountInSec()), {20, 50});
+        r->drawDebugText(std::format("Memory: {:.2f}GB", (float)SysMemory::getCurProcUsedMemSize() / 1024.f / 1024.f), {20, 60});
+        r->setBlendMode(SDL_BLENDMODE_BLEND);
+        r->drawRectangle(&back);
+        back.setGeometry((float)window->geometry().width - 300, 0, 300, 200);
+        fps_rect.setGeometry(back.geometry().pos.x + 20, 20, 260.f * ((float)window->engine()->fps() / 60.f), 20);
+        r->drawRectangle(&fps_rect);
+        for (auto& l : line_list) {
+            r->drawLine(&l);
+        }
+    });
+    auto aud_sys = AudioSystem::global();
+    aud_sys->appendBGM("See", "./bgm.mp3");
+    aud_sys->appendBGM("See2", "./bgm.mp3");
+    auto bgm = aud_sys->getBGM("See");
+    bgm->play(5000, true);
+    auto bgm2 = aud_sys->getBGM("See2");
+    bgm2->play(10000, true, 5000);
+    EventSystem::global()->appendEvent(IDGenerator::getNewEventID(), [&aud_sys](SDL_Event e) {
+        static float volume = aud_sys->mixerVolume();
+        auto vol = aud_sys->mixerVolume();
+        if (e.key.key == SDLK_M && e.key.down) {
+            if (vol > 0.f) {
+                volume = vol;
+                aud_sys->setMixerVolume(0);
+            } else {
+                aud_sys->setMixerVolume(volume);
+            }
+        }
+        if (e.key.key == SDLK_ESCAPE && e.key.down) {
+            aud_sys->stopAll();
+        }
+
+    });
+    timer.start(0);
+    return engine.exec();
 }

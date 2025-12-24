@@ -43,6 +43,10 @@ namespace MyEngine {
         return _window;
     }
 
+    size_t Renderer::renderCountInSec() const {
+        return _render_cnt_in_sec;
+    }
+
     void Renderer::_update() {
         SDL_SetRenderDrawColor(_renderer, _background_color.r, _background_color.g,
                                 _background_color.b, _background_color.a);
@@ -50,9 +54,16 @@ namespace MyEngine {
         for (auto& cmd : _cmd_list) {
             cmd->exec();
             RenderCommand::CommandFactory::release(std::move(cmd));
+            _render_count++;
         }
         SDL_RenderPresent(_renderer);
         _cmd_list.clear();
+        auto now = SDL_GetTicks();
+        if (now - _start_ts >= 1000) {
+            _start_ts = SDL_GetTicks();
+            _render_cnt_in_sec = _render_count;
+            _render_count = 0;
+        }
         _window->paintEvent();
     }
 
@@ -1123,8 +1134,8 @@ namespace MyEngine {
 
     MIX_Mixer *AudioSystem::mixer(size_t index) const {
         if (_mixer_list.size() <= index) {
-            Logger::log(std::format("AudioSystem: Can't get index '{}' of mixer!"
-                                    " Did you forget to call `AudioSystem::addNewMixer()` function?", index),
+            Logger::log(std::format("AudioSystem: Mixer #{} is not valid! "
+                                    "Did you forget to call `AudioSystem::addNewMixer()` function?", index),
                         Logger::Error);
             return nullptr;
         }
@@ -1135,28 +1146,106 @@ namespace MyEngine {
         return _mixer_list.size();
     }
 
-    void AudioSystem::appendBGM(const std::string &name, const std::string &path) {
-
+    void AudioSystem::appendBGM(const std::string &name, const std::string &path, size_t mixer_index) {
+        if (!_audio_map.contains(name)) {
+            _audio_map.emplace(name, std::make_unique<BGM>(_mixer_list[mixer_index], path));
+            if (std::get<std::unique_ptr<BGM>>(_audio_map.at(name))->isLoaded()) {
+                Logger::log(std::format("AudioSystem: Loaded BGM from path '{}' to Mixer #{}.", path,
+                                        mixer_index));
+            } else {
+                Logger::log(std::format("AudioSystem: Load BGM from path '{}' to Mixer #{} failed!", path,
+                                        mixer_index), Logger::Error);
+            }
+        } else {
+            Logger::log(std::format("AudioSystem: Append BGM failed! "
+                                    "The name of '{}' is already exist!", name), Logger::Warn);
+        }
     }
 
-    void AudioSystem::appendSFX(const std::string &name, const std::string &path) {
-
+    void AudioSystem::appendSFX(const std::string &name, const std::string &path, size_t mixer_index) {
+        if (!_audio_map.contains(name)) {
+            _audio_map.emplace(name, std::make_unique<SFX>(_mixer_list[mixer_index], path));
+            if (std::get<std::unique_ptr<SFX>>(_audio_map.at(name))->isLoaded()) {
+                Logger::log(std::format("AudioSystem: Loaded SFX from path '{}' to Mixer #{}.", path,
+                                        mixer_index));
+            } else {
+                Logger::log(std::format("AudioSystem: Load SFX from path '{}' to Mixer #{} failed!", path,
+                                        mixer_index), Logger::Error);
+            }
+        } else {
+            Logger::log(std::format("AudioSystem: Append SFX failed! "
+                                    "The name of '{}' is already exist!", name), Logger::Warn);
+        }
     }
 
     void AudioSystem::remove(const std::string &name) {
-
+        if (_audio_map.contains(name)) {
+            _audio_map.erase(name);
+            Logger::log(std::format("AudioSystem: Removed audio '{}'!", name));
+        }
     }
 
     BGM *AudioSystem::getBGM(const std::string &name) {
-        return nullptr;
+        if (_audio_map.contains(name)) {
+            if (std::holds_alternative<std::unique_ptr<BGM>>(_audio_map.at(name))) {
+                return std::get<std::unique_ptr<BGM>>(_audio_map.at(name)).get();
+            } else {
+                Logger::log(std::format("AudioSystem: Audio '{}' is not the BGM type! "
+                                        "Returned nullptr!", name), Logger::Error);
+                return nullptr;
+            }
+        } else {
+            Logger::log(std::format("AudioSystem: Audio '{}' is not exist! "
+                                    "Returned nullptr!", name), Logger::Error);
+            return nullptr;
+        }
     }
 
     SFX *AudioSystem::getSFX(const std::string &name) {
-        return nullptr;
+        if (_audio_map.contains(name)) {
+            if (std::holds_alternative<std::unique_ptr<SFX>>(_audio_map.at(name))) {
+                return std::get<std::unique_ptr<SFX>>(_audio_map.at(name)).get();
+            } else {
+                Logger::log(std::format("AudioSystem: Audio '{}' is not the SFX type! "
+                                        "Returned nullptr!", name), Logger::Error);
+                return nullptr;
+            }
+        } else {
+            Logger::log(std::format("AudioSystem: Audio '{}' is not exist! "
+                                    "Returned nullptr!", name), Logger::Error);
+            return nullptr;
+        }
     }
 
     size_t AudioSystem::size() const {
         return _audio_map.size();
     }
 
+    void AudioSystem::setMixerVolume(float volume, size_t mixer_index) {
+        if (mixer_index >= _mixer_list.size()) {
+            Logger::log(std::format("AudioSystem: Mixer #{} is not valid! "
+                        "Did you forget to called `AudioSystem::addNewMixer()`", mixer_index), Logger::Error);
+            return;
+        }
+        MIX_SetMasterGain(_mixer_list[mixer_index], volume);
+    }
+
+    float AudioSystem::mixerVolume(size_t mixer_index) {
+        if (mixer_index >= _mixer_list.size()) {
+            Logger::log(std::format("AudioSystem: Mixer #{} is not valid! "
+                        "Did you forget to called `AudioSystem::addNewMixer()`", mixer_index), Logger::Error);
+            return 0.f;
+        }
+        return MIX_GetMasterGain(_mixer_list[mixer_index]);
+    }
+
+    void AudioSystem::stopAll() {
+        for (auto& [name, audio] : _audio_map) {
+            if (audio.index() == 1) {
+                std::get<std::unique_ptr<BGM>>(audio)->stop();
+            } else if (audio.index() == 2) {
+                std::get<std::unique_ptr<SFX>>(audio)->stop();
+            }
+        }
+    }
 }

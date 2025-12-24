@@ -27,9 +27,9 @@ protected:
     }
 
     void paintEvent() override {
-        MyEngine::Window::paintEvent();
         renderer()->drawTexture(_texture->self(), _props);
         renderer()->drawDebugFPS({20, 30});
+        MyEngine::Window::paintEvent();
     }
 
     void generate() {
@@ -53,6 +53,8 @@ protected:
             };
             _props[i]->setGeomentry((float)c * block_size.width, (float)r * block_size.height, block_size.width, block_size.height);
         }
+        _props.resize(count);
+        _props.shrink_to_fit();
         MyEngine::Logger::log(std::format("Generated: {} blocks, {:.0f}x{:.0f}",
                                           count, rows, cols), MyEngine::Logger::Info);
     }

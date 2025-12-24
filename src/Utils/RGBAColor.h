@@ -6,8 +6,8 @@
 namespace MyEngine {
     /**
      * @namespace RGBAColor
-     * @brief Predefined colors, named in RGBA format
-     * @see RGBAColor.h
+     * @brief Predefined colors, named in RGBA format.
+     * @ref related/RGBAColorMap.md
      */
     namespace RGBAColor {
         constexpr SColor Transparent = {255, 255, 255, 0};

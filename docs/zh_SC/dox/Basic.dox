@@ -260,6 +260,7 @@
  * @param col  指定列（从 0 开始）
  * @return 返回对应行列下的数据
  * @note 可直接使用此函数修改指定行列的数据
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
  */
 
 /**
@@ -269,7 +270,7 @@
  * @param col  指定列（从 0 开始）
  * @return 返回对应行列下的数据
  * @note 区别于 `at()` 函数，此函数无法修改对应数据！
- * @see at
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
  */
 
 /**
@@ -283,17 +284,38 @@
  * @fn MyEngine::Matrix2D::cols()
  * @brief 获取当前矩阵的总列数
  * @return 返回对应的列数
- * @see rows
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator+()
+ * @brief 矩阵加法
+ * @param other     指定矩阵
+ *
+ * @details 将矩阵里的所有值进行加法操作
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回新的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator-()
+ * @brief 矩阵减法
+ * @param other     指定矩阵
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回新的矩阵。
  */
 
 /**
  * @fn MyEngine::Matrix2D::operator*()
- * @brief 矩阵乘法
+ * @brief 哈达玛积（元素对应乘积）
  * @param other     指定矩阵，其指定的行数必需与现有的列数相等
  *
  * @details 将矩阵里的所有值进行乘法操作
  * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
- * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！
+ * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！否则将抛出 `MyEngine::BadValueException` 异常
  */
 
 /**
@@ -310,12 +332,12 @@
  * @param row 指定行号（从 0 开始）
  * @param col 指定列号（从 0 开始）
  * @return 返回对应位置下的数据
- * @note 当指定位置值超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
  */
 
 /**
- * @fn MyEngine::Matrix2D::operator+(T &value, const std::function< void(T &, T &)> &function={})
- * @brief 全局相加
+ * @fn MyEngine::Matrix2D::add(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵加法
  * @param value     指定值
  * @param function  函数
  *
@@ -324,11 +346,145 @@
  */
 
 /**
- * @fn MyEngine::Matrix2D::operator+(T &&value, const std::function< void(T &, T &)> &function={})
- * @brief 全局相加
+ * @fn MyEngine::Matrix2D::add(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵加法
  * @param value     指定值
  * @param function  函数
  *
  * @details 将矩阵里的所有值进行相加操作
  * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
  */
+
+/**
+ * @fn MyEngine::Matrix2D::sub(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵减法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::sub(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵减法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 标量乘法（标量倍乘）
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有数据进行倍乘操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 标量乘法（标量倍乘）
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有数据进行倍乘操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(const Matrix2D< T > &other, const std::function< void(T &, const T &)> &function={})
+ * @brief 哈达玛积（元素对应乘积）
+ * @param other 指定的矩阵
+ *
+ * @details 对矩阵中的所有值进行逐元素相乘。
+ * @note 对于复数数据类型，必须指定 `function` 参数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回一个新的矩阵。
+ * @throw InvalidArgumentException
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::multiply()
+ * @brief 矩阵乘法
+ *
+ * @details 将两个矩阵进行叉乘操作
+ * @param other     指定矩阵，其指定的行数必需与原来的列数相等
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 原有矩阵大小与指定矩阵大小必需分别为 `m * k`, `k * n` 的大小才可用！否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ * @return 生成一个新的大小为 `m * n` 的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::transpose()
+ * @brief 转置矩阵
+ * @details 将原有的 `m * n` 大小的矩阵转置为 `n * m` 大小的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::reverse()
+ * @brief 翻转矩阵
+ * @details 当选择任何一个方向的逆序时，都会发生交换。
+ * @param reverse_row 行与行之间逆序（垂直翻转）
+ * @param reverse_col  列与列之间逆序（水平翻转）
+ * @note 当两个参数都为 `true` 时，矩阵将完全逆序
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::rotate()
+ * @brief 旋转矩阵
+ * @param turn_right 是否向右旋转 90°，反之向左旋转 90°
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::splitRows()
+ * @brief 切割指定行矩阵
+ * @param start_row     起始行
+ * @param end_row       结束行
+ * @return 返回矩阵行位于 `[start_row, end_row)` 区间内的所有行矩阵
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::splitCols()
+ * @brief 切割指定列矩阵
+ * @param start_col     起始列
+ * @param end_col       结束列
+ * @return 返回矩阵行位于 `[start_col, end_col)` 区间内的所有列矩阵
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::split(uint32_t rows, uint32_t cols, const Position &start_pos)
+ * @brief 切割矩阵
+ * @details 切割原有的矩阵，根据 `start_pos` 位置开始，取 `rows * cols` 个数据并创建成新的矩阵。
+ * @param rows      新的行数
+ * @param cols      新的列数
+ * @param start_pos 从哪个位置开始
+ * @return 返回新的大小为 `(rows * cols)` 的二维矩阵。
+ *
+ * @note 从 `start_pos` 位置起，若取得数据的总个数小于新的矩阵大小，则剩余部分自动填充为空数据。
+ * @note 指定的 `start_pos` 位置若超出原有矩阵的范围，将返回空矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::split(Matrix2D::Position start_pos, Matrix2D::Position end_pos)
+ * @brief 按照矩形的方式切割矩阵
+ *
+ * @details 根据起始位置和结束位置包围成一个矩形，并将其切割成独立的矩阵。
+ * @param start_pos     起始位置
+ * @param end_pos       结束位置
+ * @return 返回切割后的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::inverse()
+ * @brief 逆矩阵
+ * @return 返回新的矩阵，用于存储求得的结果
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 当前矩阵大小必需为 `n * n`，否则将返回空矩阵
+ */
+
+
+

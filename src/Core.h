@@ -23,6 +23,8 @@ namespace MyEngine {
         std::deque<std::unique_ptr<RenderCommand::BaseCommand>> _cmd_list;
         SDL_Renderer* _renderer{nullptr};
         Window* _window{nullptr};
+        size_t _render_count{0}, _render_cnt_in_sec{0};
+        uint64_t _start_ts{0};
         static SDL_Color _background_color;
 
         template<typename T, typename ...Args>
@@ -32,6 +34,7 @@ namespace MyEngine {
         ~Renderer();
         [[nodiscard]] SDL_Renderer* self() const;
         [[nodiscard]] Window* window() const;
+        [[nodiscard]] size_t renderCountInSec() const;
         void _update();
         void fillBackground(const SDL_Color& color);
         void fillBackground(SDL_Color&& color);
@@ -301,7 +304,7 @@ namespace MyEngine {
 
     class AudioSystem {
     public:
-        using Audio = std::variant<std::monostate, BGM, SFX>;
+        using Audio = std::variant<std::monostate, std::unique_ptr<BGM>, std::unique_ptr<SFX>>;
 
         AudioSystem(AudioSystem &&) = delete;
         AudioSystem(const AudioSystem &) = delete;
@@ -316,19 +319,24 @@ namespace MyEngine {
         [[nodiscard]] MIX_Mixer* mixer(size_t index = 0) const;
         [[nodiscard]] size_t mixerCount() const;
 
-        void appendBGM(const std::string& name, const std::string& path);
-        void appendSFX(const std::string& name, const std::string& path);
+        void appendBGM(const std::string& name, const std::string& path, size_t mixer_index = 0);
+        void appendSFX(const std::string& name, const std::string& path, size_t mixer_index = 0);
         void remove(const std::string& name);
         BGM* getBGM(const std::string& name);
         SFX* getSFX(const std::string& name);
         [[nodiscard]] size_t size() const;
+
+        void setMixerVolume(float volume, size_t mixer_index = 0);
+        [[nodiscard]] float mixerVolume(size_t mixer_index = 0);
+        void stopAll();
+
 
     private:
         explicit AudioSystem();
         static std::unique_ptr<AudioSystem> _instance;
         bool _is_init{false};
         std::vector<MIX_Mixer*> _mixer_list;
-        std::unordered_map<std::string, std::unique_ptr<Audio>> _audio_map;
+        std::unordered_map<std::string, Audio> _audio_map;
     };
 }
 

@@ -630,7 +630,7 @@ namespace MyEngine {
     BGM::BGM(MIX_Mixer *mixer, const std::string &path) : _mixer(mixer), _path(path) {
         if (!_mixer) {
             Logger::log("BGM: The specified mixer can not be null!", Logger::Fatal);
-            Engine::throwFatalError();
+            return;
         }
         _global_ev_id = IDGenerator::getNewGlobalEventID();
         EventSystem::global()->appendGlobalEvent(_global_ev_id, [this]() {
@@ -904,7 +904,7 @@ namespace MyEngine {
     SFX::SFX(MIX_Mixer *mixer, const std::string &path) : _mixer(mixer), _path(path) {
         if (!_mixer) {
             Logger::log("BGM: The specified mixer can not be null!", Logger::Fatal);
-            Engine::throwFatalError();
+            return;
         }
         load();
     }
