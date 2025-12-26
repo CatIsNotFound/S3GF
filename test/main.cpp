@@ -12,12 +12,11 @@ int main() {
     win2->setCursor(MyEngine::Cursor::Hand);
     window->setResizable(true);
     Widget::AbstractWidget wid(window);
-
     wid.setGeometry(100, 200, 100, 200);
     wid.setCursor(MyEngine::Cursor::Hand);
     wid.setHotKey(SDL_SCANCODE_LCTRL, SDL_SCANCODE_LALT, SDL_SCANCODE_SPACE);
-    Graphics::Rectangle rect(300, 300, 100, 200, 8, RGBAColor::GreenDark, RGBAColor::MixOrangeYellow);
-    Graphics::Rectangle rect2(200, 100, 200, 100, 8, RGBAColor::RedDark, RGBAColor::RedLightPink);
+    Graphics::Rectangle rect(300, 300, 100, 200, 32, RGBAColor::GreenDark, RGBAColor::MixOrangeYellow);
+    Graphics::Rectangle rect2(200, 100, 200, 100, 32, RGBAColor::RedDark, RGBAColor::RedLightPink);
     Graphics::Rectangle rect3(100, 200, 100, 200);
     window->installPaintEvent([&rect, &rect2, &rect3](Renderer* r) {
         auto ro = rect.rotate();
@@ -34,6 +33,10 @@ int main() {
     win2->installPaintEvent([](Renderer* r) {
         r->fillBackground(RGBAColor::BlueLake);
         r->drawDebugFPS();
+    });
+
+    EventSystem::global()->appendGlobalEvent(IDGenerator::getNewGlobalEventID(), [] {
+
     });
 
     EventSystem::global()->appendEvent(IDGenerator::getNewEventID(), [&window, &rect, &rect2](SDL_Event e) {

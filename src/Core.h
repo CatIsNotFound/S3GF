@@ -224,8 +224,8 @@ namespace MyEngine {
         uint32_t _mouse_events{0};
         Vector2 _mouse_pos{0, 0}, _mouse_down_dis{0, 0}, _before_mouse_down_pos{0, 0};
         bool _mouse_down_changed{false};
-        std::map<uint64_t, std::function<void(SDL_Event)>> _event_list;
-        std::map<uint64_t, std::function<void()>> _global_event_list;
+        std::unordered_map<uint64_t, std::function<void(SDL_Event)>> _event_list{};
+        std::unordered_map<uint64_t, std::function<void()>> _global_event_list{};
     };
 
     class Engine {

@@ -90,8 +90,9 @@ namespace MyEngine {
             }
             Window* _window;
             Renderer* _renderer;
+            Engine* _engine{nullptr};
             std::string _object_name{};
-            uint64_t _ev_id{0}, _g_ev_id{0};
+            uint64_t _ev_id{0};
             std::vector<int> _hot_key;
             bool _visible{true}, _enabled{true}, _focus{false};
             Graphics::Rectangle _trigger_area;

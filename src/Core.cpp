@@ -597,6 +597,7 @@ namespace MyEngine {
             for (int i = 0; i < _nums_keys; ++i) {
                 if (_kb_events[i]) _keys_status.emplace_back(i);
             }
+
             _mouse_events = SDL_GetMouseState(&_mouse_pos.x, &_mouse_pos.y);
             if (!_mouse_down_changed) {
                 // When any of mouse buttons is pressed down, triggered...

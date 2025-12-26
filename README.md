@@ -139,7 +139,7 @@ Currently, no official version has been released yet. It is expected to be relea
        auto win = new Window(&engine, "Hello world!");
        win->installPaintEvent([](Renderer* r) {
            r->fillBackground(StdColor::DarkBlue);
-           r->drawDebugText("Hello world!", {20, 20});		    
+           r->drawDebugText("Hello world!", {20, 20}, StdColor::White);		    
        });
        return engine.exec();
    }

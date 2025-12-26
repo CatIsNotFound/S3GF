@@ -4,17 +4,20 @@
 
 namespace MyEngine::Widget {
     AbstractWidget::AbstractWidget(Window *window) : _window(window), _renderer(nullptr),
-                _ev_id(IDGenerator::getNewEventID()), _g_ev_id(IDGenerator::getNewGlobalEventID()) {
+                _ev_id(IDGenerator::getNewEventID()) {
         if (!_window) {
             Logger::log("AbstractWidget: The specified window can not be null!", Logger::Fatal);
             throw InvalidArgumentException("AbstractWidget: The specified renderer can not be null!");
         }
+        _engine = _window->engine();
         _renderer = _window->renderer();
         _renderer->window()->installPaintEvent([this](Renderer* r) {
             if (!_visible) return;
             paintEvent(r);
         });
         EventSystem::global()->appendEvent(_ev_id, [this](SDL_Event ev) {
+            static uint64_t win_id = _window->windowID();
+            if (!_engine->isWindowExist(win_id)) this->unload();
             static bool is_loaded = false;
             if (!is_loaded) {
                 this->loadEvent();
@@ -49,7 +52,7 @@ namespace MyEngine::Widget {
                     if (cur_cap_keys.empty()) {
                         key_down = false;
                         // keyUpEvent(cur_cap_keys);
-                        keyPressedEvent(cur_cap_keys);
+                        // keyPressedEvent(cur_cap_keys);
                     } else if (key_pressed_num < cur_cap_keys.size()) {
                         // keyDownEvent(cur_cap_keys);
                         key_pressed_num = cur_cap_keys.size();
@@ -101,15 +104,6 @@ namespace MyEngine::Widget {
                 }
             }
         });
-        EventSystem::global()->appendGlobalEvent(_g_ev_id, [this]{
-            static bool trigger = false;
-            if (!trigger) {
-                if (!_window->engine()->isWindowExist(_window->windowID())) {
-                    trigger = true;
-                    this->unload();
-                }
-            }
-        });
     }
 
     AbstractWidget::~AbstractWidget() {}
@@ -117,7 +111,6 @@ namespace MyEngine::Widget {
     void AbstractWidget::unload() {
         unloadEvent();
         EventSystem::global()->removeEvent(_ev_id);
-        EventSystem::global()->removeGlobalEvent(_g_ev_id);
     }
 
     void AbstractWidget::setObjectName(std::string object_name) {
