@@ -108,6 +108,7 @@ jobs:
         echo "SDL3 build completed"
         echo "=== SDL3 Installation Debug ==="
         echo "SDL3 install prefix: %GITHUB_WORKSPACE%\SDL_install"
+        dir "%GITHUB_WORKSPACE%\SDL_install" /s /b | findstr /i "cmake\|SDL3"
         echo "=== CMAKE_PREFIX_PATH will be: %GITHUB_WORKSPACE%\SDL_install ==="
         echo "================================"
       env:
@@ -135,10 +136,6 @@ jobs:
       if: steps.cache-sdl.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
       shell: cmd
       run: |
-        if not exist %GITHUB_WORKSPACE%\SDL_install (
-          echo "SDL3_install not found. Please build SDL3 first."
-          exit /b 1
-        )
         git clone https://github.com/libsdl-org/SDL_image.git %GITHUB_WORKSPACE%\SDL_image
         cd %GITHUB_WORKSPACE%\SDL_image
         git checkout main || git checkout SDL3
@@ -260,6 +257,5 @@ jobs:
       shell: cmd
       run: |
         echo "Uploading Windows cache..."
-        mkdir %GITHUB_WORKSPACE%\SDL3_Windows_cache
         copy %GITHUB_WORKSPACE%\SDL3_cache %GITHUB_WORKSPACE%\SDL3_Windows_cache /Y
         echo "Windows cache upload completed"
