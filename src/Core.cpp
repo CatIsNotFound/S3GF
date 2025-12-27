@@ -454,6 +454,7 @@ namespace MyEngine {
 
     void Window::setDragDropEnabled(bool enabled) {
         _drag_mode = enabled;
+        if (!enabled) _dragging_pos.reset(0, 0);
     }
 
     bool Window::dragDropEnabled() const {
@@ -466,6 +467,11 @@ namespace MyEngine {
 
     const Vector2& Window::draggingPosition() const {
         return _dragging_pos;
+    }
+
+    void Window::droppedInfo(char *url, std::string& source) const {
+        if (url)    strncpy(url, _drop_url, strlen(_drop_url));
+        source.assign(_drop_source.begin(), _drop_source.end());
     }
 
     SDL_Window* Window::self() const {
@@ -719,33 +725,40 @@ namespace MyEngine {
                 if (!win->_drag_mode) return;
                 if (!win->_dragging) {
                     if (ev.drop.type == SDL_EVENT_DROP_BEGIN) {
-                        Logger::log("Drop begin");
                         win->_dragging = true;
                         win->_dragging_pos.reset(
                             Cursor::global()->globalPosition() - toGeometryFloat(win->geometry()).pos);
                         win->dragInEvent();
+                        memset(win->_drop_url, 0, 255);
+                        win->_drop_source.clear();
                     }
                 } else {
                     if (ev.drop.type == SDL_EVENT_DROP_COMPLETE) {
-                        Logger::log("Drop complete");
                         win->dragOutEvent();
                         win->_dragging_pos.reset(0, 0);
                         win->_dragging = false;
+                        win->_drop_source.clear();
+                        memset(win->_drop_url, 0, 255);
                     } else if (ev.drop.type == SDL_EVENT_DROP_FILE) {
-                        Logger::log(std::format("Drop file: {}", ev.drop.data));
                         win->dropEvent(ev.drop.data, ev.drop.source);
+                        strncpy(win->_drop_url, ev.drop.data, 255);
+                        if (ev.drop.source) {
+                            win->_drop_source.resize(strlen(ev.drop.source));
+                            strncpy(win->_drop_source.data(), ev.drop.source, strlen(ev.drop.source));
+                        }
                         win->_dragging_pos.reset(0, 0);
                         win->_dragging = false;
                     } else if (ev.drop.type == SDL_EVENT_DROP_TEXT) {
-                        Logger::log(std::format("Drop text: {}", ev.drop.data));
                         win->dropEvent(ev.drop.data, nullptr);
-                        win->_dragging_pos.reset(0, 0);
+                        strncpy(win->_drop_url, ev.drop.data, 255);
+                        if (ev.drop.source) {
+                            win->_drop_source.resize(strlen(ev.drop.source));
+                            strncpy(win->_drop_source.data(), ev.drop.source, strlen(ev.drop.source));
+                        }
                         win->_dragging = false;
                     } else {
                         auto real_pos = Cursor::global()->globalPosition() - toGeometryFloat(win->geometry()).pos;
-                        win->dragMovedEvent(real_pos, ev.drop.data);
                         win->_dragging_pos.reset(real_pos);
-                        Logger::log(std::format("Dragging: ({}, {})", real_pos.x, real_pos.y));
                     }
                 }
             });

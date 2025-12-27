@@ -136,17 +136,6 @@ namespace MyEngine::Widget {
                     }
                 }
             }
-//            // Drag and drop Event
-//            if (ev.drop.type == SDL_EVENT_DROP_TEXT) {
-//                Logger::log(ev.drop.data);
-//            } else if (ev.drop.type == SDL_EVENT_DROP_FILE) {
-//                Logger::log(ev.drop.data);
-//            } else if (ev.drop.type == SDL_EVENT_DROP_COMPLETE) {
-//                Logger::log("Dropped");
-//            } else if (ev.drop.type == SDL_EVENT_DROP_BEGIN) {
-//                Logger::log("Begin drag");
-//            }
-
         });
     }
 
@@ -289,15 +278,9 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::paintEvent(Renderer *renderer) {}
 
-    void AbstractWidget::enterEvent() {}
-
-    void AbstractWidget::leaveEvent() {}
-
     void AbstractWidget::focusInEvent() {}
 
     void AbstractWidget::focusOutEvent() {}
-
-    void AbstractWidget::dragEvent() {}
 
     void AbstractWidget::dragInEvent() {}
 
@@ -343,7 +326,7 @@ namespace MyEngine::Widget {
     void AbstractWidget::endedInputEvent() {}
 
     void AbstractWidget::inputEvent(const char *string) {
-        std::string chs, real;
+        std::string real;
         for (size_t i = 0; i < strlen(string); ++i) {
             real += string[i];
         }

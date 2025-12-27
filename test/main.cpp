@@ -9,6 +9,7 @@ int main() {
     engine.setFPS(60);
     auto window = new Window(&engine, engine.applicationName(), 1024, 800);
     window->setResizable(true);
+    window->setDragDropEnabled(true);
     Widget::AbstractWidget wid(window);
     Widget::AbstractWidget wid2(window);
     wid.setGeometry(100, 200, 100, 200);
@@ -49,6 +50,7 @@ int main() {
         static bool trigger = false;
         static bool drag_1 = false, drag_2 = false;
         static Vector2 old_pos_1, old_pos_2;
+
         if (EventSystem::global()->captureMouse(EventSystem::Left)) {
             if (!trigger) {
                 trigger = true;

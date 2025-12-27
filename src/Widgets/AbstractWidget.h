@@ -59,11 +59,8 @@ namespace MyEngine {
             virtual void visibleChangedEvent(bool visible);
             virtual void objectNameChangedEvent(const std::string& object_name);
             virtual void paintEvent(Renderer *renderer);
-            virtual void enterEvent();
-            virtual void leaveEvent();
             virtual void focusInEvent();
             virtual void focusOutEvent();
-            virtual void dragEvent();
             virtual void dragInEvent();
             virtual void dragOutEvent();
             virtual void dragMovedEvent();
@@ -90,7 +87,7 @@ namespace MyEngine {
             template<typename T>
             void addKey(T key) {
                 static_assert(std::is_same_v<T, SDL_Scancode>,
-                        "AbstractWidget: Some of the hotkeys is not valid! Used SDL_Scancode.");
+                        "AbstractWidget: Some of the hot keys is not valid! Used SDL_Scancode instead.");
                 _hot_key.emplace_back(key);
             }
             Window* _window;
@@ -110,6 +107,7 @@ namespace MyEngine {
                 bool key_down{};
                 bool is_hot_key_triggered{};
                 bool input_mode{};
+                bool dragging{};
             };
             Status _status;
             std::string _cur_ch;

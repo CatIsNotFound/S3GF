@@ -140,6 +140,7 @@ namespace MyEngine {
         [[nodiscard]] bool dragDropEnabled() const;
         [[nodiscard]] bool isDragging() const;
         [[nodiscard]] const Vector2& draggingPosition() const;
+        void droppedInfo(char* url, std::string& source) const;
 
         [[nodiscard]] SDL_Window* self() const;
         [[nodiscard]] Engine* engine() const;
@@ -185,6 +186,8 @@ namespace MyEngine {
         bool _fullscreen{false};
         bool _dragging{false};
         bool _drag_mode{false};
+        std::string _drop_source{};
+        char _drop_url[255]{};
         Vector2 _mouse_pos{}, _dragging_pos{};
         Cursor::StdCursor _cursor{};
         std::vector<std::function<void(Renderer*)>> _paint_event_list;
