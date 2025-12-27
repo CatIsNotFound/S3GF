@@ -108,7 +108,6 @@ jobs:
         echo "SDL3 build completed"
         echo "=== SDL3 Installation Debug ==="
         echo "SDL3 install prefix: %GITHUB_WORKSPACE%\SDL_install"
-        dir "%GITHUB_WORKSPACE%\SDL_install" /s /b | findstr /i "cmake\|SDL3"
         echo "=== CMAKE_PREFIX_PATH will be: %GITHUB_WORKSPACE%\SDL_install ==="
         echo "================================"
       env:

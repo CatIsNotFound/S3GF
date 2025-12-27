@@ -29,7 +29,7 @@ namespace MyEngine::Widget {
 
             // Hotkey Event
             auto cur_cap_keys = EventSystem::global()->captureKeyboardStatus();
-            if (!_hot_key.empty() && !ev.key.repeat) {
+            if (_status.hot_keys && !_hot_key.empty() && !ev.key.repeat) {
                 if (!_status.is_hot_key_triggered && (cur_cap_keys == _hot_key)) {
                     _status.is_hot_key_triggered = true;
                     hotKeysPressedEvent();
@@ -127,6 +127,52 @@ namespace MyEngine::Widget {
                     mouseLeftEvent();
                     if (!_status.mouse_down) {
                         Cursor::global()->setCursor(_window->cursor());
+                    }
+                }
+            }
+            // TouchScreen Event
+            auto finger_type = ev.tfinger.type;
+            if (!_status.finger_down) {
+                if (trigger) {
+                    auto w = static_cast<float>(_window->geometry().width);
+                    auto h = static_cast<float>(_window->geometry().height);
+                    Vector2 pos(ev.tfinger.x * w, ev.tfinger.y * h);
+                    if (finger_type == SDL_EVENT_FINGER_DOWN) {
+                        _status.finger_down = true;
+                        _status.finger_down_pos.reset(pos);
+                        _status.finger_id = ev.tfinger.fingerID;
+                        fingerDownEvent(pos);
+                    } else if (finger_type == SDL_EVENT_FINGER_MOTION) {
+                        _status.finger_down = true;
+                        _status.finger_down_pos.reset(pos);
+                        _status.finger_id = ev.tfinger.fingerID;
+                        fingerMoveInEvent();
+                    }
+                }
+            } else {
+                auto w = static_cast<float>(_window->geometry().width);
+                auto h = static_cast<float>(_window->geometry().height);
+                Vector2 pos(ev.tfinger.x * w, ev.tfinger.y * h);
+                bool fin_tri = (Algorithm::comparePosInRect(pos, _trigger_area) > 0);
+                if (fin_tri && finger_type == SDL_EVENT_FINGER_DOWN) {
+                    Logger::log("F");
+                    _status.finger_id = ev.tfinger.fingerID;
+                    fingerUpEvent(pos);
+                    fingerDownEvent(pos);
+                    _status.finger_down_pos.reset(pos);
+                } else if ((_status.finger_id == ev.tfinger.fingerID) && (finger_type == SDL_EVENT_FINGER_UP)) {
+                    _status.finger_down = false;
+                    _status.finger_move_out = false;
+                    fingerUpEvent(pos);
+                    if (trigger) fingerTappedEvent();
+                } else if ((_status.finger_id == ev.tfinger.fingerID) && (finger_type == SDL_EVENT_FINGER_MOTION)) {
+                    fingerMovedEvent(pos, pos - _status.finger_down_pos);
+                    if (!_status.finger_move_out && !fin_tri) {
+                        _status.finger_move_out = true;
+                        fingerMoveOutEvent();
+                    } else if (_status.finger_move_out && fin_tri) {
+                        _status.finger_move_out = false;
+                        fingerMoveInEvent();
                     }
                 }
             }
@@ -256,135 +302,159 @@ namespace MyEngine::Widget {
         return _cur_style;
     }
 
-    void AbstractWidget::setProperty(std::string name, bool value) {
+    void AbstractWidget::setHotKeyEnabled(bool enabled) {
+        _status.hot_keys = enabled;
+    }
+
+    bool AbstractWidget::hotKeyEnabled() const {
+        return _status.hot_keys;
+    }
+
+    void AbstractWidget::setProperty(const std::string& name, bool value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
     
-    void AbstractWidget::setProperty(std::string name, int8_t value) {
+    void AbstractWidget::setProperty(const std::string& name, int8_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, int16_t value) {
+    void AbstractWidget::setProperty(const std::string& name, int16_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, int32_t value) {
+    void AbstractWidget::setProperty(const std::string& name, int32_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, int64_t value) {
+    void AbstractWidget::setProperty(const std::string& name, int64_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, uint8_t value) {
+    void AbstractWidget::setProperty(const std::string& name, uint8_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, uint16_t value) {
+    void AbstractWidget::setProperty(const std::string& name, uint16_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, uint32_t value) {
+    void AbstractWidget::setProperty(const std::string& name, uint32_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, uint64_t value) {
+    void AbstractWidget::setProperty(const std::string& name, uint64_t value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, float value) {
+    void AbstractWidget::setProperty(const std::string& name, float value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, double value) {
+    void AbstractWidget::setProperty(const std::string& name, double value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, const char* value) {
+    void AbstractWidget::setProperty(const std::string& name, const char* value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, std::string& value) {
+    void AbstractWidget::setProperty(const std::string& name, std::string& value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, std::string&& value) {
+    void AbstractWidget::setProperty(const std::string& name, std::string&& value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name, void* value) {
+    void AbstractWidget::setProperty(const std::string& name, void* value) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue(value);
         } else {
             _prop_map.try_emplace(name, value);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
 
-    void AbstractWidget::setProperty(std::string name) {
+    void AbstractWidget::setProperty(const std::string& name) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue();
         } else {
             _prop_map.try_emplace(name);
         }
+        propertyChanged(name, _prop_map.at(name));
     }
     
-    const Variant *const AbstractWidget::property(std::string name) const {
+    const Variant *const AbstractWidget::property(const std::string& name) const {
         if (_prop_map.contains(name)) {
             return &_prop_map.at(name);
         } else {
@@ -436,11 +506,24 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::hotKeysPressedEvent() {}
 
-    void AbstractWidget::FingerDownEvent() { Logger::log(std::format("Finger down")); }
+    void AbstractWidget::fingerDownEvent(const Vector2& position) {
+        Logger::log(std::format("[Finger down] pos: ({:.2f}, {:.2f}) id: {}", position.x, position.y, _status.finger_id));
+    }
 
-    void AbstractWidget::FingerUpEvent() { Logger::log(std::format("Finger up")); }
+    void AbstractWidget::fingerUpEvent(const Vector2& position) {
+        Logger::log(std::format("[Finger up] pos: ({:.2f}, {:.2f}) id: {}", position.x, position.y, _status.finger_id));
+    }
 
-    void AbstractWidget::FingerTappedEvent() { Logger::log(std::format("Fingger tapped")); }
+    void AbstractWidget::fingerMovedEvent(const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {
+//        Logger::log(std::format("[Finger Moving] id: {} distance: ({:f}, {:f}), "
+//                                "position: ({:.2f}, {:.2f})", _status.finger_id, distance.x, distance.y, position.x, position.y));
+    }
+
+    void AbstractWidget::fingerMoveInEvent() { Logger::log("[Finger in]"); }
+
+    void AbstractWidget::fingerMoveOutEvent() { Logger::log("[Finger out]"); }
+
+    void AbstractWidget::fingerTappedEvent() { Logger::log(std::format("Fingger tapped")); }
 
     void AbstractWidget::startedInputEvent() {}
 
@@ -449,4 +532,6 @@ namespace MyEngine::Widget {
     void AbstractWidget::inputEvent(const char *string) {
         _cur_ch = string;
     }
+
+    void AbstractWidget::propertyChanged(const std::string &property, const Variant &variant) {}
 }

@@ -12,33 +12,13 @@ int main() {
     window->setDragDropEnabled(true);
     Widget::AbstractWidget wid(window);
     Widget::AbstractWidget wid2(window);
-    wid.setGeometry(100, 200, 100, 200);
+    wid.setGeometry(100, 200, 600, 400);
     wid.setCursor(MyEngine::Cursor::Hand);
     wid.setHotKey(SDL_SCANCODE_LCTRL, SDL_SCANCODE_LALT, SDL_SCANCODE_SPACE);
     wid.setFocusEnabled(true);
-    wid.setProperty("abc", 123.45);
-    wid.setProperty("def", 123.45f);
-    wid.setProperty("efg", 12345);
-    wid.setProperty("fgh", -123456789LL);
-    wid.setProperty("hij", true);
-    wid.setProperty("ijk", false);
-    wid.setProperty("ijk", 10002.f);
-    wid.setObjectName("Widget1");
-    auto abc = wid.property("abc");
-    auto def = wid.property("def");
-    auto efg = wid.property("efg");
-    auto fgh = wid.property("fgh");
-    auto hij = wid.property("hij");
-    auto ijk = wid.property("ijk");
-    Logger::log(std::format("Property: {} = {} ({})", "abc", abc->toFloat(), abc->typeName()));
-    Logger::log(std::format("Property: {} = {} ({})", "def", def->toDouble(), def->typeName()));
-    Logger::log(std::format("Property: {} = {} ({})", "efg", efg->toFloat(), efg->typeName()));
-    Logger::log(std::format("Property: {} = {} ({})", "fgh", fgh->toInt32(), fgh->typeName()));
-    Logger::log(std::format("Property: {} = {} ({})", "hij", hij->toInt8(), hij->typeName()));
-    Logger::log(std::format("Property: {} = {} ({})", "ijk", ijk->toUInt32(), ijk->typeName()));
     Graphics::Rectangle rect(300, 300, 100, 200, 32, RGBAColor::GreenDark, RGBAColor::MixOrangeYellow);
     Graphics::Rectangle rect2(200, 100, 200, 100, 32, RGBAColor::RedDark, RGBAColor::RedLightPink);
-    Graphics::Rectangle rect3(100, 200, 100, 200);
+    Graphics::Rectangle rect3(100, 200, 600, 400);
     TextSystem::global()->addFont("simsun", R"(C:\Windows\Fonts\simsun.ttc)", window->renderer());
 //    TextSystem::global()->font("simsun")->setFontSize(64.f);
     uint64_t id = IDGenerator::getNewTextID();
@@ -53,6 +33,7 @@ int main() {
         r->drawRectangle(&rect);
         r->drawRectangle(&rect2);
         r->drawDebugFPS();
+
         if (wid.inputModeEnabled()) {
             TextSystem::global()->setText(id, wid.getInputChar());
         } else {

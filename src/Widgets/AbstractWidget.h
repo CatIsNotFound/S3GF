@@ -50,23 +50,26 @@ namespace MyEngine {
                 else std::sort(_hot_key.begin(), _hot_key.end());
             }
 
-            void setProperty(std::string name, bool value);
-            void setProperty(std::string name, uint8_t value);
-            void setProperty(std::string name, uint16_t value);
-            void setProperty(std::string name, uint32_t value);
-            void setProperty(std::string name, uint64_t value);
-            void setProperty(std::string name, int8_t value);
-            void setProperty(std::string name, int16_t value);
-            void setProperty(std::string name, int32_t value);
-            void setProperty(std::string name, int64_t value);
-            void setProperty(std::string name, float value);
-            void setProperty(std::string name, double value);
-            void setProperty(std::string name, const char* value);
-            void setProperty(std::string name, std::string& value);
-            void setProperty(std::string name, std::string&& value);
-            void setProperty(std::string name, void* value);
-            void setProperty(std::string name);
-            const Variant *const property(std::string name) const;
+            void setHotKeyEnabled(bool enabled);
+            [[nodiscard]] bool hotKeyEnabled() const;
+
+            void setProperty(const std::string& name, bool value);
+            void setProperty(const std::string& name, uint8_t value);
+            void setProperty(const std::string& name, uint16_t value);
+            void setProperty(const std::string& name, uint32_t value);
+            void setProperty(const std::string& name, uint64_t value);
+            void setProperty(const std::string& name, int8_t value);
+            void setProperty(const std::string& name, int16_t value);
+            void setProperty(const std::string& name, int32_t value);
+            void setProperty(const std::string& name, int64_t value);
+            void setProperty(const std::string& name, float value);
+            void setProperty(const std::string& name, double value);
+            void setProperty(const std::string& name, const char* value);
+            void setProperty(const std::string& name, std::string& value);
+            void setProperty(const std::string& name, std::string&& value);
+            void setProperty(const std::string& name, void* value);
+            void setProperty(const std::string& name);
+            const Variant *const property(const std::string& name) const;
 
         protected:
             Renderer* render() { return _renderer; }
@@ -91,12 +94,16 @@ namespace MyEngine {
             virtual void keyUpEvent(SDL_Scancode scancode);
             virtual void keyPressedEvent();
             virtual void hotKeysPressedEvent();
-            virtual void FingerDownEvent();
-            virtual void FingerUpEvent();
-            virtual void FingerTappedEvent();
+            virtual void fingerDownEvent(const Vector2& position);
+            virtual void fingerUpEvent(const Vector2& position);
+            virtual void fingerMovedEvent(const Vector2& position, const Vector2& distance);
+            virtual void fingerMoveOutEvent();
+            virtual void fingerMoveInEvent();
+            virtual void fingerTappedEvent();
             virtual void startedInputEvent();
             virtual void endedInputEvent();
             virtual void inputEvent(const char* string);
+            virtual void propertyChanged(const std::string& property, const Variant& variant);
         private:
             void unload();
             template<typename T>
@@ -111,6 +118,7 @@ namespace MyEngine {
             std::string _object_name{};
             uint64_t _ev_id{0};
             std::vector<int> _hot_key;
+            std::vector<std::vector<int>> _hot_key_list;
             bool _visible{true}, _enabled{true}, _focus{false};
             Graphics::Rectangle _trigger_area;
             Cursor::StdCursor _cur_style{Cursor::Default};
@@ -122,7 +130,11 @@ namespace MyEngine {
                 bool key_down{};
                 bool is_hot_key_triggered{};
                 bool input_mode{};
-                bool dragging{};
+                bool hot_keys{};
+                bool finger_down{};
+                bool finger_move_out{};
+                uint64_t finger_id{};
+                Vector2 finger_down_pos{};
             };
             Status _status{};
             std::string _cur_ch{};
