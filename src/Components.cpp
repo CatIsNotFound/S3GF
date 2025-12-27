@@ -8,7 +8,7 @@
 
 namespace MyEngine {
     Font::Font(const std::string& font_path, float font_size)
-            : _font_size(font_size){
+            : _font_size(font_size), _font_path(font_path) {
         _font = TTF_OpenFont(font_path.c_str(), font_size);
         if (!_font) {
             Logger::log(std::format("Can't load font from path '{}'.", font_path), Logger::Error);
@@ -21,6 +21,8 @@ namespace MyEngine {
             TTF_CloseFont(_font);
         }
     }
+
+    const std::string& Font::fontPath() const { return _font_path; }
 
     void Font::setFontSize(float size) {
         auto _ret = TTF_SetFontSize(_font, size);

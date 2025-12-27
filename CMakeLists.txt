@@ -97,8 +97,10 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Exception.h
             src/Widgets/AbstractWidget.cpp
             src/Widgets/AbstractWidget.h
-            src/Utils/Variant.cpp
             src/Utils/Variant.h
+            src/Utils/Variant.cpp
+            src/Widgets/Label.cpp
+            src/Widgets/Label.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -149,8 +151,10 @@ else ()
             src/Exception.h
             src/Widgets/AbstractWidget.cpp
             src/Widgets/AbstractWidget.h
-            src/Utils/Variant.cpp
             src/Utils/Variant.h
+            src/Utils/Variant.cpp
+            src/Widgets/Label.cpp
+            src/Widgets/Label.h
     )
 endif ()
 

@@ -640,44 +640,33 @@ namespace MyEngine {
             static bool mouse_down = false, key_down = false;
             std::for_each(win_id_list.begin(), win_id_list.end(), [this, &ev](uint32_t id) {
                 auto win = _engine->window(id);
-                if (!win || ev.window.windowID != id) return;
-                if (ev.type == SDL_EVENT_WINDOW_MOVED) {
+                if (ev.window.windowID != id) return;
+                if (ev.window.type == SDL_EVENT_WINDOW_MOVED) {
                     win->moveEvent();
-                }
-                if (ev.type == SDL_EVENT_WINDOW_RESIZED) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_RESIZED) {
                     win->resizeEvent();
-                }
-                if (ev.type == SDL_EVENT_WINDOW_FOCUS_GAINED) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_FOCUS_GAINED) {
                     win->getFocusEvent();
-                }
-                if (ev.type == SDL_EVENT_WINDOW_FOCUS_LOST) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_FOCUS_LOST) {
                     win->lostFocusEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
                     win->unloadEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_HIDDEN) {
+                    return;
+                } else if (ev.window.type == SDL_EVENT_WINDOW_HIDDEN) {
                     win->hideEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_SHOWN) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_SHOWN) {
                     win->showEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_MINIMIZED) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_MINIMIZED) {
                     win->windowMinimizedEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_MAXIMIZED) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_MAXIMIZED) {
                     win->windowMaximizedEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_ENTER_FULLSCREEN) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_ENTER_FULLSCREEN) {
                     win->enteredFullscreenEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_LEAVE_FULLSCREEN) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_LEAVE_FULLSCREEN) {
                     win->leaveFullscreenEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_MOUSE_ENTER) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_MOUSE_ENTER) {
                     win->mouseEnteredEvent();
-                }
-                if (ev.window.type == SDL_EVENT_WINDOW_MOUSE_LEAVE) {
+                } else if (ev.window.type == SDL_EVENT_WINDOW_MOUSE_LEAVE) {
                     win->mouseLeftEvent();
                 }
 
@@ -821,7 +810,8 @@ namespace MyEngine {
                                      MYENGINE_FULL_VERSION, SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
                       << "For more information, visit: https://github.com/CatIsNotFound/MyEngine \n"
                          "                             https://gitee.com/CatIsNotFound/MyEngine\n" << std::endl;
-            std::cout << std::format("=== Application Info ===\nID: {} \nName: {} \nVersion: {} \n",
+            std::cout << std::format("========== Application Info ==========\n"
+                                     "ID: {} \nName: {} \nVersion: {} \n",
                                      app_id, app_name, app_version) << std::endl;
         }
         if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
@@ -832,7 +822,6 @@ namespace MyEngine {
         TextSystem::global();
         AudioSystem::global();
         EventSystem::global(this);
-        // AudioSystem::global();
         signal(SIGINT, Engine::exit);
     }
 
@@ -907,14 +896,17 @@ namespace MyEngine {
     }
 
     Window* Engine::window(SDL_WindowID id) const {
-        if (_window_list.contains(id))
+        if (_window_list.contains(id)) {
             return _window_list.at(id).get();
-        else
-            return nullptr;
+        } else {
+            auto err = std::format("Engine: Window id {} is not created!", id);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
+        }
     }
 
     std::vector<uint32_t> Engine::windowIDList() const {
-        std::vector<uint32_t> id_list(_window_list.size());
+        std::vector<uint32_t> id_list;
         std::for_each(_window_list.begin(), _window_list.end(), [&id_list](const auto& window) {
             id_list.push_back(window.second->windowID());
         });
@@ -1108,9 +1100,9 @@ namespace MyEngine {
 
     Font* TextSystem::font(const std::string& font_name) {
         if (!_font_map.contains(font_name)) {
-            Logger::log(std::format("TextSystem: Font '{}' is not in the font list!",
-                                    font_name), Logger::Error);
-            return nullptr;
+            auto err = std::format("TextSystem: Font '{}' is not in the font list!", font_name);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
         return _font_map.at(font_name).font.get();
     }
@@ -1233,9 +1225,9 @@ namespace MyEngine {
 
     TextSystem::Text* TextSystem::indexOfText(uint64_t text_id) {
         if (!_text_map.contains(text_id)) {
-            Logger::log(std::format("TextSystem: Text ID {} is not in the text list!",
-                                    text_id), Logger::Error);
-            return nullptr;
+            auto err = std::format("TextSystem: Text ID {} is not in the text list!", text_id);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
         return &_text_map.at(text_id);
     }
@@ -1308,7 +1300,7 @@ namespace MyEngine {
  
     bool AudioSystem::load() {
         if (!MIX_Init()) {
-            Logger::log(std::format("AudioSystem: Can't initilized audio system! Exception: {}", 
+            Logger::log(std::format("AudioSystem: Can't initialized audio system! Exception: {}",
                 SDL_GetError()), Logger::Error);
             return false;
         }
@@ -1316,7 +1308,7 @@ namespace MyEngine {
         SDL_AudioSpec _audio_spec(SDL_AUDIO_S16, 2, 44100);
         auto new_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &_audio_spec);
         if (!new_mixer) {
-            Logger::log(std::format("AudioSystem: Can't initilized audio system! Exception: {}", 
+            Logger::log(std::format("AudioSystem: Can't initialized audio system! Exception: {}",
                 SDL_GetError()), Logger::Error);
             return false;
         }
@@ -1327,9 +1319,6 @@ namespace MyEngine {
 
     void AudioSystem::unload() {
         if (!_is_init) return;
-        /// TODO: Not sure the audio map should be unload?
-        /// ...
-
         std::for_each(_mixer_list.begin(), _mixer_list.end(), [this](MIX_Mixer* m) {
             if (m) MIX_DestroyMixer(m);
         });
@@ -1354,10 +1343,10 @@ namespace MyEngine {
 
     MIX_Mixer *AudioSystem::mixer(size_t index) const {
         if (_mixer_list.size() <= index) {
-            Logger::log(std::format("AudioSystem: Mixer #{} is not valid! "
-                                    "Did you forget to call `AudioSystem::addNewMixer()` function?", index),
-                        Logger::Error);
-            return nullptr;
+            auto err = std::format("AudioSystem: Mixer #{} is not valid! "
+                                   "Did you forget to call `AudioSystem::addNewMixer()` function?", index);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
         return _mixer_list.at(index);
     }
@@ -1410,14 +1399,14 @@ namespace MyEngine {
             if (std::holds_alternative<std::unique_ptr<BGM>>(_audio_map.at(name))) {
                 return std::get<std::unique_ptr<BGM>>(_audio_map.at(name)).get();
             } else {
-                Logger::log(std::format("AudioSystem: Audio '{}' is not the BGM type! "
-                                        "Returned nullptr!", name), Logger::Error);
-                return nullptr;
+                auto err = std::format("AudioSystem: Audio '{}' is not the BGM type! ", name);
+                Logger::log(err, Logger::Fatal);
+                throw NullPointerException(err);
             }
         } else {
-            Logger::log(std::format("AudioSystem: Audio '{}' is not exist! "
-                                    "Returned nullptr!", name), Logger::Error);
-            return nullptr;
+            auto err = std::format("AudioSystem: Audio '{}' is not exist! ", name);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
     }
 
@@ -1426,14 +1415,14 @@ namespace MyEngine {
             if (std::holds_alternative<std::unique_ptr<SFX>>(_audio_map.at(name))) {
                 return std::get<std::unique_ptr<SFX>>(_audio_map.at(name)).get();
             } else {
-                Logger::log(std::format("AudioSystem: Audio '{}' is not the SFX type! "
-                                        "Returned nullptr!", name), Logger::Error);
-                return nullptr;
+                auto err = std::format("AudioSystem: Audio '{}' is not the SFX type! ", name);
+                Logger::log(err, Logger::Fatal);
+                throw NullPointerException(err);
             }
         } else {
-            Logger::log(std::format("AudioSystem: Audio '{}' is not exist! "
-                                    "Returned nullptr!", name), Logger::Error);
-            return nullptr;
+            auto err = std::format("AudioSystem: Audio '{}' is not exist! ", name);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
     }
 

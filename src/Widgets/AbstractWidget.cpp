@@ -45,18 +45,12 @@ namespace MyEngine::Widget {
             if (_focus) {
                 if (_status.input_mode) {
                     // Set the key group for exiting input mode
-                    static std::vector<int> finished_keys = { SDL_SCANCODE_ESCAPE,
-                                                              SDL_SCANCODE_RETURN,
-                                                              SDL_SCANCODE_RETURN2 };
-                    for (auto& k : finished_keys) {
-                        if (std::find(cur_cap_keys.begin(),
-                                      cur_cap_keys.end(), k) != cur_cap_keys.end()) {
-                            setInputModeEnabled(false);
-                            break;
-                        }
+                    if (std::find(cur_cap_keys.begin(),
+                                  cur_cap_keys.end(), SDL_SCANCODE_ESCAPE) != cur_cap_keys.end()) {
+                        setInputModeEnabled(false);
                     }
+
                     if (ev.text.type == SDL_EVENT_TEXT_INPUT) {
-                        Logger::log(std::format("Length: {}", strlen(ev.text.text)));
                         char text[128] = {};
                         strncpy(text, ev.text.text, strlen(ev.text.text));
                         inputEvent(text);
@@ -262,6 +256,144 @@ namespace MyEngine::Widget {
         return _cur_style;
     }
 
+    void AbstractWidget::setProperty(std::string name, bool value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+    
+    void AbstractWidget::setProperty(std::string name, int8_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, int16_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, int32_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, int64_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, uint8_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, uint16_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, uint32_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, uint64_t value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, float value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, double value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, const char* value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, std::string& value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, std::string&& value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name, void* value) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+        } else {
+            _prop_map.try_emplace(name, value);
+        }
+    }
+
+    void AbstractWidget::setProperty(std::string name) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue();
+        } else {
+            _prop_map.try_emplace(name);
+        }
+    }
+    
+    const Variant *const AbstractWidget::property(std::string name) const {
+        if (_prop_map.contains(name)) {
+            return &_prop_map.at(name);
+        } else {
+            auto err = std::format("AbstractWidget: Property '{}' is not found!", name);
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
+        }
+    }
+
     void AbstractWidget::loadEvent() {}
 
     void AbstractWidget::unloadEvent() {}
@@ -281,14 +413,6 @@ namespace MyEngine::Widget {
     void AbstractWidget::focusInEvent() {}
 
     void AbstractWidget::focusOutEvent() {}
-
-    void AbstractWidget::dragInEvent() {}
-
-    void AbstractWidget::dragOutEvent() {}
-
-    void AbstractWidget::dragMovedEvent() {}
-
-    void AbstractWidget::dropEvent() {}
 
     void AbstractWidget::mouseClickedEvent() {}
 
@@ -310,27 +434,19 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::keyPressedEvent() {}
 
-    void AbstractWidget::hotKeysPressedEvent() {
-        this->setInputModeEnabled(!this->inputModeEnabled());
-        Logger::log(std::format("{} input mode", (this->inputModeEnabled() ? "Enabled" : "Disabled")), Logger::Info);
-    }
+    void AbstractWidget::hotKeysPressedEvent() {}
 
-    void AbstractWidget::FingerDownEvent() {}
+    void AbstractWidget::FingerDownEvent() { Logger::log(std::format("Finger down")); }
 
-    void AbstractWidget::FingerUpEvent() {}
+    void AbstractWidget::FingerUpEvent() { Logger::log(std::format("Finger up")); }
 
-    void AbstractWidget::FingerTappedEvent() {}
+    void AbstractWidget::FingerTappedEvent() { Logger::log(std::format("Fingger tapped")); }
 
     void AbstractWidget::startedInputEvent() {}
 
     void AbstractWidget::endedInputEvent() {}
 
     void AbstractWidget::inputEvent(const char *string) {
-        std::string real;
-        for (size_t i = 0; i < strlen(string); ++i) {
-            real += string[i];
-        }
-        _cur_ch = real;
+        _cur_ch = string;
     }
-
 }

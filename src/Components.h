@@ -34,6 +34,7 @@ namespace MyEngine {
         explicit Font(const std::string& font_path, float font_size = 9.f);
         ~Font();
 
+        [[nodiscard]] const std::string& fontPath() const;
         void setFontSize(float size);
         float fontSize() const;
         void setFontColor(const SDL_Color& color);
@@ -56,6 +57,7 @@ namespace MyEngine {
         TTF_Font* self() const;
     private:
         TTF_Font* _font{nullptr};
+        std::string _font_path{};
         float _font_size{};
         SColor _font_color{};
         uint32_t _font_style_flags{};

@@ -24,6 +24,8 @@ namespace MyEngine {
     EXCEPTION(OutOfRangeException);
 
     EXCEPTION(InvalidArgumentException);
+
+    EXCEPTION(NullPointerException);
 }
 
 #endif //MYENGINE_EXCEPTION_H

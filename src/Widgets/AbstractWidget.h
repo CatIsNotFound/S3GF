@@ -1,9 +1,9 @@
 
-#ifndef MYENGINE_ABSTRACTWIDGET_H
-#define MYENGINE_ABSTRACTWIDGET_H
+#ifndef MYENGINE_WIDGETS_ABSTRACTWIDGET_H
+#define MYENGINE_WIDGETS_ABSTRACTWIDGET_H
 #include "../Components.h"
 #include "../Utils/Cursor.h"
-
+#include "../Utils/Variant.h"
 namespace MyEngine {
     namespace Widget {
         class AbstractWidget {
@@ -50,7 +50,26 @@ namespace MyEngine {
                 else std::sort(_hot_key.begin(), _hot_key.end());
             }
 
+            void setProperty(std::string name, bool value);
+            void setProperty(std::string name, uint8_t value);
+            void setProperty(std::string name, uint16_t value);
+            void setProperty(std::string name, uint32_t value);
+            void setProperty(std::string name, uint64_t value);
+            void setProperty(std::string name, int8_t value);
+            void setProperty(std::string name, int16_t value);
+            void setProperty(std::string name, int32_t value);
+            void setProperty(std::string name, int64_t value);
+            void setProperty(std::string name, float value);
+            void setProperty(std::string name, double value);
+            void setProperty(std::string name, const char* value);
+            void setProperty(std::string name, std::string& value);
+            void setProperty(std::string name, std::string&& value);
+            void setProperty(std::string name, void* value);
+            void setProperty(std::string name);
+            const Variant *const property(std::string name) const;
+
         protected:
+            Renderer* render() { return _renderer; }
             virtual void loadEvent();
             virtual void unloadEvent();
             virtual void moveEvent(const Vector2& position);
@@ -61,10 +80,6 @@ namespace MyEngine {
             virtual void paintEvent(Renderer *renderer);
             virtual void focusInEvent();
             virtual void focusOutEvent();
-            virtual void dragInEvent();
-            virtual void dragOutEvent();
-            virtual void dragMovedEvent();
-            virtual void dropEvent();
             virtual void mouseClickedEvent();
             virtual void mouseDblClickedEvent();
             virtual void mouseDownEvent();
@@ -109,11 +124,12 @@ namespace MyEngine {
                 bool input_mode{};
                 bool dragging{};
             };
-            Status _status;
-            std::string _cur_ch;
+            Status _status{};
+            std::string _cur_ch{};
+            std::unordered_map<std::string, Variant> _prop_map{};
         };
     }
 }
 
 
-#endif //MYENGINE_ABSTRACTWIDGET_H
+#endif //MYENGINE_WIDGETS_ABSTRACTWIDGET_H
