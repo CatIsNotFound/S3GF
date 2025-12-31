@@ -3,7 +3,6 @@
 #define MYENGINE_WIDGETS_LABEL_H
 #include "AbstractWidget.h"
 
-#define LABEL_IMAGE_GEOMETRY "Label.imageGeometry"
 #define LABEL_IMAGE_SIZE     "Label.imageOriginalSize"
 namespace MyEngine {
     namespace Widget {

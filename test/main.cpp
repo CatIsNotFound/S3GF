@@ -33,7 +33,7 @@ int main() {
         label->setBackgroundImage(&texture, false);
         label->setBackgroundImageFillMode(static_cast<Widget::Label::ImageFilledMode>(b + 2));
         label->setFontColor(0x902020);
-//        label->setBackgroundVisible(false);
+        label->setBackgroundVisible(false);
         label->move((label->size().width) * (float)((i - 1) % 3), (label->size().height) * (float)b);
     }
     win->installPaintEvent([](Renderer* r) {

@@ -5,14 +5,12 @@
 namespace MyEngine::Widget {
 
     Label::Label(Window *window) : AbstractWidget(window) {
-        NEW_PROPERTY_PTR(this, LABEL_IMAGE_GEOMETRY, GeometryF)
         NEW_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
     }
 
     Label::Label(std::string object_name, Window *window) : AbstractWidget(window) {
         AbstractWidget::_object_name = std::move(object_name);
-        NEW_PROPERTY_PTR(this, LABEL_IMAGE_GEOMETRY, GeometryF)
-        NEW_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size)
+        NEW_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
     }
 
     Label::~Label() {}
@@ -259,7 +257,6 @@ namespace MyEngine::Widget {
 
     void Label::updateBgIMGGeometry() {
         if (!_bg_img || !_visible_img) return;
-        GeometryF* img_geo = GET_PROPERTY_PTR(this, LABEL_IMAGE_GEOMETRY, GeometryF);
         Size* img_size = GET_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
         auto con_geo = _trigger_area.geometry();
         float scaled{};
