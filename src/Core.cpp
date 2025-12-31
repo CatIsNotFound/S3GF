@@ -488,8 +488,9 @@ namespace MyEngine {
         return _engine;
     }
 
-    void Window::installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event) {
-        _paint_event_list.push_back(paint_event);
+    void Window::installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event, bool push_back) {
+        if (push_back) _paint_event_list.push_back(paint_event);
+        else _paint_event_list.push_front(paint_event);
     }
 
     void Window::paintEvent() {
@@ -962,7 +963,7 @@ namespace MyEngine {
 
     void Engine::running() {
         auto start_time = SDL_GetTicks();
-        auto frames = 0ULL;
+        auto frames = 0U;
         auto start_ns = SDL_GetTicksNS();
         while (_running && !_quit_requested) {
             /// Event processing and rendering processing
@@ -1063,7 +1064,8 @@ namespace MyEngine {
         Logger::log("TextSystem: Unloaded text system");
     }
 
-    bool TextSystem::addFont(const std::string& font_name, const std::string& font_path, Renderer* renderer) {
+    bool TextSystem::addFont(const std::string& font_name, const std::string& font_path, Renderer* renderer,
+                             float font_size) {
         if (_font_map.contains(font_name)) {
             Logger::log(std::format("TextSystem: Font '{}' is already added!",
                                     font_name), Logger::Error);
@@ -1077,7 +1079,7 @@ namespace MyEngine {
         _font_map.emplace(font_name, 
                 FontEngine{TTF_CreateRendererTextEngine(renderer->self()),
                            TTF_CreateSurfaceTextEngine(),
-                           std::make_unique<Font>(font_path, 12.0f)});
+                           std::make_unique<Font>(font_path, font_size)});
         auto& new_font = _font_map.at(font_name);
         if (!new_font.font->self()) {
             TTF_DestroyRendererTextEngine(new_font.engine);
@@ -1109,6 +1111,10 @@ namespace MyEngine {
             throw NullPointerException(err);
         }
         return _font_map.at(font_name).font.get();
+    }
+
+    bool TextSystem::isFontContain(const std::string& font_name) const {
+        return _font_map.contains(font_name);
     }
 
     StringList TextSystem::fontNameList() const {
@@ -1234,6 +1240,10 @@ namespace MyEngine {
             throw NullPointerException(err);
         }
         return &_text_map.at(text_id);
+    }
+
+    bool TextSystem::isTextContain(uint64_t text_id) const {
+        return _text_map.contains(text_id);
     }
 
     std::vector<uint64_t> TextSystem::textIDList() const {

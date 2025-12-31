@@ -337,11 +337,11 @@ namespace MyEngine {
         }
 
         bool operator==(const Vector2 &v) const {
-            return ((this->x != v.x) ? false : ((this->y != v.y) ? false : true));
+            return this->x == v.x && this->y == v.y;
         }
 
         bool operator!=(const Vector2 &v) const {
-            return ((this->x != v.x) ? true : ((this->y != v.y) ? true : false));
+            return (this->x != v.x) || (this->y != v.y);
         }
 
         bool operator>(const Vector2 &v) const {
@@ -527,9 +527,19 @@ namespace MyEngine {
             this->pos.y = pos.y;
         }
 
+        void resetPos(float x, float y) {
+            this->pos.x = x;
+            this->pos.y = y;
+        }
+
         void resetSize(const Size &size) {
             this->size.width = size.width;
             this->size.height = size.height;
+        }
+
+        void resetSize(float width, float height) {
+            this->size.width = width;
+            this->size.height = height;
         }
     };
 
@@ -691,7 +701,9 @@ namespace MyEngine {
          * @brief readjust the size of the matrix
          * @param line The new lines
          * @param col  The new columns
-         * @note If the matrix is reduced, the excess data will be discarded (if the deleter has been previously specified for the matrix, the deletion operation will be automatically performed).
+         * @note If the matrix is reduced, the excess data will be discarded
+         * (if the deleter has been previously specified for the matrix,
+         * the deletion operation will be automatically performed).
          * \endif
          * @see setDeleter
          * @see rows
@@ -752,7 +764,9 @@ namespace MyEngine {
          *
          * @details Performs addition on all values within the matrices.
          * @note Currently only supports integer and floating-point operations; other data types are not supported!
-         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @note The two matrices must be of the same type,
+         * meaning they must have exactly the same number of rows and columns.
+         * Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
          * @return Returns a new matrix.
          * \endif
          * @see add
@@ -766,7 +780,9 @@ namespace MyEngine {
          *
          * @details Performs subtraction on all values within the matrices.
          * @note Currently only supports integer and floating-point operations; other data types are not supported!
-         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @note The two matrices must be of the same type,
+         * meaning they must have exactly the same number of rows and columns.
+         * Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
          * @return Returns a new matrix.
          * \endif
          * @see sub
@@ -780,7 +796,8 @@ namespace MyEngine {
          *
          * @details Performs multiplication on all values within the matrices
          * @note Currently only supports integer and floating-point operations; other data types are not supported!
-         * @note Both matrices must be of sizes m * n and n * p, respectively, to be usable! Otherwise, a `MyEngine::BadValueException` exception will be thrown.
+         * @note Both matrices must be of sizes m * n and n * p, respectively, to be usable!
+         * Otherwise, a `MyEngine::BadValueException` exception will be thrown.
          * \endif
          * @throw BadValueException
          * @see times
@@ -875,7 +892,8 @@ namespace MyEngine {
          * @param function Function
          *
          * @details Perform multiplication on all values in the matrix.
-         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
+         * @note For complex data types, the `function` parameter must be specified.
+         * Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
          * \endif
          * @throw InvalidArgumentException
          */
@@ -888,7 +906,8 @@ namespace MyEngine {
          * @param function Function
          *
          * @details Perform multiplication on all values in the matrix.
-         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
+         * @note For complex data types, the `function` parameter must be specified.
+         * Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown
          * \endif
          * @throw InvalidArgumentException
          */
@@ -900,8 +919,11 @@ namespace MyEngine {
          * @param other The specified matrix
          *
          * @details Performs multiplication on all values within the matrices.
-         * @note For complex data types, the `function` parameter must be specified. Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown.
-         * @note The two matrices must be of the same type, meaning they must have exactly the same number of rows and columns. Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @note For complex data types, the `function` parameter must be specified.
+         * Otherwise, a `MyEngine::InvalidArgumentException` exception will be thrown.
+         * @note The two matrices must be of the same type,
+         * meaning they must have exactly the same number of rows and columns.
+         * Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
          * @return Returns a new matrix.
          * \endif
          * @throw InvalidArgumentException
@@ -915,7 +937,8 @@ namespace MyEngine {
          * @details Performs a cross multiplication operation on two matrices.
          * @param other The specified matrix, whose number of rows must equal the original matrix's number of columns.
          * @note Currently only supports integer and floating-point operations; other data types are not supported!
-         * @note The original matrix and the specified matrix must have sizes of `m * k` and `k * n`, respectively, to be valid! Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
+         * @note The original matrix and the specified matrix must have sizes of `m * k` and `k * n`,
+         * respectively, to be valid! Otherwise, a `MyEngine::InvalidArgumentException` will be thrown.
          * @return Generates a new matrix of size `m * n`.
          * \endif
          * @throw InvalidArgumentException
@@ -1586,8 +1609,8 @@ namespace MyEngine {
             std::vector<int> _indices;
             uint16_t _count{32};
         public:
-            explicit Point() : _position(0, 0), _size(1), _color(StdColor::Black), _count(32) { update(); }
-            Point(float x, float y, uint16_t size = 1, const SDL_Color& color = StdColor::Black,
+            explicit Point() : _position(0, 0), _size(1), _color(StdColor::LightGray), _count(32) { update(); }
+            Point(float x, float y, uint16_t size = 1, const SDL_Color& color = StdColor::LightGray,
                   uint16_t count = 32)
                 : _position(x, y), _size(size), _color(color), _count(count) { update(); }
             void move(float x, float y) { _position.reset(x, y); update(); }
@@ -1620,10 +1643,10 @@ namespace MyEngine {
 
         class Line {
         public:
-            explicit Line() : _start_position(), _end_position(), _size(1), _color(StdColor::Black) {}
-            explicit Line(float x1, float y1, float x2, float y2, uint16_t size, const SDL_Color& color)
+            explicit Line() : _start_position(), _end_position(), _size(1), _color(StdColor::LightGray) {}
+            explicit Line(float x1, float y1, float x2, float y2, uint8_t size, const SDL_Color& color)
                 : _start_position(x1, y1), _end_position(x2, y2), _size(size), _color(color) {update();}
-            explicit Line(const Vector2& start, const Vector2& end, uint16_t size, const SDL_Color &color)
+            explicit Line(const Vector2& start, const Vector2& end, uint8_t size, const SDL_Color &color)
                 : _start_position(start), _end_position(end), _size(size), _color(color) {update();}
 
             const int *indices() { return _indices.data(); }
@@ -1671,18 +1694,19 @@ namespace MyEngine {
         class Rectangle {
         public:
             explicit Rectangle() : _geometry(), _border_size(0),
-                                   _border_color(StdColor::Black), _background_color(StdColor::White), _rotate(0) {}
+                                   _border_color(StdColor::DarkGray),
+                                   _background_color(StdColor::LightGray), _rotate(0) {}
             explicit Rectangle(const GeometryF& geometry, uint16_t border = 1,
-                               const SDL_Color& border_color = StdColor::Black,
-                               const SDL_Color& background_color = StdColor::White, float degree = 0)
+                               const SDL_Color& border_color = StdColor::LightGray,
+                               const SDL_Color& background_color = StdColor::LightGray, float degree = 0)
                 : _geometry(geometry), _border_size(border), _border_color(border_color),
                   _background_color(background_color), _rotate(degree) {
                 updateGeometry();
                 updateBorderGeometry();
             }
             explicit Rectangle(float x, float y, float w, float h, uint16_t border = 1,
-                               const SDL_Color& border_color = StdColor::Black,
-                               const SDL_Color& background_color = StdColor::White, float degree = 0)
+                               const SDL_Color& border_color = StdColor::DarkGray,
+                               const SDL_Color& background_color = StdColor::LightGray, float degree = 0)
                     : _geometry(x, y, w, h), _border_size(border), _border_color(border_color),
                       _background_color(background_color), _rotate(degree) {
                 updateGeometry();
@@ -1690,8 +1714,8 @@ namespace MyEngine {
             }
 
             void reset(float x, float y, float w, float h, uint16_t border = 1,
-                       const SDL_Color& border_color = StdColor::Black,
-                       const SDL_Color& background_color = StdColor::White, float degree = 0) {
+                       const SDL_Color& border_color = StdColor::LightGray,
+                       const SDL_Color& background_color = StdColor::LightGray, float degree = 0) {
                 _geometry.reset(x, y, w, h);
                 _border_size = border;
                 _border_color = border_color;
@@ -1702,8 +1726,8 @@ namespace MyEngine {
             }
 
             void reset(const GeometryF& geometry, uint16_t border = 1,
-                       const SDL_Color& border_color = StdColor::Black,
-                       const SDL_Color& background_color = StdColor::White, float degree = 0) {
+                       const SDL_Color& border_color = StdColor::LightGray,
+                       const SDL_Color& background_color = StdColor::LightGray, float degree = 0) {
                 _geometry.reset(geometry);
                 _border_size = border;
                 _border_color = border_color;
@@ -1807,7 +1831,8 @@ namespace MyEngine {
 
             void updateBorderGeometry() {
                 // if (_border_size > 0 && _border_color.a > 0) {
-                    Algorithm::calcRectangleRotated(_geometry, _border_color, _border_size, _rotate,
+                    Algorithm::calcRectangleRotated(_geometry, _border_color,
+                                                    _border_size, _rotate,
                                                     _border_vertices, _border_indices);
                 // }
             }
@@ -1826,10 +1851,11 @@ namespace MyEngine {
         class Triangle {
         public:
             explicit Triangle() : _p1(0, 0), _p2(0, 0), _p3(0, 0),
-                                  _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::White) {}
+                                  _border_size(0), _border_color(StdColor::DarkGray),
+                                  _background_color(StdColor::LightGray) {}
             explicit Triangle(float x1, float y1, float x2, float y2, float x3, float y3,
-                              uint16_t border_size = 0, const SDL_Color& border_color = StdColor::Black,
-                              const SDL_Color& back_color = StdColor::Black)
+                              uint16_t border_size = 0, const SDL_Color& border_color = StdColor::DarkGray,
+                              const SDL_Color& back_color = StdColor::LightGray)
                 : _p1(x1, y1), _p2(x2, y2), _p3(x3, y3),
                   _border_size(border_size), _border_color(border_color), _background_color(back_color)
                 { updateTri(); updateBorder(); }
@@ -1920,9 +1946,12 @@ namespace MyEngine {
             }
             void updateBorder() {
                 // if (_border_size > 0 && _border_color.a > 0) {
-                    Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size, _border_color, _bd1, _bdi1);
-                    Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size, _border_color, _bd2, _bdi2);
-                    Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size, _border_color, _bd3, _bdi3);
+                    Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size,
+                                        _border_color, _bd1, _bdi1);
+                    Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size,
+                                        _border_color, _bd2, _bdi2);
+                    Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size,
+                                        _border_color, _bd3, _bdi3);
                 // }
             }
             Vector2 _p1;
@@ -1944,12 +1973,12 @@ namespace MyEngine {
         class Ellipse {
         public:
             explicit Ellipse() : _center_point(0, 0), _radius(0, 0),
-                                 _border_size(0), _border_color(StdColor::Black), _background_color(StdColor::White),
-                                 _degree(0.f), _count(0) {}
+                                 _border_size(0), _border_color(StdColor::DarkGray),
+                                 _background_color(StdColor::LightGray), _degree(0.f), _count(0) {}
 
             Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,
-                    const SDL_Color& border_color = StdColor::Black,
-                    const SDL_Color& back_color = StdColor::Black,
+                    const SDL_Color& border_color = StdColor::DarkGray,
+                    const SDL_Color& back_color = StdColor::LightGray,
                     float degree = 0.f, uint16_t segment = 32)
                     : _center_point(cx, cy), _radius(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),

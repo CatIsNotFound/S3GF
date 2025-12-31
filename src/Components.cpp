@@ -11,7 +11,8 @@ namespace MyEngine {
             : _font_size(font_size), _font_path(font_path) {
         _font = TTF_OpenFont(font_path.c_str(), font_size);
         if (!_font) {
-            Logger::log(std::format("Can't load font from path '{}'.", font_path), Logger::Error);
+            Logger::log(std::format("Font: Can't load font from path '{}'.", font_path),
+                        Logger::Error);
         }
         _font_is_loaded = true;
     }
@@ -20,6 +21,19 @@ namespace MyEngine {
         if (_font) {
             TTF_CloseFont(_font);
         }
+    }
+
+    void Font::setFontPath(const std::string &font_path) {
+        auto _new_font = TTF_OpenFont(font_path.c_str(), _font_size);
+        if (!_new_font) {
+            Logger::log(std::format("Font: Can't load font from path '{}'.", font_path),
+                        Logger::Error);
+            return;
+        }
+        if (_font) {
+            TTF_CloseFont(_font);
+        }
+        _font = _new_font;
     }
 
     const std::string& Font::fontPath() const { return _font_path; }
@@ -39,7 +53,7 @@ namespace MyEngine {
         _font_color = color;
     }
 
-    const SDL_Color Font::fontColor() const {
+    const SDL_Color& Font::fontColor() const {
         return _font_color;
     }
 
@@ -253,10 +267,12 @@ namespace MyEngine {
         return default_fonts;
     }
 
-    Texture::Texture(const std::string &path, Renderer *renderer) : _renderer(renderer), _texture(nullptr), _path(path) {
+    Texture::Texture(const std::string &path, Renderer *renderer)
+                : _renderer(renderer), _texture(nullptr), _path(path) {
         _surface = IMG_Load(path.c_str());
         if (!_surface) {
-            Logger::log(std::format("Texture: The image path '{}' is not found!", path), Logger::Error);
+            Logger::log(std::format("Texture: The image path '{}' is not found!", path),
+                        Logger::Error);
             _property = std::make_unique<TextureProperty>();
             return;
         }
@@ -266,13 +282,15 @@ namespace MyEngine {
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
         _property->setScale(1.0f);
-        Logger::log(std::format("Texture: Created from image path '{}'", path), Logger::Debug);
-        Logger::log(std::format("Texture: Size set to {}x{}", _surface->w, _surface->h), Logger::Debug);
+        Logger::log(std::format("Texture: Created from image path '{}'", path));
+        Logger::log(std::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
     }
 
-    Texture::Texture(SDL_Surface* surface, Renderer *renderer, bool deep_copy) : _renderer(renderer), _texture(nullptr) {
+    Texture::Texture(SDL_Surface* surface, Renderer *renderer, bool deep_copy)
+                : _renderer(renderer), _texture(nullptr) {
         if (!surface) {
-            Logger::log(std::format("Texture: The surface is not valid!\nException: {}", SDL_GetError()), Logger::Error);
+            Logger::log(std::format("Texture: The surface is not valid!\n"
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
             _property = std::make_unique<TextureProperty>();
             return;
         }
@@ -283,15 +301,16 @@ namespace MyEngine {
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
         _property->setScale(1.0f);
-        Logger::log(std::format("Texture: Created from surface"), Logger::Debug);
-        Logger::log(std::format("Texture: Size set to {}x{}", _surface->w, _surface->h), Logger::Debug);
+        Logger::log(std::format("Texture: Created from surface"));
+        Logger::log(std::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
     }
 
     Texture::Texture(Renderer* renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access)
         : _renderer(renderer), _surface(nullptr), _texture(nullptr) {
         _texture = SDL_CreateTexture(renderer->self(), format, access, width, height);
         if (!_texture) {
-            Logger::log(std::format("Texture: Created texture failed!\nException: {}", SDL_GetError()), Logger::Error);
+            Logger::log(std::format("Texture: Created texture failed!\n"
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
             _property = std::make_unique<TextureProperty>();
             return;
         }
@@ -300,8 +319,8 @@ namespace MyEngine {
         _property->setScale(1.0f);
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
-        Logger::log(std::format("Texture: Created from addCustomCommand"), Logger::Debug);
-        Logger::log(std::format("Texture: Size set to {}x{}", width, height), Logger::Debug);
+        Logger::log(std::format("Texture: Created from addCustomCommand"));
+        Logger::log(std::format("Texture: Size set to {}x{}", width, height));
     }
 
     Texture::~Texture() {
@@ -333,8 +352,8 @@ namespace MyEngine {
         _surface = img;
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
         _property->resize(_surface->w, _surface->h);
-        Logger::log(std::format("Texture image changed to '{}'", path), Logger::Debug);
-        Logger::log(std::format("Texture size updated to {}x{}", _surface->w, _surface->h), Logger::Debug);
+        Logger::log(std::format("Texture: Image changed to '{}'", path));
+        Logger::log(std::format("Texture Size updated to {}x{}", _surface->w, _surface->h));
         return true;
     }
 
@@ -344,7 +363,8 @@ namespace MyEngine {
 
     bool Texture::setImageFromSurface(SDL_Surface *surface, bool deep_copy) {
         if (!surface) {
-            Logger::log(std::format("The surface is not valid!\nException: {}", SDL_GetError()), Logger::Error);
+            Logger::log(std::format("The surface is not valid!\n"
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
             _property = std::make_unique<TextureProperty>();
             return false;
         }
@@ -355,16 +375,27 @@ namespace MyEngine {
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
         _property->setScale(1.0f);
-        Logger::log(std::format("Texture created from surface"), Logger::Debug);
-        Logger::log(std::format("Texture size set to {}x{}", _surface->w, _surface->h), Logger::Debug);
+        Logger::log(std::format("Texture: Created from surface"));
+        Logger::log(std::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
         return true;
     }
 
     SDL_Texture* Texture::self() const {
         if (!_texture) {
-            Logger::log("Texture: The current texture is not created or not valid!", Logger::Error);
+            auto err = "Texture: The current texture is not created or not valid!";
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
         }
         return _texture;
+    }
+
+    SDL_Surface* Texture::surface() const {
+        if (!_surface) {
+            auto err = "Texture: The current surface is not valid or is null!";
+            Logger::log(err, Logger::Fatal);
+            throw NullPointerException(err);
+        }
+        return _surface;
     }
 
     bool Texture::isValid() const {
@@ -377,8 +408,8 @@ namespace MyEngine {
 
     void Texture::draw() {
         if (!_texture) {
-            Logger::log("The texture is not created!", Logger::Error);
-            return;
+            Logger::log("Texture: The texture is not created or not valid!", Logger::Fatal);
+            throw NullPointerException("Texture: The texture is not created or not valid!");
         }
         _renderer->drawTexture(_texture, _property.get());
     }
@@ -483,36 +514,44 @@ namespace MyEngine {
         if (_tiles_map.contains(_current_tiles)) {
             render()->drawTexture(self(), _tiles_map[_current_tiles].properties[0].get());
         } else {
-            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                         "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles), Logger::Error);
+            auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                                   "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles);
+            Logger::log(err, Logger::Fatal);
+            throw OutOfRangeException(err);
         }
     }
 
     void TextureAtlas::draw(size_t index) {
         if (_tiles_map.contains(_current_tiles)) {
             if (index >= _tiles_map[_current_tiles].properties.size()) {
-                Logger::log(std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
-                            "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles), Logger::Error);
-                return;
+                auto err = std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
+                                       "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles);
+                Logger::log(err, Logger::Fatal);
+                throw OutOfRangeException(err);
             }
             render()->drawTexture(self(), _tiles_map[_current_tiles].properties[index].get());
         } else {
-            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                                    "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles), Logger::Error);
+            auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                                   "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles);
+            Logger::log(err, Logger::Fatal);
+            throw OutOfRangeException(err);
         }
     }
 
     void TextureAtlas::draw(const std::string &tiles_name, size_t index) {
         if (_tiles_map.contains(tiles_name)) {
             if (index >= _tiles_map[tiles_name].properties.size()) {
-                Logger::log(std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
-                                        "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles), Logger::Error);
-                return;
+                auto err = std::format("TextureAtlas: The index of the tiles '{}' is out of range! "
+                                       "Try to use `TextureAtlas::tilesPropertyCount()`?", _current_tiles);
+                Logger::log(err, Logger::Fatal);
+                throw OutOfRangeException(err);
             }
             render()->drawTexture(self(), _tiles_map[tiles_name].properties[index].get());
         } else {
-            Logger::log(std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
-                         "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name), Logger::Error);
+            auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
+                                   "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name);
+            Logger::log(err, Logger::Fatal);
+            throw OutOfRangeException(err);
         }
     }
 
@@ -615,6 +654,15 @@ namespace MyEngine {
     }
 
     void TextureAnimation::draw() {
+        if (_null) {
+            Logger::log("TextureAnimation: No image loaded or it is not valid!", Logger::Fatal);
+            throw NullPointerException("TextureAnimation: No image loaded or it is not valid!");
+        }
+        if (_textures.size() >= _cur_frame) {
+            auto err = std::format("TextureAnimation: Current frame is out of range (at frame {})!", _cur_frame);
+            Logger::log(err,Logger::Fatal);
+            throw BadValueException(err);
+        }
         _renderer->drawTexture(_textures.at(_cur_frame)->texture, _property.get());
     }
 
@@ -632,7 +680,7 @@ namespace MyEngine {
     BGM::BGM(MIX_Mixer *mixer, const std::string &path) : _mixer(mixer), _path(path) {
         if (!_mixer) {
             Logger::log("BGM: The specified mixer can not be null!", Logger::Fatal);
-            return;
+            throw InvalidArgumentException("BGM: The specified mixer can not be null!");
         }
         _global_ev_id = IDGenerator::getNewGlobalEventID();
         EventSystem::global()->appendGlobalEvent(_global_ev_id, [this]() {
@@ -642,7 +690,7 @@ namespace MyEngine {
                 auto start_pos = SDL_GetNumberProperty(_prop_id,
                                                        MIX_PROP_PLAY_START_MILLISECOND_NUMBER, 0);
                 auto fade_in_dur = SDL_GetNumberProperty(_prop_id,
-                                                         MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, 0);
+                                                     MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, 0);
                 auto end_point = std::min(start_pos + fade_in_dur, duration());
                 if (position() >= end_point) {
                     _play_status = Playing;
@@ -906,7 +954,7 @@ namespace MyEngine {
     SFX::SFX(MIX_Mixer *mixer, const std::string &path) : _mixer(mixer), _path(path) {
         if (!_mixer) {
             Logger::log("BGM: The specified mixer can not be null!", Logger::Fatal);
-            return;
+            throw InvalidArgumentException("BGM: The specified mixer can not be null!");
         }
         load();
     }

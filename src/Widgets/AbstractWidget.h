@@ -4,6 +4,16 @@
 #include "../Components.h"
 #include "../Utils/Cursor.h"
 #include "../Utils/Variant.h"
+
+#define NEW_PROPERTY_PTR(POINTER, NAME, CLASS)                                   \
+POINTER->setProperty(NAME, static_cast<void*>(new CLASS()), [](void* v) {        \
+    delete static_cast<CLASS*>(v);                                               \
+});
+
+#define GET_PROPERTY_PTR(POINTER, NAME, CLASS)                                   \
+static_cast<CLASS*>(POINTER->property(NAME)->toPointer());
+
+
 namespace MyEngine {
     namespace Widget {
         class AbstractWidget {
@@ -68,6 +78,7 @@ namespace MyEngine {
             void setProperty(const std::string& name, std::string& value);
             void setProperty(const std::string& name, std::string&& value);
             void setProperty(const std::string& name, void* value);
+            void setProperty(const std::string& name, void* value, std::function<void(void*)> deleter);
             void setProperty(const std::string& name);
             const Variant *const property(const std::string& name) const;
 
@@ -104,6 +115,9 @@ namespace MyEngine {
             virtual void endedInputEvent();
             virtual void inputEvent(const char* string);
             virtual void propertyChanged(const std::string& property, const Variant& variant);
+        protected:
+            std::string _object_name{};
+            Graphics::Rectangle _trigger_area;
         private:
             void unload();
             template<typename T>
@@ -115,12 +129,10 @@ namespace MyEngine {
             Window* _window;
             Renderer* _renderer;
             Engine* _engine{nullptr};
-            std::string _object_name{};
             uint64_t _ev_id{0};
             std::vector<int> _hot_key;
             std::vector<std::vector<int>> _hot_key_list;
             bool _visible{true}, _enabled{true}, _focus{false};
-            Graphics::Rectangle _trigger_area;
             Cursor::StdCursor _cur_style{Cursor::Default};
             struct Status {
                 bool is_loaded{};

@@ -144,7 +144,7 @@ namespace MyEngine {
 
         [[nodiscard]] SDL_Window* self() const;
         [[nodiscard]] Engine* engine() const;
-        void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event);
+        void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event, bool push_back = false);
     protected:
         virtual void paintEvent();
         virtual void resizeEvent();
@@ -196,7 +196,7 @@ namespace MyEngine {
         char _drop_url[255]{};
         Vector2 _mouse_pos{}, _dragging_pos{};
         Cursor::StdCursor _cursor{};
-        std::vector<std::function<void(Renderer*)>> _paint_event_list;
+        std::deque<std::function<void(Renderer*)>> _paint_event_list;
         Engine* _engine;
     };
 
@@ -312,6 +312,7 @@ namespace MyEngine {
     };
 
     class TextSystem {
+        friend class Engine;
     public:
         struct Text {
             TTF_Text* self;
@@ -332,10 +333,11 @@ namespace MyEngine {
         
         static TextSystem* global();
         bool isLoaded() const;
-        void unload();
-        bool addFont(const std::string& font_name, const std::string& font_path, Renderer* renderer);
+        bool addFont(const std::string& font_name, const std::string& font_path, Renderer* renderer,
+                     float font_size = 9.f);
         bool removeFont(const std::string& font_name);
         Font* font(const std::string& font_name);
+        [[nodiscard]] bool isFontContain(const std::string& font_name) const;
         StringList fontNameList() const;
         
         bool addText(uint64_t text_id, const std::string& font_name, const std::string& text);
@@ -345,11 +347,13 @@ namespace MyEngine {
         bool setTextFont(uint64_t text_id, const std::string& font_name);
         bool setTextColor(uint64_t text_id, const SDL_Color& color);
         Text* indexOfText(uint64_t text_id);
-        std::vector<uint64_t> textIDList() const;
+        [[nodiscard]] bool isTextContain(uint64_t text_id) const;
+        [[nodiscard]] std::vector<uint64_t> textIDList() const;
         bool drawText(uint64_t text_id, const Vector2& pos, Renderer* renderer);
         SDL_Surface* toImage(uint64_t text_id);
     private:
         explicit TextSystem();
+        void unload();
         static std::unique_ptr<TextSystem> _instance;
         bool _is_loaded{false};
         std::map<uint64_t, Text> _text_map;
@@ -358,6 +362,7 @@ namespace MyEngine {
     };
 
     class AudioSystem {
+        friend class Engine;
     public:
         using Audio = std::variant<std::monostate, std::unique_ptr<BGM>, std::unique_ptr<SFX>>;
 
@@ -368,8 +373,7 @@ namespace MyEngine {
         static AudioSystem* global();
         ~AudioSystem();
         bool isValid() const;
-        bool load();
-        void unload();
+
         void addNewMixer(size_t count = 1);
         [[nodiscard]] MIX_Mixer* mixer(size_t index = 0) const;
         [[nodiscard]] size_t mixerCount() const;
@@ -387,6 +391,8 @@ namespace MyEngine {
 
     private:
         explicit AudioSystem();
+        bool load();
+        void unload();
         static std::unique_ptr<AudioSystem> _instance;
         bool _is_init{false};
         std::vector<MIX_Mixer*> _mixer_list;

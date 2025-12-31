@@ -6,15 +6,17 @@ namespace MyEngine::Widget {
     AbstractWidget::AbstractWidget(Window *window) : _window(window), _renderer(nullptr),
                 _ev_id(IDGenerator::getNewEventID()) {
         if (!_window) {
-            Logger::log("AbstractWidget: The specified window can not be null!", Logger::Fatal);
-            throw InvalidArgumentException("AbstractWidget: The specified renderer can not be null!");
+            auto err = std::format("AbstractWidget ({}): The specified window can not be null!", _object_name);
+            Logger::log(err, Logger::Fatal);
+            throw InvalidArgumentException(err);
         }
         _engine = _window->engine();
         _renderer = _window->renderer();
         _renderer->window()->installPaintEvent([this](Renderer* r) {
             if (!_visible) return;
             paintEvent(r);
-        });
+        }, true);
+        _trigger_area.setGeometry(0, 0, 200, 50);
         uint64_t win_id = _window->windowID();
         EventSystem::global()->appendEvent(_ev_id, [this, win_id](SDL_Event ev) {
             if (!_engine->isWindowExist(win_id)) {
@@ -446,6 +448,16 @@ namespace MyEngine::Widget {
         propertyChanged(name, _prop_map.at(name));
     }
 
+    void AbstractWidget::setProperty(const std::string& name, void* value, std::function<void(void*)> deleter) {
+        if (_prop_map.contains(name)) {
+            _prop_map.at(name).setValue(value);
+            _prop_map.at(name).setDeleter(std::move(deleter));
+        } else {
+            _prop_map.try_emplace(name, value, std::move(deleter));
+        }
+        propertyChanged(name, _prop_map.at(name));
+    }
+
     void AbstractWidget::setProperty(const std::string& name) {
         if (_prop_map.contains(name)) {
             _prop_map.at(name).setValue();
@@ -459,7 +471,7 @@ namespace MyEngine::Widget {
         if (_prop_map.contains(name)) {
             return &_prop_map.at(name);
         } else {
-            auto err = std::format("AbstractWidget: Property '{}' is not found!", name);
+            auto err = std::format("AbstractWidget ({}): Property '{}' is not found!", _object_name, name);
             Logger::log(err, Logger::Fatal);
             throw NullPointerException(err);
         }
@@ -507,30 +519,17 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::hotKeysPressedEvent() {}
 
-    void AbstractWidget::fingerDownEvent(const Vector2& position) {
-        Logger::log(std::format("[Finger down] pos: ({:.2f}, {:.2f}) id: {}", position.x, position.y, _status.finger_id));
-    }
+    void AbstractWidget::fingerDownEvent(const Vector2& position) {}
 
-    void AbstractWidget::fingerUpEvent(const Vector2& position) {
-        Logger::log(std::format("[Finger up] pos: ({:.2f}, {:.2f}) id: {}", position.x, position.y, _status.finger_id));
-    }
+    void AbstractWidget::fingerUpEvent(const Vector2& position) {}
 
-    void AbstractWidget::fingerMovedEvent(const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {
-//        Logger::log(std::format("[Finger Moving] id: {} distance: ({:f}, {:f}), "
-//                                "position: ({:.2f}, {:.2f})", _status.finger_id, distance.x, distance.y, position.x, position.y));
-    }
+    void AbstractWidget::fingerMovedEvent(const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {}
 
-    void AbstractWidget::fingerMoveInEvent() {
-        Logger::log("[Finger in]");
-    }
+    void AbstractWidget::fingerMoveInEvent() {}
 
-    void AbstractWidget::fingerMoveOutEvent() {
-        Logger::log("[Finger out]");
-    }
+    void AbstractWidget::fingerMoveOutEvent() {}
 
-    void AbstractWidget::fingerTappedEvent() {
-        Logger::log("[Finger tapped]");
-    }
+    void AbstractWidget::fingerTappedEvent() {}
 
     void AbstractWidget::startedInputEvent() {}
 

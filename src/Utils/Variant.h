@@ -137,20 +137,20 @@ namespace MyEngine {
             }
             _value = nullptr;
         }
-        Variant(bool v) : _type(Bool), _value(new bool(v)) {}
-        Variant(int8_t v) : _type(Int8), _value(new int8_t(v)) {}
-        Variant(int16_t v) : _type(Int16), _value(new int16_t(v)) {}
-        Variant(int32_t v) : _type(Int32), _value(new int32_t(v)) {}
-        Variant(int64_t v) : _type(Int64), _value(new int64_t(v)) {}
-        Variant(uint8_t v) : _type(UInt8), _value(new uint8_t(v)) {}
-        Variant(uint16_t v) : _type(UInt16), _value(new uint16_t(v)) {}
-        Variant(uint32_t v) : _type(UInt32), _value(new uint32_t(v)) {}
-        Variant(uint64_t v) : _type(UInt64), _value(new uint64_t(v)) {}
-        Variant(float v) : _type(Float), _value(new float(v)) {}
-        Variant(double v) : _type(Double), _value(new double(v)) {}
-        Variant(const char* string) : _type(String), _value(new std::string(string)) {}
-        Variant(std::string& string) : _type(String), _value(new std::string(string)) {}
-        Variant(void* pointer, std::function<void(void*)> deleter = {})
+        explicit Variant(bool v) : _type(Bool), _value(new bool(v)) {}
+        explicit Variant(int8_t v) : _type(Int8), _value(new int8_t(v)) {}
+        explicit Variant(int16_t v) : _type(Int16), _value(new int16_t(v)) {}
+        explicit Variant(int32_t v) : _type(Int32), _value(new int32_t(v)) {}
+        explicit Variant(int64_t v) : _type(Int64), _value(new int64_t(v)) {}
+        explicit Variant(uint8_t v) : _type(UInt8), _value(new uint8_t(v)) {}
+        explicit Variant(uint16_t v) : _type(UInt16), _value(new uint16_t(v)) {}
+        explicit Variant(uint32_t v) : _type(UInt32), _value(new uint32_t(v)) {}
+        explicit Variant(uint64_t v) : _type(UInt64), _value(new uint64_t(v)) {}
+        explicit Variant(float v) : _type(Float), _value(new float(v)) {}
+        explicit Variant(double v) : _type(Double), _value(new double(v)) {}
+        explicit Variant(const char* string) : _type(String), _value(new std::string(string)) {}
+        explicit Variant(std::string& string) : _type(String), _value(new std::string(string)) {}
+        explicit Variant(void* pointer, std::function<void(void*)> deleter = {})
             : _type(Pointer), _value(pointer), _deleter(std::move(deleter)) {}
         /**
          * \if EN

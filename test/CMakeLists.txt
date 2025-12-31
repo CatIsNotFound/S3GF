@@ -15,10 +15,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         SDL3_ttf::SDL3_ttf
 )
 
-if(MINGW)
-    message("Using options for MinGW")
-    add_compile_options(-fsanitize=address -Wall)
-endif()
+
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
