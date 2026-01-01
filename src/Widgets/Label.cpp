@@ -5,12 +5,11 @@
 namespace MyEngine::Widget {
 
     Label::Label(Window *window) : AbstractWidget(window) {
-        NEW_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+        NEW_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
     }
 
-    Label::Label(std::string object_name, Window *window) : AbstractWidget(window) {
-        AbstractWidget::_object_name = std::move(object_name);
-        NEW_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+    Label::Label(std::string object_name, Window *window) : AbstractWidget(std::move(object_name), window) {
+        NEW_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
     }
 
     Label::~Label() {}
@@ -147,7 +146,7 @@ namespace MyEngine::Widget {
         } else {
             _bg_img->setImageFromSurface(surface, !delete_later);
         }
-        auto img_geo = GET_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+        auto img_geo = GET_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
         img_geo->reset(_bg_img->property()->size());
     }
 
@@ -164,9 +163,10 @@ namespace MyEngine::Widget {
                 _bg_img.reset(texture);
             } else {
                 _bg_img->setImagePath(texture->imagePath());
+                _bg_img->property()->reset(*texture->property());
             }
         }
-        auto img_geo = GET_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+        auto img_geo = GET_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
         img_geo->reset(_bg_img->property()->size());
     }
 
@@ -176,7 +176,7 @@ namespace MyEngine::Widget {
         } else {
             _bg_img->setImagePath(image_path);
         }
-        auto img_geo = GET_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+        auto img_geo = GET_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
         img_geo->reset(_bg_img->property()->size());
     }
 
@@ -257,7 +257,7 @@ namespace MyEngine::Widget {
 
     void Label::updateBgIMGGeometry() {
         if (!_bg_img || !_visible_img) return;
-        Size* img_size = GET_PROPERTY_PTR(this, LABEL_IMAGE_SIZE, Size);
+        Size* img_size = GET_PROPERTY_PTR(this, LABEL_ORIGINAL_IMAGE_SIZE, Size)
         auto con_geo = _trigger_area.geometry();
         float scaled{};
         const float ARs = con_geo.size.width / con_geo.size.height;

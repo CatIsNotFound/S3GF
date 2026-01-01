@@ -21,9 +21,19 @@ static_cast<CLASS*>(POINTER->property(NAME)->toPointer());
 
 namespace MyEngine {
     namespace Widget {
+        enum class WidgetStatus {
+            Normal,
+            Active,
+            Disabled,
+            Hovered,
+            Pressed,
+            Checked
+        };
+
         class AbstractWidget {
         public:
             explicit AbstractWidget(Window* window);
+            explicit AbstractWidget(std::string object_name, Window* window);
             virtual ~AbstractWidget();
 
             void setObjectName(std::string object_name);
@@ -85,6 +95,7 @@ namespace MyEngine {
             void setProperty(const std::string& name, void* value);
             void setProperty(const std::string& name, void* value, std::function<void(void*)> deleter);
             void setProperty(const std::string& name);
+            [[nodiscard]] bool hasProperty(const std::string& name) const;
             const Variant *const property(const std::string& name) const;
 
         protected:
@@ -124,6 +135,7 @@ namespace MyEngine {
             std::string _object_name{};
             Graphics::Rectangle _trigger_area;
         private:
+            void load();
             void unload();
             template<typename T>
             void addKey(T key) {

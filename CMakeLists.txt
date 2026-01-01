@@ -101,6 +101,8 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Utils/Variant.cpp
             src/Widgets/Label.cpp
             src/Widgets/Label.h
+            src/Widgets/Button.cpp
+            src/Widgets/Button.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -155,6 +157,8 @@ else ()
             src/Utils/Variant.cpp
             src/Widgets/Label.cpp
             src/Widgets/Label.h
+            src/Widgets/Button.cpp
+            src/Widgets/Button.h
     )
 endif ()
 

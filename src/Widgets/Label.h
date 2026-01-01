@@ -3,7 +3,7 @@
 #define MYENGINE_WIDGETS_LABEL_H
 #include "AbstractWidget.h"
 
-#define LABEL_IMAGE_SIZE     "Label.imageOriginalSize"
+#define LABEL_ORIGINAL_IMAGE_SIZE     "Label.imageOriginalSize"
 namespace MyEngine {
     namespace Widget {
         class Label : public AbstractWidget {
@@ -53,7 +53,7 @@ namespace MyEngine {
             [[nodiscard]] bool backgroundVisible() const;
             [[nodiscard]] const SDL_Color& backgroundColor() const;
 
-            void setBackgroundImage(SDL_Surface* surface, bool delete_later = true);
+            void setBackgroundImage(SDL_Surface* surface, bool delete_later = false);
             void setBackgroundImage(Texture* texture, bool delete_later = false);
             void setBackgroundImage(const std::string& image_path);
             void setBackgroundImageFillMode(ImageFilledMode filled_mode);
@@ -86,8 +86,8 @@ namespace MyEngine {
             std::shared_ptr<Texture> _bg_img{};
             SDL_Color _none_color{};
             std::string _none_str{}, _string{};
-            ImageFilledMode _fill_mode{Stretch};
-            Alignment _alignment{LeftTop};
+            ImageFilledMode _fill_mode{};
+            Alignment _alignment{};
             Vector2 _text_pos{};
         };
     }

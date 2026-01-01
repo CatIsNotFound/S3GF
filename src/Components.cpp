@@ -278,7 +278,7 @@ namespace MyEngine {
         }
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
         _property = std::make_unique<TextureProperty>();
-        _property->resize(_surface->w, _surface->h);
+        _property->resize((float)_surface->w, (float)_surface->h);
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
         _property->setScale(1.0f);
@@ -297,7 +297,7 @@ namespace MyEngine {
         _surface = (deep_copy ? SDL_DuplicateSurface(surface) : surface);
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
         _property = std::make_unique<TextureProperty>();
-        _property->resize(_surface->w, _surface->h);
+        _property->resize((float)_surface->w, (float)_surface->h);
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
         _property->setScale(1.0f);
@@ -315,7 +315,7 @@ namespace MyEngine {
             return;
         }
         _property = std::make_unique<TextureProperty>();
-        _property->resize(width, height);
+        _property->resize((float)width, (float)height);
         _property->setScale(1.0f);
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
@@ -351,7 +351,7 @@ namespace MyEngine {
         }
         _surface = img;
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
-        _property->resize(_surface->w, _surface->h);
+        _property->resize((float)_surface->w, (float)_surface->h);
         Logger::log(std::format("Texture: Image changed to '{}'", path));
         Logger::log(std::format("Texture Size updated to {}x{}", _surface->w, _surface->h));
         return true;

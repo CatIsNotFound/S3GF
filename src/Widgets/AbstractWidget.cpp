@@ -5,6 +5,17 @@
 namespace MyEngine::Widget {
     AbstractWidget::AbstractWidget(Window *window) : _window(window), _renderer(nullptr),
                 _ev_id(IDGenerator::getNewEventID()) {
+        load();
+    }
+
+    AbstractWidget::AbstractWidget(std::string object_name, MyEngine::Window *window)
+        : _window(window), _renderer(nullptr), _object_name(std::move(object_name)){
+        load();
+    }
+
+    AbstractWidget::~AbstractWidget() {}
+
+    void AbstractWidget::load() {
         if (!_window) {
             auto err = std::format("AbstractWidget ({}): The specified window can not be null!", _object_name);
             Logger::log(err, Logger::Fatal);
@@ -181,8 +192,6 @@ namespace MyEngine::Widget {
             }
         });
     }
-
-    AbstractWidget::~AbstractWidget() {}
 
     void AbstractWidget::unload() {
         unloadEvent();
@@ -465,6 +474,10 @@ namespace MyEngine::Widget {
             _prop_map.try_emplace(name);
         }
         propertyChanged(name, _prop_map.at(name));
+    }
+
+    bool AbstractWidget::hasProperty(const std::string &name) const {
+        return _prop_map.contains(name);
     }
     
     const Variant *const AbstractWidget::property(const std::string& name) const {
