@@ -332,7 +332,7 @@ namespace MyEngine {
         }
     }
 
-    Renderer* Texture::render() const {
+    Renderer* Texture::renderer() const {
         return _renderer;
     }
 
@@ -512,7 +512,7 @@ namespace MyEngine {
 
     void TextureAtlas::draw() {
         if (_tiles_map.contains(_current_tiles)) {
-            render()->drawTexture(self(), _tiles_map[_current_tiles].properties[0].get());
+            renderer()->drawTexture(self(), _tiles_map[_current_tiles].properties[0].get());
         } else {
             auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
                                    "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles);
@@ -529,7 +529,7 @@ namespace MyEngine {
                 Logger::log(err, Logger::Fatal);
                 throw OutOfRangeException(err);
             }
-            render()->drawTexture(self(), _tiles_map[_current_tiles].properties[index].get());
+            renderer()->drawTexture(self(), _tiles_map[_current_tiles].properties[index].get());
         } else {
             auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
                                    "Did you forget to use `TextureAtlas::addTiles()`?", _current_tiles);
@@ -546,7 +546,7 @@ namespace MyEngine {
                 Logger::log(err, Logger::Fatal);
                 throw OutOfRangeException(err);
             }
-            render()->drawTexture(self(), _tiles_map[tiles_name].properties[index].get());
+            renderer()->drawTexture(self(), _tiles_map[tiles_name].properties[index].get());
         } else {
             auto err = std::format("TextureAtlas: Tiles '{}' is not in tiles map! "
                                    "Did you forget to use `TextureAtlas::addTiles()`?", tiles_name);

@@ -30,6 +30,15 @@ namespace MyEngine {
             Checked
         };
 
+        enum class TriggerAction {
+            Unknown,
+            MouseClicked,
+            MouseDblClicked,
+            KeyPressed,
+            HotKeysPressed,
+            FingerTapped
+        };
+
         class AbstractWidget {
         public:
             explicit AbstractWidget(Window* window);
@@ -59,10 +68,11 @@ namespace MyEngine {
             [[nodiscard]] const Size& size() const;
 
             void setFocusEnabled(bool enabled);
-            [[nodiscard]] bool focusEnabled() const;
+            [[nodiscard]] bool isFocusEnabled() const;
+            [[nodiscard]] bool isHovered() const;
 
             void setInputModeEnabled(bool enabled);
-            [[nodiscard]] bool inputModeEnabled() const;
+            [[nodiscard]] bool isInputModeEnabled() const;
             [[nodiscard]] const std::string& getInputChar() const;
 
             void setCursor(Cursor::StdCursor cursor_style);
@@ -119,7 +129,7 @@ namespace MyEngine {
             virtual void customContextMenuRequestEvent(const Vector2 &position);
             virtual void keyDownEvent(SDL_Scancode scancode);
             virtual void keyUpEvent(SDL_Scancode scancode);
-            virtual void keyPressedEvent();
+            virtual void keyPressedEvent(SDL_Scancode scancode);
             virtual void hotKeysPressedEvent();
             virtual void fingerDownEvent(const Vector2& position);
             virtual void fingerUpEvent(const Vector2& position);
@@ -131,6 +141,7 @@ namespace MyEngine {
             virtual void endedInputEvent();
             virtual void inputEvent(const char* string);
             virtual void propertyChanged(const std::string& property, const Variant& variant);
+            virtual void fontChanged(Font* font);
         protected:
             std::string _object_name{};
             Graphics::Rectangle _trigger_area;

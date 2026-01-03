@@ -9,7 +9,8 @@ namespace MyEngine::Widget {
     }
 
     AbstractWidget::AbstractWidget(std::string object_name, MyEngine::Window *window)
-        : _window(window), _renderer(nullptr), _object_name(std::move(object_name)){
+        : _window(window), _renderer(nullptr), _object_name(std::move(object_name)),
+          _ev_id(IDGenerator::getNewEventID()) {
         load();
     }
 
@@ -64,7 +65,7 @@ namespace MyEngine::Widget {
                     }
 
                     if (ev.text.type == SDL_EVENT_TEXT_INPUT) {
-                        char text[128] = {};
+                        char text[16] = {};
                         strncpy(text, ev.text.text, strlen(ev.text.text));
                         inputEvent(text);
                     }
@@ -84,7 +85,7 @@ namespace MyEngine::Widget {
                         if (scancode) {
                             keyUpEvent(static_cast<SDL_Scancode>(scancode));
                         }
-                        keyPressedEvent();
+                        keyPressedEvent(SDL_SCANCODE_KP_00);
                     } else if (!ev.key.repeat) {
                         uint64_t scancode = ev.key.scancode;
                         if (scancode) {
@@ -280,8 +281,12 @@ namespace MyEngine::Widget {
         if (_focus) focusInEvent(); else focusOutEvent();
     }
 
-    bool AbstractWidget::focusEnabled() const {
+    bool AbstractWidget::isFocusEnabled() const {
         return _focus;
+    }
+
+    bool AbstractWidget::isHovered() const {
+        return _status.mouse_in;
     }
 
     void AbstractWidget::setInputModeEnabled(bool enabled) {
@@ -298,7 +303,7 @@ namespace MyEngine::Widget {
         }
     }
 
-    bool AbstractWidget::inputModeEnabled() const {
+    bool AbstractWidget::isInputModeEnabled() const {
         return _status.input_mode;
     }
 
@@ -528,7 +533,7 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::keyUpEvent(SDL_Scancode scancode) {}
 
-    void AbstractWidget::keyPressedEvent() {}
+    void AbstractWidget::keyPressedEvent(SDL_Scancode scancode) {}
 
     void AbstractWidget::hotKeysPressedEvent() {}
 
@@ -553,4 +558,5 @@ namespace MyEngine::Widget {
     }
 
     void AbstractWidget::propertyChanged(const std::string &property, const Variant &variant) {}
+    void AbstractWidget::fontChanged(MyEngine::Font *font) {}
 }

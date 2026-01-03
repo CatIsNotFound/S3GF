@@ -39,6 +39,7 @@ namespace MyEngine {
             [[nodiscard]] bool isCheckable() const;
 
             void setTriggerEvent(const std::function<void()>& event);
+            void setTriggerEvent(TriggerAction action, std::function<void()> event);
             void setBackgroundImage(WidgetStatus status, Texture* texture, bool delete_later = false);
             void setBackgroundColor(WidgetStatus status, const SDL_Color& color);
             void setTextColor(WidgetStatus status, const SDL_Color& color);
@@ -57,7 +58,7 @@ namespace MyEngine {
             void mouseDblClickedEvent() override;
             void keyDownEvent(SDL_Scancode scancode) override;
             void keyUpEvent(SDL_Scancode scancode) override;
-            void keyPressedEvent() override;
+            void keyPressedEvent(SDL_Scancode scancode) override;
             void hotKeysPressedEvent() override;
             void fingerDownEvent(const MyEngine::Vector2 &position) override;
             void fingerUpEvent(const MyEngine::Vector2 &position) override;
@@ -65,13 +66,15 @@ namespace MyEngine {
             void fingerMoveOutEvent() override;
             void fingerTappedEvent() override;
             void checkedChanged(bool checked);
+            void enableChangedEvent(bool enabled) override;
         private:
             void initStatus();
-            void updateStatus();
+            void updateStatus(WidgetStatus status);
         private:
             WidgetStatus _wid_status{};
             bool _checkable{}, _checked{};
             std::function<void()> _event{};
+            std::unordered_map<TriggerAction, std::function<void()>> _triggers;
         };
     }
 }

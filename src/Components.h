@@ -372,7 +372,7 @@ namespace MyEngine {
         explicit Texture(Renderer* renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access);
         ~Texture();
 
-        [[nodiscard]] Renderer* render() const;
+        [[nodiscard]] Renderer* renderer() const;
 
         bool setImagePath(const std::string& path);
         [[nodiscard]] const std::string& imagePath() const;

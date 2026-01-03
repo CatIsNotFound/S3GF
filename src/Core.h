@@ -340,7 +340,8 @@ namespace MyEngine {
         Font* font(const std::string& font_name);
         [[nodiscard]] bool isFontContain(const std::string& font_name) const;
         StringList fontNameList() const;
-        
+
+        bool setFontSize(const std::string& font_name, float font_size);
         bool addText(uint64_t text_id, const std::string& font_name, const std::string& text);
         bool removeText(uint64_t text_id);
         bool setText(uint64_t text_id, const std::string& text);
@@ -351,6 +352,7 @@ namespace MyEngine {
         [[nodiscard]] bool isTextContain(uint64_t text_id) const;
         [[nodiscard]] std::vector<uint64_t> textIDList() const;
         bool drawText(uint64_t text_id, const Vector2& pos, Renderer* renderer);
+        bool updateFont(const std::string& font_name);
         SDL_Surface* toImage(uint64_t text_id);
     private:
         explicit TextSystem();

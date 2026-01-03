@@ -15,10 +15,8 @@ namespace MyEngine::Widget {
     Label::~Label() {}
 
     void Label::setFont(const std::string &font_name, const std::string &font_path, float font_size) {
-        if (!TextSystem::global()->addFont(font_name, font_path,
+        if (TextSystem::global()->addFont(font_name, font_path,
                                   AbstractWidget::render(), font_size)) {
-            return;
-        } else {
             TextSystem::global()->font(font_name)->setFontPath(font_path);
             TextSystem::global()->font(font_name)->setFontSize(font_size);
         }
@@ -34,6 +32,7 @@ namespace MyEngine::Widget {
             }
             _visible_text = is_contain;
         }
+        TextSystem::global()->setTextColor(_text_id, _text_color);
     }
 
     void Label::setFont(const std::string &font_name) {
@@ -66,7 +65,6 @@ namespace MyEngine::Widget {
         if (TextSystem::global()->isTextContain(_text_id)) {
             TextSystem::global()->setText(_text_id, text);
             _string = text;
-
         }
     }
 
@@ -77,7 +75,6 @@ namespace MyEngine::Widget {
     void Label::appendText(const std::string &text) {
         if (TextSystem::global()->isTextContain(_text_id)) {
             TextSystem::global()->appendText(_text_id, text);
-            updateTextGeometry();
         }
     }
 
@@ -85,20 +82,19 @@ namespace MyEngine::Widget {
         if (TextSystem::global()->isTextContain(_text_id)) {
             TextSystem::global()->setTextColor(_text_id, color);
         }
+        _text_color = color;
     }
 
     void Label::setFontColor(uint64_t hex_code, bool alpha) {
+        auto color = RGBAColor::hexCode2RGBA(hex_code, alpha);
         if (TextSystem::global()->isTextContain(_text_id)) {
-            TextSystem::global()->setTextColor(_text_id,
-                           RGBAColor::hexCode2RGBA(hex_code, alpha));
+            TextSystem::global()->setTextColor(_text_id, color);
         }
+        _text_color = color;
     }
 
     void Label::setFontSize(float size) {
-        if (_font) {
-            _font->setFontSize(size);
-        }
-        updateTextGeometry();
+        TextSystem::global()->setFontSize(fontName(), size);
     }
 
     const SDL_Color &Label::fontColor() const {
@@ -110,11 +106,22 @@ namespace MyEngine::Widget {
     }
 
     void Label::setTextAlignment(Label::Alignment alignment) {
+        if (_auto_resize_by_text) return;
         _alignment = alignment;
         alignmentChangedEvent(alignment);
     }
 
     Label::Alignment Label::textAlignment() const { return _alignment; }
+
+    void Label::setAutoResizedByTextEnabled(bool enabled) {
+        _auto_resize_by_text = enabled;
+        updateTextGeometry();
+        if (enabled) {
+            updateBgIMGGeometry();
+        }
+    }
+
+    bool Label::isAutoResizedByTextEnabled() const { return _auto_resize_by_text; }
 
     void Label::setBackgroundVisible(bool visible) {
         _visible_bg = visible;
@@ -158,6 +165,7 @@ namespace MyEngine::Widget {
         if (!_bg_img) {
             _bg_img = delete_later ? std::shared_ptr<Texture>(texture)
                     : std::make_shared<Texture>(texture->imagePath(), render());
+            _bg_img->property()->reset(*texture->property());
         } else {
             if (delete_later) {
                 _bg_img.reset(texture);
@@ -306,6 +314,11 @@ namespace MyEngine::Widget {
     }
 
     void Label::updateTextGeometry() {
+        if (_auto_resize_by_text) {
+            _text_pos.reset(0, 0);
+            _trigger_area.resize(_text->text_size);
+            return;
+        }
         const GeometryF& GEOMETRY = _trigger_area.geometry();
         const Size& SIZE = _text->text_size;
         switch (_alignment)  {
@@ -342,4 +355,5 @@ namespace MyEngine::Widget {
                 break;
         }
     }
+
 }

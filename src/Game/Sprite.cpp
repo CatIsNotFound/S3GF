@@ -139,7 +139,7 @@ void MyEngine::Sprite::draw() const {
         Engine::throwFatalError();
         return;
     }
-    _texture->render()->drawTexture(_texture->self(), _property.get());
+    _texture->renderer()->drawTexture(_texture->self(), _property.get());
 }
 
 

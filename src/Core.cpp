@@ -1125,6 +1125,23 @@ namespace MyEngine {
         return font_list;
     }
 
+    bool TextSystem::setFontSize(const std::string &font_name, float font_size) {
+        if (!_font_map.contains(font_name)) {
+            auto err = std::format("TextSystem: Font '{}' is not in the font list!", font_name);
+            Logger::log(err, Logger::Error);
+            return false;
+        }
+        _font_map[font_name].font->setFontSize(font_size);
+        for (auto& [id, text] : _text_map) {
+            if (text.font_name == font_name) {
+                int w = 0, h = 0;
+                TTF_GetTextSize(text.self, &w, &h);
+                text.text_size.reset((float)w, (float)h);
+            }
+        }
+        return true;
+    }
+
     bool TextSystem::addText(uint64_t text_id, const std::string& font_name, const std::string& text) {
         if (_text_map.contains(text_id)) {
             Logger::log(std::format("TextSystem: Text ID {} is already added to text list!",
@@ -1278,6 +1295,22 @@ namespace MyEngine {
         }
         auto temp_pos = pos;
         renderer->drawText(_text_map[text_id].self, temp_pos);
+        return true;
+    }
+
+    bool TextSystem::updateFont(const std::string &font_name) {
+        if (!_font_map.contains(font_name)) {
+            auto err = std::format("TextSystem: Font '{}' is not in the font list!", font_name);
+            Logger::log(err, Logger::Error);
+            return false;
+        }
+        for (auto& [id, text] : _text_map) {
+            if (text.font_name == font_name) {
+                int w = 0, h = 0;
+                TTF_GetTextSize(text.self, &w, &h);
+                text.text_size.reset((float)w, (float)h);
+            }
+        }
         return true;
     }
 

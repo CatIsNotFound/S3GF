@@ -47,6 +47,9 @@ namespace MyEngine {
             void setTextAlignment(Alignment alignment);
             [[nodiscard]] Alignment textAlignment() const;
 
+            void setAutoResizedByTextEnabled(bool enabled);
+            [[nodiscard]] bool isAutoResizedByTextEnabled() const;
+
             void setBackgroundVisible(bool visible);
             void setBackgroundColor(const SDL_Color& back_color);
             void setBackgroundColor(uint64_t hex_code, bool alpha = false);
@@ -81,10 +84,11 @@ namespace MyEngine {
             bool _visible_bg{true};
             bool _visible_text{};
             bool _visible_img{};
+            bool _auto_resize_by_text{};
             Font* _font{};
+            SDL_Color _text_color{};
             TextSystem::Text* _text{};
             std::shared_ptr<Texture> _bg_img{};
-            SDL_Color _none_color{};
             std::string _none_str{}, _string{};
             ImageFilledMode _fill_mode{};
             Alignment _alignment{};
