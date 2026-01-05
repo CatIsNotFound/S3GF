@@ -13,7 +13,7 @@ namespace MyEngine {
         template<typename T>
         class CommandPool : public AbstractCommandPool {
         public:
-            explicit CommandPool(uint32_t max_commands = 1024) : _cmd_max_count(max_commands) {
+            explicit CommandPool(uint32_t max_commands = 128) : _cmd_max_count(max_commands) {
                 _sub_pool_count = std::thread::hardware_concurrency();
                 if (_sub_pool_count == 0) _sub_pool_count = 4;
                 std::pmr::pool_options options = {.max_blocks_per_chunk = _sub_pool_count,

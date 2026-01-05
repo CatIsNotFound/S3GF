@@ -475,11 +475,18 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::setProperty(const std::string& name) {
         if (_prop_map.contains(name)) {
-            _prop_map.at(name).setValue();
+            _prop_map.at(name).clearValue();
         } else {
             _prop_map.try_emplace(name);
         }
         propertyChanged(name, _prop_map.at(name));
+    }
+
+    void AbstractWidget::clearAllProperties() {
+        for (auto& [name, value] : _prop_map) {
+            value.clearValue();
+        }
+        _prop_map.clear();
     }
 
     bool AbstractWidget::hasProperty(const std::string &name) const {
@@ -498,7 +505,9 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::loadEvent() {}
 
-    void AbstractWidget::unloadEvent() {}
+    void AbstractWidget::unloadEvent() {
+        clearAllProperties();
+    }
 
     void AbstractWidget::moveEvent(const Vector2 &position) {}
 

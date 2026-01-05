@@ -494,9 +494,12 @@ namespace MyEngine {
     }
 
     void Window::paintEvent() {
-        std::for_each(_paint_event_list.begin(), _paint_event_list.end(), [this] (auto& ev) {
+//        std::for_each(_paint_event_list.begin(), _paint_event_list.end(), [this] (auto& ev) {
+//            if (ev) ev(_renderer.get());
+//        });
+        for (auto& ev : _paint_event_list) {
             if (ev) ev(_renderer.get());
-        });
+        }
     }
 
     void Window::resizeEvent() {
@@ -709,6 +712,7 @@ namespace MyEngine {
                         win->mouseMovedEvent(_mouse_down_dis);
                     } else {
                         win->mouseUpEvent();
+                        win->mouseClickedEvent(static_cast<int>(_mouse_events));
                     }
                 }
 

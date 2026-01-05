@@ -7,6 +7,9 @@
 #define ENGINE_PROP_TEXT_COLOR                "TextColor"
 #define ENGINE_PROP_FONT_NAME                 "Font.name"
 #define ENGINE_PROP_FONT_SIZE                 "Font.size"
+#define ENGINE_PROP_BACKGROUND_IMAGE_PATH     "BackgroundImage.path"
+#define ENGINE_PROP_BACKGROUND_IMAGE_SELF     "BackgroundImage.surface"
+#define ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE  "BackgroundImage.texture"
 #define ENGINE_SIGNAL_LABEL_TEXT_CHANGED                         0b1
 #define ENGINE_SIGNAL_LABEL_TEXT_COLOR_CHANGED                   0b10
 #define ENGINE_SIGNAL_LABEL_FONT_CHANGED                         0b100
@@ -15,9 +18,8 @@
 #define ENGINE_SIGNAL_LABEL_TEXT_ALIGNMENT_CHANGED               0b100000
 #define ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED             0b1000000
 #define ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_FILLED_CHANGED      0b10000000
-#define ENGINE_SIGNAL_LABEL_SIZE_CHANGED                         0b100000000
-
-
+#define ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE         0b100000000
+#define ENGINE_SIGNAL_LABEL_SIZE_CHANGED                         0b1000000000
 
 namespace MyEngine {
     namespace Widget {
@@ -89,8 +91,7 @@ namespace MyEngine {
             void resizeEvent(const MyEngine::Size &size) override;
             void visibleChangedEvent(bool visible) override;
             void enableChangedEvent(bool enabled) override;
-            void imageFillModeChangedEvent(ImageFilledMode filled_mode);
-            void alignmentChangedEvent(Alignment alignment);
+
         private:
             void updateBgIMGGeometry();
             void updateTextGeometry();
@@ -102,9 +103,9 @@ namespace MyEngine {
             bool _auto_resize_by_text{};
             Font* _font{};
             TextSystem::Text* _text{};
-            std::shared_ptr<Texture> _bg_img{};
-            std::vector<std::shared_ptr<Texture>> _temp_imgs{};
+            std::unique_ptr<Texture> _bg_img{};
             std::string _none_str{}, _string{};
+            Vector2 _text_pos{};
             /**
              * @brief 改变信号
              * @details 使用 `uint16_t` 类型，采用二进制的方式表示各个状态是否有所改变.
@@ -113,7 +114,6 @@ namespace MyEngine {
             uint16_t _changer_signal{};
             ImageFilledMode _fill_mode{};
             Alignment _alignment{};
-            Vector2 _text_pos{};
         };
     }
 }

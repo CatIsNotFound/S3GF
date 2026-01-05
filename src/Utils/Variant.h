@@ -197,8 +197,8 @@ namespace MyEngine {
          * @see hasDeleter
          */
         void setDeleter(std::function<void(void*)> deleter);
-        
-        void setValue();
+
+        void clearValue();
         void setValue(bool v);
         void setValue(int8_t v);
         void setValue(int16_t v);

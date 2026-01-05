@@ -188,12 +188,11 @@ namespace MyEngine {
             float pressure{};
             Vector2 finger_down_pos{};
         };
-        bool _finger_down{};
         std::unordered_map<uint64_t, FingerEvent> _finger_event_list;
         bool _dragging{false};
         bool _drag_mode{false};
+        char _drop_url[128]{};
         std::string _drop_source{};
-        char _drop_url[255]{};
         Vector2 _mouse_pos{}, _dragging_pos{};
         Cursor::StdCursor _cursor{};
         std::deque<std::function<void(Renderer*)>> _paint_event_list;
@@ -277,23 +276,23 @@ namespace MyEngine {
         void setLimitMaxMemorySize(size_t mem_in_kb);
         [[nodiscard]] size_t limitMaxMemorySize() const;
 
-        bool isRunning() const;
+        [[nodiscard]] bool isRunning() const;
         static void exit(int code = 0);
         int exec();
 
         void newWindow(Window* window);
         void removeWindow(SDL_WindowID id);
-        Window* window(SDL_WindowID id = _main_window_id) const;
-        std::vector<uint32_t> windowIDList() const;
-        constIter begin() const { return _window_list.cbegin(); }
+        [[nodiscard]] Window* window(SDL_WindowID id = _main_window_id) const;
+        [[nodiscard]] std::vector<uint32_t> windowIDList() const;
+        [[nodiscard]] constIter begin() const { return _window_list.cbegin(); }
         iter begin() { return _window_list.begin(); }
-        constIter end() const { return _window_list.cend(); }
+        [[nodiscard]] constIter end() const { return _window_list.cend(); }
         iter end() { return _window_list.end(); }
         size_t windowCount() { return _window_list.size(); }
         [[nodiscard]] bool isWindowExist(uint32_t window_id) { return _window_list.contains(window_id); }
 
         void setFPS(uint32_t fps);
-        uint32_t fps() const; 
+        [[nodiscard]] uint32_t fps() const;
         static void throwFatalError();
 
         void installCleanUpEvent(const std::function<void()>& event);

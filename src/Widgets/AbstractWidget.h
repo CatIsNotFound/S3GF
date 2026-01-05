@@ -107,6 +107,7 @@ namespace MyEngine {
             void setProperty(const std::string& name, void* value);
             void setProperty(const std::string& name, void* value, std::function<void(void*)> deleter);
             void setProperty(const std::string& name);
+            void clearAllProperties();
             [[nodiscard]] bool hasProperty(const std::string& name) const;
             const Variant *const property(const std::string& name) const;
 

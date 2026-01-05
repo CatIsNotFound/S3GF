@@ -106,9 +106,8 @@ namespace MyEngine::Widget {
     }
 
     void Button::loadEvent() {
-        AbstractWidget::loadEvent();
-        updateStatus(WidgetStatus::Normal);
-        Label::setTextColor(RGBAColor::MixGrayDark);
+        Label::loadEvent();
+        updateStatus(AbstractWidget::isFocusEnabled() ? WidgetStatus::Active : WidgetStatus::Normal);
     }
 
     void Button::focusInEvent() {

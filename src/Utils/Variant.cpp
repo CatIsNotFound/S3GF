@@ -136,7 +136,7 @@ namespace MyEngine {
         if (_type == Pointer) _deleter = std::move(deleter);
     }
 
-    void Variant::setValue() {
+    void Variant::clearValue() {
         if (_value) {
             switch (_type) {
                 case Bool:
@@ -191,7 +191,7 @@ namespace MyEngine {
         if (_type == Bool) {
             *static_cast<bool*>(_value) = v;
         } else {
-            setValue(); 
+            clearValue();
             _type = Bool;
             _value = new bool(v);
         }
@@ -201,7 +201,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<int8_t*>(_value) = static_cast<int8_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Int8;
             _value = new int8_t(v);
         }
@@ -211,7 +211,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<int16_t*>(_value) = static_cast<int16_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Int16;
             _value = new int16_t(v);
         }
@@ -221,7 +221,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<int32_t *>(_value) = static_cast<int32_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Int32;
             _value = new int32_t(v);
         }
@@ -231,7 +231,7 @@ namespace MyEngine {
         if (_type == Int64 || _type == UInt64) {
             *static_cast<int64_t*>(_value) = static_cast<int64_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Int64;
             _value = new int64_t(v);
         }
@@ -241,7 +241,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<uint8_t*>(_value) = static_cast<uint8_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = UInt8;
             _value = new uint8_t(v);
         }
@@ -251,7 +251,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<uint16_t*>(_value) = static_cast<uint16_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = UInt16;
             _value = new uint16_t(v);
         }
@@ -261,7 +261,7 @@ namespace MyEngine {
         if ((_type > Int8 && _type <= Int32) || (_type > UInt8 && _type <= UInt32)) {
             *static_cast<uint32_t*>(_value) = static_cast<uint32_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = UInt32;
             _value = new uint32_t(v);
         }
@@ -271,7 +271,7 @@ namespace MyEngine {
         if (_type == UInt64 || _type == Int64) {
             *static_cast<uint64_t*>(_value) = static_cast<uint64_t>(v);
         } else {
-            setValue();
+            clearValue();
             _type = UInt64;
             _value = new uint64_t(v);
         }
@@ -281,7 +281,7 @@ namespace MyEngine {
         if (_type == Float) {
             *static_cast<float*>(_value) = static_cast<float>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Float;
             _value = new float(v);
         }
@@ -291,7 +291,7 @@ namespace MyEngine {
         if (_type == Double) {
             *static_cast<double*>(_value) = static_cast<double>(v);
         } else {
-            setValue();
+            clearValue();
             _type = Double;
             _value = new double(v);
         }
@@ -301,7 +301,7 @@ namespace MyEngine {
         if (_type == String) {
             *static_cast<std::string*>(_value) = string;
         } else {
-            setValue();
+            clearValue();
             _type = String;
             _value = new std::string(string);
         }
@@ -311,7 +311,7 @@ namespace MyEngine {
         if (_type == String) {
             *static_cast<std::string*>(_value) = string;
         } else {
-            setValue();
+            clearValue();
             _type = String;
             _value = new std::string(string);
         }
@@ -329,7 +329,7 @@ namespace MyEngine {
                 _deleter = std::move(deleter);
             }
         } else {
-            setValue();
+            clearValue();
             _type = Pointer;
             _value = pointer;
             _deleter = std::move(deleter);

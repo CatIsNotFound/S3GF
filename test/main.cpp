@@ -6,24 +6,39 @@
 using namespace MyEngine;
 
 int main(int argc, const char* argv[]) {
-    Logger::setBaseLogLevel(MyEngine::Logger::Debug);
+//    Logger::setBaseLogLevel(MyEngine::Logger::Debug);
     Engine engine;
     FileSystem::setCurrentPath(FileSystem::getDirectoryFromFile(argv[0]));
-    engine.setFPS(30);
+     engine.setFPS(60);
     auto win = new Window(&engine, engine.applicationName());
+     auto win2 = new Window(&engine, "Second window");
     win->setResizable(true);
+//    win->renderer()->setVSyncMode(Renderer::HalfRate);
+    engine.setLimitMaxMemorySize(100'000);
 
     Texture texture1(FileSystem::getAbsolutePath("./back_button_1.png"), win->renderer());
     Texture texture2(FileSystem::getAbsolutePath("./back_button_2.png"), win->renderer());
     Texture texture3(FileSystem::getAbsolutePath("./back_button_3.png"), win->renderer());
     Texture texture4(FileSystem::getAbsolutePath("./back_button_4.png"), win->renderer());
-    auto def_font = FontDatabase::getSystemDefaultFont().front();
+    auto def_fonts = FontDatabase::getSystemDefaultFont();
+    auto first_font = def_fonts.front();
+    auto second_font = def_fonts.at(1);
+    TextSystem::global()->addFont(first_font.font_name, first_font.font_path, win->renderer(), 32.f);
+    TextSystem::global()->addFont(second_font.font_name, second_font.font_path, win->renderer(), 32.f);
 
     Widget::Button button1("button1", win);
     Widget::Button button2("button2", win);
     Widget::Button button3("button3", win);
     Widget::Label label("label", win);
-    Timer timer(10, [&label] {
+    Timer timer(10, [&label, &engine, &win, &timer] {
+        if (!engine.isWindowExist(win->windowID())) {
+            if (win) {
+                Logger::log("The window pointer is still not null!");
+            } else {
+                timer.stop();
+            }
+        }
+
         static float dx = 1, dy = 1;
         auto pos = label.position();
         if (pos.x >= 700 || pos.x <= 0) dx = -dx;
@@ -42,21 +57,21 @@ int main(int argc, const char* argv[]) {
     button1.setBackgroundImage(Widget::WidgetStatus::Pressed, &texture3);
     button1.setBackgroundImage(Widget::WidgetStatus::Disabled, &texture4);
     button1.setBackgroundImage(Widget::WidgetStatus::Checked, &texture3);
-    button1.setBackgroundImageFillMode(Widget::Label::Fit);
-    button1.setFont(def_font.font_name, def_font.font_path, 32.f);
-    button2.setFont(def_font.font_name);
-    button3.setFont(def_font.font_name);
-    label.setFont(def_font.font_name);
+    button1.setBackgroundImageFillMode(Widget::Label::Stretch);
+    button1.setFont(first_font.font_name, first_font.font_path, 32.f);
+    button2.setFont(first_font.font_name);
+    button3.setFont(first_font.font_name);
+    label.setFont(first_font.font_name);
 
     label.setBackgroundImage(&texture1, false);
     label.setBackgroundImageFillMode(Widget::Label::Fit);
     label.setTextColor(StdColor::Black);
+    label.setTextAlignment(Widget::Label::CenterMiddle);
 
     button1.setText("Test 1");
     button2.setText("Test 2");
     button3.setText("Test 3");
     label.setText("Output");
-    label.setAutoResizedByTextEnabled(true);
 
     button1.setTextAlignment(Widget::Label::CenterMiddle);
     button2.setTextAlignment(Widget::Label::CenterMiddle);
@@ -75,13 +90,15 @@ int main(int argc, const char* argv[]) {
         button1.setFontSize(32.f);
         if (timer.enabled()) timer.stop(); else timer.start(0);
     });
-    button3.setTriggerEvent([&label]{
+    button3.setTriggerEvent([&label, &second_font, &first_font]{
         static bool tri = false;
         if (!tri) {
             label.resize(100, 50);
+            label.setFont(second_font.font_name);
             tri = true;
         } else {
             label.resize(180, 60);
+            label.setFont(first_font.font_name);
             tri = false;
         }
         label.setTextAlignment(MyEngine::Widget::Label::CenterMiddle);
@@ -91,6 +108,13 @@ int main(int argc, const char* argv[]) {
         r->fillBackground(StdColor::LimeGreen);
         r->drawDebugFPS({20, (float)(win->geometry().height) - 20});
         r->drawDebugText(std::format("Memory: {} kB", SysMemory::getCurProcUsedMemSize()), {20, (float)(win->geometry().height - 30)});
+        r->drawDebugText(std::format("Render counts: {}", r->renderCountInSec()), {20, (float)(win->geometry().height - 40)});
+    });
+
+    win2->installPaintEvent([&win2](Renderer* r) {
+        r->fillBackground(StdColor::LightPink);
+        r->drawDebugFPS({20, (float)(win2->geometry().height) - 20});
+        r->drawDebugText(std::format("Memory: {} kB", SysMemory::getCurProcUsedMemSize()), {20, (float)(win2->geometry().height - 30)});
     });
 
     timer.start(0);

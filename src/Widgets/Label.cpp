@@ -9,6 +9,9 @@ namespace MyEngine::Widget {
         _NEW_PROPERTY_PTR(this, ENGINE_PROP_TEXT_COLOR, SDL_Color);
         setProperty(ENGINE_PROP_FONT_NAME, "");
         setProperty(ENGINE_PROP_FONT_SIZE, 9.f);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_PATH);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_SELF);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE);
     }
 
     Label::Label(std::string object_name, Window *window) : AbstractWidget(std::move(object_name), window) {
@@ -16,6 +19,9 @@ namespace MyEngine::Widget {
         _NEW_PROPERTY_PTR(this, ENGINE_PROP_TEXT_COLOR, SDL_Color);
         setProperty(ENGINE_PROP_FONT_NAME, "");
         setProperty(ENGINE_PROP_FONT_SIZE, 9.f);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_PATH);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_SELF);
+        setProperty(ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE);
     }
 
     Label::~Label() {}
@@ -192,12 +198,16 @@ namespace MyEngine::Widget {
             return;
         }
         if (!_bg_img) {
-            _bg_img = std::make_shared<Texture>(surface, render(), !delete_later);
+            _bg_img = std::make_unique<Texture>(surface, render(), !delete_later);
+            _visible_img = (_bg_img != nullptr);
+            _visible_bg = (!_bg_img);
+            auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
+            img_geo->reset(_bg_img->property()->size());
         } else {
-            _bg_img->setImageFromSurface(surface, !delete_later);
+            if (delete_later) _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE;
+            _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED;
+            setProperty(ENGINE_PROP_BACKGROUND_IMAGE_SELF, surface);
         }
-        auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
-        img_geo->reset(_bg_img->property()->size());
     }
 
     void Label::setBackgroundImage(Texture *texture, bool delete_later) {
@@ -206,36 +216,36 @@ namespace MyEngine::Widget {
             return;
         }
         if (!_bg_img) {
-            _bg_img = delete_later ? std::shared_ptr<Texture>(texture)
-                    : std::make_shared<Texture>(texture->imagePath(), render());
+            _bg_img = delete_later ? std::unique_ptr<Texture>(texture)
+                    : std::make_unique<Texture>(texture->imagePath(), render());
             _bg_img->property()->reset(*texture->property());
+            auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
+            img_geo->reset(_bg_img->property()->size());
+            _visible_img = (_bg_img != nullptr);
+            _visible_bg = (!_bg_img);
         } else {
-            if (delete_later) {
-                _bg_img.reset(texture);
-            } else {
-                _bg_img->setImagePath(texture->imagePath());
-                _bg_img->property()->reset(*texture->property());
-            }
+            if (delete_later) _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE;
+            _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED;
+            setProperty(ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE, texture);
         }
-        auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
-        img_geo->reset(_bg_img->property()->size());
-        _visible_img = (_bg_img != nullptr);
-        _visible_bg = false;
     }
 
     void Label::setBackgroundImage(const std::string &image_path) {
         if (!_bg_img) {
-            _bg_img = std::make_shared<Texture>(image_path, render());
+            _bg_img = std::make_unique<Texture>(image_path, render());
+            _visible_img = (_bg_img != nullptr);
+            _visible_bg = (!_bg_img);
+            auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
+            img_geo->reset(_bg_img->property()->size());
         } else {
-            _bg_img->setImagePath(image_path);
+            _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED;
+            setProperty(ENGINE_PROP_BACKGROUND_IMAGE_PATH, image_path);
         }
-        auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
-        img_geo->reset(_bg_img->property()->size());
     }
 
     void Label::setBackgroundImageFillMode(Label::ImageFilledMode filled_mode) {
         _fill_mode = filled_mode;
-        imageFillModeChangedEvent(_fill_mode);
+        _changer_signal |= ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_FILLED_CHANGED;
     }
 
     void Label::clearBackgroundImage() {
@@ -266,6 +276,7 @@ namespace MyEngine::Widget {
 
     void Label::unloadEvent() {
         AbstractWidget::unloadEvent();
+        clearBackgroundImage();
     }
 
     void Label::paintEvent(MyEngine::Renderer *renderer) {
@@ -305,9 +316,40 @@ namespace MyEngine::Widget {
         }
         if (_bg_img) {
             if (size_changed) update_img = true;
-//            if (_changer_signal & ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED) {
-//
-//            }
+            if (_changer_signal & ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_CHANGED) {
+                bool is_changed_img = false;
+                auto path = property(ENGINE_PROP_BACKGROUND_IMAGE_PATH);
+                auto texture = property(ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE);
+                auto self = property(ENGINE_PROP_BACKGROUND_IMAGE_SELF);
+                if (!path->isNull()) {
+                    _bg_img->setImagePath(path->toString());
+                    setProperty(ENGINE_PROP_BACKGROUND_IMAGE_PATH);
+                    is_changed_img = true;
+                }
+                if (!texture->isNull()) {
+                    auto _p = static_cast<Texture*>(texture->toPointer());
+                    if (_changer_signal & ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE) {
+                        _bg_img.reset(_p);
+                    } else {
+                        _bg_img->setImagePath(_p->imagePath());
+                        _bg_img->property()->reset(*_p->property());
+                    }
+                    setProperty(ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE);
+                    is_changed_img = true;
+                }
+                if (!self->isNull()) {
+                    auto _p = static_cast<SDL_Surface*>(self->toPointer());
+                    _bg_img->setImageFromSurface(_p,
+                         !(_changer_signal & ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE));
+                    setProperty(ENGINE_PROP_BACKGROUND_IMAGE_SELF);
+                    is_changed_img = true;
+                }
+                if (is_changed_img) {
+                    auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_ORIGINAL_IMAGE_SIZE, Size);
+                    img_geo->reset(_bg_img->property()->size());
+                }
+                update_img = true;
+            }
         }
 
         if (update_text) {
@@ -335,8 +377,6 @@ namespace MyEngine::Widget {
     void Label::resizeEvent(const Size &size) {
         AbstractWidget::resizeEvent(size);
         _changer_signal |= ENGINE_SIGNAL_LABEL_SIZE_CHANGED;
-//        if (_bg_img) updateBgIMGGeometry();
-//        if (_text) updateTextGeometry();
     }
 
     void Label::visibleChangedEvent(bool visible) {
@@ -345,15 +385,6 @@ namespace MyEngine::Widget {
 
     void Label::enableChangedEvent(bool enabled) {
         AbstractWidget::enableChangedEvent(enabled);
-    }
-
-    void Label::imageFillModeChangedEvent(Label::ImageFilledMode filled_mode) {
-        _fill_mode = filled_mode;
-        updateBgIMGGeometry();
-    }
-
-    void Label::alignmentChangedEvent(Label::Alignment alignment) {
-        updateTextGeometry();
     }
 
     void Label::updateBgIMGGeometry() {
