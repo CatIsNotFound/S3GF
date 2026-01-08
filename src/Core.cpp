@@ -19,7 +19,7 @@ namespace MyEngine {
     std::unique_ptr<AudioSystem> AudioSystem::_instance{};
 
     Renderer::Renderer(Window* window) : _window(window) {
-         _renderer = SDL_CreateRenderer(_window->self(), nullptr);
+        _renderer = SDL_CreateRenderer(_window->self(), nullptr);
         if (!_renderer) {
             Logger::log("The renderer is not created!", Logger::Fatal);
             Engine::throwFatalError();
@@ -876,6 +876,10 @@ namespace MyEngine {
         _warn_mem_kb = static_cast<size_t>(static_cast<float>(_max_mem_kb) * 0.85f);
     }
     size_t Engine::limitMaxMemorySize() const { return _max_mem_kb; }
+
+    void Engine::setRenderSetup(uint32_t max_commands, bool auto_incresement) {
+        RenderCommand::CommandFactory::initFactory(max_commands, auto_incresement);
+    }
 
     bool Engine::isRunning() const {
         return _running;

@@ -93,7 +93,7 @@ namespace MyEngine {
         };
         explicit Window(Engine* object, const std::string& title,
                         int width = 800, int height = 600, GraphicEngine engine = OpenGL);
-        ~Window();
+        virtual ~Window();
 
         bool move(int x, int y);
         bool resize(int width, int height);
@@ -275,6 +275,7 @@ namespace MyEngine {
 
         void setLimitMaxMemorySize(size_t mem_in_kb);
         [[nodiscard]] size_t limitMaxMemorySize() const;
+        void setRenderSetup(uint32_t max_commands, bool auto_incresement = false);
 
         [[nodiscard]] bool isRunning() const;
         static void exit(int code = 0);

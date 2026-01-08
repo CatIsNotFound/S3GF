@@ -17,6 +17,7 @@ find_package(GTest REQUIRED)
 
 add_executable(${PROJECT_NAME}
         main.cpp
+        UnitTests/test_window.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

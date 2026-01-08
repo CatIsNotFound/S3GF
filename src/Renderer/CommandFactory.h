@@ -4,7 +4,7 @@
 
 namespace MyEngine {
     namespace RenderCommand {
-        template<typename T> class CommandPool;
+        class NormalCommandPool;
         class CommandFactory {
         public:
             CommandFactory() = delete;
@@ -16,27 +16,25 @@ namespace MyEngine {
 
             template<typename T, typename ...Args>
             static T* acquire(Args... args) {
-                return getPool<T>().acquire(args...);
+                return getPool().acquire<T>(args...);
             }
 
             template<typename T>
             static void release(std::unique_ptr<T> command) {
-                getPool<T>().release(std::move(command));
+                getPool().release<T>(std::move(command));
             }
 
-            template<typename T>
-            static void registerCommand() {
-                getPool<T>();
+            static void initFactory(uint32_t max_commands, bool auto_incresement) {
+                initPool(max_commands, auto_incresement);
             }
 
-            template<typename T>
-            static void getStatistics(size_t& current_size, size_t& max_size) {
-                getPool<T>().getStatistics(current_size, max_size);
-            }
         private:
-            template<typename T>
-            static CommandPool<T>& getPool() {
-                static CommandPool<T> cmd_pool;
+            static NormalCommandPool& initPool(uint32_t max_commands, bool auto_incresement) {
+                static NormalCommandPool cmd_pool(max_commands, auto_incresement);
+                return cmd_pool;
+            }
+            static NormalCommandPool& getPool() {
+                static NormalCommandPool cmd_pool;
                 return cmd_pool;
             }
         };
