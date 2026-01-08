@@ -40,6 +40,7 @@ namespace MyEngine {
                     _cmd_list.push_back(std::move(pointer));
                 } else if (_auto_increasement) {
                     _max_cmds *= 2;
+                    _cmd_list.push_back(std::move(pointer));
                 }
             }
 

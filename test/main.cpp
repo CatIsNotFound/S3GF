@@ -9,8 +9,8 @@ int main(int argc, const char* argv[]) {
 //    Logger::setBaseLogLevel(MyEngine::Logger::Debug);
     Engine engine;
     FileSystem::setCurrentPath(FileSystem::getDirectoryFromFile(argv[0]));
-    engine.setFPS(60);
-    engine.setRenderSetup(10240);
+    engine.setFPS(61);
+    engine.setRenderSetup(512, true);
     auto win = new Window(&engine, engine.applicationName());
     auto win2 = new Window(&engine, "Second window");
     win->setResizable(true);
@@ -75,7 +75,7 @@ int main(int argc, const char* argv[]) {
 
     button1.setTextAlignment(Widget::Label::CenterMiddle);
     button2.setTextAlignment(Widget::Label::CenterMiddle);
-    button3.setTextAlignment(Widget::Label::CenterMiddle);
+    button3.setTextAlignment(Widget::Label::RightMiddle);
 
     button2.setFocusEnabled(true);
     button2.setHotKeyEnabled(true);
@@ -105,7 +105,7 @@ int main(int argc, const char* argv[]) {
     });
 
     win->installPaintEvent([&win](Renderer* r) {
-        r->fillBackground(StdColor::LimeGreen);
+        r->fillBackground(StdColor::Lavender);
         r->drawDebugFPS({20, (float)(win->geometry().height) - 20});
         r->drawDebugText(std::format("Memory: {} kB", SysMemory::getCurProcUsedMemSize()), {20, (float)(win->geometry().height - 30)});
         r->drawDebugText(std::format("Render counts: {}", r->renderCountInSec()), {20, (float)(win->geometry().height - 40)});
