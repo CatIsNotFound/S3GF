@@ -16,9 +16,10 @@
 #define ENGINE_PROP_LINE_EDIT_BORDER_COLOR_DISABLED                "lineEdit.disabled.borderColor"
 #define ENGINE_PROP_LINE_EDIT_BACKGROUND_COLOR_DISABLED            "lineEdit.disabled.backgroundColor"
 #define ENGINE_PROP_LINE_EDIT_TEXT_COLOR                           "lineEdit.text.color"
-#define ENGINE_PROP_LINE_EDIT_PLACE_HOLDER_TEXT_COLOR              "lineEdit.placeholder.color"
 #define ENGINE_PROP_LINE_EDIT_TEXT                                 "lineEdit.text.text"
+#define ENGINE_PROP_LINE_EDIT_TEXT_SIZE                            "lineEdit.text.size"
 #define ENGINE_PROP_LINE_EDIT_PLACEHOLDER_TEXT                     "lineEdit.placeholder.text"
+#define ENGINE_PROP_LINE_EDIT_PLACE_HOLDER_TEXT_COLOR              "lineEdit.placeholder.color"
 #define ENGINE_PROP_LINE_EDIT_PADDING_HORIZONTAL                   "lineEdit.padding.horizontal"
 #define ENGINE_PROP_LINE_EDIT_PADDING_VERTICAL                     "lineEdit.padding.vertical"
 
@@ -31,6 +32,7 @@
 #define ENGINE_SIGNAL_LINE_EDIT_FONT_CHANGED                       0b1000
 #define ENGINE_SIGNAL_LINE_EDIT_FONT_SIZE_CHANGED                  0b10000
 #define ENGINE_SIGNAL_LINE_EDIT_TEXT_COLOR_CHANGED                 0b100000
+#define ENGINE_SIGNAL_LINE_EDIT_TEXT_SIZE_CHANGED                  0b1000000
 
 namespace MyEngine {
     namespace Widget {
@@ -44,6 +46,8 @@ namespace MyEngine {
             void setFont(const std::string &font_name);
             [[nodiscard]] const std::string& fontName() const;
             [[nodiscard]] const std::string& fontPath() const;
+            void setFontSize(float size);
+            [[nodiscard]] float fontSize() const;
 
             void setText(const std::string& text);
             [[nodiscard]] std::string_view text() const;
@@ -87,10 +91,11 @@ namespace MyEngine {
             void endedInputEvent() override;
             void inputEvent(const char *string) override;
             virtual void textChangedEvent();
-            virtual void placeHolderTextVisibleChangedEvent(bool visible);
+
         private:
             void init();
             void updateStatus(WidgetStatus status);
+            void updateTextPosition();
             static std::string getBackgroundColorPropertyKey(WidgetStatus status);
             static std::string getBorderColorPropertyKey(WidgetStatus status);
             SDL_Color getBackgroundColor(WidgetStatus status);
@@ -107,6 +112,8 @@ namespace MyEngine {
             WidgetStatus _wid_status{};
             Geometry _real_area{};
             uint8_t _status{};
+            Graphics::Line _cursor_line{};
+            uint64_t _start_tick{};
         };
     }
 }

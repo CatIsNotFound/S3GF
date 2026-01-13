@@ -495,9 +495,6 @@ namespace MyEngine {
     }
 
     void Window::paintEvent() {
-//        std::for_each(_paint_event_list.begin(), _paint_event_list.end(), [this] (auto& ev) {
-//            if (ev) ev(_renderer.get());
-//        });
         for (auto& ev : _paint_event_list) {
             if (ev) ev(_renderer.get());
         }
