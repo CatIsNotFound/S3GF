@@ -1,0 +1,41 @@
+/**
+ * @class MyEngine::SysMemory
+ * @brief 系统内存
+ * @details 用于实时获取操作系统的系统内存信息
+ * @note 此类为静态类，无需获取全局单例
+ */
+
+/**
+ * @struct MyEngine::SysMemory::SysMemStatus
+ * @brief 系统内存状态
+ * @details 用于描述当前操作系统下的内存状态
+ */
+
+/**
+ * @var MyEngine::SysMemory::SysMemStatus::total_mem
+ * @brief 总占用内存（以 KB 为单位）
+ */
+
+/**
+ * @var MyEngine::SysMemory::SysMemStatus::used_mem
+ * @brief 已使用内存（以 KB 为单位）
+ */
+
+/**
+ * @var MyEngine::SysMemory::SysMemStatus::available_mem
+ * @brief 可用内存（以 KB 为单位）
+ */
+
+/**
+ * @fn MyEngine::SysMemory::getSystemMemoryStatus()
+ * @brief 获取当前系统内存状态
+ * @param ok 可选参数，表示是否能正常获取信息
+ * @return 返回一个系统内存状态
+ */
+
+/**
+ * @fn MyEngine::SysMemory::getCurProcUsedMemSize()
+ * @brief 获取当前进程已使用的内存大小
+ * @param ok 可选参数，表示是否能正常获取信息
+ * @return 返回一个以 KB 为单位的内存大小
+ */

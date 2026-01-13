@@ -1,0 +1,490 @@
+/**
+ * @namespace MyEngine
+ * @brief 项目命名空间
+ */
+
+/**
+ * @namespace StdColor
+ * @brief 预定义标准 RGB 颜色
+ * @ref related/ColorMap.md
+ */
+
+/// @fn MyEngine::delay()
+/// @brief 设置在当前线程上延迟多少秒
+
+/// @fn MyEngine::delayMS()
+/// @brief 设置在当前线程上延迟多少毫秒
+
+/// @fn MyEngine::delayUS()
+/// @brief 设置在当前线程上延迟多少微秒
+
+/// @fn MyEngine::delayNS()
+/// @brief 设置在当前线程上延迟多少纳秒
+
+/**
+ * @class MyEngine::IDGenerator
+ * @brief 生成唯一的 ID
+ *
+ * @details 可以创建多个 ID 生成器并生成唯一的 ID 值
+ */
+
+/**
+ * @fn IDGenerator::newIDGenerator()
+ * @brief 创建一个新的 ID 生成器
+ *
+ * @details 你可以使用 `getID()` 函数从指定的生成器生成 ID
+ * @return 创建新 ID 生成器的 index 值
+ * @see getID
+ */
+
+/**
+ * @fn IDGenerator::getNewEventID()
+ * @brief 使用 ID 生成器生成事件 ID
+ * @return 新的事件 ID（仅用于 EventSystem 类）
+ */
+
+/**
+ * @fn IDGenerator::getNewGlobalEventID()
+ * @brief 使用 ID 生成器生成全局事件 ID
+ * @return 新的全局事件 ID（仅用于 EventSystem 类）
+ */
+
+/**
+ * @fn IDGenerator::getNewTextID()
+ * @brief 使用 ID 生成器生成文本 ID
+ * @return 新的文本 ID（仅用于 TextSystem 类）
+ */
+
+/**
+ * @fn IDGenerator::getID()
+ * @brief 使用指定的 ID 生成器生成新的 ID
+ * 
+ * @param ID 生成器索引值
+ * @note 当对应的 ID 生成器索引不存在时，将返回错误日志并抛出 `MyEngine::OutOfRangeException` 异常。
+ * @note 关于 ID 生成器索引，本库提供了三个 ID 生成器索引，其对应索引如下：
+ * @note - `0`: 使用 EventSystem 类中的事件 ID；
+ * @note - `1`: 使用 EventSystem 类中的全局事件 ID； 
+ * @note - `2`: 使用 TextSystem 类中的文本 ID。
+ * @return 返回新的 ID 值
+ */
+
+/**
+ * @struct MyEngine::Geometry
+ * @brief 包含位置与大小
+ */
+
+/**
+ * @fn Geometry::setGeometry()
+ * @brief 更新位置与大小
+ * @details 设置一个新的位置和大小
+ * @param x 新的 x 坐标
+ * @param y 新的 y 坐标
+ * @param width 新的宽度
+ * @param height 新的高度
+ * @see move
+ * @see resize
+ */
+
+/**
+ * @fn Geometry::move()
+ * @brief 移动新的位置
+ * @details 设置一个坐标作为新的位置
+ * @param x 新的 x 坐标
+ * @param y 新的 y 坐标
+ * @see setGeometry
+ * @see resize
+ */
+
+/**
+ * @fn Geometry::resize()
+ * @brief 重新调整新的大小
+ * @details 设置一个新的尺寸作为新的大小
+ * @param x 新的宽度
+ * @param y 新的高度
+ * @see setGeometry
+ * @see move
+ */
+
+/**
+ * @struct MyEngine::Vector2
+ * @brief 向量坐标
+ *
+ * @details 包含两个浮点类型的值，用于指定某对象的位置
+ */
+
+/**
+ * @fn Vector2::reset()
+ * @brief 重新设置新的向量.
+ * 
+ * @param x 新的 x 坐标.
+ * @param y 新的 y 坐标.
+ */
+
+/**
+ * @fn Vector2::reset()
+ * @brief 使用其它向量的值以重新设置
+ * 
+ * @param vector2 其它的向量
+ */
+
+/**
+ * @fn Vector2::isEqual()
+ * @brief 判断两个坐标位置是否大致相等
+ * @param v         指定另一个坐标
+ * @param EPISON    允许的误差数 （默认 0.000001f 误差）
+ * @return 若两个坐标位置相等，返回 `true`；否则返回 `false`
+ */
+
+/**
+ * @struct MyEngine::Size
+ * @brief 尺寸、大小
+ *
+ * @details 包含两个浮点类型的值，用于调整对象的尺寸、大小
+ */
+
+/**
+ * @fn Size::reset()
+ * @brief 重新设置新的尺寸
+ * @param width  新的宽度
+ * @param height 新的高度
+ */
+
+/**
+ * @fn Size::reset()
+ * @brief 重新设置新的尺寸
+ * @param size   新的尺寸
+ */
+ 
+/**
+ * @struct MyEngine::GeometryF
+ * @brief 包含使用浮点值的位置与大小
+ *
+ * @details 以 `Vector2` 和 `Size` 组成，用于调整位置、大小
+ */
+
+
+/**
+ * @fn MyEngine::toGeometryInt()
+ * @brief 将 `GeometryF` 类型转换为 `Geometry` 类型的整型
+ * @param geo 带转换的 `GeometryF` 类型
+ * @return 包含两个整型值的 `Geometry` 类型
+ */
+
+/**
+ * @fn MyEngine::toGeometryFloat()
+ * @brief 将 `Geometry` 类型转换为 `GeometryF` 类型的浮点型
+ * @param geo 带转换的 `Geometry` 类型
+ * @return 包含两个浮点型值的 `GeometryF` 类型
+ */
+
+/**
+ * @class MyEngine::Matrix2D
+ * @brief 二维矩阵
+ *
+ * @details 支持使用基本数据类型及简单的结构体进行存储。
+ */ 
+
+/**
+ * @struct MyEngine::Matrix2D::Position
+ * @brief 二维矩阵坐标 
+ * 
+ * @details 表示二维矩阵中的位置，使用行和列索引。
+ */
+
+/**
+ * @var MyEngine::Matrix2D::Position::row
+ * @brief 矩阵中位置的行索引
+ */
+
+/**
+ * @var MyEngine::Matrix2D::Position::col
+ * @brief 矩阵中位置的列索引
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::Matrix2D()
+ * @brief 创建一个空白的二维矩阵（没有任何数据）
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::Matrix2D(uint32_t row, uint32_t col, const std::function< void(T &)> &deleter={})
+ * @brief 创建指定行列的二维矩阵
+ * @param row 行
+ * @param col  列
+ * @param deleter 删除器（若需要删除指针等情况时指定）
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::Matrix2D(uint32_t row, uint32_t col, const T &value, const std::function< void(T &)> &deleter={})
+ * @brief 创建指定行列与默认值的二维矩阵
+ * @param row  行
+ * @param col   列
+ * @param value 默认值（用于填充所有数据）
+ * @param deleter 删除器（若需要删除指针等情况时指定）
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::setDeleter()
+ * @brief 设置删除器
+ * @param function  用于处理指针的指定函数
+ *
+ * @details 当此类析构时，将调用删除器以删除指针！
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::fill()
+ * @brief 填充所有数据为指定值
+ * @param value 指定值
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::fillN()
+ * @brief 填充指定范围的值
+ * @param start 指定开始位置（行列）
+ * @param end   指定结束位置（行列）
+ * @param value 指定填充的值
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::reshape()
+ * @brief 重新调整矩阵大小
+ * @param line 行
+ * @param col  列
+ * @note 若缩小矩阵，多余的数据将会被丢弃（若先前已为该矩阵指定删除器，将自动执行删除操作）。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::at()
+ * @brief 获取矩阵中指定行列的数据
+ * @param row  指定行（从 0 开始）
+ * @param col  指定列（从 0 开始）
+ * @return 返回对应行列下的数据
+ * @note 可直接使用此函数修改指定行列的数据
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::get()
+ * @brief 获取矩阵中指定行列的数据
+ * @param row  指定行（从 0 开始）
+ * @param col  指定列（从 0 开始）
+ * @return 返回对应行列下的数据
+ * @note 区别于 `at()` 函数，此函数无法修改对应数据！
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::rows()
+ * @brief 获取当前矩阵的总行数
+ * @return 返回对应的行数
+ */
+
+
+/**
+ * @fn MyEngine::Matrix2D::cols()
+ * @brief 获取当前矩阵的总列数
+ * @return 返回对应的列数
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator+()
+ * @brief 矩阵加法
+ * @param other     指定矩阵
+ *
+ * @details 将矩阵里的所有值进行加法操作
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回新的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator-()
+ * @brief 矩阵减法
+ * @param other     指定矩阵
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回新的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator*()
+ * @brief 哈达玛积（元素对应乘积）
+ * @param other     指定矩阵，其指定的行数必需与现有的列数相等
+ *
+ * @details 将矩阵里的所有值进行乘法操作
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 两个矩阵必需分别为 m * n, n * p 的大小才可用！否则将抛出 `MyEngine::BadValueException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator[]()
+ * @brief 获取指定索引下的数据
+ * @param index 指定索引
+ * @return 返回对应索引下的数据
+ * @note 当 index 值超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::operator()()
+ * @brief 获取指定位置下的数据
+ * @param row 指定行号（从 0 开始）
+ * @param col 指定列号（从 0 开始）
+ * @return 返回对应位置下的数据
+ * @note 当指定位置超出范围，将抛出 `MyEngine::OutOfRangeException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::add(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵加法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行相加操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::add(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵加法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行相加操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::sub(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵减法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::sub(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 矩阵减法
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有值进行减法操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(T &value, const std::function< void(T &, T &)> &function={})
+ * @brief 标量乘法（标量倍乘）
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有数据进行倍乘操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(T &&value, const std::function< void(T &, T &)> &function={})
+ * @brief 标量乘法（标量倍乘）
+ * @param value     指定值
+ * @param function  函数
+ *
+ * @details 将矩阵里的所有数据进行倍乘操作
+ * @note 对于复杂的数据类型，`function` 参数必需指定。否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::times(const Matrix2D< T > &other, const std::function< void(T &, const T &)> &function={})
+ * @brief 哈达玛积（元素对应乘积）
+ * @param other 指定的矩阵
+ *
+ * @details 对矩阵中的所有值进行逐元素相乘。
+ * @note 对于复数数据类型，必须指定 `function` 参数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @note 两个矩阵必须是相同类型，即具有完全相同的行数和列数，否则将抛出 `MyEngine::InvalidArgumentException`。
+ * @return 返回一个新的矩阵。
+ * @throw InvalidArgumentException
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::multiply()
+ * @brief 矩阵乘法
+ *
+ * @details 将两个矩阵进行叉乘操作
+ * @param other     指定矩阵，其指定的行数必需与原来的列数相等
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 原有矩阵大小与指定矩阵大小必需分别为 `m * k`, `k * n` 的大小才可用！否则将抛出 `MyEngine::InvalidArgumentException` 异常
+ * @return 生成一个新的大小为 `m * n` 的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::transpose()
+ * @brief 转置矩阵
+ * @details 将原有的 `m * n` 大小的矩阵转置为 `n * m` 大小的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::reverse()
+ * @brief 翻转矩阵
+ * @details 当选择任何一个方向的逆序时，都会发生交换。
+ * @param reverse_row 行与行之间逆序（垂直翻转）
+ * @param reverse_col  列与列之间逆序（水平翻转）
+ * @note 当两个参数都为 `true` 时，矩阵将完全逆序
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::rotate()
+ * @brief 旋转矩阵
+ * @param turn_right 是否向右旋转 90°，反之向左旋转 90°
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::splitRows()
+ * @brief 切割指定行矩阵
+ * @param start_row     起始行
+ * @param end_row       结束行
+ * @return 返回矩阵行位于 `[start_row, end_row)` 区间内的所有行矩阵
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::splitCols()
+ * @brief 切割指定列矩阵
+ * @param start_col     起始列
+ * @param end_col       结束列
+ * @return 返回矩阵行位于 `[start_col, end_col)` 区间内的所有列矩阵
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::split(uint32_t rows, uint32_t cols, const Position &start_pos)
+ * @brief 切割矩阵
+ * @details 切割原有的矩阵，根据 `start_pos` 位置开始，取 `rows * cols` 个数据并创建成新的矩阵。
+ * @param rows      新的行数
+ * @param cols      新的列数
+ * @param start_pos 从哪个位置开始
+ * @return 返回新的大小为 `(rows * cols)` 的二维矩阵。
+ *
+ * @note 从 `start_pos` 位置起，若取得数据的总个数小于新的矩阵大小，则剩余部分自动填充为空数据。
+ * @note 指定的 `start_pos` 位置若超出原有矩阵的范围，将返回空矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::split(Matrix2D::Position start_pos, Matrix2D::Position end_pos)
+ * @brief 按照矩形的方式切割矩阵
+ *
+ * @details 根据起始位置和结束位置包围成一个矩形，并将其切割成独立的矩阵。
+ * @param start_pos     起始位置
+ * @param end_pos       结束位置
+ * @return 返回切割后的矩阵。
+ */
+
+/**
+ * @fn MyEngine::Matrix2D::inverse()
+ * @brief 逆矩阵
+ * @return 返回新的矩阵，用于存储求得的结果
+ * @note 当前仅支持整数、浮点数运算，不支持其它数据类型的运算！
+ * @note 当前矩阵大小必需为 `n * n`，否则将返回空矩阵
+ */
+
+
+

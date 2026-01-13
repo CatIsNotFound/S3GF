@@ -1,0 +1,54 @@
+/**
+ * @class MyEngine::RandomGenerator
+ * @brief 随机数生成器
+ * @details 用于简单生成不同数的随机值
+ * @note 此类为静态类，无需获取全局单例
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randInt()
+ * @brief 随机生成指定范围内的整型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的整型
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randBigInt()
+ * @brief 随机生成指定范围内的 64 位整型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的 64 位整型
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randUInt()
+ * @brief 随机生成指定范围内的无符号整型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的无符号整型
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randBigUInt()
+ * @brief 随机生成指定范围内的 64 位无符号整型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的 64 位无符号整型
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randFloat()
+ * @brief 随机生成指定范围内的浮点型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的浮点型
+ */
+
+/**
+ * @fn MyEngine::RandomGenerator::randDouble()
+ * @brief 随机生成指定范围内的双精度浮点型
+ * @param start 起始范围
+ * @param end   终止范围
+ * @return 返回一个位于 `[start, end]` 范围内的双精度浮点型
+ */

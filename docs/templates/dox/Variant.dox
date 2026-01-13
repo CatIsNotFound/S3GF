@@ -1,0 +1,47 @@
+/**
+ * @class MyEngine::Variant
+ * @brief 变体
+ * @details 用于存储基本数据类型的通用变体容器，支持存储整型、浮点型、字符串以及指针。
+ * @details 适用于需统一存储整型、浮点型、字符串、指针等不同基础类型的场景，如配置解析、脚本参数传递、接口多类型参数封装等。
+ */
+
+/**
+ * @enum MyEngine::Variant::Type
+ * @brief 数据类型
+ * @details 用于表示变体所存储的数据类型
+ */
+
+/**
+ * @fn MyEngine::Variant::type()
+ * @brief 获取当前变体所存储的数据类型
+ * @return 返回一个 Type 类型的枚举类型
+ */
+
+/**
+ * @fn MyEngine::Variant::typeName()
+ * @brief 获取当前变体的数据类型名称
+ * @return 返回一个字符串类型的数据类型名称
+ */
+
+/**
+ * @fn MyEngine::Variant::isNull()
+ * @brief 获取当前变体是否没有存储任何数据
+ * @return 返回当前变体的数据是否为空
+ */
+
+/**
+ * @fn MyEngine::Variant::hasDeleter()
+ * @brief 检查当前变体是否设置用于释放指针的删除器
+ * @return 返回 `true` 表示已设置，否则为 `false`
+ */
+
+/**
+ * @fn MyEngine::Variant::setDeleter()
+ * @brief 设置用于释放指针的删除器
+ * @param deleter 指定一个用于释放指针的函数
+ * @details 当变体执行析构时，会自动调用删除器用于释放指针，从而避免内存泄漏等问题。
+ * @note 对于引用指针而言，无需设置删除器。否则可能会造成二次释放指针的问题
+ */
+
+
+

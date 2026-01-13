@@ -1,0 +1,28 @@
+/**
+ * @namespace MyEngine::RGBAColor
+ * @brief 预定义 RGBA 格式的颜色
+ */
+
+/**
+ * @fn MyEngine::RGBAColor::Color2RGBAValue()
+ * @brief 将 RGBA 颜色转换为十六进制代码
+ * @param color             指定的 RGBA 颜色
+ * @param alpha_enabled     是否包含透明通道（默认为 `false`）
+ * @return 返回一个转换后的十六进制代码
+ */
+
+/**
+ * @fn MyEngine::RGBAColor::RGBA2HexCode(const SDL_Color &color, bool alpha_enabled=false)
+ * @brief 将 RGBA 颜色转换为十六进制代码
+ * @param color             指定的 RGBA 颜色
+ * @param alpha_enabled     是否包含透明通道（默认为 `false`）
+ * @return 返回一个转换后的十六进制代码
+ */
+
+/**
+ * @fn MyEngine::RGBAColor::hexCode2RGBA(uint64_t color_value, bool alpha_enabled=false)
+ * @brief 将十六进制代码转换为 RGBA 颜色
+ * @param color             指定的十六进制码
+ * @param alpha_enabled     是否包含透明通道（默认为 `false`）
+ * @return 返回一个转换后的 RGBA 颜色
+ */

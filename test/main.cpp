@@ -51,6 +51,5 @@ int main(int argc, const char* argv[]) {
         float p = (float) (bgm.position()) / (float) (bgm.duration());
         progress.resize(win->geometry().width * p, 20);
     });
-    engine.exec();
-    return 0;
+    return engine.exec();
 }
