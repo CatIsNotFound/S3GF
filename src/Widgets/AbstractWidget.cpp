@@ -581,7 +581,7 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::fingerUpEvent(const Vector2& position) {}
 
-    void AbstractWidget::fingerMovedEvent(const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {}
+    void AbstractWidget::fingerMovedEvent(const Vector2 &position, const Vector2 &distance) {}
 
     void AbstractWidget::fingerMoveInEvent() {}
 

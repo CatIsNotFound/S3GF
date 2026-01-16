@@ -8,6 +8,7 @@ else()
 endif()
 
 if (NOT EXISTS ${GTEST_LIB})
+    message("Tips: Use '-DHELP=ON' option for more help.")
     message(FATAL_ERROR "The specified path is not exist! Use `-DGTEST_LIB=path/to/gtest` option to set gtest library or use `-DBUILD_GTEST=OFF` option to disable.")
 endif()
 

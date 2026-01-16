@@ -14,8 +14,8 @@ namespace MyEngine {
      * 用于全局控制鼠标光标的位置、样式
      * @note 需要使用 `global()` 获取全局
      */
-    class Cursor : public Singleton<Cursor> {
-        friend class Singleton<Cursor>;
+    class Cursor : public Template::Singleton<Cursor> {
+        friend class Template::Singleton<Cursor>;
     public:
         /**
          * @enum StdCursor

@@ -1,6 +1,6 @@
 
-#ifndef MYENGINE_SCROLLBAR_H
-#define MYENGINE_SCROLLBAR_H
+#ifndef MYENGINE_WIDGETS_SCROLLBAR_H
+#define MYENGINE_WIDGETS_SCROLLBAR_H
 #include "AbstractWidget.h"
 namespace MyEngine {
     namespace Widget {
@@ -28,9 +28,8 @@ namespace MyEngine {
             Texture* _slider_texture{}, *_background{};
             uint8_t _status{};
             uint16_t _changer_signal{};
-
         };
     }
 } // MyEngine
 
-#endif //MYENGINE_SCROLLBAR_H
+#endif //MYENGINE_WIDGETS_SCROLLBAR_H

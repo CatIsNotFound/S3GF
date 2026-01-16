@@ -3,6 +3,7 @@
 #include "MyEngine"
 #include "Widgets/Button.h"
 #include "Widgets/LineEdit.h"
+#include "MyWindow.h"
 
 using namespace MyEngine;
 
@@ -12,7 +13,7 @@ int main(int argc, const char* argv[]) {
     Engine engine;
     engine.setFPS(30);
     engine.setLimitMaxMemorySize(FileSystem::translateSize(10.f, MyEngine::FileSystem::MB));
-    auto win = new Window(&engine, "Test");
+    auto win = new MyWindow(&engine, "Test");
     win->setResizable(true);
     win->installPaintEvent([&](Renderer* r){
         r->fillBackground(RGBAColor::RedLightPink);
@@ -21,7 +22,7 @@ int main(int argc, const char* argv[]) {
             _t = true;
             r->setBlendMode(SDL_BLENDMODE_BLEND);
         }
-        r->drawDebugFPS({(float)win->geometry().width - 60, 20});
+        r->drawDebugFPS({60, 20});
     });
 
     Widget::LineEdit user_name("user_name", win),

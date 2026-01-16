@@ -2,11 +2,10 @@
 #define MYENGINE_TEMPLATE_SINGLETON_H
 #include "../Libs.h"
 
-namespace MyEngine {
+namespace MyEngine::Template {
 #define SINGLETON(C) \
 friend class Singleton; \
 C() = default;
-
     template<class C>
     class Singleton {
     public:

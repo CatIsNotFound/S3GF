@@ -35,7 +35,7 @@ namespace MyEngine::Widget {
         _event = event;
     }
 
-    void Button::setTriggerEvent(MyEngine::Widget::TriggerAction action, std::function<void()> event) {
+    void Button::setTriggerEvent(TriggerAction action, std::function<void()> event) {
         if (_triggers.contains(action)) {
             _triggers.at(action) = std::move(event);
         } else {
@@ -60,7 +60,7 @@ namespace MyEngine::Widget {
         } else {
             if (delete_later) {
                 setProperty(property_key,
-                           new Texture(texture->imagePath(), texture->renderer()),
+                           texture,
                            [](void* value) { delete static_cast<Texture*>(value); });
             } else {
                 setProperty(property_key,
@@ -254,7 +254,6 @@ namespace MyEngine::Widget {
     }
 
     void Button::updateStatus(WidgetStatus status) {
-        _wid_status = status;
 
         auto bg_color = getBackgroundColorForStatus(status);
         auto text_color = getTextColorForStatus(status);

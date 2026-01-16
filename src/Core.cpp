@@ -700,6 +700,7 @@ namespace MyEngine {
                 }
 
                 // Mouse event
+                static uint32_t old_mouse_event{0};
                 if (!mouse_down) {
                     if (_mouse_events > 0) {
                         win->mouseDownEvent(static_cast<int>(_mouse_events));
@@ -708,9 +709,12 @@ namespace MyEngine {
                 } else {
                     if (_mouse_events > 0) {
                         win->mouseMovedEvent(_mouse_down_dis);
+                        old_mouse_event = _mouse_events;
                     } else {
+                        mouse_down = false;
                         win->mouseUpEvent();
-                        win->mouseClickedEvent(static_cast<int>(_mouse_events));
+                        win->mouseClickedEvent(static_cast<int>(old_mouse_event));
+                        old_mouse_event = 0;
                     }
                 }
 

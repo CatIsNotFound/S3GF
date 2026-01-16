@@ -47,7 +47,7 @@ namespace MyEngine::Widget {
             }
         } else {
             _text_id = IDGenerator::getNewTextID();
-            TextSystem::global()->addText(_text_id, font_name, _none_str);
+            TextSystem::global()->addText(_text_id, font_name, _string);
             bool is_contain = TextSystem::global()->isTextContain(_text_id);
             if (is_contain) {
                 _text = TextSystem::global()->indexOfText(_text_id);
@@ -81,11 +81,11 @@ namespace MyEngine::Widget {
     }
 
     std::string_view Label::fontName() const {
-        return _text ? _text->font_name.data() : _none_str;
+        return _text ? _text->font_name.data() : nullptr;
     }
 
     std::string_view Label::fontPath() const {
-        return _font ? _font->fontPath().data() : _none_str;
+        return _font ? _font->fontPath().data() : nullptr;
     }
 
     void Label::setText(const std::string &text) {
@@ -383,7 +383,6 @@ namespace MyEngine::Widget {
         const float ARs = con_geo.size.width / con_geo.size.height;
         const float ARi = img_size->width / img_size->height;
         Size new_size{};
-        Logger::log(std::format("CON_GEO: ({} x {})", con_geo.size.width, con_geo.size.height));
         switch (_fill_mode) {
             case None:
                 _bg_img->property()->setGeometry(0, 0, img_size->width, img_size->height);

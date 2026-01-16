@@ -62,7 +62,7 @@ namespace MyEngine {
             void loadEvent() override;
             void unloadEvent() override;
             void paintEvent(MyEngine::Renderer *renderer) override;
-            void moveEvent(const MyEngine::Vector2 &position) override;
+            void moveEvent(const Vector2 &position) override;
             void resizeEvent(const MyEngine::Size &size) override;
             void visibleChangedEvent(bool visible) override;
             void enableChangedEvent(bool enabled) override;
@@ -80,7 +80,6 @@ namespace MyEngine {
             TextSystem::Text* _text{};
             std::unique_ptr<Texture> _bg_img{};
             std::string _string{};
-            const char* _none_str{};
             Vector2 _text_pos{};
             /**
              * @brief 改变信号

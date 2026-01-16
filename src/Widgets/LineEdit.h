@@ -120,7 +120,6 @@ namespace MyEngine {
             uint64_t _text_id{}, _place_text_id{};
             Font* _font{};
             TextSystem::Text* _text{}, *_place_text{};
-            const char* _none_str{};
             char _secret_char[8]{};
             StringList _strings{};
             Vector2 _text_pos{};

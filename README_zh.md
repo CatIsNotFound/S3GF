@@ -71,18 +71,18 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
     set(CMAKE_CXX_STANDARD 20)
     
     # Need to set these paths before cmake configuration.
-    set(SDL3_DIR       "/path/to/SDL")
-    set(SDL3_IMAGE_DIR "/path/to/SDL3_image")
-    set(SDL3_TTF_DIR   "/path/to/SDL3_ttf")
-    set(SDL3_MIXER_DIR "/path/to/SDL3_mixer")
-    set(MYENGINE_DIR      "/path/to/MyEngine")
+    set(SDL3_LIB       "/path/to/SDL")
+    set(SDL3_IMAGE_LIB "/path/to/SDL3_image")
+    set(SDL3_TTF_LIB   "/path/to/SDL3_ttf")
+    set(SDL3_MIXER_LIB "/path/to/SDL3_mixer")
+    set(MYENGINE_LIB      "/path/to/MyEngine")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     
-    list(APPEND CMAKE_PREFIX_PATH ${SDL3_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${SDL3_IMAGE_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${SDL3_TTF_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${SDL3_MIXER_DIR})
-    list(APPEND CMAKE_PREFIX_PATH ${MYENGINE_DIR})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_IMAGE_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_TTF_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_MIXER_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${MYENGINE_LIB})
     
     find_package(SDL3 REQUIRED)
     find_package(SDL3_image REQUIRED)

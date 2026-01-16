@@ -72,12 +72,12 @@ namespace MyEngine::Widget {
     }
 
     std::string_view LineEdit::fontName() const {
-        return _text ? _text->font_name.data() : _none_str;
+        return _text ? _text->font_name.data() : nullptr;
     }
 
     std::string_view LineEdit::fontPath() const {
         auto font = fontName();
-        return _text ? TextSystem::global()->font(font.data())->fontPath().data() : _none_str;
+        return _text ? TextSystem::global()->font(font.data())->fontPath().data() : nullptr;
     }
 
     void LineEdit::setFontSize(float size) {
@@ -242,8 +242,6 @@ namespace MyEngine::Widget {
         int nx = geo.x + value, ny = geo.y + value,
             nw = geo.width - value * 2, nh = geo.height - value * 2;
         _real_area.setGeometry(nx, ny, nw, nh);
-        Logger::log(std::format("ORI: {}, {}, {}, {}", geo.x, geo.y, geo.width, geo.height));
-        Logger::log(std::format("REAL: {}, {}, {}, {}", nx, ny, nw, nh));
     }
 
     int LineEdit::horizontalPadding() const {
@@ -499,8 +497,6 @@ namespace MyEngine::Widget {
                                              SDL_Color, RGBAColor::MixGrayDark);
         _NEW_PROPERTY_WITH_DEFAULT_VALUE_PTR(this, ENGINE_PROP_LINE_EDIT_PLACE_HOLDER_TEXT_COLOR,
                                              SDL_Color, RGBAColor::MixGray);
-        _NEW_PROPERTY_WITH_DEFAULT_VALUE_PTR(this, ENGINE_PROP_LINE_EDIT_TEXT_COLOR,
-                                             SDL_Color, RGBAColor::MixGrayDark);
         setCursor(Cursor::Edit);
         _trigger_area.setBorder(2, RGBAColor::MixGrayDark);
         _cursor_line.setSize(1);

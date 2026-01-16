@@ -21,13 +21,13 @@ POINTER->setProperty(NAME, OBJECT)
 #define _GET_PROPERTY_PTR(POINTER, NAME, CLASS)                                   \
 static_cast<CLASS*>(POINTER->property(NAME)->toPointer())
 
-#define ENGINE_PROP_TEXT_COLOR                           "TextColor"
-#define ENGINE_PROP_FONT_NAME                            "Font.name"
-#define ENGINE_PROP_FONT_SIZE                            "Font.size"
-#define ENGINE_PROP_BACKGROUND_IMAGE_ORIGINAL_SIZE       "BackgroundImage.originalImageSize"
-#define ENGINE_PROP_BACKGROUND_IMAGE_PATH                "BackgroundImage.path"
-#define ENGINE_PROP_BACKGROUND_IMAGE_SELF                "BackgroundImage.surface"
-#define ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE             "BackgroundImage.texture"
+#define ENGINE_PROP_TEXT_COLOR                           "textColor"
+#define ENGINE_PROP_FONT_NAME                            "font.name"
+#define ENGINE_PROP_FONT_SIZE                            "font.size"
+#define ENGINE_PROP_BACKGROUND_IMAGE_ORIGINAL_SIZE       "backgroundImage.originalImageSize"
+#define ENGINE_PROP_BACKGROUND_IMAGE_PATH                "backgroundImage.path"
+#define ENGINE_PROP_BACKGROUND_IMAGE_SELF                "backgroundImage.surface"
+#define ENGINE_PROP_BACKGROUND_IMAGE_TEXTURE             "backgroundImage.texture"
 
 namespace MyEngine {
     namespace Widget {
@@ -61,7 +61,7 @@ namespace MyEngine {
             RightBottom
         };
 
-        enum class TriggerAction : uint8_t {
+        enum TriggerAction : uint8_t {
             Unknown,
             MouseClicked,
             MouseDblClicked,
@@ -178,8 +178,8 @@ namespace MyEngine {
             virtual void propertyChanged(const std::string& property, const Variant& variant);
 
         protected:
-            std::string _object_name{};
             Graphics::Rectangle _trigger_area;
+            std::string _object_name{};
         private:
             void load();
             void unload();

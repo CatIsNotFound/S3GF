@@ -3,26 +3,26 @@
 #define MYENGINE_WIDGETS_BUTTON_H
 #include "Label.h"
 
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_NORMAL    "BackgroundImage.status.normal"
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_ACTIVE    "BackgroundImage.status.active"
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_DISABLED  "BackgroundImage.status.disabled"
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_HOVERED   "BackgroundImage.status.hovered"
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_PRESSED   "BackgroundImage.status.pressed"
-#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_CHECKED   "BackgroundImage.status.checked"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_NORMAL    "backgroundImage.status.normal"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_ACTIVE    "backgroundImage.status.active"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_DISABLED  "backgroundImage.status.disabled"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_HOVERED   "backgroundImage.status.hovered"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_PRESSED   "backgroundImage.status.pressed"
+#define ENGINE_PROP_BACKGROUND_IMAGE_STATUS_CHECKED   "backgroundImage.status.checked"
 
-#define ENGINE_PROP_TEXT_COLOR_STATUS_NORMAL          "TextColor.status.normal"
-#define ENGINE_PROP_TEXT_COLOR_STATUS_ACTIVE          "TextColor.status.active"
-#define ENGINE_PROP_TEXT_COLOR_STATUS_DISABLED        "TextColor.status.disabled"
-#define ENGINE_PROP_TEXT_COLOR_STATUS_HOVERED         "TextColor.status.hovered"
-#define ENGINE_PROP_TEXT_COLOR_STATUS_PRESSED         "TextColor.status.pressed"
-#define ENGINE_PROP_TEXT_COLOR_STATUS_CHECKED         "TextColor.status.checked"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_NORMAL          "textColor.status.normal"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_ACTIVE          "textColor.status.active"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_DISABLED        "textColor.status.disabled"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_HOVERED         "textColor.status.hovered"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_PRESSED         "textColor.status.pressed"
+#define ENGINE_PROP_TEXT_COLOR_STATUS_CHECKED         "textColor.status.checked"
 
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_NORMAL      "BackgroundColor.status.normal"
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_ACTIVE      "BackgroundColor.status.active"
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_DISABLED    "BackgroundColor.status.disabled"
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_HOVERED     "BackgroundColor.status.hovered"
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_PRESSED     "BackgroundColor.status.pressed"
-#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_CHECKED     "BackgroundColor.status.checked"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_NORMAL      "backgroundColor.status.normal"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_ACTIVE      "backgroundColor.status.active"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_DISABLED    "backgroundColor.status.disabled"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_HOVERED     "backgroundColor.status.hovered"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_PRESSED     "backgroundColor.status.pressed"
+#define ENGINE_PROP_BACKGROUND_COLOR_STATUS_CHECKED     "backgroundColor.status.checked"
 
 
 namespace MyEngine {
@@ -61,8 +61,8 @@ namespace MyEngine {
             void keyUpEvent(SDL_Scancode scancode) override;
             void keyPressedEvent(SDL_Scancode scancode) override;
             void hotKeysPressedEvent() override;
-            void fingerDownEvent(const MyEngine::Vector2 &position) override;
-            void fingerUpEvent(const MyEngine::Vector2 &position) override;
+            void fingerDownEvent(const Vector2 &position) override;
+            void fingerUpEvent(const Vector2 &position) override;
             void fingerMoveInEvent() override;
             void fingerMoveOutEvent() override;
             void fingerTappedEvent() override;
@@ -84,11 +84,11 @@ namespace MyEngine {
             [[nodiscard]] SDL_Color getBackgroundColorForStatus(WidgetStatus status) const;
             [[nodiscard]] SDL_Color getTextColorForStatus(WidgetStatus status) const;
             [[nodiscard]] Texture* getBackgroundImageForStatus(WidgetStatus status) const;
-            
-            WidgetStatus _wid_status{};
+
             bool _checkable{}, _checked{};
             std::function<void()> _event{};
             std::unordered_map<TriggerAction, std::function<void()>> _triggers;
+            std::array<TriggerAction, 8> _m_triggers;
         };
     }
 }
