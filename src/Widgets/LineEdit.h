@@ -60,7 +60,7 @@ namespace MyEngine {
             [[nodiscard]] const StringList& textList() const;
             void setPlaceHolderText(const std::string& text);
             [[nodiscard]] std::string_view placeHolderText() const;
-            void setPasswordEnabled(bool enabled, const std::string& secret = "*");
+            void setPasswordEnabled(bool enabled, const char* secret = ((char*)u8"\u25CF"));
             [[nodiscard]] bool passwordEnabled() const;
 
             void setTextColor(const SDL_Color& color);

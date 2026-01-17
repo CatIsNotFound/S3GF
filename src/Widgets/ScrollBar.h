@@ -22,6 +22,10 @@ namespace MyEngine {
             void paintEvent(MyEngine::Renderer *renderer) override;
             void mouseDownEvent() override;
             void mouseUpEvent() override;
+            void moveEvent(const MyEngine::Vector2 &position) override;
+            void fingerDownEvent(const MyEngine::Vector2 &position) override;
+            void fingerUpEvent(const MyEngine::Vector2 &position) override;
+
 
         private:
             Graphics::Rectangle _slider;

@@ -22,12 +22,11 @@ protected:
     }
 
     void mouseClickedEvent(int button) override {
-        MyEngine::Logger::log("Mouse clicked");
+        MyEngine::Logger::log(std::format("Mouse clicked: {}", button));
     }
 
 
 private:
-
 };
 
 #endif //MYENGINE_MYWINDOW_H

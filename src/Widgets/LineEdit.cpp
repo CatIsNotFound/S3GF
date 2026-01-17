@@ -127,10 +127,10 @@ namespace MyEngine::Widget {
         return {property(ENGINE_PROP_LINE_EDIT_PLACEHOLDER_TEXT)->toString()};
     }
 
-    void LineEdit::setPasswordEnabled(bool enabled, const std::string &secret) {
+    void LineEdit::setPasswordEnabled(bool enabled, const char* secret) {
         if (enabled) {
             _status |= ENGINE_BOOL_LINE_EDIT_PASSWORD_MODE;
-            strncpy(_secret_char, secret.data(), sizeof(char) * 8);
+            strncpy(_secret_char, secret, sizeof(char) * 8);
             setProperty(ENGINE_PROP_LINE_EDIT_PASSWORD_LENGTH, _strings.size());
             setProperty(ENGINE_PROP_LINE_EDIT_PASSWORD,
                         Algorithm::multiplicationString(_secret_char, _strings.size()));

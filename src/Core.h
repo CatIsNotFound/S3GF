@@ -315,7 +315,8 @@ namespace MyEngine {
         size_t _used_mem_kb{0}, _max_mem_kb{0}, _warn_mem_kb{0};
     };
 
-    class TextSystem {
+    class TextSystem : public Template::Singleton<TextSystem> {
+        friend class Template::Singleton<TextSystem>;
         friend class Engine;
     public:
         struct Text {
@@ -334,9 +335,8 @@ namespace MyEngine {
         TextSystem(const TextSystem &) = delete;
         TextSystem &operator=(TextSystem &&) = delete;
         TextSystem &operator=(const TextSystem &) = delete;
-        ~TextSystem();
-        
-        static TextSystem* global();
+        ~TextSystem() = default;
+
         bool isLoaded() const;
         bool addFont(const std::string& font_name, const std::string& font_path, Renderer* renderer,
                      float font_size = 9.f);
@@ -361,14 +361,14 @@ namespace MyEngine {
     private:
         explicit TextSystem();
         void unload();
-        static std::unique_ptr<TextSystem> _instance;
         bool _is_loaded{false};
         std::map<uint64_t, Text> _text_map;
         std::unordered_map<std::string, FontEngine> _font_map;
         TTF_TextEngine* _text_engine{nullptr};
     };
 
-    class AudioSystem {
+    class AudioSystem : public Template::Singleton<AudioSystem> {
+        friend class Template::Singleton<AudioSystem>;
         friend class Engine;
     public:
         using Audio = std::variant<std::monostate, std::unique_ptr<BGM>, std::unique_ptr<SFX>>;
@@ -377,8 +377,7 @@ namespace MyEngine {
         AudioSystem(const AudioSystem &) = delete;
         AudioSystem &operator=(AudioSystem &&) = delete;
         AudioSystem &operator=(const AudioSystem &) = delete;
-        static AudioSystem* global();
-        ~AudioSystem();
+        ~AudioSystem() = default;
         bool isValid() const;
 
         void addNewMixer(size_t count = 1);
@@ -400,7 +399,6 @@ namespace MyEngine {
         explicit AudioSystem();
         bool load();
         void unload();
-        static std::unique_ptr<AudioSystem> _instance;
         bool _is_init{false};
         std::vector<MIX_Mixer*> _mixer_list;
         std::unordered_map<std::string, Audio> _audio_map;

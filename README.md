@@ -12,6 +12,16 @@ MyEngine is a lightweight yet powerful 2D graphics framework built on top of SDL
 
 The project is currently under development. For detailed update content, please refer to the [Changelog](ChangeLog.md) file to learn about the latest version features.
 
+## C++ Compiler support
+
+| GCC  | Clang | MSVC                  | Apple Clang |
+| ---- | ----- | --------------------- | ----------- |
+| 12+  | 15+   | 19.37+ (VS2022 17.7+) | 15.0+       |
+
+For installing GNU GCC Compiler, please refer to the [Installing GNU GCC Compiler](https://github.com/CatIsNotFound/MyEngine/wiki/Compiler%20Installation%20Guide) page.
+
+If you used IDE, please refer to the [IDE Configuration Guide](https://github.com/CatIsNotFound/MyEngine/wiki/IDE%20Setup%20Guide) article.
+
 ## Environment Dependencies
 
 To use this third-party library, you need to install the following dependencies, or you can install all dependency libraries at once through [Github Release](https://github.com/CatIsNotFound/MyEngine/releases/tag/requirements) or [Gitee Release](https://gitee.com/CatIsNotFound/MyEngine/releases/tag/requirements):

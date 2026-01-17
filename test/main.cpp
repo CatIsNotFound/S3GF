@@ -24,6 +24,7 @@ int main(int argc, const char* argv[]) {
         }
         r->drawDebugFPS({60, 20});
     });
+    
 
     Widget::LineEdit user_name("user_name", win),
                      user_passwd("user_passwd", win);
@@ -35,7 +36,7 @@ int main(int argc, const char* argv[]) {
     user_name.setFont("simsun", sys_db.at("simsun"), 20.f);
     user_name.setTextCursorStyle(4, RGBAColor::BlueDark);
     user_name.setPadding(8, 8);
-    user_passwd.setFont("simsun");
+    user_passwd.setFont("arial", sys_db.at("arial"), 20.f);
     user_passwd.setPasswordEnabled(true);
     user_passwd.setTextCursorStyle(2, RGBAColor::MixGrayDark);
     user_passwd.setText("123456");
@@ -61,7 +62,7 @@ int main(int argc, const char* argv[]) {
     login.setFont("simsun");
     login.setText("Login");
     login.setTextAlignment(MyEngine::Widget::CenterMiddle);
-
+    login.setFocusEnabled(true);
     Widget::Label label("label", win);
     label.move(80, 70);
     label.setAutoResizedByTextEnabled(true);

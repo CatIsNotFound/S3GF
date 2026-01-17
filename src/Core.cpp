@@ -16,9 +16,6 @@ namespace MyEngine {
     FontMap FontDatabase::_font_db{};
     std::vector<FontDatabase::FontInfo> FontDatabase::_def_fonts{};
 
-    std::unique_ptr<TextSystem> TextSystem::_instance{};
-    std::unique_ptr<AudioSystem> AudioSystem::_instance{};
-
     Renderer::Renderer(Window* window) : _window(window) {
         _renderer = SDL_CreateRenderer(_window->self(), nullptr);
         if (!_renderer) {
@@ -705,6 +702,7 @@ namespace MyEngine {
                     if (_mouse_events > 0) {
                         win->mouseDownEvent(static_cast<int>(_mouse_events));
                         mouse_down = true;
+                        old_mouse_event = _mouse_events;
                     }
                 } else {
                     if (_mouse_events > 0) {
@@ -1048,15 +1046,6 @@ namespace MyEngine {
         _is_loaded = true;
     }
 
-    TextSystem::~TextSystem() = default;
-        
-    TextSystem* TextSystem::global() {
-        if (!_instance) {
-            _instance = std::unique_ptr<TextSystem>(new TextSystem());
-        }
-        return _instance.get();
-    }
-
     bool TextSystem::isLoaded() const {
         return _is_loaded;
     }
@@ -1351,19 +1340,10 @@ namespace MyEngine {
         TTF_DestroyText(temp_text);
         return surface;
     }
-
-    AudioSystem* AudioSystem::global() {
-        if (!_instance) {
-            _instance = std::unique_ptr<AudioSystem>(new AudioSystem());
-        }
-        return _instance.get();
-    }
     
     AudioSystem::AudioSystem() {
         _is_init = load();
     }
-
-    AudioSystem::~AudioSystem() {}
 
     bool AudioSystem::isValid() const { return _is_init; }
  
