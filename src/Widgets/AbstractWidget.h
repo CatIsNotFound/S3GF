@@ -16,9 +16,6 @@ POINTER->setProperty(NAME, static_cast<void*>(new CLASS(DEFAULT_VALUE)), [](void
     delete static_cast<CLASS*>(v);                                                        \
 })
 
-#define _SET_PROPERTY_PTR(POINTER, NAME, OBJECT) \
-POINTER->setProperty(NAME, OBJECT)
-
 #define _GET_PROPERTY_PTR(POINTER, NAME, CLASS)                                   \
 static_cast<CLASS*>(POINTER->property(NAME)->toPointer())
 

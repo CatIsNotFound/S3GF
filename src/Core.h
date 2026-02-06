@@ -116,6 +116,13 @@ namespace MyEngine {
     class Window {
         friend class Renderer;
         friend class EventSystem;
+        struct FingerEvent {
+            uint64_t touch_id{};
+            float pressure{};
+            Vector2 finger_down_pos{};
+            Vector2 distance_pos{};
+            bool is_in_window{true};
+        };
     public:
         struct WindowSize {
             int width, height;
@@ -185,6 +192,10 @@ namespace MyEngine {
         [[nodiscard]] SDL_Window* self() const;
         [[nodiscard]] Engine* engine() const;
         void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event, bool push_back = false);
+
+        [[nodiscard]] std::optional<FingerEvent> getFingerEventByID(SDL_FingerID finger_id) const;
+        [[nodiscard]] std::vector<SDL_FingerID> getFingersIDList() const;
+        [[nodiscard]] size_t getFingersCount() const;
     protected:
         virtual void paintEvent();
         virtual void resizeEvent();
@@ -208,6 +219,12 @@ namespace MyEngine {
         virtual void keyUpEvent(SDL_Scancode keycode);
         virtual void keyDownEvent(SDL_Scancode keycode);
         virtual void keyPressedEvent(SDL_Scancode keycode);
+        virtual void fingerDownEvent(SDL_FingerID id, const Vector2& position);
+        virtual void fingerUpEvent(SDL_FingerID id, const Vector2& position);
+        virtual void fingerMovedEvent(SDL_FingerID id, const Vector2& position, const Vector2& distance);
+        virtual void fingerMoveOutEvent(SDL_FingerID id);
+        virtual void fingerMoveInEvent(SDL_FingerID id);
+        virtual void fingerTappedEvent(SDL_FingerID id, const Vector2& position);
         virtual void dragInEvent();
         virtual void dragOutEvent();
         virtual void dragMovedEvent(const Vector2 &position, const char *data);
@@ -219,19 +236,15 @@ namespace MyEngine {
         SDL_Window* _window{nullptr};
         SDL_Surface* _win_icon{nullptr};
         SDL_WindowID _winID{};
-        struct FingerEvent {
-            uint64_t finger_id{};
-            float pressure{};
-            Vector2 finger_down_pos{};
-        };
-        std::unordered_map<uint64_t, FingerEvent> _finger_event_list;
         bool _dragging{false};
         bool _drag_mode{false};
+        Cursor::StdCursor _cursor{};
         std::string _drop_url{};
         Vector2 _mouse_pos{}, _dragging_pos{};
         std::deque<std::function<void(Renderer*)>> _paint_event_list;
         Engine* _engine;
-        Cursor::StdCursor _cursor{};
+
+        std::unordered_map<uint64_t, FingerEvent> _finger_event_list;
     };
 
     class EventSystem {
@@ -268,11 +281,11 @@ namespace MyEngine {
         bool* _kb_events{nullptr};
         int _nums_keys{0};
         bool _mouse_down_changed{false};
-        std::vector<SDL_Scancode> _keys_status;
         MouseStatus _mouse_events{0};
+        std::vector<SDL_Scancode> _keys_status;
         Vector2 _mouse_pos{0, 0}, _mouse_down_dis{0, 0}, _before_mouse_down_pos{0, 0};
-        std::unordered_map<uint64_t, std::function<void(SDL_Event)>> _event_list{};
         std::vector<uint64_t> _del_event_deque, _del_g_event_deque;
+        std::unordered_map<uint64_t, std::function<void(SDL_Event)>> _event_list{};
         std::unordered_map<uint64_t, std::function<void()>> _global_event_list{};
     };
 

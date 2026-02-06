@@ -5,6 +5,7 @@
 #include "Utils/FileSystem.h"
 #include "Utils/RGBAColor.h"
 #define MAX_AUDIO_FILE_SIZE (2 * 1024 * 1024) /// Defined the larger audio file
+#include "Algorithm/All.h"
 
 namespace MyEngine {
     Font::Font(const std::string& font_path, float font_size)
@@ -1162,4 +1163,186 @@ namespace MyEngine {
         _prop_id = 0;
         _is_load = false;
     }
+
+    TriggerArea::TriggerArea(GeometryF geometry, Window *window) :
+            _geometry(geometry), _window(window), _event_id(IDGenerator::getNewEventID()){
+        EventSystem::global()->appendEvent(_event_id, [&] (SDL_Event e) {
+            auto mouse_cur = EventSystem::global()->captureMousePosition();
+            auto is_on_area = Algorithm::comparePosInGeometry(mouse_cur, _geometry);
+            if (is_on_area >= 0 && !(_events & Status_OnArea)) {
+                _events |= Status_OnArea;
+            } else if (is_on_area < 0 && (_events & Status_OnArea)) {
+                _events ^= Status_OnArea;
+            }
+            // Keyboard Event
+            if (_key > SDL_SCANCODE_UNKNOWN) {
+                auto keys = EventSystem::global()->captureKeyboard(_key);
+                if (!keys) {
+                    if (_events & Status_KeyboardPressedDown) _events ^= Status_KeyboardPressedDown;
+                    keyUpEvent(e.key.scancode);
+                    keyPressedEvent(e.key.scancode);
+                } else {
+                    _events |= Status_KeyboardPressedDown;
+                    keyDownEvent(e.key.scancode);
+                }
+            }
+            // Mouse Event
+            auto button = EventSystem::global()->captureMouseStatus();
+            if (button == MouseStatus::None) {
+                if (_events & Status_MouseButtonDown) _events ^= Status_MouseButtonDown;
+                mouseUpEvent(_last_mouse_status);
+                if (is_on_area >= 0) mouseClickedEvent(_last_mouse_status);
+            } else if (!(_events & Status_MouseButtonDown) && is_on_area >= 0) {
+                _events |= Status_MouseButtonDown;
+                mouseDownEvent(button);
+                _last_mouse_status = button;
+            } else {
+                mouseMovedEvent(mouse_cur,
+                                EventSystem::global()->captureMouseAbsDistance());
+            }
+            // Finger Event
+            if (e.tfinger.windowID == _window->windowID()) {
+                auto w = static_cast<float>(_window->geometry().width);
+                auto h = static_cast<float>(_window->geometry().height);
+                auto finger_list = window->getFingersIDList();
+                if (!finger_list.empty()) {
+                    if (!(_events | Status_FingerDown)) {
+                        _events |= Status_FingerDown;
+                        fingerDownEvent(e.tfinger.fingerID);
+                    } else {
+                        Vector2 pos = {w * e.tfinger.x, h * e.tfinger.y};
+
+                        fingerMovedEvent(e.tfinger.fingerID, pos, Vector2());
+                    }
+                } else {
+                    if (_events | Status_FingerDown) _events ^= Status_FingerDown;
+
+                }
+            }
+        });
+    }
+
+    TriggerArea::~TriggerArea() {
+        EventSystem::global()->removeEvent(_event_id);
+    }
+
+    void TriggerArea::setGeometry(float x, float y, float w, float h) {
+        _geometry.reset(x, y, w, h);
+    }
+
+    void TriggerArea::setGeometry(const Vector2 &pos, const Size &size) {
+        _geometry.reset(pos, size);
+    }
+
+    void TriggerArea::setGeometry(const MyEngine::GeometryF &geometry) {
+        _geometry.reset(geometry);
+    }
+
+    void TriggerArea::move(float x, float y) {
+        _geometry.resetPos(x, y);
+    }
+
+    void TriggerArea::move(const Vector2 &pos) {
+        _geometry.resetPos(pos);
+    }
+
+    void TriggerArea::resize(float w, float h) {
+        _geometry.resetSize(w, h);
+    }
+
+    void TriggerArea::resize(const Size &size) {
+        _geometry.resetSize(size);
+    }
+
+    const GeometryF &TriggerArea::geometry() const {
+        return _geometry;
+    }
+
+    const Vector2 &TriggerArea::position() const {
+        return _geometry.pos;
+    }
+
+    const Size &TriggerArea::size() const {
+        return _geometry.size;
+    }
+
+    bool TriggerArea::isEnabled() const {
+        return !(_events & Status_DisabledArea);
+    }
+
+    void TriggerArea::setEnabled(bool enabled) {
+        if (enabled && isEnabled()) {
+            _events |= Status_DisabledArea;
+        } else {
+            _events ^= Status_DisabledArea;
+        }
+    }
+
+    bool TriggerArea::isOnArea() const {
+        return _events & Status_OnArea;
+    }
+
+    bool TriggerArea::isTriggeredOnArea() const {
+        return _events & Status_TriggeredArea;
+    }
+
+    uint8_t TriggerArea::events() const { return _events; }
+
+    void TriggerArea::setTriggerKey(SDL_Scancode keycode) {
+        _key = keycode;
+    }
+
+    const SDL_Scancode &TriggerArea::triggerKey() const {
+        return _key;
+    }
+
+    void TriggerArea::setTriggerEvent(const std::function<void()> &callback_function) {
+        _callback = callback_function;
+    }
+
+    void TriggerArea::mouseDownEvent(MouseStatus button) {
+
+    }
+
+    void TriggerArea::mouseUpEvent(MouseStatus button) {
+
+    }
+
+    void TriggerArea::mouseMovedEvent(const Vector2 &pos, const Vector2 &dis) {
+
+    }
+
+    void TriggerArea::mouseMovedInEvent() {}
+
+    void TriggerArea::mouseMovedOutEvent() {}
+
+    void TriggerArea::mouseClickedEvent(MyEngine::MouseStatus button) {
+        if (button == MouseStatus::Left && _callback) _callback();
+    }
+
+    void TriggerArea::keyPressedEvent(SDL_Scancode keycode) {
+        if (_key == keycode && _callback) _callback();
+    }
+
+    void TriggerArea::keyDownEvent(SDL_Scancode keycode) {
+
+    }
+
+    void TriggerArea::keyUpEvent(SDL_Scancode keycode) {}
+
+    void TriggerArea::fingerDownEvent(SDL_FingerID id) {}
+
+    void TriggerArea::fingerUpEvent(SDL_FingerID id) {}
+
+    void TriggerArea::fingerTouchedEvent(SDL_FingerID id) {
+        if (_callback) _callback();
+    }
+
+    void TriggerArea::fingerMovedEvent(SDL_FingerID id, const Vector2 &pos, const Vector2 &dis) {}
+
+    void TriggerArea::fingerMovedInEvent() {}
+
+    void TriggerArea::fingerMovedOutEvent() {}
+
+
 }

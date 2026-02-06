@@ -478,6 +478,69 @@ namespace MyEngine {
         uint64_t _start_time{};
         bool _null{true}, _playing{false};
     };
+
+    enum class MouseStatus : uint8_t;
+    class Window;
+
+    class TriggerArea {
+        static constexpr uint8_t Status_OnArea{1};
+        static constexpr uint8_t Status_TriggeredArea{1 << 1};
+        static constexpr uint8_t Status_DisabledArea{1 << 2};
+        static constexpr uint8_t Status_MouseButtonDown{1 << 3};
+        static constexpr uint8_t Status_FingerDown{1 << 4};
+        static constexpr uint8_t Status_KeyboardPressedDown{1 << 5};
+
+    public:
+        explicit TriggerArea(GeometryF geometry, Window* window);
+        virtual ~TriggerArea();
+
+        void setGeometry(float x, float y, float w, float h);
+        void setGeometry(const Vector2& pos, const Size& size);
+        void setGeometry(const GeometryF& geometry);
+        void move(float x, float y);
+        void move(const Vector2& pos);
+        void resize(float w, float h);
+        void resize(const Size& size);
+        [[nodiscard]] const GeometryF& geometry() const;
+        [[nodiscard]] const Vector2& position() const;
+        [[nodiscard]] const Size& size() const;
+
+        void setEnabled(bool enabled);
+        bool isEnabled() const;
+        bool isOnArea() const;
+        bool isTriggeredOnArea() const;
+        uint8_t events() const;
+
+        void setTriggerKey(SDL_Scancode keycode);
+        [[nodiscard]] const SDL_Scancode& triggerKey() const;
+        void setTriggerEvent(const std::function<void()>& callback_function);
+
+    protected:
+        virtual void mouseDownEvent(MouseStatus button);
+        virtual void mouseUpEvent(MouseStatus button);
+        virtual void mouseMovedEvent(const Vector2& pos, const Vector2& dis);
+        virtual void mouseMovedInEvent();
+        virtual void mouseMovedOutEvent();
+        virtual void mouseClickedEvent(MouseStatus button);
+        virtual void keyPressedEvent(SDL_Scancode keycode);
+        virtual void keyDownEvent(SDL_Scancode keycode);
+        virtual void keyUpEvent(SDL_Scancode keycode);
+        virtual void fingerDownEvent(SDL_FingerID id);
+        virtual void fingerUpEvent(SDL_FingerID id);
+        virtual void fingerTouchedEvent(SDL_FingerID id);
+        virtual void fingerMovedEvent(SDL_FingerID id, const Vector2& pos, const Vector2& dis);
+        virtual void fingerMovedInEvent();
+        virtual void fingerMovedOutEvent();
+
+    private:
+        GeometryF _geometry;
+        Window* _window;
+        uint64_t _event_id;
+        SDL_Scancode _key{};
+        uint8_t _events{};
+        MouseStatus _last_mouse_status{};
+        std::function<void()> _callback{};
+    };
 }
 #include "Core.h"
 #endif // !MYENGINE_COMPONETS_H

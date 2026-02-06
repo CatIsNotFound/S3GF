@@ -4,6 +4,7 @@
 #include "Utils/All.h"
 #include "Renderer/BaseCommand.h"
 #include "Renderer/CommandFactory.h"
+#include "Algorithm/Collider.h"
 
 namespace MyEngine {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
@@ -565,10 +566,32 @@ namespace MyEngine {
     void Window::keyUpEvent(SDL_Scancode keycode) {}
     void Window::keyDownEvent(SDL_Scancode keycode) {}
     void Window::keyPressedEvent(SDL_Scancode keycode) {}
+    void Window::fingerDownEvent(SDL_FingerID id, const Vector2 &position) {}
+    void Window::fingerUpEvent(SDL_FingerID id, const Vector2 &position) {}
+    void Window::fingerMovedEvent(SDL_FingerID id, const Vector2 &position,
+                                  const MyEngine::Vector2 &distance) {}
+    void Window::fingerMoveOutEvent(SDL_FingerID id) {}
+    void Window::fingerMoveInEvent(SDL_FingerID id) {}
+    void Window::fingerTappedEvent(SDL_FingerID id, const Vector2 &position) {}
     void Window::dragInEvent() {}
     void Window::dragOutEvent() {}
     void Window::dragMovedEvent(const Vector2 &position, const char *data) {}
     void Window::dropEvent(const char *url) {}
+
+    std::optional<Window::FingerEvent> Window::getFingerEventByID(SDL_FingerID finger_id) const {
+        return _finger_event_list.contains(finger_id) ?
+            _finger_event_list.at(finger_id) : std::optional<Window::FingerEvent>();
+    }
+
+    std::vector<SDL_FingerID> Window::getFingersIDList() const {
+        std::vector<SDL_FingerID> _list;
+        for (auto& id : _finger_event_list) {
+            _list.push_back(id.first);
+        }
+        return _list;
+    }
+
+    size_t Window::getFingersCount() const { return _finger_event_list.size(); }
 
     EventSystem::~EventSystem() = default;
 
@@ -629,12 +652,16 @@ namespace MyEngine {
         SDL_Event ev;
         bool running = true;
         if (SDL_PollEvent(&ev)) {
+            auto win_id_list = _engine->windowIDList();
+
+            // Keyboard Event
             _kb_events = const_cast<bool*>(SDL_GetKeyboardState(&_nums_keys));
             _keys_status.clear();
             for (int i = 0; i < _nums_keys; ++i) {
                 if (_kb_events[i]) _keys_status.emplace_back(static_cast<SDL_Scancode>(i));
             }
 
+            // Mouse Event
             _mouse_events = static_cast<MouseStatus>(SDL_GetMouseState(&_mouse_pos.x, &_mouse_pos.y));
             if (!_mouse_down_changed) {
                 // When any of mouse buttons is pressed down, triggered...
@@ -650,12 +677,73 @@ namespace MyEngine {
                     _mouse_down_dis.reset(0, 0);
                 }
             }
-            auto win_id_list = _engine->windowIDList();
+
+            // Finger Event
+            // - Used to handle global touch events on a touchscreen
+            static std::vector<uint32_t> finger_events = {SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_DOWN,
+                                                          SDL_EVENT_FINGER_MOTION, SDL_EVENT_FINGER_CANCELED};
+            if (std::any_of(finger_events.begin(), finger_events.end(),
+                            [&ev](uint32_t type) { return ev.type == type; })) {
+                Window* win = nullptr;
+                Vector2 cur_pos;
+                if (!win_id_list.empty() && _engine->isWindowExist(ev.tfinger.windowID)) {
+                    win = _engine->window(ev.tfinger.windowID);
+                    cur_pos.x = static_cast<float>(win->_window_geometry.width) * ev.tfinger.x;
+                    cur_pos.y = static_cast<float>(win->_window_geometry.height) * ev.tfinger.y;
+                }
+                if (win) {
+                    Window::FingerEvent* f_ev{};
+                    bool is_on = false;
+                    switch (ev.tfinger.type) {
+                    case SDL_EVENT_FINGER_DOWN:
+                        win->_finger_event_list.try_emplace(ev.tfinger.fingerID,
+                                Window::FingerEvent(ev.tfinger.touchID, ev.tfinger.pressure,
+                                        cur_pos));
+                        win->fingerDownEvent(ev.tfinger.fingerID, cur_pos);
+                        break;
+                    case SDL_EVENT_FINGER_UP:
+                        is_on = win->_finger_event_list.at(ev.tfinger.fingerID).is_in_window;
+                        win->_finger_event_list.erase(ev.tfinger.fingerID);
+                        win->fingerUpEvent(ev.tfinger.fingerID, cur_pos);
+                        if (is_on) win->fingerTappedEvent(ev.tfinger.fingerID, cur_pos);
+                        break;
+                    case SDL_EVENT_FINGER_MOTION:
+                        f_ev = &(win->_finger_event_list.at(ev.tfinger.fingerID));
+                        f_ev->distance_pos = cur_pos - f_ev->finger_down_pos;
+                        win->fingerMovedEvent(ev.tfinger.fingerID, cur_pos, f_ev->distance_pos);
+                        f_ev = &(win->_finger_event_list.at(ev.tfinger.fingerID));
+                        if (Algorithm::comparePosInGeometry(Cursor::global()->globalPosition(),
+                                        toGeometryFloat(win->geometry())) < 0) {
+                            if (f_ev->is_in_window) {
+                                win->fingerMoveOutEvent(ev.tfinger.fingerID);
+                                f_ev->is_in_window = false;
+                            }
+                        } else {
+                            if (!f_ev->is_in_window) {
+                                win->fingerMoveInEvent(ev.tfinger.fingerID);
+                                f_ev->is_in_window = true;
+                            }
+                        }
+                        break;
+                    case SDL_EVENT_FINGER_CANCELED:
+                        win->_finger_event_list.erase(ev.tfinger.fingerID);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                return true;
+            }
+
+            // Windows Event
             if (!win_id_list.empty()) {
                 static bool mouse_down = false, key_down = false;
                 std::for_each(win_id_list.begin(), win_id_list.end(),
                               [this, &ev, &win_id_list, &running] (uint32_t id) {
                     auto win = _engine->window(id);
+                    // Clear the fingers list, if it has any fingers.
+                    if (!win->_finger_event_list.empty()) win->_finger_event_list.clear();
+                    // Cope with the window event.
                     if (ev.window.windowID != id) return;
                     if (ev.window.type == SDL_EVENT_WINDOW_MOVED) {
                         win->moveEvent();
@@ -860,6 +948,8 @@ namespace MyEngine {
         if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
             throwFatalError();
         }
+        SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
+        SDL_SetHint(SDL_HINT_PEN_MOUSE_EVENTS, "0");
         Logger::log("Engine: Started up application!");
         TextSystem::global();
         if (!TextSystem::global()->_is_loaded) {

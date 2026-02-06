@@ -15,6 +15,7 @@ void MyWindow::paintEvent() {
     renderer()->drawDebugText(_debug, {20, 20}, _font_color);
     renderer()->drawDebugText(_debug_keyboard, {20, 30}, _font_color);
     renderer()->drawDebugText(_debug_mouse, {20, 40}, _font_color);
+    renderer()->drawDebugText(_debug_finger, {20, 50}, _font_color);
 }
 
 void MyWindow::resizeEvent() {
@@ -134,6 +135,33 @@ void MyWindow::keyDownEvent(SDL_Scancode keycode) {
 void MyWindow::keyPressedEvent(SDL_Scancode keycode) {
     Window::keyPressedEvent(keycode);
     Logger::log(Logger::Info, "Key clicked: {}", static_cast<int>(keycode));
+}
+
+void MyWindow::fingerDownEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
+    Window::fingerDownEvent(id, position);
+    _debug_finger = FMT::format("Finger down: FID: {}, POS: ({:.2f}, {:.2f})", id, position.x, position.y);
+}
+
+void MyWindow::fingerUpEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
+    _debug_finger = "No fingers down!";
+}
+
+void MyWindow::fingerMovedEvent(SDL_FingerID id, const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {
+    _debug_finger = FMT::format("Finger Moved {}: FID: {}, POS: ({:.2f}, {:.2f}), DIS: ({:.2f}, {:.2f})",
+                                this->getFingerEventByID(id).value().is_in_window ? "in" : "out",
+                                id, position.x, position.y, distance.x, distance.y);
+}
+
+void MyWindow::fingerMoveOutEvent(SDL_FingerID id) {
+    Logger::log(Logger::Info, "Finger Moved out: FID: {}", id);
+}
+
+void MyWindow::fingerMoveInEvent(SDL_FingerID id) {
+    Logger::log(Logger::Info, "Finger Moved in: FID: {}", id);
+}
+
+void MyWindow::fingerTappedEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
+    Logger::log(Logger::Info, "Finger Tapped: FID: {}, POS: ({}, {})", id, position.x, position.y);
 }
 
 void MyWindow::dragInEvent() {

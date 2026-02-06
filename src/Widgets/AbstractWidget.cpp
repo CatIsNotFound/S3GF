@@ -56,7 +56,7 @@ namespace MyEngine::Widget {
                 if (!_status.viewport_changed) {
                     _status.viewport_changed = true;
                     _viewport_geometry.size.reset(_trigger_area.geometry().size);
-                    parentGeometry(this, _viewport_geometry);
+                    calcRenderGeometry(this, _viewport_geometry);
                     Logger::log(Logger::Debug, "{} Ori: {},{} Ren: {},{}",
                                 _object_name, _trigger_area.geometry().pos.x,
                                 _trigger_area.geometry().pos.y,

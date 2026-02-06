@@ -13,6 +13,7 @@ int main() {
         r->drawDebugText("Hello MyEngine!", {20, 34}, StdColor::White);
     });
     window->show();
+    
 
     return engine.exec();
 }

@@ -8,6 +8,10 @@ else()
     add_compile_options(-Wall -g )
 endif()
 
+add_compile_definitions(APP_NAME="MyEngine Test")
+add_compile_definitions(APP_ID="test.MyEngine.app")
+add_compile_definitions(APP_VERSION="v1.0.1")
+
 
 ############################################
 if (EXISTS ${CATCH2_LIB})
@@ -69,8 +73,8 @@ addModule(TEST_MODULES test_renderer
         examples/test_renderer/test_renderer.cpp
 )
 
-addModule(TEST_MODULES test_widgets
-        examples/test_widgets/test_widgets.cpp
+addModule(TEST_MODULES test_area
+        examples/test_area/test_area.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

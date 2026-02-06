@@ -33,6 +33,12 @@ protected:
     void keyUpEvent(SDL_Scancode keycode) override;
     void keyDownEvent(SDL_Scancode keycode) override;
     void keyPressedEvent(SDL_Scancode keycode) override;
+    void fingerDownEvent(SDL_FingerID id, const MyEngine::Vector2 &position) override;
+    void fingerUpEvent(SDL_FingerID id, const MyEngine::Vector2 &position) override;
+    void fingerMovedEvent(SDL_FingerID id, const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) override;
+    void fingerMoveOutEvent(SDL_FingerID id) override;
+    void fingerMoveInEvent(SDL_FingerID id) override;
+    void fingerTappedEvent(SDL_FingerID id, const MyEngine::Vector2 &position) override;
     void dragInEvent() override;
     void dragOutEvent() override;
     void dragMovedEvent(const MyEngine::Vector2 &position, const char *data) override;
@@ -40,7 +46,7 @@ protected:
 
 private:
     static std::string_view mouseButtonString(MouseStatus status);
-    std::string _debug{}, _debug_mouse{}, _debug_keyboard{};
+    std::string _debug{}, _debug_mouse{}, _debug_keyboard{}, _debug_finger{};
     MouseStatus _btn{};
     SDL_Scancode _key{};
     bool _is_focus{};
