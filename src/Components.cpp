@@ -1167,6 +1167,7 @@ namespace MyEngine {
     TriggerArea::TriggerArea(GeometryF geometry, Window *window) :
             _geometry(geometry), _window(window), _event_id(IDGenerator::getNewEventID()){
         EventSystem::global()->appendEvent(_event_id, [&] (SDL_Event e) {
+            if (!isEnabled()) return;
             auto mouse_cur = EventSystem::global()->captureMousePosition();
             auto is_on_area = Algorithm::comparePosInGeometry(mouse_cur, _geometry);
             if (is_on_area >= 0 && !(_events & Status_OnArea)) {
@@ -1178,9 +1179,12 @@ namespace MyEngine {
             if (_key > SDL_SCANCODE_UNKNOWN) {
                 auto keys = EventSystem::global()->captureKeyboard(_key);
                 if (!keys) {
-                    if (_events & Status_KeyboardPressedDown) _events ^= Status_KeyboardPressedDown;
-                    keyUpEvent(e.key.scancode);
-                    keyPressedEvent(e.key.scancode);
+                    if (_events & Status_KeyboardPressedDown) {
+                        _events ^= Status_KeyboardPressedDown;
+                        _events |= Status_TriggeredArea;
+                        keyUpEvent(e.key.scancode);
+                        keyPressedEvent(e.key.scancode);
+                    }
                 } else {
                     _events |= Status_KeyboardPressedDown;
                     keyDownEvent(e.key.scancode);
@@ -1191,7 +1195,10 @@ namespace MyEngine {
             if (button == MouseStatus::None) {
                 if (_events & Status_MouseButtonDown) _events ^= Status_MouseButtonDown;
                 mouseUpEvent(_last_mouse_status);
-                if (is_on_area >= 0) mouseClickedEvent(_last_mouse_status);
+                if (is_on_area >= 0) {
+                    mouseClickedEvent(_last_mouse_status);
+                    _events |= Status_TriggeredArea;
+                }
             } else if (!(_events & Status_MouseButtonDown) && is_on_area >= 0) {
                 _events |= Status_MouseButtonDown;
                 mouseDownEvent(button);
@@ -1204,19 +1211,28 @@ namespace MyEngine {
             if (e.tfinger.windowID == _window->windowID()) {
                 auto w = static_cast<float>(_window->geometry().width);
                 auto h = static_cast<float>(_window->geometry().height);
-                auto finger_list = window->getFingersIDList();
-                if (!finger_list.empty()) {
-                    if (!(_events | Status_FingerDown)) {
+                auto finger = window->getFingerEventByID(e.tfinger.fingerID);
+                if (finger.has_value()) {
+                    if (!(_events & Status_FingerDown)) {
                         _events |= Status_FingerDown;
                         fingerDownEvent(e.tfinger.fingerID);
                     } else {
                         Vector2 pos = {w * e.tfinger.x, h * e.tfinger.y};
-
-                        fingerMovedEvent(e.tfinger.fingerID, pos, Vector2());
+                        fingerMovedEvent(e.tfinger.fingerID, pos, finger.value().distance_pos);
+                        if (Algorithm::comparePosInGeometry(pos, _geometry) >= 0) {
+                            if (!(_events & Status_OnArea)) {
+                                _events |= Status_OnArea;
+                                fingerMovedInEvent();
+                            }
+                        } else {
+                            if (_events & Status_OnArea) {
+                                _events |= Status_OnArea;
+                                fingerMovedOutEvent();
+                            }
+                        }
                     }
                 } else {
-                    if (_events | Status_FingerDown) _events ^= Status_FingerDown;
-
+                    if (_events & Status_FingerDown) _events ^= Status_FingerDown;
                 }
             }
         });
@@ -1271,10 +1287,10 @@ namespace MyEngine {
     }
 
     void TriggerArea::setEnabled(bool enabled) {
-        if (enabled && isEnabled()) {
-            _events |= Status_DisabledArea;
-        } else {
+        if (enabled && !isEnabled()) {
             _events ^= Status_DisabledArea;
+        } else {
+            _events = Status_DisabledArea;
         }
     }
 
@@ -1300,17 +1316,11 @@ namespace MyEngine {
         _callback = callback_function;
     }
 
-    void TriggerArea::mouseDownEvent(MouseStatus button) {
+    void TriggerArea::mouseDownEvent(MouseStatus button) {}
 
-    }
+    void TriggerArea::mouseUpEvent(MouseStatus button) {}
 
-    void TriggerArea::mouseUpEvent(MouseStatus button) {
-
-    }
-
-    void TriggerArea::mouseMovedEvent(const Vector2 &pos, const Vector2 &dis) {
-
-    }
+    void TriggerArea::mouseMovedEvent(const Vector2 &pos, const Vector2 &dis) {}
 
     void TriggerArea::mouseMovedInEvent() {}
 
@@ -1320,13 +1330,9 @@ namespace MyEngine {
         if (button == MouseStatus::Left && _callback) _callback();
     }
 
-    void TriggerArea::keyPressedEvent(SDL_Scancode keycode) {
-        if (_key == keycode && _callback) _callback();
-    }
+    void TriggerArea::keyPressedEvent(SDL_Scancode keycode) {}
 
-    void TriggerArea::keyDownEvent(SDL_Scancode keycode) {
-
-    }
+    void TriggerArea::keyDownEvent(SDL_Scancode keycode) {}
 
     void TriggerArea::keyUpEvent(SDL_Scancode keycode) {}
 
@@ -1334,9 +1340,7 @@ namespace MyEngine {
 
     void TriggerArea::fingerUpEvent(SDL_FingerID id) {}
 
-    void TriggerArea::fingerTouchedEvent(SDL_FingerID id) {
-        if (_callback) _callback();
-    }
+    void TriggerArea::fingerTouchedEvent(SDL_FingerID id) {}
 
     void TriggerArea::fingerMovedEvent(SDL_FingerID id, const Vector2 &pos, const Vector2 &dis) {}
 

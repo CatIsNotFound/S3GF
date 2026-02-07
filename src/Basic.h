@@ -328,7 +328,6 @@ namespace MyEngine {
             this->height /= geo.height;
             return *this;
         }
-
     };
 
     /**
@@ -2221,6 +2220,54 @@ namespace MyEngine {
     }
 }
 
+template<>
+struct FMT::formatter<MyEngine::Vector2> {
+    constexpr auto parse(FMT::format_parse_context& context) {
+        return context.begin();
+    }
 
+    auto format(const MyEngine::Vector2& vec, FMT::format_context& context) const {
+        return std::format_to(context.out(), "({:.2f}, {:.2f})", vec.x, vec.y);
+    }
+};
+
+template<>
+struct FMT::formatter<MyEngine::Size> {
+    template <typename FormatParseContext>
+    constexpr auto parse(FormatParseContext& context) {
+        return context.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const MyEngine::Size& size, FormatContext& context) const {
+        return std::format_to(context.out(), "({:.2f} x {:.2f})", size.width, size.height);
+    }
+};
+
+template<>
+struct FMT::formatter<MyEngine::Geometry> {
+    template <typename FormatParseContext>
+    constexpr auto parse(FormatParseContext& context) {
+        return context.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const MyEngine::Geometry& geometry, FormatContext& context) const {
+        return std::format_to(context.out(), "({}, {}, {}, {})",
+                              geometry.x, geometry.y, geometry.width, geometry.height);
+    }
+};
+
+template<>
+struct FMT::formatter<MyEngine::GeometryF> {
+    constexpr auto parse(FMT::format_parse_context& context) {
+        return context.begin();
+    }
+
+    auto format(const MyEngine::GeometryF& geometry, FMT::format_context& context) const {
+        return std::format_to(context.out(), "({:.2f}, {:.2f}, {:.2f}, {:.2f})",
+                              geometry.pos.x, geometry.pos.y, geometry.size.width, geometry.size.height);
+    }
+};
 
 #endif //MYENGINE_BASIC_H

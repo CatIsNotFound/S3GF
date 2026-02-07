@@ -3,7 +3,7 @@
 
 namespace MyEngine {
     std::string FileSystem::_main_path = std::filesystem::absolute(".").string();
-    float FileSystem::translateSize(size_t size, MyEngine::FileSystem::DataSize data_size) {
+    float FileSystem::translateSize(size_t size, MyEngine::FileSystem::DataUnit data_size) {
         switch (data_size) {
             case KB:
                 return static_cast<float>(size) / 1024.0f;
@@ -18,7 +18,7 @@ namespace MyEngine {
         }
     }
 
-    size_t FileSystem::translateSize(float size, MyEngine::FileSystem::DataSize data_size) {
+    size_t FileSystem::translateSize(float size, MyEngine::FileSystem::DataUnit data_size) {
         switch (data_size) {
             case KB:
                 return static_cast<size_t>(size) * 1024;
@@ -186,53 +186,80 @@ namespace MyEngine {
         return false;
     }
 
-    bool FileSystem::writeFile(const std::string &context, const std::string &path,
+    bool FileSystem::writeFile(const std::string_view &context, const std::string &path,
                                bool append_mode, bool ignore_error) {
         std::filesystem::path temp = getAbsolutePath(path);
-        std::ofstream file(temp.string(),((append_mode ? (std::ios::in | std::ios::app) : std::ios::in)));
+        std::ofstream file(temp.string(),((append_mode ? (std::ios::out | std::ios::app) : std::ios::out)));
         if (!file.is_open()) {
             if (!ignore_error) Logger::log(FMT::format("FileSystem: Can't create file '{}'!", temp.string()),
                                            Logger::Error);
             return false;
         }
-        file << context;
+        try {
+            file.write(context.data(), static_cast<std::streamsize>(context.size()));
+            if (file.fail()) {
+                if (!ignore_error)
+                    Logger::log(FMT::format("FileSystem: Write file failed: '{}'",
+                                        temp.string()), Logger::Error);
+                file.close();
+                return false;
+            }
+        } catch (const std::exception &e) {
+            if (!ignore_error)
+                Logger::log(FMT::format("FileSystem: Exception writing '{}': {}",
+                                        temp.string(), e.what()), Logger::Error);
+            file.close();
+            return false;
+        }
+        file.flush();
         file.close();
         return true;
     }
 
     std::string FileSystem::readFile(const std::string &path, bool ignore_error, bool *ok) {
         std::filesystem::path temp = getAbsolutePath(path);
-        std::ifstream file(temp.string(), std::ios::in);
+        std::ifstream file(temp.string(), std::ios::in | std::ios::ate);
         if (!file.is_open()) {
             if (!ignore_error) Logger::log(FMT::format("FileSystem: File '{}' is not found!", temp.string()),
                                            Logger::Error);
             if (ok) *ok = false;
-            return "";
+            return {};
         }
-        std::string output;
-        size_t line = 0;
-        try {
-            char buf[1024] = {'\0'};
-            while (true) {
-                line += 1;
-                file.getline(buf, 1024);
-                output += buf;
-                if (!file.eof()) output += '\n'; else break;
+        std::string buffer;
+        std::streampos file_size = file.tellg();
+        if (file_size > 0) {
+            buffer.assign(file_size, '\0');
+            file.seekg(0, std::ios::beg);
+            file.read(&buffer[0], file_size);
+
+            if (file.fail() || file.gcount() != static_cast<std::streamsize>(file_size)) {
+                if (!ignore_error)
+                    Logger::log(FMT::format("FileSystem: Read file failed: '{}'",
+                                            temp.string()), Logger::Error);
+                file.close();
+                if (ok) *ok = false;
+                buffer.clear();
+                return buffer;
             }
-        } catch (const std::exception &exception) {
-            Logger::log(FMT::format("FileSystem: Read file '{}' failed at line {}!",
-                                    temp.string(), line), Logger::Error);
+        } else if (file_size < 0) {
+            if (!ignore_error) {
+                Logger::log(FMT::format("FileSystem: Failed to get size of the file: '{}'",
+                                        temp.string()), Logger::Error);
+            }
+            file.close();
+            if (ok) *ok = false;
+            return buffer;
         }
         file.close();
         if (ok) *ok = true;
-        return output;
+        return buffer;
     }
 
     bool FileSystem::writeBinaryFile(const std::string &path, bool append_mode,
                                      const std::function<void(std::ofstream &)> &how2WriteFile, bool ignore_error) {
         std::filesystem::path temp = getAbsolutePath(path);
-        std::ofstream file(temp.string(),((append_mode ? (std::ios::in | std::ios::app | std::ios::binary) :
-                                           std::ios::in | std::ios::binary)));
+        std::ofstream file(temp.string(),((append_mode ? (std::ios::out | std::ios::app | std::ios::binary) :
+                                           std::ios::out | std::ios::binary)));
         if (!file.is_open()) {
             if (!ignore_error) Logger::log(FMT::format("FileSystem: Can't create file '{}'!",
                                                        temp.string()), Logger::Error);
@@ -243,21 +270,36 @@ namespace MyEngine {
         return true;
     }
 
-    bool FileSystem::writeBinaryFile(const std::vector<uint8_t> &binaries, const std::string &path, bool append_mode,
+    bool FileSystem::writeBinaryFile(const std::string_view &binaries, const std::string &path, bool append_mode,
                                      bool ignore_error) {
         std::filesystem::path temp = getAbsolutePath(path);
-        std::ofstream file(temp.string(),((append_mode ? (std::ios::in | std::ios::app | std::ios::binary) :
-                                           std::ios::in | std::ios::binary)));
+        std::ofstream file(temp.string(),((append_mode ? (std::ios::out | std::ios::app | std::ios::binary) :
+                                           std::ios::out | std::ios::binary)));
         if (!file.is_open()) {
             if (!ignore_error) Logger::log(FMT::format("FileSystem: Can't create file '{}'!",
                                                        temp.string()), Logger::Error);
             return false;
         }
-        for (auto& bin : binaries) {
-            file.write(reinterpret_cast<char*>(bin), sizeof(uint8_t));
+        try {
+            file.write(binaries.data(), static_cast<std::streamsize>(binaries.size()));
+            if (file.fail()) {
+                if (!ignore_error)
+                    Logger::log(FMT::format("FileSystem: Write file failed: '{}'",
+                                            temp.string()), Logger::Error);
+                file.close();
+                return false;
+            }
+            file.flush();
+            file.close();
+            return true;
+        } catch (const std::exception &e) {
+            file.close();
+            if (!ignore_error) {
+                Logger::log(FMT::format("FileSystem: Exception writing '{}': {}",
+                                        temp.string(), e.what()), Logger::Error);
+            }
+            return false;
         }
-        file.close();
-        return true;
     }
 
     bool FileSystem::readBinaryFile(const std::string &path, const std::function<void(std::ifstream &)> &how2ReadFile,
@@ -276,18 +318,28 @@ namespace MyEngine {
 
     std::vector<uint8_t> FileSystem::readBinaryFile(const std::string &path, bool ignore_error, bool *ok) {
         std::filesystem::path temp = getAbsolutePath(path);
-        std::ifstream file(temp.string(), std::ios::in | std::ios::binary);
+        std::ifstream file(temp.string(), std::ios::in | std::ios::binary | std::ios::ate);
         if (!file.is_open()) {
             if (!ignore_error) Logger::log(FMT::format("FileSystem: File '{}' is not found!",
                                                        temp.string()), Logger::Error);
             if (ok) *ok = false;
             return {};
         }
-        std::vector<uint8_t> ret(1024);
-        char temp_buf;
-        while (!file.eof()) {
-            file.get(temp_buf);
-            ret.emplace_back(static_cast<uint8_t>(temp_buf));
+        std::streampos file_size = file.tellg();
+        std::vector<uint8_t> ret;
+        if (file_size > 0) {
+            ret.assign(file_size, '\0');
+            file.seekg(0, std::ios::beg);
+            file.read(reinterpret_cast<char*>(ret.data()), file_size);
+            if (file.gcount() != static_cast<std::streamsize>(file_size)) {
+                if (!ignore_error) {
+                    Logger::log(FMT::format("FileSystem: Read file failed (incomplete): '{}'", temp.string()), Logger::Error);
+                }
+                ret.clear();
+                file.close();
+                if (ok) *ok = false;
+                return ret;
+            }
         }
         file.close();
         if (ok) *ok = true;
@@ -303,7 +355,7 @@ namespace MyEngine {
         }
     }
 
-    float FileSystem::readableSize(const std::string &file_path, MyEngine::FileSystem::DataSize data_size) {
+    float FileSystem::readableSize(const std::string &file_path, MyEngine::FileSystem::DataUnit data_size) {
         return translateSize(getFileSize(file_path), data_size);
     }
 

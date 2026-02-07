@@ -115,8 +115,8 @@ void MyWindow::mouseClickedEvent(MyEngine::MouseStatus button) {
 
 void MyWindow::mouseMovedEvent(const Vector2 &position, const Vector2 &distance) {
     Window::mouseMovedEvent(position, distance);
-    _debug_mouse = FMT::format("Mouse moved: position ({},{}), distance ({}, {})",
-                               position.x, position.y, distance.x, distance.y);
+    _debug_mouse = FMT::format("Mouse moved: position {}, distance {}",
+                               position, distance);
 }
 
 void MyWindow::keyUpEvent(SDL_Scancode keycode) {
@@ -139,7 +139,7 @@ void MyWindow::keyPressedEvent(SDL_Scancode keycode) {
 
 void MyWindow::fingerDownEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
     Window::fingerDownEvent(id, position);
-    _debug_finger = FMT::format("Finger down: FID: {}, POS: ({:.2f}, {:.2f})", id, position.x, position.y);
+    _debug_finger = FMT::format("Finger down: FID: {}, POS: {}", id, position);
 }
 
 void MyWindow::fingerUpEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
@@ -147,9 +147,10 @@ void MyWindow::fingerUpEvent(SDL_FingerID id, const MyEngine::Vector2 &position)
 }
 
 void MyWindow::fingerMovedEvent(SDL_FingerID id, const MyEngine::Vector2 &position, const MyEngine::Vector2 &distance) {
-    _debug_finger = FMT::format("Finger Moved {}: FID: {}, POS: ({:.2f}, {:.2f}), DIS: ({:.2f}, {:.2f})",
+    _debug_finger = FMT::format("Finger Moved {}: FID: {}, POS: {}, DIS: {}",
                                 this->getFingerEventByID(id).value().is_in_window ? "in" : "out",
-                                id, position.x, position.y, distance.x, distance.y);
+                                id, position, distance);
+
 }
 
 void MyWindow::fingerMoveOutEvent(SDL_FingerID id) {
@@ -161,7 +162,7 @@ void MyWindow::fingerMoveInEvent(SDL_FingerID id) {
 }
 
 void MyWindow::fingerTappedEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
-    Logger::log(Logger::Info, "Finger Tapped: FID: {}, POS: ({}, {})", id, position.x, position.y);
+    Logger::log(Logger::Info, "Finger Tapped: FID: {}, POS: {}}", id, position);
 }
 
 void MyWindow::dragInEvent() {
@@ -177,7 +178,7 @@ void MyWindow::dragOutEvent() {
 
 void MyWindow::dragMovedEvent(const Vector2 &position, const char *data) {
     Window::dragMovedEvent(position, data);
-    _debug_mouse = FMT::format("Dragging: pos ({}, {}), data ({})", position.x, position.y, data ? data : "Unknown");
+    _debug_mouse = FMT::format("Dragging: pos {}, data ({})", position, data ? data : "Unknown");
 }
 
 void MyWindow::dropEvent(const char *url) {

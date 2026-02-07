@@ -506,10 +506,10 @@ namespace MyEngine {
         [[nodiscard]] const Size& size() const;
 
         void setEnabled(bool enabled);
-        bool isEnabled() const;
-        bool isOnArea() const;
-        bool isTriggeredOnArea() const;
-        uint8_t events() const;
+        [[nodiscard]] bool isEnabled() const;
+        [[nodiscard]] bool isOnArea() const;
+        [[nodiscard]] bool isTriggeredOnArea() const;
+        [[nodiscard]] uint8_t events() const;
 
         void setTriggerKey(SDL_Scancode keycode);
         [[nodiscard]] const SDL_Scancode& triggerKey() const;

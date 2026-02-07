@@ -39,22 +39,22 @@
 #include <date/tz.h>
 /// @brief HowardHinnant date libs (Defined the date libs).
 /// @since v0.2.1-beta
-#define DATE_TZ date
+namespace DATE_TZ = date;
 #else
-/// @brief std::chrono (Undefined the date libs)
+/// @brief Standard chrono library (Undefined the date libs)
 /// @since v0.2.1-beta
-#define DATE_TZ std::chrono
+namespace DATE_TZ = std::chrono;
 #endif
 #ifdef __USED_FMT_LIB__
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 /// @brief FMT library (Defined the fmt libs)
 /// @since v0.2.1-beta
-#define FMT fmt
+namespace FMT = fmt;
 #else
-/// @brief standard format library (Undefined the fmt libs)
+/// @brief Standard format library (Undefined the fmt libs)
 /// @since v0.2.1-beta
-#define FMT std
+namespace FMT = std;
 #endif
 
 

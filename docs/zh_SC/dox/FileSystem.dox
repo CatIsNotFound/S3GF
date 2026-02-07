@@ -1,0 +1,267 @@
+/**
+ * @class MyEngine::FileSystem
+ * @brief 文件系统（文件管理器）
+ * @details 易于管理系统中的文件或目录（基于 `std::filesystem`）
+ * @note 此类为静态类，无需获取全局单例
+ */
+
+/**
+ * @enum MyEngine::FileSystem::Filter
+ * @brief 文件类型筛选器，告诉筛选器如何筛选
+ */
+
+/**
+ * @enum MyEngine::FileSystem::DataUnit
+ * @brief 数据单元，指代数据的基本计量或处理单元。
+ */
+
+/**
+ * @fn MyEngine::FileSystem::translateSize(size_t size, DataUnit data_size)
+ * @brief 获取转换后指定数据单位的数据大小
+ * @param size      原数据大小
+ * @param data_size 指定转换后的数据单位
+ * @return 浮点型值，表示转换后的数据大小
+ * @details  数据换算：1GB = 1024MB, 1MB = 1024KB, 1KB = 1024B
+ */
+
+/**
+ * @fn MyEngine::FileSystem::translateSize(float size, DataUnit data_size)
+ * @brief 获取转换后指定数据单位的数据大小
+ * @param size      原数据大小
+ * @param data_size 指定转换后的数据单位
+ * @return 整型值，表示转换后的数据大小
+ * @details  数据换算：1GB = 1024MB, 1MB = 1024KB, 1KB = 1024B
+ */
+
+/**
+ * @fn MyEngine::FileSystem::setCurrentPath
+ * @brief 设置当前全局目录，定义了相对路径下 `.` 的完整路径
+ * @param main_directory 设定全局目录
+ * @return 返回 bool 值以表示是否成功操作
+ * @see MyEngine::FileSystem::currentPath
+ */
+
+/**
+ * @fn MyEngine::FileSystem::currentPath
+ * @brief 获取当前全局目录
+ * @return 返回相对路径下 `.` 的完整路径
+ * @see MyEngine::FileSystem::setCurrentPath
+ */
+
+/**
+ * @fn MyEngine::FileSystem::getDirectoryFromFile
+ * @brief 通过文件路径获取当前文件所在的目录
+ * @param file_path 指定一个文件路径
+ * @return 返回当前指定文件所在的完整路径
+ * @see MyEngine::FileSystem::getFileSize
+ * @see MyEngine::FileSystem::getAbsolutePath
+ * @see MyEngine::FileSystem::getShortFileName
+ */
+
+/**
+ * @fn MyEngine::FileSystem::isFile
+ * @brief 指定文件是否存在
+ * @param path 指定文件路径
+ * @note 若指定相对目录，则会从主目录下遍历！
+ * @return 返回 bool 值表示指定路径是否为文件。
+ * @see MyEngine::FileSystem::isDir
+ * @see MyEngine::FileSystem::mkFile
+ * @see MyEngine::FileSystem::rmFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::isDir
+ * @brief 指定一个目录是否存在？
+ * @param path 指定目录
+ * @note 若指定相对目录，则会从主目录下遍历！
+ * @return 返回 bool 值表示指定路径是否为目录。
+ * @see MyEngine::FileSystem::isFile
+ * @see MyEngine::FileSystem::mkDir
+ * @see MyEngine::FileSystem::rmDir
+ */
+
+/**
+ * @fn MyEngine::FileSystem::mkDir
+ * @brief 创建一个空目录
+ * @param path 指定新的空目录
+ * @param ignore_error 忽略目录存在的错误
+ * @param recursive_create 是否递归创建目录
+ * @return 返回 bool 值表示是否成功操作
+ * @see FileSystem::rmDir
+ * @see FileSystem::isDir
+ */
+
+/**
+ * @fn MyEngine::FileSystem::rmDir
+ * @brief 删除指定的目录
+ * @param path             指定目录
+ * @param ignore_error     忽略目录存在的错误
+ * @param recursive_remove 递归删除此目录下的所有文件及目录
+ * @warning 请不要随意使用 `recursive_remove` 参数，如指定目录下包含重要文件，使用此参数后将一同删除！
+ * @return 返回 bool 值以表示是否成功操作
+ * @see FileSystem::mkDir
+ * @see FileSystem::isDir
+ */
+
+/**
+ * @fn MyEngine::FileSystem::mkFile
+ * @brief 创建一个空白文件
+ * @param path                   指定文件路径
+ * @param auto_create_directory  是否自动创建目录（当目录不存在时递归创建）
+ * @param ignore_error           忽略存在的错误
+ * @return 返回 bool 值以表示是否成功操作
+ * @see FileSystem::rmFile
+ * @see FileSystem::isFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::rmFile
+ * @brief 删除指定的文件
+ * @param path          指定文件路径
+ * @param ignore_error  忽略文件存在的错误
+ * @return 返回 bool 值以表示是否成功操作
+ * @see FileSystem::mkFile
+ * @see FileSystem::isFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::writeFile
+ * @brief 写入内容到指定文件
+ * @param context       指定写入内容
+ * @param path          指定文件路径
+ * @param append_mode   是否使用追加写入
+ * @param ignore_error  忽略存在的错误
+ * @return 返回 bool 值以表示是否成功操作
+ * @see FileSystem::writeBinaryFile
+ * @see FileSystem::readFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::readFile
+ * @brief 从指定文件中读取内容
+ * @param path          指定文件路径
+ * @param ignore_error  忽略存在的错误
+ * @param ok            用于检查当前是否存在错误
+ * @return 返回读取到的文件的所有内容
+ * @see FileSystem::writeBinaryFile
+ * @see FileSystem::writeFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::writeBinaryFile(const std::string &path, bool append_mode, const std::function< void(std::ofstream &file)> &how2WriteFile, bool ignore_error=false)
+ * @brief 写入二进制内容到指定文件
+ * @param path              指定输出文件路径
+ * @param append_mode       是否使用追加写入模式
+ * @param how2WriteFile     指定写入文件的方法
+ * @param ignore_error      忽略存在的错误
+ * @return 返回是否成功写入文件
+ * @see FileSystem::readBinaryFile
+ * @see FileSystem::writeFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::writeBinaryFile(const std::string_view &binaries, const std::string &path, bool append_mode, bool ignore_error=false)
+ * @brief 写入二进制内容到指定文件中
+ * @param binaries      指定存储的二进制内容
+ * @param path          指定文件输出路径
+ * @param append_mode   指定是否使用追加写入模式
+ * @param ignore_error  忽略存在的错误
+ * @return 返回是否成功写入文件
+ * @see FileSystem::readBinaryFile
+ * @see FileSystem::writeFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::readBinaryFile(const std::string &path, const std::function< void(std::ifstream &file)> &how2ReadFile, bool ignore_error=false)
+ * @brief 从指定文件中读取二进制内容
+ * @param path          指定文件路径
+ * @param how2ReadFile  指定读取文件的方法
+ * @param ignore_error  忽略存在的错误
+ * @return 返回是否成功读取二进制内容
+ * @see FileSystem::writeBinaryFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::readBinaryFile(const std::string &path, bool ignore_error=false, bool *ok=nullptr)
+ * @brief 从指定文件中读取二进制内容
+ * @param path          指定文件路径
+ * @param ignore_error  忽略存在的错误
+ * @param ok            执行是否存在问题
+ * @return 返回完整的二进制内容
+ * @see FileSystem::writeBinaryFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::getFileSize
+ * @brief 获取指定文件的大小
+ * @param file_path 指定文件路径
+ * @return 获取一个以字节为单位的数据大小
+ * @see MyEngine::FileSystem::readableSize
+ */
+
+/**
+ * @fn MyEngine::FileSystem::readableSize
+ * @brief 获取指定文件的可读数据大小
+ * @param file_path 指定文件路径
+ * @param data_size 指定数据单位
+ * @return 返回一个浮点值，以表示可读的文件大小
+ * @see MyEngine::FileSystem::getFileSize
+ */
+
+/**
+ * @fn MyEngine::FileSystem::getAbsolutePath
+ * @brief 获取绝对路径
+ * @param path 指定路径
+ * @return 将返回完整的绝对路径
+ * @see MyEngine::FileSystem::getFileSize
+ * @see MyEngine::FileSystem::getShortFileName
+ * @see MyEngine::FileSystem::getDirectoryFromFile
+ */
+
+/**
+ * @fn MyEngine::FileSystem::getShortFileName
+ * @brief 获取文件名
+ * @param path 指定完整的路径
+ * @param cut_file_extension 是否截断文件后缀名
+ * @return 返回文件名
+ * @see MyEngine::FileSystem::getFileSize
+ * @see MyEngine::FileSystem::getAbsolutePath
+ * @see MyEngine::FileSystem::getDirectoryFromFile
+ */
+
+
+/**
+ * @fn MyEngine::FileSystem::listFilePaths
+ * @brief 获取指定路径下的所有文件或目录
+ * @param path 指定路径
+ * @param filter 指定筛选类型
+ * @param file_extension_filter 筛选文件后缀名列表
+ * @param ignore_error 忽略存在的错误
+ * @return 返回一个文件路径列表
+ * @see MyEngine::FileSystem::listFiles
+ * @see MyEngine::FileSystem::listFilesRecursively
+ */
+
+/**
+ * @fn MyEngine::FileSystem::listFilesRecursively
+ * @brief 完全递归并列出指定目录下的所有文件
+ * @param path          指定路径
+ * @param file_ext_list 文件筛选器，指定筛选哪些文件后缀名
+ * @param ignore_error  忽略存在的错误
+ * @return 返回一个文件路径列表
+ * @see MyEngine::FileSystem::listFiles
+ * @see MyEngine::FileSystem::listFilePaths
+ */
+
+/**
+ * @fn MyEngine::FileSystem::listFiles
+ * @brief 获取指定路径下的所有文件或目录
+ * @param path 指定路径
+ * @param filter 指定筛选类型
+ * @param file_extension_filter 筛选文件后缀名列表
+ * @param ignore_error 忽略存在的错误
+ * @return 返回一个文件名列表
+ * @see MyEngine::FileSystem::listFilePaths
+ * @see MyEngine::FileSystem::listFilesRecursively
+ */
+
