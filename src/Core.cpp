@@ -1512,7 +1512,7 @@ namespace MyEngine {
             Logger::log(Logger::Error, "AudioSystem: Can't initialized audio system! Exception: {}", SDL_GetError());
             return false;
         }
-
+        _is_init = true;
         SDL_AudioSpec _audio_spec(SDL_AUDIO_S16, 2, 44100);
         auto new_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &_audio_spec);
         if (!new_mixer) {
