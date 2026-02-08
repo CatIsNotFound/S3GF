@@ -136,7 +136,7 @@ jobs:
         shell: bash
         run: |
           brew update
-          brew install cmake pkg-config ninja 
+          brew install cmake pkg-config ninja fmt howard-hinnant-date
           
           mkdir -p ~/Libs
           mkdir -p ~/git ; cd ~/git
@@ -144,43 +144,9 @@ jobs:
           git clone --depth 1 https://github.com/libsdl-org/SDL_image 
           git clone --depth 1 https://github.com/libsdl-org/SDL_mixer 
           git clone --depth 1 https://github.com/libsdl-org/SDL_ttf
-          git clone --depth 1 https://github.com/HowardHinnant/date.git
-          git clone --depth 1 https://github.com/fmtlib/fmt.git
           
           echo "~/git: "
           ls ~/git
-
-      - name: Compiling and installing Date
-        shell: bash
-        run: |
-          cd ~/git/date
-          mkdir -p build ; cd build
-          echo "* Starting configure Date...."
-          cmake .. -DBUILD_TZ_LIB=ON -DUSE_SYSTEM_TZ_DB=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/Libs/date
-          echo "* Compiling and installing Date...."
-          cmake --build . -j10 --target install
-          if [ $? -eq 0 ]; then
-              echo "* No error occurred, finished! "
-          else
-              echo "* Failed to compile and install! "
-              exit 1
-          fi
-
-      - name: Compiling and installing FMT
-        shell: bash
-        run: |
-          cd ~/git/fmt
-          mkdir -p build ; cd build
-          echo "* Starting configure FMT...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/Libs/fmt
-          echo "* Compiling and installing FMT...."
-          cmake --build . -j10 --target install
-          if [ $? -eq 0 ]; then
-              echo "* No error occurred, finished! "
-          else
-              echo "* Failed to compile and install! "
-              exit 1
-          fi
 
       - name: Compiling and installing SDL3
         shell: bash
@@ -251,8 +217,13 @@ jobs:
         run: |
           mkdir -p build ; cd build
           echo "* Configuring project..."
-          cmake .. -DDATE_LIB=~/Libs/date \
-                   -DFMT_LIB=~/Libs/fmt \
+          if [[ `uname -m` == "x86_64" ]];then
+              HOMEBREW=/usr/local/    
+          else
+              HOMEBREW=/opt/homebrew/
+          fi
+          cmake .. -DDATE_LIB=$HOMEBREW \
+                   -DFMT_LIB=$HOMEBREW \
                    -DSDL3_LIB=~/Libs/SDL3 \
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
