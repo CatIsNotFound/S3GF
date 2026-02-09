@@ -1177,6 +1177,7 @@ namespace MyEngine {
                     if (_events & Status_KeyboardPressedDown) {
                         _events ^= Status_KeyboardPressedDown;
                         _events |= Status_TriggeredArea;
+                        if (_callback) _callback();
                         keyUpEvent(e.key.scancode);
                         keyPressedEvent(e.key.scancode);
                     }
@@ -1194,6 +1195,7 @@ namespace MyEngine {
                     if (is_on_area >= 0) {
                         mouseClickedEvent(_last_mouse_status);
                         _events |= Status_TriggeredArea;
+                        if (_callback) _callback();
                     }
                     if (_events & Status_OnArea) _events ^= Status_OnArea;
                 }
@@ -1237,29 +1239,12 @@ namespace MyEngine {
                             fingerMovedOutEvent();
                         }
                     }
-                    // if (finger_on_area && !(_events & Status_FingerDown)) {
-                    //     _events |= Status_FingerDown;
-                    //     _events |= Status_OnArea;
-                    //     fingerDownEvent(e.tfinger.fingerID);
-                    // } else {
-                    //     if (_events & Status_FingerDown) {
-                    //         fingerMovedEvent(e.tfinger.fingerID, pos, finger.value().distance_pos);
-                    //         if (finger_on_area) {
-                    //             if (!(_events & Status_OnArea)) fingerMovedInEvent();
-                    //             _events |= Status_OnArea;
-                    //         } else {
-                    //             if (_events & Status_OnArea) {
-                    //                 _events ^= Status_OnArea;
-                    //                 fingerMovedOutEvent();
-                    //             }
-                    //         }
-                    //     }
-                    // }
                 } else if (_events & Status_FingerDown) {
                     _events ^= Status_FingerDown;
                     fingerUpEvent(e.tfinger.fingerID);
                     if (_events & Status_OnArea) {
                         _events |= Status_TriggeredArea;
+                        if (_callback) _callback();
                         fingerTouchedEvent(e.tfinger.fingerID);
                     }
                 }
