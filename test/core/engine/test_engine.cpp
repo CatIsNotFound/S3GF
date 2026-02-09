@@ -29,10 +29,10 @@ TEST_CASE( "Engine Initialization test", "[Core][Engine]" ) {
     Engine engine;
     CHECK(engine.isRunning() == true);
     engine.exit(0);
-
-    TEST_CASE( "Windows management test", "[Core][Engine]" ) {
     CHECK(engine.exec() == 0);
 }
+
+TEST_CASE( "Windows management test", "[Core][Engine]" ) {
     Engine engine;
 
     // Create windows

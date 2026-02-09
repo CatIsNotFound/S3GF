@@ -578,43 +578,43 @@ namespace MyEngine {
 
         explicit GeometryF() : pos(0, 0), size(0, 0) {}
 
-        void reset(const Vector2 &pos, const Size &size) {
+        void setGeometry(const Vector2 &pos, const Size &size) {
             this->pos.x = pos.x;
             this->pos.y = pos.y;
             this->size.width = size.width;
             this->size.height = size.height;
         }
 
-        void reset(float x, float y, float width, float height) {
+        void setGeometry(float x, float y, float width, float height) {
             this->pos.x = x;
             this->pos.y = y;
             this->size.width = width;
             this->size.height = height;
         }
 
-        void reset(const GeometryF& geometry) {
+        void setGeometry(const GeometryF& geometry) {
             this->pos.x = geometry.pos.x;
             this->pos.y = geometry.pos.y;
             this->size.width = geometry.size.width;
             this->size.height = geometry.size.height;
         }
 
-        void resetPos(const Vector2 &pos) {
+        void move(const Vector2 &pos) {
             this->pos.x = pos.x;
             this->pos.y = pos.y;
         }
 
-        void resetPos(float x, float y) {
+        void move(float x, float y) {
             this->pos.x = x;
             this->pos.y = y;
         }
 
-        void resetSize(const Size &size) {
+        void resize(const Size &size) {
             this->size.width = size.width;
             this->size.height = size.height;
         }
 
-        void resetSize(float width, float height) {
+        void resize(float width, float height) {
             this->size.width = width;
             this->size.height = height;
         }
@@ -1838,7 +1838,7 @@ namespace MyEngine {
             void reset(float x, float y, float w, float h, uint16_t border = 1,
                        const SDL_Color& border_color = StdColor::LightGray,
                        const SDL_Color& background_color = StdColor::LightGray, float degree = 0) {
-                _geometry.reset(x, y, w, h);
+                _geometry.setGeometry(x, y, w, h);
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
@@ -1850,7 +1850,7 @@ namespace MyEngine {
             void reset(const GeometryF& geometry, uint16_t border = 1,
                        const SDL_Color& border_color = StdColor::LightGray,
                        const SDL_Color& background_color = StdColor::LightGray, float degree = 0) {
-                _geometry.reset(geometry);
+                _geometry.setGeometry(geometry);
                 _border_size = border;
                 _border_color = border_color;
                 _background_color = background_color;
@@ -1922,13 +1922,13 @@ namespace MyEngine {
             [[nodiscard]] float rotate() const { return _rotate; }
 
             void setGeometry(float x, float y, float w, float h) {
-                _geometry.reset(x, y, w, h);
+                _geometry.setGeometry(x, y, w, h);
                 updateGeometry();
                 updateBorderGeometry();
             }
 
             void setGeometry(const GeometryF& geometry) {
-                _geometry.reset(geometry);
+                _geometry.setGeometry(geometry);
                 updateGeometry();
                 updateBorderGeometry();
             }

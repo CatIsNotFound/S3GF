@@ -309,6 +309,10 @@ if (BUILD_TEST)
     add_subdirectory(test)
 endif()
 
+if (BUILD_PYTHON)
+    add_subdirectory(Python)
+endif()
+
 message("================= Configuration Result ======================")
 message("Project version: ${PROJECT_VERSION}")
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")

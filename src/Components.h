@@ -315,7 +315,7 @@ namespace MyEngine {
             _scaled_anchor.reset(_anchor * _scale);
             if (clip_mode) {
                 auto scaled_clip_pos = Vector2{clip_area.x + _anchor.x, clip_area.y + _anchor.y};
-                _scaled_clip_geometry.reset((clip_area.x - scaled_clip_pos.x) * _scale + scaled_clip_pos.x,
+                _scaled_clip_geometry.setGeometry((clip_area.x - scaled_clip_pos.x) * _scale + scaled_clip_pos.x,
                                                (clip_area.y - scaled_clip_pos.y) * _scale + scaled_clip_pos.y,
                                                clip_area.w * _scale, clip_area.h * _scale);
             }
