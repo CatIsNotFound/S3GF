@@ -241,10 +241,9 @@ namespace MyEngine {
         Cursor::StdCursor _cursor{};
         std::string _drop_url{};
         Vector2 _mouse_pos{}, _dragging_pos{};
-        std::deque<std::function<void(Renderer*)>> _paint_event_list;
+        std::deque<std::function<void(Renderer*)>> _paint_event_list{};
         Engine* _engine;
-
-        std::unordered_map<uint64_t, FingerEvent> _finger_event_list;
+        std::unordered_map<uint64_t, FingerEvent> _finger_event_list{};
     };
 
     class EventSystem {

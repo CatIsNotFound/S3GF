@@ -4,10 +4,10 @@
 #include "Utils/Logger.h"
 #include "Utils/FileSystem.h"
 #include "Utils/RGBAColor.h"
-#define MAX_AUDIO_FILE_SIZE (2 * 1024 * 1024) /// Defined the larger audio file
 #include "Algorithm/All.h"
 
 namespace MyEngine {
+    constexpr size_t MAX_AUDIO_FILE_SIZE = 2 * 1024 * 1024;
     Font::Font(const std::string& font_path, float font_size)
             : _font_size(font_size), _font_path(font_path) {
         _font = TTF_OpenFont(font_path.c_str(), font_size);
@@ -1170,11 +1170,6 @@ namespace MyEngine {
             if (!isEnabled()) return;
             auto mouse_cur = EventSystem::global()->captureMousePosition();
             auto is_on_area = Algorithm::comparePosInGeometry(mouse_cur, _geometry);
-            if (is_on_area >= 0 && !(_events & Status_OnArea)) {
-                _events |= Status_OnArea;
-            } else if (is_on_area < 0 && (_events & Status_OnArea)) {
-                _events ^= Status_OnArea;
-            }
             // Keyboard Event
             if (_key > SDL_SCANCODE_UNKNOWN) {
                 auto keys = EventSystem::global()->captureKeyboard(_key);
@@ -1193,46 +1188,80 @@ namespace MyEngine {
             // Mouse Event
             auto button = EventSystem::global()->captureMouseStatus();
             if (button == MouseStatus::None) {
-                if (_events & Status_MouseButtonDown) _events ^= Status_MouseButtonDown;
-                mouseUpEvent(_last_mouse_status);
-                if (is_on_area >= 0) {
-                    mouseClickedEvent(_last_mouse_status);
-                    _events |= Status_TriggeredArea;
+                if (_events & Status_MouseButtonDown) {
+                    _events ^= Status_MouseButtonDown;
+                    mouseUpEvent(_last_mouse_status);
+                    if (is_on_area >= 0) {
+                        mouseClickedEvent(_last_mouse_status);
+                        _events |= Status_TriggeredArea;
+                    }
+                    if (_events & Status_OnArea) _events ^= Status_OnArea;
                 }
             } else if (!(_events & Status_MouseButtonDown) && is_on_area >= 0) {
                 _events |= Status_MouseButtonDown;
+                _events |= Status_OnArea;
                 mouseDownEvent(button);
                 _last_mouse_status = button;
-            } else {
+            } else if (_events & Status_MouseButtonDown) {
                 mouseMovedEvent(mouse_cur,
                                 EventSystem::global()->captureMouseAbsDistance());
+                if (is_on_area >= 0) {
+                    _events |= Status_OnArea;
+                    mouseMovedInEvent();
+                } else if (_events & Status_OnArea) {
+                    _events ^= Status_OnArea;
+                    mouseMovedOutEvent();
+                }
             }
             // Finger Event
-            if (e.tfinger.windowID == _window->windowID()) {
+            if (e.type == SDL_EVENT_FINGER_UP || e.type == SDL_EVENT_FINGER_DOWN ||
+                e.type == SDL_EVENT_FINGER_MOTION || e.type == SDL_EVENT_FINGER_CANCELED) {
                 auto w = static_cast<float>(_window->geometry().width);
                 auto h = static_cast<float>(_window->geometry().height);
-                auto finger = window->getFingerEventByID(e.tfinger.fingerID);
+                auto finger = _window->getFingerEventByID(e.tfinger.fingerID);
                 if (finger.has_value()) {
-                    if (!(_events & Status_FingerDown)) {
-                        _events |= Status_FingerDown;
-                        fingerDownEvent(e.tfinger.fingerID);
-                    } else {
-                        Vector2 pos = {w * e.tfinger.x, h * e.tfinger.y};
-                        fingerMovedEvent(e.tfinger.fingerID, pos, finger.value().distance_pos);
-                        if (Algorithm::comparePosInGeometry(pos, _geometry) >= 0) {
-                            if (!(_events & Status_OnArea)) {
-                                _events |= Status_OnArea;
-                                fingerMovedInEvent();
-                            }
+                    Vector2 pos = {w * e.tfinger.x, h * e.tfinger.y};
+                    bool finger_on_area = (Algorithm::comparePosInGeometry(pos, _geometry) >= 0);
+                    if (finger_on_area) {
+                        if (!(_events & Status_FingerDown)) {
+                            _events |= Status_FingerDown;
+                            fingerDownEvent(e.tfinger.fingerID);
                         } else {
-                            if (_events & Status_OnArea) {
-                                _events |= Status_OnArea;
-                                fingerMovedOutEvent();
-                            }
+                            fingerMovedEvent(e.tfinger.fingerID, pos, finger.value().distance_pos);
+                            if (!(_events & Status_OnArea)) fingerMovedInEvent();
+                        }
+                        _events |= Status_OnArea;
+                    } else {
+                        if (_events & Status_OnArea) {
+                            _events ^= Status_OnArea;
+                            fingerMovedOutEvent();
                         }
                     }
-                } else {
-                    if (_events & Status_FingerDown) _events ^= Status_FingerDown;
+                    // if (finger_on_area && !(_events & Status_FingerDown)) {
+                    //     _events |= Status_FingerDown;
+                    //     _events |= Status_OnArea;
+                    //     fingerDownEvent(e.tfinger.fingerID);
+                    // } else {
+                    //     if (_events & Status_FingerDown) {
+                    //         fingerMovedEvent(e.tfinger.fingerID, pos, finger.value().distance_pos);
+                    //         if (finger_on_area) {
+                    //             if (!(_events & Status_OnArea)) fingerMovedInEvent();
+                    //             _events |= Status_OnArea;
+                    //         } else {
+                    //             if (_events & Status_OnArea) {
+                    //                 _events ^= Status_OnArea;
+                    //                 fingerMovedOutEvent();
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                } else if (_events & Status_FingerDown) {
+                    _events ^= Status_FingerDown;
+                    fingerUpEvent(e.tfinger.fingerID);
+                    if (_events & Status_OnArea) {
+                        _events |= Status_TriggeredArea;
+                        fingerTouchedEvent(e.tfinger.fingerID);
+                    }
                 }
             }
         });
@@ -1314,6 +1343,10 @@ namespace MyEngine {
 
     void TriggerArea::setTriggerEvent(const std::function<void()> &callback_function) {
         _callback = callback_function;
+    }
+
+    const Window *TriggerArea::window() const {
+        return _window;
     }
 
     void TriggerArea::mouseDownEvent(MouseStatus button) {}

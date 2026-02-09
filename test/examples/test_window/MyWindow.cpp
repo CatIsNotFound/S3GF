@@ -15,7 +15,8 @@ void MyWindow::paintEvent() {
     renderer()->drawDebugText(_debug, {20, 20}, _font_color);
     renderer()->drawDebugText(_debug_keyboard, {20, 30}, _font_color);
     renderer()->drawDebugText(_debug_mouse, {20, 40}, _font_color);
-    renderer()->drawDebugText(_debug_finger, {20, 50}, _font_color);
+    renderer()->drawDebugText(FMT::format("Fingers count: {}", getFingersCount()), {20, 50}, _font_color);
+    renderer()->drawDebugText(_debug_finger, {20, 60}, _font_color);
 }
 
 void MyWindow::resizeEvent() {
@@ -162,7 +163,7 @@ void MyWindow::fingerMoveInEvent(SDL_FingerID id) {
 }
 
 void MyWindow::fingerTappedEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {
-    Logger::log(Logger::Info, "Finger Tapped: FID: {}, POS: {}}", id, position);
+    Logger::log(Logger::Info, "Finger Tapped: FID: {}, POS: {}", id, position);
 }
 
 void MyWindow::dragInEvent() {
