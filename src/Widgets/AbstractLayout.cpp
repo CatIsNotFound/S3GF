@@ -89,7 +89,7 @@ namespace MyEngine::Widget {
     }
 
     std::optional<int64_t> AbstractLayout::indexOf(AbstractWidget *widget) {
-        for (int64_t i = 0; i < _widgets.size(); ++i) {
+        for (int64_t i = 0; i < (int64_t)_widgets.size(); ++i) {
             if (_widgets[i] == widget) return i;
         }
         return {};
@@ -175,7 +175,7 @@ namespace MyEngine::Widget {
     }
 
     void AbstractLayout::resizeLayout() {
-        _padding_geometry.reset(_margin.left, _margin.top,
+        _padding_geometry.setGeometry(_margin.left, _margin.top,
                                 geometry().size.width - _margin.left - _margin.right,
                                 geometry().size.height - _margin.top - _margin.bottom);
     }

@@ -1243,31 +1243,31 @@ namespace MyEngine {
     }
 
     void TriggerArea::setGeometry(float x, float y, float w, float h) {
-        _geometry.reset(x, y, w, h);
+        _geometry.setGeometry(x, y, w, h);
     }
 
     void TriggerArea::setGeometry(const Vector2 &pos, const Size &size) {
-        _geometry.reset(pos, size);
+        _geometry.setGeometry(pos, size);
     }
 
     void TriggerArea::setGeometry(const MyEngine::GeometryF &geometry) {
-        _geometry.reset(geometry);
+        _geometry.setGeometry(geometry);
     }
 
     void TriggerArea::move(float x, float y) {
-        _geometry.resetPos(x, y);
+        _geometry.move(x, y);
     }
 
     void TriggerArea::move(const Vector2 &pos) {
-        _geometry.resetPos(pos);
+        _geometry.move(pos);
     }
 
     void TriggerArea::resize(float w, float h) {
-        _geometry.resetSize(w, h);
+        _geometry.resize(w, h);
     }
 
     void TriggerArea::resize(const Size &size) {
-        _geometry.resetSize(size);
+        _geometry.resize(size);
     }
 
     const GeometryF &TriggerArea::geometry() const {

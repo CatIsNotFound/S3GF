@@ -30,7 +30,7 @@ namespace MyEngine {
 
         inline GeometryF translateObjectInParent(const GeometryF& object, const GeometryF& parent) {
             GeometryF new_geometry;
-            new_geometry.resetPos(parent.pos + object.pos);
+            new_geometry.move(parent.pos + object.pos);
             Size available_size(
                     parent.size.width - object.pos.x,
                     parent.size.height - object.pos.y
@@ -42,7 +42,7 @@ namespace MyEngine {
             Size final_size;
             final_size.width = std::min(object.size.width, available_size.width);
             final_size.height = std::min(object.size.height, available_size.height);
-            new_geometry.resetSize(final_size);
+            new_geometry.resize(final_size);
             return new_geometry;
         }
 
