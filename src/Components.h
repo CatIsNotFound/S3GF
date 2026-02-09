@@ -515,6 +515,7 @@ namespace MyEngine {
         [[nodiscard]] const SDL_Scancode& triggerKey() const;
         void setTriggerEvent(const std::function<void()>& callback_function);
 
+        const Window* window() const;
     protected:
         virtual void mouseDownEvent(MouseStatus button);
         virtual void mouseUpEvent(MouseStatus button);

@@ -680,10 +680,12 @@ namespace MyEngine {
 
             // Finger Event
             // - Used to handle global touch events on a touchscreen
+            bool is_finger_event = false;
             static std::vector<uint32_t> finger_events = {SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_DOWN,
                                                           SDL_EVENT_FINGER_MOTION, SDL_EVENT_FINGER_CANCELED};
             if (std::any_of(finger_events.begin(), finger_events.end(),
                             [&ev](uint32_t type) { return ev.type == type; })) {
+                is_finger_event = true;
                 Window* win = nullptr;
                 Vector2 cur_pos;
                 if (!win_id_list.empty() && _engine->isWindowExist(ev.tfinger.windowID)) {
@@ -708,10 +710,13 @@ namespace MyEngine {
                         if (is_on) win->fingerTappedEvent(ev.tfinger.fingerID, cur_pos);
                         break;
                     case SDL_EVENT_FINGER_MOTION:
+                        if (!win->_finger_event_list.contains(ev.tfinger.fingerID)) {
+                            win->_finger_event_list.try_emplace(ev.tfinger.fingerID,
+                                Window::FingerEvent(ev.tfinger.touchID, ev.tfinger.pressure, cur_pos));
+                        }
                         f_ev = &(win->_finger_event_list.at(ev.tfinger.fingerID));
                         f_ev->distance_pos = cur_pos - f_ev->finger_down_pos;
                         win->fingerMovedEvent(ev.tfinger.fingerID, cur_pos, f_ev->distance_pos);
-                        f_ev = &(win->_finger_event_list.at(ev.tfinger.fingerID));
                         if (Algorithm::comparePosInGeometry(Cursor::global()->globalPosition(),
                                         toGeometryFloat(win->geometry())) < 0) {
                             if (f_ev->is_in_window) {
@@ -732,11 +737,10 @@ namespace MyEngine {
                         break;
                     }
                 }
-                return true;
             }
 
             // Windows Event
-            if (!win_id_list.empty()) {
+            if (!is_finger_event && !win_id_list.empty()) {
                 static bool mouse_down = false, key_down = false;
                 std::for_each(win_id_list.begin(), win_id_list.end(),
                               [this, &ev, &win_id_list, &running] (uint32_t id) {
@@ -856,6 +860,7 @@ namespace MyEngine {
                     }
                 });
             }
+
             for (auto& event : _event_list) {
                 if (event.second) event.second(ev);
             }

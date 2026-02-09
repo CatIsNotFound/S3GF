@@ -74,6 +74,7 @@ addModule(TEST_MODULES test_renderer
 )
 
 addModule(TEST_MODULES test_area
+        examples/test_area/MyTriggerArea.h
         examples/test_area/test_area.cpp
 )
 
