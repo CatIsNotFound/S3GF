@@ -7,6 +7,9 @@ int main() {
     window->show();
     MyTriggerArea area(GeometryF{100.f, 100.f, 100.f, 100.f}, window);
     area.setTriggerKey(SDL_SCANCODE_SPACE);
+    area.setTriggerEvent([] {
+        Logger::log("Area is triggered", Logger::Info);
+    });
     Graphics::Rectangle rect(area.geometry(), 0, {}, StdColor::Yellow);
     window->installPaintEvent([&rect, &area, &window] (Renderer* r) {
         r->fillBackground(StdColor::White);
