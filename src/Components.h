@@ -65,10 +65,10 @@ namespace MyEngine {
         uint32_t _font_outline{};
         SColor _outline_color{};
         Direction _font_direction{};
-        uint32_t _font_hinting{};
         bool _font_kerning{};
-        uint32_t _line_spacing{};
         bool _font_is_loaded{false};
+        uint32_t _font_hinting{};
+        uint32_t _line_spacing{};
     };
 
     using FontMap = std::unordered_map<std::string, std::string>;
@@ -140,9 +140,9 @@ namespace MyEngine {
         void init();
         void load();
         void unload();
-        PlayStatus _play_status;
         std::string _path;
         float _volume{1.f};
+        PlayStatus _play_status;
         bool _muted{false};
         MIX_StereoGains _stereo_gains{1.f, 1.f};
         MIX_Point3D _mix_3d{0.f, 1.f, 1.f};
@@ -161,38 +161,48 @@ namespace MyEngine {
         void setPath(const std::string& path);
         [[nodiscard]] const std::string& path() const;
         [[nodiscard]] bool isLoaded() const;
+        void setDefaultSFX(float volume,
+                           MIX_StereoGains &&stereo_gains = {1.f, 1.f});
+        size_t findFreeIndex();
 
         bool play(bool loop = false, int64_t fade_in_duration = 0);
-        void stop(int64_t fade_out_duration = 0);
-        [[nodiscard]] int64_t position() const;
+        bool play(size_t index);
+        void stop(int64_t fade_out_duration = 0, size_t index = 0);
+        void stopAll(int64_t fade_out_duration = 0);
+        void resetAll();
+        [[nodiscard]] std::optional<int64_t> position(size_t index = 0) const;
         [[nodiscard]] int64_t duration() const;
-        [[nodiscard]] bool isLoop() const;
-        [[nodiscard]] bool isPlaying() const;
-        bool setVolume(float volume);
-        bool setMuted(bool enabled);
-        bool setLRChannel(float left, float right);
-        bool set3DPosition(float x, float y, float z);
-        bool setSpeedAndPitch(float value = 1.0f);
-        [[nodiscard]] bool isMuted() const;
-        [[nodiscard]] float volume() const;
-        [[nodiscard]] const MIX_StereoGains& getLRChannel() const;
-        [[nodiscard]] const MIX_Point3D& get3DPosition() const;
-        [[nodiscard]] float speedAndPitch() const;
+        [[nodiscard]] std::optional<bool> isLoop(size_t index = 0) const;
+        [[nodiscard]] std::optional<bool> isPlaying(size_t index = 0) const;
+        bool setVolume(float volume, size_t index = 0);
+        bool setLRChannel(float left, float right, size_t index = 0);
+        bool set3DPosition(float x, float y, float z, size_t index = 0);
+        bool setSpeedAndPitch(float value, size_t index = 0);
+        [[nodiscard]] std::optional<float> volume(size_t index = 0) const;
+        [[nodiscard]] const std::optional<MIX_StereoGains> getLRChannel(size_t index = 0) const;
+        [[nodiscard]] const std::optional<MIX_Point3D> get3DPosition(size_t index = 0) const;
+        [[nodiscard]] std::optional<float> speedAndPitch(size_t index = 0) const;
         [[nodiscard]] const MIX_Audio* audio() const;
-        [[nodiscard]] const MIX_Track* track() const;
+        [[nodiscard]] const std::optional<MIX_Track*> track(size_t index = 0) const;
+        [[nodiscard]] size_t count() const;
+        [[nodiscard]] size_t playingCount() const;
     private:
         void load();
         void unload();
-        bool _is_load{false}, _is_loop{false}, _is_playing{false};
+        size_t findTrackIndex();
         std::string _path;
+        bool _is_load{false};
         SDL_PropertiesID _prop_id{0};
-        float _volume{1.f};
-        bool _muted{false};
-        MIX_StereoGains _stereo_gains{1.f, 1.f};
-        MIX_Point3D _mix_3d{0.f, 1.f, 1.f};
+        struct Track {
+            MIX_Track* track{nullptr};
+            MIX_StereoGains stereo_gains{1.f, 1.f};
+            MIX_Point3D point_3d{0.f, 1.f, 1.f};
+            float volume{1.f};
+        };
         MIX_Mixer* _mixer;
         MIX_Audio* _audio{nullptr};
-        MIX_Track* _track{nullptr};
+        std::vector<Track> _tracks{};
+        Track _default_track{};
     };
 
     class Renderer;
