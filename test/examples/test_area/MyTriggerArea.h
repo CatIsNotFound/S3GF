@@ -6,6 +6,8 @@
 using namespace MyEngine;
 
 class MyTriggerArea : public TriggerArea {
+    GeometryF _old_geometry{};
+    bool _moving{};
 public:
     explicit MyTriggerArea(const GeometryF& geo, Window* window) : TriggerArea(geo, window) {}
     ~MyTriggerArea() = default;
@@ -13,14 +15,20 @@ public:
 protected:
     void mouseDownEvent(MouseStatus button) override {
         Logger::log(Logger::Info, "Mouse down: {}", EventSystem::mouseStatusName(button));
+        if (button == MouseStatus::Middle) {
+            _old_geometry = geometry();
+            _moving = true;
+        }
     }
 
     void mouseUpEvent(MouseStatus button) override {
         Logger::log(Logger::Info, "Mouse up: {}", EventSystem::mouseStatusName(button));
+        _moving = false;
     }
 
     void mouseMovedEvent(const Vector2& pos, const Vector2& dis) override {
         Logger::log(Logger::Info, "Mouse move: {}, {}", pos, dis);
+        if (_moving) move(_old_geometry.pos + dis);
     }
 
     void mouseMovedInEvent() override {

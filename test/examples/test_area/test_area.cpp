@@ -13,6 +13,7 @@ int main() {
     Graphics::Rectangle rect(area.geometry(), 0, {}, StdColor::Yellow);
     window->installPaintEvent([&rect, &area, &window] (Renderer* r) {
         r->fillBackground(StdColor::White);
+        rect.setGeometry(area.geometry());
         if (!area.isEnabled()) {
             rect.setBackgroundColor(StdColor::LightGray);
         } else if (area.isTriggeredOnArea()) {
@@ -23,7 +24,7 @@ int main() {
             rect.setBackgroundColor(StdColor::Yellow);
         }
         r->drawRectangle(&rect);
-        r->drawDebugText(FMT::format("E: {:08b}", area.events()), {20, 20});
+        r->drawDebugText(FMT::format("area geometry: {}", area.geometry()), {20, 20});
         r->drawDebugText(FMT::format("Finger Count: {}", window->getFingersCount()), {20, 30});
     });
     // Timer timer(3000, [&area] {

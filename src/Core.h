@@ -445,9 +445,9 @@ namespace MyEngine {
         explicit AudioSystem();
         bool load();
         void unload();
-        bool _is_init{false};
         std::vector<MIX_Mixer*> _mixer_list;
         std::unordered_map<std::string, Audio> _audio_map;
+        bool _is_init{false};
     };
 }
 

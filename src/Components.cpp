@@ -1011,38 +1011,93 @@ namespace MyEngine {
         return _is_load;
     }
 
+    void SFX::setDefaultSFX(float volume, MIX_StereoGains &&stereo_gains) {
+        _default_track.volume = volume;
+        _default_track.stereo_gains = std::move(stereo_gains);
+    }
+
+    size_t SFX::findFreeIndex() {
+        return findTrackIndex();
+    }
+
     bool SFX::play(bool loop, int64_t fade_in_duration) {
         if (!_is_load) {
             Logger::log("BGM: Can't play current audio! Current audio is not valid!", Logger::Error);
-            _is_playing = false;
             return false;
         }
-        _prop_id = SDL_CreateProperties();
+        if (_prop_id == 0) _prop_id = SDL_CreateProperties();
         SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_LOOPS_NUMBER, (loop ? -1 : 0));
         SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, fade_in_duration);
-        if (!MIX_PlayTrack(_track, _prop_id)) {
-            Logger::log(FMT::format("BGM: Play audio failed! The file path '{}' is not valid! "
+
+        size_t idx = findTrackIndex();
+        if (idx >= _tracks.size()) {
+            _tracks.emplace_back(_default_track);
+            _tracks.back().track = MIX_CreateTrack(_mixer);
+            MIX_SetTrackAudio(_tracks.back().track, _audio);
+            setVolume(_default_track.volume, _tracks.size() - 1);
+            setLRChannel(_default_track.stereo_gains.left, _default_track.stereo_gains.right,
+                    _tracks.size() - 1);
+        }
+        if (!MIX_PlayTrack(_tracks[idx].track, _prop_id)) {
+            Logger::log(FMT::format("SFX: Play audio failed! The file path '{}' is not valid! "
                                     "Exception: {}", _path, SDL_GetError()), Logger::Error);
             return false;
         }
         return true;
     }
 
-    void SFX::stop(int64_t fade_out_duration) {
-        if (!_is_load) {
-            Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
+    bool SFX::play(size_t index) {
+        if (index >= _tracks.size()) {
+            Logger::log(Logger::Error, "SFX: Play audio failed! Index '{}' is out of range!", index);
+            return false;
         }
-        auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(_track, fade_out_duration) : 0);
-        MIX_StopTrack(_track, ms);
-        _is_playing = false;
+        if (!MIX_PlayTrack(_tracks[index].track, _prop_id)) {
+            Logger::log(FMT::format("SFX: Play audio failed! The file path '{}' is not valid! "
+                                    "Exception: {}", _path, SDL_GetError()), Logger::Error);
+            return false;
+        }
+        return true;
     }
 
-    int64_t SFX::position() const {
+    void SFX::stop(int64_t fade_out_duration, size_t index) {
         if (!_is_load) {
-            Logger::log("BGM: Can't pause current audio! Current audio is not valid!", Logger::Error);
-            return 0;
+            Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
+            return;
         }
-        return MIX_TrackFramesToMS(_track, MIX_GetTrackPlaybackPosition(_track));
+        if (index >= _tracks.size()) return;
+        auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(_tracks[index].track, fade_out_duration) : 0);
+        MIX_StopTrack(_tracks[index].track, ms);
+    }
+
+    void SFX::stopAll(int64_t fade_out_duration) {
+        if (!_is_load) {
+            Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
+            return;
+        }
+        for (auto & track: _tracks) {
+            auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(track.track, fade_out_duration) : 0);
+            MIX_StopTrack(track.track, ms);
+        }
+    }
+
+    void SFX::resetAll() {
+        if (!_is_load) return;
+        size_t i = 0;
+        for (auto& track: _tracks) {
+            MIX_StopTrack(track.track, 0);
+            if (i > 0) MIX_DestroyTrack(track.track);
+            i++;
+        }
+        _tracks.erase(_tracks.begin() + 1, _tracks.end());
+    }
+
+    std::optional<int64_t> SFX::position(size_t index) const {
+        if (!_is_load) {
+            Logger::log("BGM: Can't get current audio! Current audio is not valid!", Logger::Error);
+            return {};
+        }
+        return _tracks.size() <= index ? std::optional<uint64_t>() :
+                    MIX_TrackFramesToMS(_tracks[index].track, MIX_GetTrackPlaybackPosition(_tracks[index].track));
     }
 
     int64_t SFX::duration() const {
@@ -1050,79 +1105,88 @@ namespace MyEngine {
             Logger::log("BGM: Can't pause current audio! Current audio is not valid!", Logger::Error);
             return 0;
         }
-        return MIX_TrackFramesToMS(_track, MIX_GetAudioDuration(_audio));
+        return MIX_TrackFramesToMS(_tracks[0].track, MIX_GetAudioDuration(_audio));
     }
 
-    bool SFX::isLoop() const {
-        return _is_loop;
+    std::optional<bool> SFX::isLoop(size_t index) const {
+        return index >= _tracks.size() ? std::optional<bool>() : MIX_GetTrackLoops(_tracks[index].track) > 0;
     }
 
-    bool SFX::isPlaying() const {
-        return _is_playing;
+    std::optional<bool> SFX::isPlaying(size_t index) const {
+        return index >= _tracks.size() ? std::optional<bool>() : MIX_TrackPlaying(_tracks[index].track);
     }
 
-    bool SFX::setVolume(float volume) {
+    bool SFX::setVolume(float volume, size_t index) {
         auto new_vol = std::clamp(volume, 0.f, 10.f);
-        if (MIX_SetTrackGain(_track, new_vol)) {
-            _volume = new_vol;
+        if (_tracks.size() <= index) return false;
+        if (MIX_SetTrackGain(_tracks[index].track, new_vol)) {
+            _tracks[index].volume = new_vol;
             return true;
         }
         return false;
     }
 
-    bool SFX::setMuted(bool enabled) {
-        if (MIX_SetTrackGain(_track, (enabled ? 0.f : _volume))) {
-            _muted = enabled;
-            return true;
-        }
-        return false;
-    }
-
-    bool SFX::setLRChannel(float left, float right) {
+    bool SFX::setLRChannel(float left, float right, size_t index) {
+        if (_tracks.size() <= index) return false;
+        MIX_StereoGains _stereo_gains;
         _stereo_gains.left  = std::clamp(left, 0.f, 10.f);
         _stereo_gains.right = std::clamp(right, 0.f, 10.f);
-        return MIX_SetTrackStereo(_track, &_stereo_gains);
-    }
-
-    bool SFX::set3DPosition(float x, float y, float z) {
-        _mix_3d = { .x = x, .y = y, .z = z };
-        if (!MIX_SetTrack3DPosition(_track, &_mix_3d)) {
-            Logger::log(FMT::format("BGM::set3DPosition: Failed to set 3D position! Exception: {}", SDL_GetError()), Logger::Warn);
-            return false;
+        if (MIX_SetTrackStereo(_tracks[index].track, &_stereo_gains)) {
+            _tracks[index].stereo_gains = _stereo_gains;
+            return true;
         }
-        return true;
+        return false;
     }
 
-    bool SFX::setSpeedAndPitch(float value) {
-        return MIX_SetTrackFrequencyRatio(_track, value);
+    bool SFX::set3DPosition(float x, float y, float z, size_t index) {
+        MIX_Point3D _mix_3d = { .x = x, .y = y, .z = z };
+        if (_tracks.size() <= index) return false;
+        if (MIX_SetTrack3DPosition(_tracks[index].track, &_mix_3d)) {
+            _tracks[index].point_3d = _mix_3d;
+            return true;
+        }
+        return false;
     }
 
-    float SFX::volume() const {
-        return _volume;
+    bool SFX::setSpeedAndPitch(float value, size_t index) {
+        if (_tracks.size() <= index) return false;
+        return MIX_SetTrackFrequencyRatio(_tracks[index].track, value);
     }
 
-    bool SFX::isMuted() const {
-        return _muted;
+    std::optional<float> SFX::volume(size_t index) const {
+        return _tracks.size() <= index ? std::optional<float>() : _tracks[index].volume;
     }
 
-    const MIX_StereoGains& SFX::getLRChannel() const {
-        return _stereo_gains;
+    const std::optional<MIX_StereoGains> SFX::getLRChannel(size_t index) const {
+        return _tracks.size() <= index ? std::optional<MIX_StereoGains>() : _tracks.at(index).stereo_gains;
     }
 
-    const MIX_Point3D& SFX::get3DPosition() const {
-        return _mix_3d;
+    const std::optional<MIX_Point3D> SFX::get3DPosition(size_t index) const {
+        return _tracks.size() <= index ? std::optional<MIX_Point3D>() : _tracks.at(index).point_3d;
     }
 
-    float SFX::speedAndPitch() const {
-        return MIX_GetTrackFrequencyRatio(_track);
+    std::optional<float> SFX::speedAndPitch(size_t index) const {
+        return _tracks.size() <= index ? std::optional<float>() : MIX_GetTrackFrequencyRatio(_tracks[index].track);
     }
 
     const MIX_Audio* SFX::audio() const {
         return _audio;
     }
 
-    const MIX_Track* SFX::track() const {
-        return _track;
+    const std::optional<MIX_Track*> SFX::track(size_t index) const {
+        return _tracks.size() <= index ? std::optional<MIX_Track*>() : _tracks.at(index).track;
+    }
+
+    size_t SFX::count() const {
+        return _tracks.size();
+    }
+
+    size_t SFX::playingCount() const {
+        size_t cnt = 0;
+        for (auto& track: _tracks) {
+            if (MIX_TrackPlaying(track.track)) cnt++;
+        }
+        return cnt;
     }
 
     void SFX::load() {
@@ -1134,27 +1198,34 @@ namespace MyEngine {
             _is_load = false;
             return;
         }
-        _track = MIX_CreateTrack(_mixer);
-        if (!_track) {
-            Logger::log(FMT::format("BGM: Create audio track failed! Exception: {}"
-                    , SDL_GetError()), Logger::Error);
+        if (_tracks.empty()) _tracks.push_back(Track());
+        if (_tracks[0].track) MIX_DestroyTrack(_tracks[0].track);
+        _tracks[0].track = MIX_CreateTrack(_mixer);
+        if (!_tracks[0].track) {
+            Logger::log(Logger::Error, "BGM: Create audio track failed! Exception: {}", SDL_GetError());
             _is_load = false;
+            _tracks.clear();
             return;
         }
-        if (!MIX_SetTrackAudio(_track, _audio)) {
+        if (!MIX_SetTrackAudio(_tracks[0].track, _audio)) {
             Logger::log(FMT::format("BGM: The specified file path '{}' can not set as audio track! Exception: {}",
                                     _path, SDL_GetError()), Logger::Error);
             _is_load = false;
+            MIX_DestroyTrack(_tracks[0].track);
+            _tracks[0].track = nullptr;
             return;
         }
         _is_load = true;
     }
 
     void SFX::unload() {
-        if (_track) {
-            MIX_DestroyTrack(_track);
-            _track = nullptr;
+        for (auto& track: _tracks) {
+            if (track.track) {
+                MIX_DestroyTrack(track.track);
+                track.track = nullptr;
+            }
         }
+        _tracks.clear();
         if (_audio) {
             MIX_DestroyAudio(_audio);
             _audio = nullptr;
@@ -1162,6 +1233,15 @@ namespace MyEngine {
         SDL_DestroyProperties(_prop_id);
         _prop_id = 0;
         _is_load = false;
+    }
+
+    size_t SFX::findTrackIndex() {
+        for (size_t index = 0; index < _tracks.size(); index++) {
+            if (!MIX_TrackPlaying(_tracks[index].track)) {
+                return index;
+            }
+        }
+        return _tracks.size();
     }
 
     TriggerArea::TriggerArea(GeometryF geometry, Window *window) :
@@ -1187,32 +1267,35 @@ namespace MyEngine {
                 }
             }
             // Mouse Event
-            auto button = EventSystem::global()->captureMouseStatus();
-            if (button == MouseStatus::None) {
-                if (_events & Status_MouseButtonDown) {
-                    _events ^= Status_MouseButtonDown;
-                    mouseUpEvent(_last_mouse_status);
-                    if (is_on_area >= 0) {
-                        mouseClickedEvent(_last_mouse_status);
-                        _events |= Status_TriggeredArea;
-                        if (_callback) _callback();
+            if (e.type == SDL_EVENT_MOUSE_BUTTON_UP || e.type == SDL_EVENT_MOUSE_BUTTON_DOWN ||
+                e.type == SDL_EVENT_MOUSE_MOTION) {
+                auto button = EventSystem::global()->captureMouseStatus();
+                if (button == MouseStatus::None) {
+                    if (_events & Status_MouseButtonDown) {
+                        _events ^= Status_MouseButtonDown;
+                        mouseUpEvent(_last_mouse_status);
+                        if (is_on_area >= 0) {
+                            mouseClickedEvent(_last_mouse_status);
+                            _events |= Status_TriggeredArea;
+                            // if (_callback) _callback();
+                        }
+                        if (_events & Status_OnArea) _events ^= Status_OnArea;
                     }
-                    if (_events & Status_OnArea) _events ^= Status_OnArea;
-                }
-            } else if (!(_events & Status_MouseButtonDown) && is_on_area >= 0) {
-                _events |= Status_MouseButtonDown;
-                _events |= Status_OnArea;
-                mouseDownEvent(button);
-                _last_mouse_status = button;
-            } else if (_events & Status_MouseButtonDown) {
-                mouseMovedEvent(mouse_cur,
-                                EventSystem::global()->captureMouseAbsDistance());
-                if (is_on_area >= 0) {
+                } else if (!(_events & Status_MouseButtonDown) && is_on_area >= 0) {
+                    _events |= Status_MouseButtonDown;
                     _events |= Status_OnArea;
-                    mouseMovedInEvent();
-                } else if (_events & Status_OnArea) {
-                    _events ^= Status_OnArea;
-                    mouseMovedOutEvent();
+                    mouseDownEvent(button);
+                    _last_mouse_status = button;
+                } else if (_events & Status_MouseButtonDown) {
+                    mouseMovedEvent(mouse_cur,
+                                    EventSystem::global()->captureMouseAbsDistance());
+                    if (is_on_area >= 0 && !(_events & Status_OnArea)) {
+                        _events |= Status_OnArea;
+                        mouseMovedInEvent();
+                    } else if (is_on_area < 0 && (_events & Status_OnArea)) {
+                        _events ^= Status_OnArea;
+                        mouseMovedOutEvent();
+                    }
                 }
             }
             // Finger Event
@@ -1365,6 +1448,4 @@ namespace MyEngine {
     void TriggerArea::fingerMovedInEvent() {}
 
     void TriggerArea::fingerMovedOutEvent() {}
-
-
 }

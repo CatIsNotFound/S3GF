@@ -78,6 +78,10 @@ addModule(TEST_MODULES test_area
         examples/test_area/test_area.cpp
 )
 
+addModule(TEST_MODULES test_SFX
+        examples/test_SFX/test_SFX.cpp
+)
+
 #addModule(TEST_MODULES test_audio_system
 #        core/AudioSystem/test_audio_system.cpp
 #)
