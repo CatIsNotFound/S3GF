@@ -7,7 +7,7 @@ int main() {
     auto window = new Window(&engine, "Test sound effect");
     window->show();
     window->renderer()->setVSyncMode(Renderer::Enabled);
-    SFX sfx(AudioSystem::global()->mixer(), FileSystem::getAbsolutePath("./assets/bell2.wav"));
+    SFX sfx(AudioSystem::global()->mixer(), FileSystem::getAbsolutePath("./assets/Samples/bell2.wav"));
     Graphics::Rectangle rect, rect2;
     TriggerArea area(GeometryF{100, 100, 100, 100}, window),
                 area2(GeometryF(220, 100, 100, 100), window);
@@ -30,11 +30,17 @@ int main() {
     area2.setTriggerEvent([&sfx] { sfx.resetAll(); });
     area2.setTriggerKey(SDL_SCANCODE_ESCAPE);
     window->installPaintEvent([&](Renderer* r) {
+        if (area.isOnArea()) {
+            rect.setBackgroundColor(RGBAColor::RedOrange);
+        } else {
+            rect.setBackgroundColor(RGBAColor::MixYellow);
+        }
+        rect2.setBackgroundColor(area2.isOnArea() ? RGBAColor::MixPurple : RGBAColor::BlueBaby);
         r->drawRectangle(&rect);
         r->drawRectangle(&rect2);
         r->drawDebugFPS();
         r->drawDebugText(FMT::format("Playing count: {}, Count: {}", sfx.playingCount(), sfx.count()), {20, 30});
-        r->drawDebugText(FMT::format("Memory: {:.2f} MB", SysMemory::getCurProcUsedMemSize() / 1024.f), {20, 40});
+        r->drawDebugText(FMT::format("Memory: {:.2f} MB", (float)SysMemory::getCurProcUsedMemSize() / 1024.f), {20, 40});
     });
 
     return engine.exec();

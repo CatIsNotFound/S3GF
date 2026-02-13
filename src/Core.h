@@ -259,9 +259,11 @@ namespace MyEngine {
         static EventSystem* global();
         void appendEvent(uint64_t id, const std::function<void(SDL_Event)>& event);
         void removeEvent(uint64_t id);
+        bool isEventExist(uint64_t id);
 
         void appendGlobalEvent(uint64_t g_id, const std::function<void()>& event);
         void removeGlobalEvent(uint64_t g_id);
+        bool isGlobalEventExist(uint64_t g_id);
 
         [[nodiscard]] size_t eventCount() const;
         [[nodiscard]] size_t globalEventCount() const;

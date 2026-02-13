@@ -1708,16 +1708,16 @@ namespace MyEngine {
         class Point {
         private:
             void update() {
-                _count = std::min(64, std::max(4, static_cast<int>(M_PI * _size / 2)));
+                _count = std::min(36, std::max(4, static_cast<int>(M_PI * _size / 2)));
                 Algorithm::calcPoint(_position, static_cast<float>(_size) / 2.f,
                                            _color, _vertices, _indices, _count);
             }
             Vector2 _position;
             uint16_t _size;
             SDL_Color _color;
+            uint16_t _count{32};
             std::vector<SDL_Vertex> _vertices;
             std::vector<int> _indices;
-            uint16_t _count{32};
         public:
             explicit Point() : _position(0, 0), _size(1), _color(StdColor::LightGray), _count(32) { update(); }
             Point(float x, float y, uint16_t size = 1, const SDL_Color& color = StdColor::LightGray,
@@ -1919,7 +1919,7 @@ namespace MyEngine {
                 updateBorderGeometry();
             }
 
-            [[nodiscard]] float rotate() const { return _rotate; }
+            [[nodiscard]] float rotation() const { return _rotate; }
 
             void setGeometry(float x, float y, float w, float h) {
                 _geometry.setGeometry(x, y, w, h);
@@ -1934,7 +1934,8 @@ namespace MyEngine {
             }
 
             [[nodiscard]] const GeometryF& geometry() const { return _geometry; }
-
+            [[nodiscard]] const Vector2& position() const { return _geometry.pos; }
+            [[nodiscard]] const Size& size() const { return _geometry.size; }
             [[nodiscard]] const SDL_Vertex* vertices() const { return _vertices.data(); }
             [[nodiscard]] size_t verticesCount() const { return _vertices.size(); }
             [[nodiscard]] const int* indices() const { return _indices.data(); }
@@ -2079,9 +2080,9 @@ namespace MyEngine {
             Vector2 _p1;
             Vector2 _p2;
             Vector2 _p3;
-            uint16_t _border_size;
             SDL_Color _border_color;
             SDL_Color _background_color;
+            uint16_t _border_size;
             std::array<SDL_Vertex, 3> _vertices{};
             std::array<int, 3> _indices{};
             std::array<SDL_Vertex, 4> _bd1{};
@@ -2093,16 +2094,25 @@ namespace MyEngine {
         };
 
         class Ellipse {
+            Vector2 _center_point;
+            Size _size;
+            uint16_t _border_size;
+            SDL_Color _border_color;
+            SDL_Color _background_color;
+            uint16_t _count;
+            float _degree;
+            std::vector<SDL_Vertex> _vertices, _border_vertices;
+            std::vector<int> _indices, _border_indices;
         public:
-            explicit Ellipse() : _center_point(0, 0), _radius(0, 0),
+            explicit Ellipse() : _center_point(0, 0), _size(0, 0),
                                  _border_size(0), _border_color(StdColor::DarkGray),
                                  _background_color(StdColor::LightGray), _degree(0.f), _count(0) {}
 
-            Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,
+            explicit Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,
                     const SDL_Color& border_color = StdColor::DarkGray,
                     const SDL_Color& back_color = StdColor::LightGray,
                     float degree = 0.f, uint16_t segment = 32)
-                    : _center_point(cx, cy), _radius(rw, rh), _border_size(border_size),
+                    : _center_point(cx, cy), _size(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),
                       _degree(degree), _count(segment) {
                 updateFilledEllipse();
@@ -2113,7 +2123,7 @@ namespace MyEngine {
                        const SDL_Color& border_color, const SDL_Color& back_color, float degree,
                        uint16_t segment = 32) {
                 _center_point.reset(cx, cy);
-                _radius.reset(rw, rh);
+                _size.reset(rw, rh);
                 _border_size = border_size;
                 _border_color = border_color;
                 _background_color = back_color;
@@ -2127,7 +2137,7 @@ namespace MyEngine {
                        const SDL_Color& border_color, const SDL_Color& back_color, float degree,
                        uint16_t segment = 32) {
                 _center_point.reset(center_pos);
-                _radius.reset(radius);
+                _size.reset(radius);
                 _border_size = border_size;
                 _border_color = border_color;
                 _background_color = back_color;
@@ -2139,14 +2149,38 @@ namespace MyEngine {
 
             void setGeometry(float x, float y, float rw, float rh) {
                 _center_point.reset(x, y);
-                _radius.reset(rw, rh);
+                _size.reset(rw, rh);
                 updateFilledEllipse();
                 updateEllipse();
             }
 
             void setGeometry(const Vector2& position, const Size& size) {
                 _center_point.reset(position);
-                _radius.reset(size);
+                _size.reset(size);
+                updateFilledEllipse();
+                updateEllipse();
+            }
+
+            void move(float x, float y) {
+                _center_point.reset(x, y);
+                updateFilledEllipse();
+                updateEllipse();
+            }
+
+            void move(const Vector2& pos) {
+                _center_point.reset(pos);
+                updateFilledEllipse();
+                updateEllipse();
+            }
+
+            void resize(float w, float h) {
+                _size.reset(w, h);
+                updateFilledEllipse();
+                updateEllipse();
+            }
+
+            void resize(const Size& size) {
+                _size.reset(size);
                 updateFilledEllipse();
                 updateEllipse();
             }
@@ -2178,11 +2212,11 @@ namespace MyEngine {
             }
 
             [[nodiscard]] const Vector2& centerPosition() const { return _center_point; }
-            [[nodiscard]] const Size& radius() const { return _radius; }
+            [[nodiscard]] const Size& size() const { return _size; }
             [[nodiscard]] uint16_t borderSize() const { return _border_size; }
             [[nodiscard]] const SDL_Color& borderColor() const { return _border_color; }
             [[nodiscard]] const SDL_Color& backgroundColor() const { return _background_color; }
-            [[nodiscard]] float rotateDegree() const { return _degree; }
+            [[nodiscard]] float rotation() const { return _degree; }
             [[nodiscard]] const int *indices() const { return _indices.data(); }
             [[nodiscard]] const SDL_Vertex *vertices() const { return _vertices.data(); }
             [[nodiscard]] size_t indicesCount() const { return _indices.size(); }
@@ -2194,28 +2228,17 @@ namespace MyEngine {
 
         private:
             void updateFilledEllipse() {
-                // if (_background_color.a > 0) {
-                    Algorithm::calcEllipse(_center_point, _radius,
-                                                     _background_color, _degree, _count,
-                                                     _vertices, _indices);
-                // }
+                auto radius = std::max(std::fabs(_size.width), std::fabs(_size.height));
+                _count = std::clamp(static_cast<int>(3 * std::sqrt(radius)), 8, 256);
+                Algorithm::calcEllipse(_center_point, _size,
+                                     _background_color, _degree, _count,
+                                     _vertices, _indices);
             }
             void updateEllipse() {
-                // if (_border_size > 0 && _border_color.a > 0) {
-                    Algorithm::calcEllipseRing(_center_point, _radius, _border_size,
-                                                         _border_color, _degree, _count,
-                                                         _border_vertices, _border_indices);
-                // }
+                Algorithm::calcEllipseRing(_center_point, _size, _border_size,
+                                     _border_color, _degree, _count,
+                                     _border_vertices, _border_indices);
             }
-            Vector2 _center_point;
-            Size _radius;
-            uint16_t _border_size;
-            SDL_Color _border_color;
-            SDL_Color _background_color;
-            float _degree;
-            uint16_t _count{32};
-            std::vector<SDL_Vertex> _vertices, _border_vertices;
-            std::vector<int> _indices, _border_indices;
         };
     }
 }

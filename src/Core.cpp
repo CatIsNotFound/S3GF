@@ -626,6 +626,10 @@ namespace MyEngine {
         }
     }
 
+    bool EventSystem::isEventExist(uint64_t id) {
+        return _event_list.contains(id);
+    }
+
     void EventSystem::appendGlobalEvent(uint64_t g_id, const std::function<void()>& event) {
         if (_global_event_list.contains(g_id)) {
             Logger::log(Logger::Warn, "EventSystem: The global event with ID {} is already exists! It will overwrite it!", g_id);
@@ -644,6 +648,10 @@ namespace MyEngine {
         } else {
             Logger::log(Logger::Warn, "EventSystem: The global event with ID {} is not found!", g_id);
         }
+    }
+
+    bool EventSystem::isGlobalEventExist(uint64_t g_id) {
+        return _global_event_list.contains(g_id);
     }
 
     size_t EventSystem::eventCount() const { return _event_list.size(); }

@@ -64,22 +64,42 @@ addModule(TEST_MODULES test_simple
 )
 
 addModule(TEST_MODULES test_window
-        examples/test_window/MyWindow.h
-        examples/test_window/MyWindow.cpp
-        examples/test_window/test_window.cpp
+        examples/Window/MyWindow.h
+        examples/Window/MyWindow.cpp
+        examples/Window/test_window.cpp
 )
 
 addModule(TEST_MODULES test_renderer
-        examples/test_renderer/test_renderer.cpp
+        examples/Renderer/test_renderer.cpp
+)
+
+addModule(TEST_MODULES test_point
+        examples/Graphics/test_point.cpp
+)
+
+addModule(TEST_MODULES test_line
+        examples/Graphics/test_line.cpp
+)
+
+addModule(TEST_MODULES test_rect
+        examples/Graphics/test_rect.cpp
+)
+
+addModule(TEST_MODULES test_ellipse
+        examples/Graphics/test_ellipse.cpp
 )
 
 addModule(TEST_MODULES test_area
-        examples/test_area/MyTriggerArea.h
-        examples/test_area/test_area.cpp
+        examples/TriggerArea/MyTriggerArea.h
+        examples/TriggerArea/test_area.cpp
 )
 
 addModule(TEST_MODULES test_SFX
-        examples/test_SFX/test_SFX.cpp
+        examples/SFX/test_SFX.cpp
+)
+
+addModule(TEST_MODULES VirtualDrums
+        examples/SFX/VirtualDrums.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

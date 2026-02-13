@@ -65,7 +65,7 @@ namespace MyEngine {
         }
 
         inline int8_t comparePosInRotatedRect(const Vector2& vec, const Graphics::Rectangle& rect) {
-            auto rotate_deg = static_cast<float>(rect.rotate());
+            auto rotate_deg = static_cast<float>(rect.rotation());
             if (fabsf(fmodf(rotate_deg, 180.f)) == 0.f) return comparePosInRect(vec, rect);
 
             float left = rect.geometry().pos.x;
@@ -141,8 +141,8 @@ namespace MyEngine {
         }
 
         inline int8_t compareRotatedRects(const Graphics::Rectangle& rect1, const Graphics::Rectangle& rect2) {
-            auto rotate_deg_1 = static_cast<float>(rect1.rotate());
-            auto rotate_deg_2 = static_cast<float>(rect2.rotate());
+            auto rotate_deg_1 = static_cast<float>(rect1.rotation());
+            auto rotate_deg_2 = static_cast<float>(rect2.rotation());
             const bool NO_ROTATE_1 = (fabsf(fmodf(rotate_deg_1, 180.f)) == 0.f);
             const bool NO_ROTATE_2 = (fabsf(fmodf(rotate_deg_2, 180.f)) == 0.f);
             if (NO_ROTATE_1 && NO_ROTATE_2)
