@@ -1235,7 +1235,7 @@ namespace MyEngine {
         _is_load = false;
     }
 
-    size_t SFX::findTrackIndex() {
+    size_t SFX::findTrackIndex() const {
         for (size_t index = 0; index < _tracks.size(); index++) {
             if (!MIX_TrackPlaying(_tracks[index].track)) {
                 return index;
@@ -1261,7 +1261,7 @@ namespace MyEngine {
                         keyUpEvent(e.key.scancode);
                         keyPressedEvent(e.key.scancode);
                     }
-                } else {
+                } else if (!e.key.repeat) {
                     _events |= Status_KeyboardPressedDown;
                     keyDownEvent(e.key.scancode);
                 }
@@ -1335,9 +1335,7 @@ namespace MyEngine {
         });
     }
 
-    TriggerArea::~TriggerArea() {
-        EventSystem::global()->removeEvent(_event_id);
-    }
+    TriggerArea::~TriggerArea() = default;
 
     void TriggerArea::setGeometry(float x, float y, float w, float h) {
         _geometry.setGeometry(x, y, w, h);

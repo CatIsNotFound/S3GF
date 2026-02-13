@@ -10,7 +10,10 @@
 namespace MyEngine {
     namespace Algorithm {
         inline SDL_FColor convert2FColor(const SDL_Color &color) {
-            return {color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f};
+            return {static_cast<float>(color.r) / 255.f,
+                static_cast<float>(color.g) / 255.f,
+                static_cast<float>(color.b) / 255.f,
+                static_cast<float>(color.a) / 255.f};
         }
 
         inline SDL_Color convert2Color(const SDL_FColor &color) {
@@ -83,8 +86,8 @@ namespace MyEngine {
             const float THICKNESS = border_size;
             const float X = geometry.pos.x;
             const float Y = geometry.pos.y;
-            const float W = geometry.size.width;
-            const float H = geometry.size.height;
+            const float W = std::fabs(geometry.size.width);
+            const float H = std::fabs(geometry.size.height);
             borders[0] = {X, Y, W, THICKNESS };
             borders[1] = {X, Y + H - THICKNESS, W, THICKNESS };
             borders[2] = {X, Y + THICKNESS, THICKNESS, H - 2 * THICKNESS };
@@ -112,7 +115,7 @@ namespace MyEngine {
                 float x = local[i].x;
                 float y = local[i].y;
 
-                float rad = degree * M_PI / 180.0f;
+                auto rad = static_cast<float>(degree * M_PI / 180.0f);
                 float c = cosf(rad);
                 float s = sinf(rad);
 
@@ -129,7 +132,7 @@ namespace MyEngine {
                                          std::array<SDL_Vertex, 8>& vertices, std::array<int, 24>& indices) {
             // if (size == 0) return;
             if (size % 2) size += 1;
-            float cx = geometry.pos.x + geometry.size.width  * 0.5f;
+            float cx = geometry.pos.x + geometry.size.width * 0.5f;
             float cy = geometry.pos.y + geometry.size.height * 0.5f;
             float hw = geometry.size.width  * 0.5f;
             float hh = geometry.size.height * 0.5f;
@@ -151,7 +154,7 @@ namespace MyEngine {
 
             SDL_FColor fcolor = convert2FColor(color);
 
-            float rad = degree * M_PI / 180.0f;
+            auto rad = static_cast<float>(degree * M_PI / 180.f);
             float c = cosf(rad), s = sinf(rad);
 
             for (int i = 0; i < 4; ++i) {
@@ -200,7 +203,7 @@ namespace MyEngine {
             vertices.clear();
             indices.clear();
             auto colorF = convert2FColor(color);
-            float rot = degree * M_PI / 180.f;
+            auto rot = static_cast<float>(degree * M_PI / 180.f);
             float cosRot = cosf(rot), sinRot = sinf(rot);
 
             vertices.resize(segment + 2);
@@ -224,18 +227,19 @@ namespace MyEngine {
         inline void calcEllipseRing(const Vector2& center_pt, const Size& radius, uint16_t border_size,
                                     const SDL_Color& border_color, float degree, uint16_t segment,
                                     std::vector<SDL_Vertex>& vertices, std::vector<int>& indices) {
-            float rx2 = radius.width - border_size, ry2 = radius.height - border_size;
+            float rx2 = std::fabs(radius.width) - static_cast<float>(border_size);
+            float ry2 = std::fabs(radius.height) - static_cast<float>(border_size);
             if (rx2 <= 0 || ry2 <= 0) return;
             auto colorF = convert2FColor(border_color);
             vertices.clear();
             indices.clear();
 
-            float rot = degree * M_PI / 180.f;
+            auto rot = static_cast<float>(degree * M_PI / 180.f);
             float cosR = cosf(rot), sinR = sinf(rot);
 
             vertices.reserve((segment + 1) * 2);
             for (int i = 0; i <= segment; ++i) {
-                float theta = 2.f * M_PI * i / segment;
+                auto theta = static_cast<float>(2.f * M_PI * i / segment);
                 float ex = radius.width * cosf(theta);
                 float ey = radius.height * sinf(theta);
                 float ix = rx2 * cosf(theta);

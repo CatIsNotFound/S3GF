@@ -189,7 +189,7 @@ namespace MyEngine {
     private:
         void load();
         void unload();
-        size_t findTrackIndex();
+        size_t findTrackIndex() const;
         std::string _path;
         bool _is_load{false};
         SDL_PropertiesID _prop_id{0};

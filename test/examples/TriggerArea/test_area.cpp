@@ -10,6 +10,13 @@ int main() {
     area.setTriggerEvent([] {
         Logger::log("Area is triggered", Logger::Info);
     });
+    MyTriggerArea area2(GeometryF{200.f, 100.f, 100.f, 100.f}, window);
+    area2.setTriggerKey(SDL_SCANCODE_2);
+    area2.setTriggerEvent([] {
+        Logger::log("Area 2 is triggered", Logger::Info);
+    });
+
+
     Graphics::Rectangle rect(area.geometry(), 0, {}, StdColor::Yellow);
     window->installPaintEvent([&rect, &area, &window] (Renderer* r) {
         r->fillBackground(StdColor::White);
