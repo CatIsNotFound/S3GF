@@ -261,7 +261,7 @@ namespace MyEngine {
             this->height = height;
         }
 
-        Geometry operator+(const Geometry& geo) {
+        Geometry operator+(const Geometry& geo) const {
             Geometry _out = *this;
             _out.x += geo.x;
             _out.y += geo.y;
@@ -270,7 +270,7 @@ namespace MyEngine {
             return _out;
         }
 
-        Geometry operator-(const Geometry& geo) {
+        Geometry operator-(const Geometry& geo) const {
             Geometry _out = *this;
             _out.x -= geo.x;
             _out.y -= geo.y;
@@ -279,7 +279,7 @@ namespace MyEngine {
             return _out;
         }
 
-        Geometry operator*(const Geometry& geo) {
+        Geometry operator*(const Geometry& geo) const {
             Geometry _out = *this;
             _out.x *= geo.x;
             _out.y *= geo.y;
@@ -288,7 +288,7 @@ namespace MyEngine {
             return _out;
         }
 
-        Geometry operator/(const Geometry& geo) {
+        Geometry operator/(const Geometry& geo) const {
             Geometry _out = *this;
             if (geo.x) _out.x /= geo.x;
             if (geo.y) _out.y /= geo.y;
@@ -619,28 +619,28 @@ namespace MyEngine {
             this->size.height = height;
         }
 
-        GeometryF operator+(const GeometryF& geometry) {
+        GeometryF operator+(const GeometryF& geometry) const {
             GeometryF _out;
             _out.pos.reset(this->pos + geometry.pos);
             _out.size.reset(this->size + geometry.size);
             return _out;
         }
 
-        GeometryF operator-(const GeometryF& geometry) {
+        GeometryF operator-(const GeometryF& geometry) const {
             GeometryF _out;
             _out.pos.reset(this->pos - geometry.pos);
             _out.size.reset(this->size - geometry.size);
             return _out;
         }
 
-        GeometryF operator*(const GeometryF& geometry) {
+        GeometryF operator*(const GeometryF& geometry) const {
             GeometryF _out;
             _out.pos.reset(this->pos * geometry.pos);
             _out.size.reset(this->size * geometry.size);
             return _out;
         }
 
-        GeometryF operator/(const GeometryF& geometry) {
+        GeometryF operator/(const GeometryF& geometry) const {
             GeometryF _out;
             _out.pos.reset(geometry.pos / this->pos);
             _out.size.reset(geometry.size / this->size);
@@ -668,7 +668,10 @@ namespace MyEngine {
      * \endif
      */
     inline Geometry toGeometryInt(const GeometryF& geo) {
-        return {(int)geo.pos.x, (int)geo.pos.y, (int)geo.size.width, (int)geo.size.height};
+        return {static_cast<int>(geo.pos.x),
+               static_cast<int>(geo.pos.y),
+               static_cast<int>(geo.size.width),
+               static_cast<int>(geo.size.height)};
     }
     
     /**
@@ -679,7 +682,8 @@ namespace MyEngine {
      * \endif
      */
     inline GeometryF toGeometryFloat(const Geometry& geo) {
-        return GeometryF((float)geo.x, (float)geo.y, (float)geo.width, (float)geo.height);
+        return GeometryF(static_cast<float>(geo.x), static_cast<float>(geo.y),
+                      static_cast<float>(geo.width), static_cast<float>(geo.height));
     }
 
     /**
@@ -699,8 +703,8 @@ namespace MyEngine {
         uint32_t _col;
         std::function<void(T &)> _deleter;
     public:
-        using iterator = typename std::vector<T>::iterator;
-        using constIterator = typename std::vector<T>::const_iterator;
+        using iterator = std::vector<T>::iterator;
+        using constIterator = std::vector<T>::const_iterator;
 
         /**
          * \if EN
@@ -1102,8 +1106,8 @@ namespace MyEngine {
         /**
          * \if EN
          * @brief Extracts a specified range of columns from a matrix
-         * @param start_row Starting column
-         * @param end_row Ending column
+         * @param start_col Starting column
+         * @param end_col Ending column
          * @return Returns all columns of the matrix within the `[start_row, end_row)` range
          * \endif
          */
@@ -1761,7 +1765,7 @@ namespace MyEngine {
                           const SDL_Color &color = StdColor::LightGray)
                 : _start_position(start), _end_position(end), _size(size), _color(color) {update();}
 
-            const int *indices() { return _indices.data(); }
+            const int *indices() const { return _indices.data(); }
             const SDL_Vertex *vertices() { return _vertices.data(); }
             [[nodiscard]] size_t indicesCount() const { return _indices.size(); }
             [[nodiscard]] size_t vertexCount() const { return _vertices.size(); }
@@ -2016,6 +2020,7 @@ namespace MyEngine {
                     case 2:
                         _p3.reset(pos);
                         break;
+                    default: ;
                 }
                 updateTri();
                 updateBorder();
@@ -2043,46 +2048,43 @@ namespace MyEngine {
                         return _p2;
                     case 2:
                         return _p3;
+                    default: ;
                 }
                 return _p1;
             }
             [[nodiscard]] uint16_t borderSize() const { return _border_size; }
             [[nodiscard]] const SDL_Color& borderColor() const { return _border_color; }
             [[nodiscard]] const SDL_Color& backgroundColor() const { return _background_color; }
-            const int *indices() { return _indices.data(); }
-            const SDL_Vertex *vertices() { return _vertices.data(); }
-            const int *borderIndices1() { return _bdi1.data(); }
-            const int *borderIndices2() { return _bdi2.data(); }
-            const int *borderIndices3() { return _bdi3.data(); }
-            const SDL_Vertex *borderVertices1() { return _bd1.data(); }
-            const SDL_Vertex *borderVertices2() { return _bd2.data(); }
-            const SDL_Vertex *borderVertices3() { return _bd3.data(); }
+            [[nodiscard]] const int *indices() const { return _indices.data(); }
+            [[nodiscard]] const SDL_Vertex *vertices() const { return _vertices.data(); }
+            [[nodiscard]] const int *borderIndices1() const { return _bdi1.data(); }
+            [[nodiscard]] const int *borderIndices2() const { return _bdi2.data(); }
+            [[nodiscard]] const int *borderIndices3() const { return _bdi3.data(); }
+            [[nodiscard]] const SDL_Vertex *borderVertices1() const { return _bd1.data(); }
+            [[nodiscard]] const SDL_Vertex *borderVertices2() const { return _bd2.data(); }
+            [[nodiscard]] const SDL_Vertex *borderVertices3() const { return _bd3.data(); }
             [[nodiscard]] size_t borderIndicesCount() const { return _bdi1.size(); }
             [[nodiscard]] size_t borderVerticesCount() const { return _bd1.size(); }
             [[nodiscard]] size_t indicesCount() const { return _indices.size(); }
             [[nodiscard]] size_t vertexCount() const { return _vertices.size(); }
         private:
             void updateTri() {
-                // if (_background_color.a > 0) {
-                    Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
-                // }
+                Algorithm::calcTriangle(_p1, _p2, _p3, _background_color, _vertices, _indices);
             }
             void updateBorder() {
-                // if (_border_size > 0 && _border_color.a > 0) {
-                    Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size,
-                                        _border_color, _bd1, _bdi1);
-                    Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size,
-                                        _border_color, _bd2, _bdi2);
-                    Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size,
-                                        _border_color, _bd3, _bdi3);
-                // }
+                Algorithm::calcLine(_p1.x, _p1.y, _p2.x, _p2.y, _border_size,
+                                    _border_color, _bd1, _bdi1);
+                Algorithm::calcLine(_p2.x, _p2.y, _p3.x, _p3.y, _border_size,
+                                    _border_color, _bd2, _bdi2);
+                Algorithm::calcLine(_p1.x, _p1.y, _p3.x, _p3.y, _border_size,
+                                    _border_color, _bd3, _bdi3);
             }
             Vector2 _p1;
             Vector2 _p2;
             Vector2 _p3;
+            uint16_t _border_size;
             SDL_Color _border_color;
             SDL_Color _background_color;
-            uint16_t _border_size;
             std::array<SDL_Vertex, 3> _vertices{};
             std::array<int, 3> _indices{};
             std::array<SDL_Vertex, 4> _bd1{};
@@ -2106,7 +2108,7 @@ namespace MyEngine {
         public:
             explicit Ellipse() : _center_point(0, 0), _size(0, 0),
                                  _border_size(0), _border_color(StdColor::DarkGray),
-                                 _background_color(StdColor::LightGray), _degree(0.f), _count(0) {}
+                                 _background_color(StdColor::LightGray), _count(0), _degree(0.f) {}
 
             explicit Ellipse(float cx, float cy, float rw, float rh, uint16_t border_size = 1,
                     const SDL_Color& border_color = StdColor::DarkGray,
@@ -2114,7 +2116,7 @@ namespace MyEngine {
                     float degree = 0.f, uint16_t segment = 32)
                     : _center_point(cx, cy), _size(rw, rh), _border_size(border_size),
                       _border_color(border_color), _background_color(back_color),
-                      _degree(degree), _count(segment) {
+                      _count(segment), _degree(degree) {
                 updateFilledEllipse();
                 updateEllipse();
             }

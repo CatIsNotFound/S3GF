@@ -89,6 +89,14 @@ addModule(TEST_MODULES test_ellipse
         examples/Graphics/test_ellipse.cpp
 )
 
+addModule(TEST_MODULES test_circle
+        examples/Graphics/test_circle.cpp
+)
+
+addModule(TEST_MODULES ImageViewer
+        examples/Graphics/test_image.cpp
+)
+
 addModule(TEST_MODULES test_area
         examples/TriggerArea/MyTriggerArea.h
         examples/TriggerArea/test_area.cpp

@@ -185,7 +185,7 @@ namespace MyEngine::Widget {
             return;
         }
         if (!_bg_img) {
-            _bg_img = std::make_unique<Texture>(surface, render(), !delete_later);
+            _bg_img = std::make_unique<Texture>(std::move(surface), render(), !delete_later);
             _visible_img = (_bg_img != nullptr);
             _visible_bg = (!_bg_img);
             auto img_geo = _GET_PROPERTY_PTR(this, ENGINE_PROP_BACKGROUND_IMAGE_ORIGINAL_SIZE, Size);
@@ -328,7 +328,7 @@ namespace MyEngine::Widget {
                 }
                 if (!self->isNull()) {
                     auto _p = static_cast<SDL_Surface*>(self->toPointer());
-                    _bg_img->setImageFromSurface(_p,
+                    _bg_img->setImageFromSurface(std::move(_p),
                          !(_changer_signal & ENGINE_SIGNAL_LABEL_BACKGROUND_IMAGE_NEED_DELETE));
                     setProperty(ENGINE_PROP_BACKGROUND_IMAGE_SELF);
                     is_changed_img = true;

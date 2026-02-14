@@ -379,20 +379,20 @@ namespace MyEngine {
 
     class Texture {
     public:
-        Texture(const Texture &) = delete;
         Texture(Texture &&) = delete;
         Texture &operator=(const Texture &) = delete;
         Texture &operator=(Texture &&) = delete;
         explicit Texture(const std::string &path, Renderer *renderer);
-        explicit Texture(SDL_Surface* surface, Renderer *renderer, bool deep_copy = false);
+        explicit Texture(SDL_Surface*&& surface, Renderer *renderer, bool deep_copy = false);
         explicit Texture(Renderer* renderer, SDL_PixelFormat format, int width, int height, SDL_TextureAccess access);
-        ~Texture();
+        explicit Texture(const Texture& texture);
+        virtual ~Texture();
 
         [[nodiscard]] Renderer* renderer() const;
 
         bool setImagePath(const std::string& path);
         [[nodiscard]] const std::string& imagePath() const;
-        bool setImageFromSurface(SDL_Surface* surface, bool deep_copy = false);
+        bool setImageFromSurface(SDL_Surface*&& surface, bool deep_copy = false);
 
         [[nodiscard]] SDL_Texture* self() const;
         [[nodiscard]] SDL_Surface* surface() const;

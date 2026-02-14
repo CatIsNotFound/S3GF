@@ -258,6 +258,8 @@ namespace MyEngine {
             indices[indices.size() - 2] = 0;
             indices[indices.size() - 1] = 1;
         }
+
+
     }
 }
 
