@@ -273,8 +273,8 @@ namespace MyEngine {
                 : _renderer(renderer), _texture(nullptr), _path(path) {
         _surface = IMG_Load(path.c_str());
         if (!_surface) {
-            Logger::log(FMT::format("Texture: The image path '{}' is not found!", path),
-                        Logger::Error);
+            Logger::log(Logger::Error, "Texture: The image path '{}' is not valid!\nException: {}",
+                        path, SDL_GetError());
             _property = std::make_unique<TextureProperty>();
             return;
         }
@@ -288,7 +288,7 @@ namespace MyEngine {
         Logger::log(FMT::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
     }
 
-    Texture::Texture(SDL_Surface* surface, Renderer *renderer, bool deep_copy)
+    Texture::Texture(SDL_Surface*&& surface, Renderer *renderer, bool deep_copy)
                 : _renderer(renderer), _texture(nullptr) {
         if (!surface) {
             Logger::log(FMT::format("Texture: The surface is not valid!\n"
@@ -296,7 +296,7 @@ namespace MyEngine {
             _property = std::make_unique<TextureProperty>();
             return;
         }
-        _surface = (deep_copy ? SDL_DuplicateSurface(surface) : surface);
+        _surface = deep_copy ? SDL_DuplicateSurface(surface) : std::move(surface);
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
         _property = std::make_unique<TextureProperty>();
         _property->resize((float)_surface->w, (float)_surface->h);
@@ -321,8 +321,27 @@ namespace MyEngine {
         _property->setScale(1.0f);
         _property->clip_mode = false;
         _property->color_alpha = RGBAColor::White;
-        Logger::log(FMT::format("Texture: Created from addCustomCommand"));
+        Logger::log(FMT::format("Texture: Created texture by renderer"));
         Logger::log(FMT::format("Texture: Size set to {}x{}", width, height));
+    }
+
+    Texture::Texture(const Texture& texture) : _renderer(texture.renderer()), _surface(), _texture() {
+        _surface = SDL_DuplicateSurface(texture.surface());
+        if (!_surface) {
+            Logger::log(Logger::Error, "Texture: The specified texture is not valid! "
+                                       "Exception: {}", SDL_GetError());
+            return;
+        }
+        _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
+        if (!_texture) {
+            Logger::log(FMT::format("Texture: Created texture failed!\n"
+                                    "Exception: {}", SDL_GetError()), Logger::Error);
+            _property = std::make_unique<TextureProperty>();
+            return;
+        }
+        _property = std::make_unique<TextureProperty>(*texture._property);
+        Logger::log(FMT::format("Texture: Created from another texture"));
+        Logger::log(FMT::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
     }
 
     Texture::~Texture() {
@@ -363,14 +382,14 @@ namespace MyEngine {
         return _path;
     }
 
-    bool Texture::setImageFromSurface(SDL_Surface *surface, bool deep_copy) {
+    bool Texture::setImageFromSurface(SDL_Surface*&& surface, bool deep_copy) {
         if (!surface) {
             Logger::log(FMT::format("The surface is not valid!\n"
                                     "Exception: {}", SDL_GetError()), Logger::Error);
             _property = std::make_unique<TextureProperty>();
             return false;
         }
-        _surface = (deep_copy ? SDL_DuplicateSurface(surface) : surface);
+        _surface = (deep_copy ? SDL_DuplicateSurface(surface) : std::move(surface));
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
         _property = std::make_unique<TextureProperty>();
         _property->resize((float)_surface->w, (float)_surface->h);
@@ -420,7 +439,7 @@ namespace MyEngine {
     }
 
     TextureAtlas::TextureAtlas(SDL_Surface *surface, Renderer *renderer, bool deep_copy)
-        : Texture(surface, renderer, deep_copy) {}
+        : Texture(std::move(surface), renderer, deep_copy) {}
 
     TextureAtlas::~TextureAtlas() {}
 

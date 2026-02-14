@@ -114,5 +114,7 @@ int main() {
         r->drawDebugFPS();
         r->drawDebugText(FMT::format("Playing count: {} / {}", playing_sum, sum), {20, 30});
     }, true);
+
+
     return engine.exec();
 }
