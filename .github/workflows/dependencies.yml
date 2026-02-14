@@ -393,8 +393,8 @@ jobs:
           cd build
           echo * Configuring project...
           cmake .. -G "Visual Studio 17 2022" -A x64 ^
-                   -DFMT_LIB=%VCPKG_ROOT%
-                   -DCATCH2_LIB=%VCPKG_ROOT%
+                   -DFMT_LIB=%VCPKG_ROOT%\installed\x64-windows ^
+                   -DCATCH2_LIB=%VCPKG_ROOT%\installed\x64-windows ^
                    -DSDL3_LIB=%USERPROFILE%\Libs\SDL3 ^
                    -DSDL3_IMAGE_LIB=%USERPROFILE%\Libs\SDL3_image ^
                    -DSDL3_MIXER_LIB=%USERPROFILE%\Libs\SDL3_mixer ^
