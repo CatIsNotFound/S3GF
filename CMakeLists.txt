@@ -363,10 +363,13 @@ function(CopyDependencies OUT)
     )
 endfunction()
 
-if (WIN32)
-    if (${BUILD_TEST})
+if (${BUILD_TEST})
+    if (WIN32)
         CopyDependencies(bin)
-        CopyDependencies(test)
     endif()
+    # Copy assets folders
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/test/assets ${CMAKE_BINARY_DIR}/${OUT}/assets
+    )
 endif()
 
