@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
            sudo apt-get update 
-           sudo apt-get install libfmt-dev libhowardhinnant-date-dev libcatch2-dev -y
+           sudo apt-get install libfmt-dev libhowardhinnant-date-dev -y
            sudo apt-get install build-essential git make pkg-config cmake ninja-build \
                                 gnome-desktop-testing libasound2-dev libpulse-dev libaudio-dev \
                                 libfribidi-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
@@ -38,9 +38,26 @@ jobs:
            git clone --depth 1 https://github.com/libsdl-org/SDL_image 
            git clone --depth 1 https://github.com/libsdl-org/SDL_mixer 
            git clone --depth 1 https://github.com/libsdl-org/SDL_ttf
+           git clone --depth 1 https://github.com/catchorg/Catch2
           
            echo "~/git: "
            ls ~/git
+
+      - name: Compiling and installing Catch2
+        shell: bash
+        run: |
+          cd ~/git/Catch2
+          mkdir -p build ; cd build
+          echo "* Starting configure SDL3...."
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/Libs/Catch2
+          echo "* Compiling and installing Catch2...."
+          cmake --build . -j10 --target install
+          if [ $? -eq 0 ]; then
+              echo "* No error occurred, finished! "
+          else
+              echo "* Failed to compile and install! "
+              exit 1
+          fi
         
       - name: Compiling and installing SDL3
         shell: bash
@@ -117,7 +134,7 @@ jobs:
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
                    -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
-                   -DCATCH2_LIB=/usr/local \
+                   -DCATCH2_LIB=~/Libs/Catch2 \
                    -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
           echo "* Compiling and installing project..."
@@ -260,7 +277,7 @@ jobs:
           git clone --depth 1 https://github.com/microsoft/vcpkg.git C:\vcpkg
           C:\vcpkg\bootstrap-vcpkg.bat -disableMetrics
           # 安装 SDL 依赖的第三方库（MSVC 版本）
-          # C:\vcpkg\vcpkg install libpng:x64-windows libjpeg-turbo:x64-windows libflac:x64-windows ` 
+          C:\vcpkg\vcpkg install libpng:x64-windows libjpeg-turbo:x64-windows libflac:x64-windows ` 
                       libogg:x64-windows libvorbis:x64-windows mpg123:x64-windows freetype:x64-windows ` 
                       harfbuzz:x64-windows libwebp:x64-windows `
                       fmt:x64-windows catch2:x64-windows
