@@ -22,6 +22,7 @@ jobs:
         shell: bash
         run: |
            sudo apt-get update 
+           sudo apt-get install libfmt-dev libhowardhinnant-date-dev libcatch2-dev -y
            sudo apt-get install build-essential git make pkg-config cmake ninja-build \
                                 gnome-desktop-testing libasound2-dev libpulse-dev libaudio-dev \
                                 libfribidi-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
@@ -30,7 +31,7 @@ jobs:
                                 libgles2-mesa-dev libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev \
                                 libudev-dev libthai-dev libpipewire-0.3-dev libwayland-dev libdecor-0-dev \
                                 liburing-dev libpng-dev libjpeg-dev libflac-dev libwavpack-dev libxmp-dev \
-                                libogg-dev  libmpg123-dev libfreetype-dev libharfbuzz-dev -y 
+                                libogg-dev  libmpg123-dev libfreetype-dev libharfbuzz-dev -y
            mkdir -p ~/Libs
            mkdir -p ~/git ; cd ~/git
            git clone --depth 1 https://github.com/libsdl-org/SDL 
@@ -110,21 +111,23 @@ jobs:
         run: |
           mkdir -p build ; cd build
           echo "* Configuring project..."
-          cmake .. -DSDL3_LIB=~/Libs/SDL3 \
+          cmake .. -DFMT_LIB=/usr/local \
+                   -DDATE_LIB=/usr/local \
+                   -DSDL3_LIB=~/Libs/SDL3 \
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
                    -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
-                   -DBUILD_TEST=OFF \
+                   -DCATCH2_LIB=/usr/local \
                    -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
           echo "* Compiling and installing project..."
-          cmake --build . -j10 --target install
-          if [ $? -eq 0 ]; then
-              echo "* No errors occurred, finished! "
-          else
+          cmake --build . -j10 --target all
+          if [ $? -ne 0 ]; then
               echo "* Failed to compile and install! "
               exit 1
           fi
+          cmake --build . --target install
+          echo "* Installation complete."
       
   env-macos:
     runs-on: macos-latest
@@ -136,7 +139,7 @@ jobs:
         shell: bash
         run: |
           brew update
-          brew install cmake pkg-config ninja fmt howard-hinnant-date
+          brew install cmake pkg-config ninja fmt howard-hinnant-date catch2
           
           mkdir -p ~/Libs
           mkdir -p ~/git ; cd ~/git
@@ -224,21 +227,21 @@ jobs:
           fi
           cmake .. -DDATE_LIB=$HOMEBREW \
                    -DFMT_LIB=$HOMEBREW \
+                   -DCATCH2_LIB=$HOMEBREW \
                    -DSDL3_LIB=~/Libs/SDL3 \
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
                    -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
-                   -DBUILD_TEST=OFF \
                    -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
           echo "* Compiling and installing project..."
-          cmake --build . -j10 --target install
-          if [ $? -eq 0 ]; then
-              echo "* No errors occurred, finished! "
-          else
+          cmake --build . -j10 --target all
+          if [ $? -ne 0 ]; then
               echo "* Failed to compile and install! "
               exit 1
           fi
+          cmake --build . --target install
+          echo "* Installation complete."
       
       
   env-windows-msvc:
@@ -257,7 +260,10 @@ jobs:
           git clone --depth 1 https://github.com/microsoft/vcpkg.git C:\vcpkg
           C:\vcpkg\bootstrap-vcpkg.bat -disableMetrics
           # 安装 SDL 依赖的第三方库（MSVC 版本）
-          # C:\vcpkg\vcpkg install libpng:x64-windows libjpeg-turbo:x64-windows libflac:x64-windows libogg:x64-windows libvorbis:x64-windows mpg123:x64-windows freetype:x64-windows harfbuzz:x64-windows libwebp:x64-windows
+          # C:\vcpkg\vcpkg install libpng:x64-windows libjpeg-turbo:x64-windows libflac:x64-windows ` 
+                      libogg:x64-windows libvorbis:x64-windows mpg123:x64-windows freetype:x64-windows ` 
+                      harfbuzz:x64-windows libwebp:x64-windows `
+                      fmt:x64-windows catch2:x64-windows
           # 设置 vcpkg 根目录
           echo "VCPKG_ROOT=C:\vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "VCPKG_DEFAULT_TRIPLET=x64-windows" | Out-File -FilePath $env:GITHUB_ENV -Append
@@ -373,6 +379,8 @@ jobs:
           cd build
           echo * Configuring project...
           cmake .. -G "Visual Studio 17 2022" -A x64 ^
+                   -DFMT_LIB=%VCPKG_ROOT%
+                   -DCATCH2_LIB=%VCPKG_ROOT%
                    -DSDL3_LIB=%USERPROFILE%\Libs\SDL3 ^
                    -DSDL3_IMAGE_LIB=%USERPROFILE%\Libs\SDL3_image ^
                    -DSDL3_MIXER_LIB=%USERPROFILE%\Libs\SDL3_mixer ^
@@ -385,13 +393,15 @@ jobs:
             exit /b 1
           )
           echo * Compiling and installing project...
-          cmake --build . --config Release --target INSTALL -j10
+          cmake --build . --target all -j10
           if %errorlevel% equ 0 (
-            echo * No errors occurred, finished!
+            echo * No errors occurred.
           ) else (
             echo * Failed to compile and install!
             exit /b 1
           )
-
+        
+          cmake --build . --target INSTALL
+          echo * Installation complete.
       
       

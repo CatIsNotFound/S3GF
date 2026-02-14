@@ -12,6 +12,11 @@ add_compile_definitions(APP_NAME="MyEngine Test")
 add_compile_definitions(APP_ID="test.MyEngine.app")
 add_compile_definitions(APP_VERSION="v1.0.1")
 
+# Copy assets folders
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/test/assets ${CMAKE_BINARY_DIR}/${OUT}/assets
+)
+
 
 ############################################
 if (EXISTS ${CATCH2_LIB})
@@ -146,3 +151,4 @@ if (EXISTS ${CATCH2_LIB})
         add_test(${MODULE} COMMAND ${MODULE})
     endforeach ()
 endif()
+

@@ -361,10 +361,6 @@ function(CopyDependencies OUT)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             ${POST_BUILD_COMMANDS}
     )
-
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/test/assets ${CMAKE_BINARY_DIR}/${OUT}/assets
-    )
 endfunction()
 
 if (WIN32)
