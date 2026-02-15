@@ -399,7 +399,6 @@ jobs:
                    -DSDL3_IMAGE_LIB=%USERPROFILE%\Libs\SDL3_image ^
                    -DSDL3_MIXER_LIB=%USERPROFILE%\Libs\SDL3_mixer ^
                    -DSDL3_TTF_LIB=%USERPROFILE%\Libs\SDL3_ttf ^
-                   -DBUILD_TEST=OFF ^
                    -DCMAKE_BUILD_TYPE=Release ^
                    -DCMAKE_INSTALL_PREFIX=%USERPROFILE%\Libs\MyEngine
           if %errorlevel% neq 0 (
