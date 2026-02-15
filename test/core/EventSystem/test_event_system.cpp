@@ -7,7 +7,6 @@ using namespace MyEngine;
 TEST_CASE("EventSystem Register Test", "[Core][Engine][Events]") {
     Engine engine;
     constexpr size_t LENGTH = 1024;
-    bool tri_1{}, tri_2{};
     std::array<uint64_t, LENGTH> expected_ev_id_list{};
     std::array<uint64_t, LENGTH> expected_g_ev_id_list{};
     size_t new_ev_cnt{}, new_g_ev_cnt{};

@@ -1538,12 +1538,12 @@ namespace MyEngine {
     }
 
     void AudioSystem::unload() {
-        if (!_is_init) return;
         _audio_map.clear();
         for (auto& mixer : _mixer_list) {
             if (mixer) MIX_DestroyMixer(mixer);
         }
         _mixer_list.clear();
+        if (!_is_init) return;
         MIX_Quit();
         Logger::log("AudioSystem: Unloaded audio system!");
         _is_init = false;

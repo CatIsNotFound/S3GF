@@ -406,15 +406,15 @@ jobs:
             exit /b 1
           )
           echo * Compiling and installing project...
-          cmake --build . --target all -j10
+          cmake --build . -j10
           if %errorlevel% equ 0 (
             echo * No errors occurred.
           ) else (
             echo * Failed to compile and install!
             exit /b 1
           )
-        
-          cmake --build . --target INSTALL
+          
+          cmake --build . -j10 --target install
           echo * Installation complete.
       
       

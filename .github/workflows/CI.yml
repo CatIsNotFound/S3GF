@@ -1,9 +1,9 @@
 name: CI/CD
 on:
   push:
-    branches: [ main, development ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, development ]
+    branches: [ main ]
 
 jobs:
   dependencies:
@@ -16,6 +16,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name:
 
   ci-project-macos:
     needs: [ dependencies ]
