@@ -93,12 +93,12 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
 
    ```cmake
     cmake_minimum_required(VERSION 3.24)
-    # Need to modify your project name.
+    # TODO: 修改为你的项目名称
     project(Demo)
     
     set(CMAKE_CXX_STANDARD 20)
     
-    # Need to set these paths before cmake configuration.
+    # TODO: 配置 CMake 前需要设定如下路径
     set(SDL3_LIB       "/path/to/SDL")
     set(SDL3_IMAGE_LIB "/path/to/SDL3_image")
     set(SDL3_TTF_LIB   "/path/to/SDL3_ttf")
@@ -138,26 +138,35 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
             MyEngine::MyEngine
     )
    
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    )
+   
+    # TODO: 如果项目需要资源，请移除如下注释
+    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    #         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/bin/assets
+    # )
+   
     if (WIN32)
-    set(POST_BUILD_COMMANDS
-            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_LIB}/bin ${CMAKE_BINARY_DIR}/bin
-            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_MIXER_LIB}/bin ${CMAKE_BINARY_DIR}/bin
-    )
-    if (MINGW)
-        list(APPEND POST_BUILD_COMMANDS
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
-        )
-    else ()
-        list(APPEND POST_BUILD_COMMANDS
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/bin ${CMAKE_BINARY_DIR}/bin
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/bin ${CMAKE_BINARY_DIR}/bin
-        )
-    endif()
-
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            ${POST_BUILD_COMMANDS}
-    )
+       set(POST_BUILD_COMMANDS
+               COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+               COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_MIXER_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+       )
+       if (MINGW)
+           list(APPEND POST_BUILD_COMMANDS
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
+           )
+       else ()
+           list(APPEND POST_BUILD_COMMANDS
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+           )
+       endif()
+   
+       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+               ${POST_BUILD_COMMANDS}
+       )
     endif()
    ```
 
@@ -199,5 +208,5 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
 
 ## 获取帮助
 
-1. 通过 [Wiki](https://gitee.com/CatIsNotFound/MyEngine/wikis) 进行查看文档说明。（内容未更新）
+1. 通过 [Wiki](https://github.com/CatIsNotFound/MyEngine/wikis) 进行查看文档说明。（内容未更新）
 2. 通过 [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) 或 [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine) 提交遇到的问题

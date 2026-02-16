@@ -802,6 +802,8 @@ namespace MyEngine {
          */
         void fill(const T &value);
 
+        bool fillRect(const Matrix2D::Position &start, const Matrix2D::Position &end, const T &value);
+
         /**
          * \if EN
          * @brief Fill in the values within the range
@@ -1189,12 +1191,31 @@ namespace MyEngine {
     }
 
     template<typename T>
+    bool Matrix2D<T>::fillRect(const Matrix2D::Position &start, const Matrix2D::Position &end, const T &value) {
+        if (end.row >= _row || end.col >= _col) {
+            Logger::log(Logger::Error, "Matrix2D::fillRect(): The end position is out of range!");
+            return false;
+        }
+        if (start.row > end.row || start.col > end.col) {
+            Logger::log(Logger::Error, "Matrix2D::fillRect(): The end position is greater than start position!");
+            return false;
+        }
+        for (auto row = start.row; row <= end.row; ++row) {
+            for (auto col = start.col; col <= end.col; ++col) {
+                _datas[row * _col + col] = value;
+            }
+        }
+        return true;
+    }
+
+    template<typename T>
     bool Matrix2D<T>::fillN(const Matrix2D::Position &start, const Matrix2D::Position &end, const T &value) {
         auto st = start.row * _col + start.col, ed = end.row * _col + end.col;
         if (ed >= _datas.size()) {
             Logger::log(Logger::Error, "Matrix2D::fillN(): One of the specified position is not valid!");
             return false;
         }
+        if (st > ed) std::swap(st, ed);
         std::fill(_datas.begin() + st, _datas.begin() + ed, value);
         return true;
     }
@@ -2252,7 +2273,7 @@ struct FMT::formatter<MyEngine::Vector2> {
     }
 
     auto format(const MyEngine::Vector2& vec, FMT::format_context& context) const {
-        return std::format_to(context.out(), "({:.2f}, {:.2f})", vec.x, vec.y);
+        return FMT::format_to(context.out(), "({:.2f}, {:.2f})", vec.x, vec.y);
     }
 };
 
@@ -2265,7 +2286,7 @@ struct FMT::formatter<MyEngine::Size> {
 
     template <typename FormatContext>
     auto format(const MyEngine::Size& size, FormatContext& context) const {
-        return std::format_to(context.out(), "({:.2f} x {:.2f})", size.width, size.height);
+        return FMT::format_to(context.out(), "({:.2f} x {:.2f})", size.width, size.height);
     }
 };
 
@@ -2278,7 +2299,7 @@ struct FMT::formatter<MyEngine::Geometry> {
 
     template <typename FormatContext>
     auto format(const MyEngine::Geometry& geometry, FormatContext& context) const {
-        return std::format_to(context.out(), "({}, {}, {}, {})",
+        return FMT::format_to(context.out(), "({}, {}, {}, {})",
                               geometry.x, geometry.y, geometry.width, geometry.height);
     }
 };
@@ -2290,7 +2311,7 @@ struct FMT::formatter<MyEngine::GeometryF> {
     }
 
     auto format(const MyEngine::GeometryF& geometry, FMT::format_context& context) const {
-        return std::format_to(context.out(), "({:.2f}, {:.2f}, {:.2f}, {:.2f})",
+        return FMT::format_to(context.out(), "({:.2f}, {:.2f}, {:.2f}, {:.2f})",
                               geometry.pos.x, geometry.pos.y, geometry.size.width, geometry.size.height);
     }
 };

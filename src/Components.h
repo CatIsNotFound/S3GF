@@ -155,19 +155,36 @@ namespace MyEngine {
 
     class SFX {
     public:
+        constexpr static int SINE_HZ_C5 = 523;
+        constexpr static int SINE_HZ_Db5 = 554;
+        constexpr static int SINE_HZ_D5 = 587;
+        constexpr static int SINE_HZ_Eb5 = 622;
+        constexpr static int SINE_HZ_E5 = 659;
+        constexpr static int SINE_HZ_Fb5 = 698;
+        constexpr static int SINE_HZ_F5 = 740;
+        constexpr static int SINE_HZ_Gb5 = 784;
+        constexpr static int SINE_HZ_G5 = 830;
+        constexpr static int SINE_HZ_Ab5 = 880;
+        constexpr static int SINE_HZ_A5 = 932;
+        constexpr static int SINE_HZ_Bb5 = 987;
+        constexpr static int SINE_HZ_C6 = 1046;
         explicit SFX(MIX_Mixer* mixer, const std::string& path = {});
+        explicit SFX(MIX_Mixer* mixer, int hz, float wave_volume = 1.f, int64_t ms = 5000);
         ~SFX();
 
         void setPath(const std::string& path);
         [[nodiscard]] const std::string& path() const;
+        void loadSineWave(int hz, float wave_volume = 1.f, int64_t ms = 5000);
         [[nodiscard]] bool isLoaded() const;
         void setDefaultSFX(float volume,
                            MIX_StereoGains &&stereo_gains = {1.f, 1.f});
         size_t findFreeIndex();
+        [[nodiscard]] size_t lastIndex() const;
 
         bool play(bool loop = false, int64_t fade_in_duration = 0);
         bool play(size_t index);
-        void stop(int64_t fade_out_duration = 0, size_t index = 0);
+        void stop(int64_t fade_out_duration = 0);
+        void stop(size_t index, int64_t fade_out_duration);
         void stopAll(int64_t fade_out_duration = 0);
         void resetAll();
         [[nodiscard]] std::optional<int64_t> position(size_t index = 0) const;
@@ -189,9 +206,11 @@ namespace MyEngine {
     private:
         void load();
         void unload();
-        size_t findTrackIndex() const;
+        size_t findBusyTrackIndex() const;
+        size_t findFreeTrackIndex() const;
         std::string _path;
         bool _is_load{false};
+        size_t _last_index{0};
         SDL_PropertiesID _prop_id{0};
         struct Track {
             MIX_Track* track{nullptr};

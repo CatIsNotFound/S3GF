@@ -128,6 +128,18 @@ namespace MyEngine {
             return 1;
         }
 
+        inline int8_t compareGeometryF(const GeometryF& geometry1, const GeometryF geometry2) {
+            float x1 = geometry1.pos.x, x2 = geometry1.pos.x + geometry1.size.width,
+                  y1 = geometry1.pos.y, y2 = geometry1.pos.y + geometry1.size.height,
+                  x3 = geometry2.pos.x, x4 = geometry2.pos.x + geometry2.size.width,
+                  y3 = geometry2.pos.y, y4 = geometry2.pos.y + geometry2.size.height;
+
+            if (x2 < x3 || x1 > x4 || y2 < y3 || y1 > y4) return -1;
+            if (x3 <= x1 && y3 <= y1 && x4 >= x2 && y4 >= y2) return 2;
+            if (x1 <= x3 && y1 <= y3 && x2 >= x4 && y2 >= y4) return 3;
+            return 1;
+        }
+
         inline int8_t compareRects(const Graphics::Rectangle& rect1, const Graphics::Rectangle& rect2) {
             float x1 = rect1.geometry().pos.x, x2 = rect1.geometry().pos.x + rect1.geometry().size.width,
                   y1 = rect1.geometry().pos.y, y2 = rect1.geometry().pos.y + rect1.geometry().size.height,
