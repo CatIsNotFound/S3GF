@@ -2,7 +2,7 @@
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg) ![SDL3](https://img.shields.io/badge/SDL-3-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-![cover](./assets/cover.jpg)
+<img src="./assets/red_cover.jpg" width="80%">
 
 MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 及其扩展之上。它以简洁和灵活为设计理念，提供直观的面向对象 API，使游戏和应用程序开发变得快速而愉悦。利用现代 C++20 特性，MyEngine 提供了模块化架构，允许开发人员以最少的样板代码轻松创建交互式图形应用程序。
 
