@@ -95,12 +95,12 @@ Currently, no official version has been released yet. It is expected to release 
 
    ```cmake
     cmake_minimum_required(VERSION 3.24)
-    # Need to modify your project name.
+    # TODO: Need to modify your project name.
     project(Demo)
     
     set(CMAKE_CXX_STANDARD 20)
     
-    # Need to set these paths before cmake configuration.
+    # TODO: Need to set these paths before cmake configuration.
     set(SDL3_LIB       "/path/to/SDL3")
     set(SDL3_IMAGE_LIB "/path/to/SDL3_image")
     set(SDL3_TTF_LIB   "/path/to/SDL3_ttf")
@@ -139,6 +139,15 @@ Currently, no official version has been released yet. It is expected to release 
             # fmt::fmt
             MyEngine::MyEngine
     )
+   
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    )
+   
+    # TODO: Removed this comment if your project needs assets.
+    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    #         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/bin/assets
+    # )
    
     if (WIN32)
     set(POST_BUILD_COMMANDS

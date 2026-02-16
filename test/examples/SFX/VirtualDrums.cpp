@@ -4,11 +4,22 @@ using namespace MyEngine;
 
 class PadKey : public TriggerArea {
 public:
-    explicit PadKey(const GeometryF& geometry, Window* window)
-        : TriggerArea(geometry, window), _rect(geometry, 0, {}, RGBAColor::BlueBaby) {
+    explicit PadKey(const GeometryF& geometry, Window* window, const char* key = "?" ) : TriggerArea(geometry, window),
+             _rect(geometry, 0, {}, RGBAColor::BlueBaby), _key(key) {
+        if (!TextSystem::global()->isFontContain("default")) {
+            TextSystem::global()->addFont("default",
+                    FontDatabase::getSystemDefaultFont().begin()->font_path, window->renderer(), 24.f);
+        }
+        auto id = IDGenerator::getNewTextID();
+        TextSystem::global()->addText(id, "default", _key);
+        _font = TextSystem::global()->font("default");
+        _text = TextSystem::global()->indexOfText(id);
         window->installPaintEvent([&](Renderer* r) {
             r->drawRectangle(&_rect);
+            r->drawText(_text->self, _text_pos);
         });
+        _text_pos = Vector2(geometry.pos.x + (geometry.size.width / 2 - _text->text_size.width / 2),
+                        geometry.pos.y + (geometry.size.height / 2 - _text->text_size.height / 2));
     }
 
     void setSFX(SFX* sfx) { _sfx = sfx; }
@@ -54,12 +65,17 @@ protected:
 
 private:
     Graphics::Rectangle _rect;
+    TextSystem::Text* _text;
+    Font* _font;
     SFX* _sfx{};
+    Vector2 _text_pos{};
+    std::string _key{};
 };
 
 int main() {
     Engine engine("Virtual Drums", "v1.0.0", "org.virtualDrums.app");
     auto window = new Window(&engine, engine.applicationName().data());
+    window->renderer()->setVSyncMode(Renderer::Enabled);
     window->show();
     AudioSystem::global()->appendSFX("bell2", FileSystem::getAbsolutePath("./assets/Samples/bell2.wav"));
     AudioSystem::global()->appendSFX("kik", FileSystem::getAbsolutePath("./assets/Samples/kik.wav"));
@@ -67,12 +83,12 @@ int main() {
     AudioSystem::global()->appendSFX("snare1", FileSystem::getAbsolutePath("./assets/Samples/snare1.wav"));
     AudioSystem::global()->appendSFX("splash1", FileSystem::getAbsolutePath("./assets/Samples/splash1.wav"));
     AudioSystem::global()->appendSFX("tom1", FileSystem::getAbsolutePath("./assets/Samples/tom1.wav"));
-    PadKey key1(GeometryF(100.f, 100.f, 100.f, 100.f), window);
-    PadKey key2(GeometryF(220.f, 100.f, 100.f, 100.f), window);
-    PadKey key3(GeometryF(340.f, 100.f, 100.f, 100.f), window);
-    PadKey key4(GeometryF(100.f, 220.f, 100.f, 100.f), window);
-    PadKey key5(GeometryF(220.f, 220.f, 100.f, 100.f), window);
-    PadKey key6(GeometryF(340.f, 220.f, 100.f, 100.f), window);
+    PadKey key1(GeometryF(100.f, 100.f, 100.f, 100.f), window, "Q");
+    PadKey key2(GeometryF(220.f, 100.f, 100.f, 100.f), window, "W");
+    PadKey key3(GeometryF(340.f, 100.f, 100.f, 100.f), window, "E");
+    PadKey key4(GeometryF(100.f, 220.f, 100.f, 100.f), window, "A");
+    PadKey key5(GeometryF(220.f, 220.f, 100.f, 100.f), window, "S");
+    PadKey key6(GeometryF(340.f, 220.f, 100.f, 100.f), window, "D");
     key1.setSFX(AudioSystem::global()->getSFX("bell2"));
     key2.setSFX(AudioSystem::global()->getSFX("open1"));
     key3.setSFX(AudioSystem::global()->getSFX("splash1"));

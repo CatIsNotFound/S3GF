@@ -94,7 +94,7 @@ addModule(TEST_MODULES test_circle
 )
 
 addModule(TEST_MODULES ImageViewer
-        examples/Graphics/test_image.cpp
+        examples/Graphics/ImageViewer.cpp
 )
 
 addModule(TEST_MODULES test_area
@@ -108,6 +108,10 @@ addModule(TEST_MODULES test_SFX
 
 addModule(TEST_MODULES VirtualDrums
         examples/SFX/VirtualDrums.cpp
+)
+
+addModule(TEST_MODULES Pong
+        examples/Game/Pong.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

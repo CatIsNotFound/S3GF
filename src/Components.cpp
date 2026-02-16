@@ -1004,12 +1004,20 @@ namespace MyEngine {
         _play_status = Invalid;
     }
 
-    SFX::SFX(MIX_Mixer *mixer, const std::string &path) : _mixer(mixer), _path(path) {
+    SFX::SFX(MIX_Mixer *mixer, const std::string &path) : _path(path), _mixer(mixer) {
         if (!_mixer) {
-            Logger::log("BGM: The specified mixer can not be null!", Logger::Fatal);
-            throw InvalidArgumentException("BGM: The specified mixer can not be null!");
+            Logger::log("SFX: The specified mixer can not be null!", Logger::Fatal);
+            throw InvalidArgumentException("SFX: The specified mixer can not be null!");
         }
         load();
+    }
+
+    SFX::SFX(MIX_Mixer *mixer, int hz, float wave_volume, int64_t ms) : _path(), _mixer(mixer) {
+        if (!_mixer) {
+            Logger::log("SFX: The specified mixer can not be null!", Logger::Fatal);
+            throw InvalidArgumentException("SFX: The specified mixer can not be null!");
+        }
+        loadSineWave(hz, wave_volume, ms);
     }
 
     SFX::~SFX() {
@@ -1026,6 +1034,35 @@ namespace MyEngine {
         return _path;
     }
 
+    void SFX::loadSineWave(int hz, float wave_volume, int64_t ms) {
+        if (_is_load) unload();
+        _audio = MIX_CreateSineWaveAudio(_mixer, hz, wave_volume, ms);
+        if (!_audio) {
+            Logger::log(FMT::format("SFX: The specified sine wave {}Hz is not valid! Exception: {}",
+                                    hz, SDL_GetError()), Logger::Error);
+            _is_load = false;
+            return;
+        }
+        if (_tracks.empty()) _tracks.emplace_back();
+        if (_tracks[0].track) MIX_DestroyTrack(_tracks[0].track);
+        _tracks[0].track = MIX_CreateTrack(_mixer);
+        if (!_tracks[0].track) {
+            Logger::log(Logger::Error, "SFX: Create audio track failed! Exception: {}", SDL_GetError());
+            _is_load = false;
+            _tracks.clear();
+            return;
+        }
+        if (!MIX_SetTrackAudio(_tracks[0].track, _audio)) {
+            Logger::log(FMT::format("SFX: The specified sine wave can not set as audio track! Exception: {}",
+                                    SDL_GetError()), Logger::Error);
+            _is_load = false;
+            MIX_DestroyTrack(_tracks[0].track);
+            _tracks[0].track = nullptr;
+            return;
+        }
+        _is_load = true;
+    }
+
     bool SFX::isLoaded() const {
         return _is_load;
     }
@@ -1036,7 +1073,11 @@ namespace MyEngine {
     }
 
     size_t SFX::findFreeIndex() {
-        return findTrackIndex();
+        return findFreeTrackIndex();
+    }
+
+    size_t SFX::lastIndex() const {
+        return _last_index;
     }
 
     bool SFX::play(bool loop, int64_t fade_in_duration) {
@@ -1048,8 +1089,8 @@ namespace MyEngine {
         SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_LOOPS_NUMBER, (loop ? -1 : 0));
         SDL_SetNumberProperty(_prop_id, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, fade_in_duration);
 
-        size_t idx = findTrackIndex();
-        if (idx >= _tracks.size()) {
+        _last_index = findFreeTrackIndex();
+        if (_last_index >= _tracks.size()) {
             _tracks.emplace_back(_default_track);
             _tracks.back().track = MIX_CreateTrack(_mixer);
             MIX_SetTrackAudio(_tracks.back().track, _audio);
@@ -1057,7 +1098,7 @@ namespace MyEngine {
             setLRChannel(_default_track.stereo_gains.left, _default_track.stereo_gains.right,
                     _tracks.size() - 1);
         }
-        if (!MIX_PlayTrack(_tracks[idx].track, _prop_id)) {
+        if (!MIX_PlayTrack(_tracks[_last_index].track, _prop_id)) {
             Logger::log(FMT::format("SFX: Play audio failed! The file path '{}' is not valid! "
                                     "Exception: {}", _path, SDL_GetError()), Logger::Error);
             return false;
@@ -1066,6 +1107,7 @@ namespace MyEngine {
     }
 
     bool SFX::play(size_t index) {
+        _last_index = index;
         if (index >= _tracks.size()) {
             Logger::log(Logger::Error, "SFX: Play audio failed! Index '{}' is out of range!", index);
             return false;
@@ -1078,11 +1120,24 @@ namespace MyEngine {
         return true;
     }
 
-    void SFX::stop(int64_t fade_out_duration, size_t index) {
+    void SFX::stop(int64_t fade_out_duration) {
         if (!_is_load) {
             Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
             return;
         }
+        _last_index = findBusyTrackIndex();
+        if (_last_index >= _tracks.size()) return;
+        auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(_tracks[_last_index].track,
+                                                                        fade_out_duration) : 0);
+        MIX_StopTrack(_tracks[_last_index].track, ms);
+    }
+
+    void SFX::stop(size_t index, int64_t fade_out_duration) {
+        if (!_is_load) {
+            Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
+            return;
+        }
+        _last_index = index;
         if (index >= _tracks.size()) return;
         auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(_tracks[index].track, fade_out_duration) : 0);
         MIX_StopTrack(_tracks[index].track, ms);
@@ -1093,6 +1148,7 @@ namespace MyEngine {
             Logger::log("BGM: Can't stop current audio! Current audio is not valid!", Logger::Error);
             return;
         }
+        _last_index = 0;
         for (auto & track: _tracks) {
             auto ms = (fade_out_duration > 0 ? MIX_TrackMSToFrames(track.track, fade_out_duration) : 0);
             MIX_StopTrack(track.track, ms);
@@ -1108,6 +1164,7 @@ namespace MyEngine {
             i++;
         }
         _tracks.erase(_tracks.begin() + 1, _tracks.end());
+        _last_index = 0;
     }
 
     std::optional<int64_t> SFX::position(size_t index) const {
@@ -1217,7 +1274,7 @@ namespace MyEngine {
             _is_load = false;
             return;
         }
-        if (_tracks.empty()) _tracks.push_back(Track());
+        if (_tracks.empty()) _tracks.emplace_back();
         if (_tracks[0].track) MIX_DestroyTrack(_tracks[0].track);
         _tracks[0].track = MIX_CreateTrack(_mixer);
         if (!_tracks[0].track) {
@@ -1254,7 +1311,16 @@ namespace MyEngine {
         _is_load = false;
     }
 
-    size_t SFX::findTrackIndex() const {
+    size_t SFX::findBusyTrackIndex() const {
+        for (size_t index = 0; index < _tracks.size(); index++) {
+            if (MIX_TrackPlaying(_tracks[index].track)) {
+                return index;
+            }
+        }
+        return _tracks.size();
+    }
+
+    size_t SFX::findFreeTrackIndex() const {
         for (size_t index = 0; index < _tracks.size(); index++) {
             if (!MIX_TrackPlaying(_tracks[index].track)) {
                 return index;

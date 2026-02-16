@@ -130,7 +130,7 @@ void updateTexture(Texture& texture, const Window* window) {
 int main() {
     Engine engine;
     engine.setFPS(60);
-    auto window = new Window(&engine, "Test image", 1366, 768);
+    auto window = new Window(&engine, "Image Viewer", 1366, 768);
     window->renderer()->setVSyncMode(Renderer::Enabled);
     Texture img(FileSystem::getAbsolutePath("./assets/view.jpg"), window->renderer());
     updateTexture(img, window);
@@ -172,7 +172,7 @@ int main() {
             r->drawDebugText("      6   Generate saturation image (Can be adjusted using the slider)", {20, 110});
             r->drawDebugText("      7   Generate solarize image (Can be adjusted using the slider)", {20, 120});
             r->drawDebugText("      8   Generate posterize image (Can be adjusted using the slider)", {20, 130});
-            r->drawDebugText("      9   (undefined)", {20, 140});
+            r->drawDebugText("      9   Generate color balance image (Can be adjusted using the slider)", {20, 140});
             r->drawDebugText("      0   Show/hide the generated image", {20, 150});
             r->setBlendMode(SDL_BLENDMODE_NONE);
         }
@@ -273,12 +273,38 @@ int main() {
                 case SDL_SCANCODE_8:
                     slider1.setEnabled(true);
                     slider1.setValueChangedEvent([&img, &ch_img, &window] (float value) {
-                        ch_img.setImageFromSurface(Algorithm::applyPosterizeSurface(img.surface(), value));
+                        ch_img.setImageFromSurface(Algorithm::applyPosterizeSurface(img.surface(), static_cast<int>(value)));
                         updateTexture(ch_img, window);
                     });
                     slider1.setValue(2.f, 2.f, 256.f);
                     slider2.setEnabled(false);
                     slider3.setEnabled(false);
+                    break;
+                case SDL_SCANCODE_9:
+                    slider1.setEnabled(true);
+                    slider1.setValueChangedEvent([&img, &ch_img, &window, &slider2, &slider3] (float value) {
+                        ch_img.setImageFromSurface(Algorithm::applyColorBalanceSurface(img.surface(),
+                            static_cast<int>(value), static_cast<int>(slider2.value()),
+                            static_cast<int>(slider3.value())));
+                        updateTexture(ch_img, window);
+                    });
+                    slider1.setValue(0.f, -255.f, 255.f, false);
+                    slider2.setEnabled(true);
+                    slider2.setValueChangedEvent([&img, &ch_img, &window, &slider1, &slider3] (float value) {
+                        ch_img.setImageFromSurface(Algorithm::applyColorBalanceSurface(img.surface(),
+                            static_cast<int>(slider1.value()), static_cast<int>(value),
+                            static_cast<int>(slider3.value())));
+                        updateTexture(ch_img, window);
+                    });
+                    slider2.setValue(0.f, -255.f, 255.f, false);
+                    slider3.setEnabled(true);
+                    slider3.setValueChangedEvent([&img, &ch_img, &window, &slider1, &slider2] (float value) {
+                        ch_img.setImageFromSurface(Algorithm::applyColorBalanceSurface(img.surface(),
+                            static_cast<int>(slider1.value()), static_cast<int>(slider2.value()),
+                            static_cast<int>(value)));
+                        updateTexture(ch_img, window);
+                    });
+                    slider3.setValue(0.f, -255.f, 255.f, false);
                     break;
                 case SDL_SCANCODE_0:
                     hide_img = !hide_img;
