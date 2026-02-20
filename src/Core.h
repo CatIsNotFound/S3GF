@@ -258,10 +258,12 @@ namespace MyEngine {
         static EventSystem* global(Engine* engine);
         static EventSystem* global();
         void appendEvent(uint64_t id, const std::function<void(SDL_Event)>& event);
+        uint64_t appendEvent(const std::function<void(SDL_Event)>& event);
         void removeEvent(uint64_t id);
         bool isEventExist(uint64_t id);
 
         void appendGlobalEvent(uint64_t g_id, const std::function<void()>& event);
+        uint64_t appendGlobalEvent(const std::function<void()>& event);
         void removeGlobalEvent(uint64_t g_id);
         bool isGlobalEventExist(uint64_t g_id);
 
@@ -412,7 +414,6 @@ namespace MyEngine {
         bool _is_loaded{false};
         std::map<uint64_t, Text> _text_map;
         std::unordered_map<std::string, FontEngine> _font_map;
-        TTF_TextEngine* _text_engine{nullptr};
     };
 
     class AudioSystem : public Template::Singleton<AudioSystem> {

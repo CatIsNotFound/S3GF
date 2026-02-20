@@ -186,7 +186,7 @@ void initController(Window *&window, Controller &con1, Controller &con2) {
 int main() {
     Engine engine;
     engine.setFPS(60);
-    auto window = new Window(&engine, "PinBall", 1024, 768);
+    auto window = new Window(&engine, "Pong", 1024, 768);
     window->renderer()->setVSyncMode(Renderer::Enabled);
     std::array<std::shared_ptr<Texture>, 10> numbers_list{};
     initNumber(numbers_list, window->renderer());
@@ -297,8 +297,8 @@ int main() {
             
             static GeometryF geo(0, 0, win_size.width, win_size.height);
             if (Algorithm::compareGeometryF(ball_geo, geo) != 2) {
-                auto win_width = static_cast<float>(win_size.width);
-                auto win_height = static_cast<float>(win_size.height);
+                auto win_width = win_size.width;
+                auto win_height = win_size.height;
                 auto new_x = std::clamp(ball_geo.pos.x, 0.f, win_width - ball_geo.size.width);
                 auto new_y = std::clamp(ball_geo.pos.y, 0.f, win_height - ball_geo.size.height);
                 ball_geo.move(new_x, new_y);

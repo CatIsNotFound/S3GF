@@ -616,6 +616,12 @@ namespace MyEngine {
         Logger::log(Logger::Debug, "EventSystem: Append a new event with ID {}", id);
     }
 
+    uint64_t EventSystem::appendEvent(const std::function<void(SDL_Event)> &event) {
+        uint64_t id = IDGenerator::getNewEventID();
+        appendEvent(id, event);
+        return id;
+    }
+
     void EventSystem::removeEvent(uint64_t id) {
         if (_event_list.contains(id)) {
             // _event_list.erase(id);
@@ -638,6 +644,12 @@ namespace MyEngine {
             _global_event_list.emplace(g_id, event);
             Logger::log(Logger::Debug, "EventSystem: Append a global event by ID {}", g_id);
         }
+    }
+
+    uint64_t EventSystem::appendGlobalEvent(const std::function<void()> &event) {
+        uint64_t id = IDGenerator::getNewGlobalEventID();
+        appendGlobalEvent(id, event);
+        return id;
     }
 
     void EventSystem::removeGlobalEvent(uint64_t g_id) {
@@ -1502,7 +1514,7 @@ namespace MyEngine {
         auto& text =  _text_map[text_id].text;
         TTF_Text* temp_text = TTF_CreateText(font_engine.surface_engine, font_engine.font->self(), text.c_str(), text.size());
         auto t_surface = font_engine.font->toImage(text);
-        SDL_Surface* surface = SDL_CreateSurface(t_surface->w, t_surface->h, SDL_PIXELFORMAT_ABGR64);
+        SDL_Surface* surface = SDL_CreateSurface(t_surface->w, t_surface->h, SDL_PIXELFORMAT_RGBA8888);
         SDL_DestroySurface(t_surface);
         auto _ret = TTF_DrawSurfaceText(temp_text, 0, 0, surface);
         if (!_ret) {
