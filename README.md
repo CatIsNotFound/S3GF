@@ -211,5 +211,5 @@ This project is licensed under the MIT open source license. See the [LICENSE](LI
 
 ## Getting Help
 
-1. Check the [Wiki](https://gitee.com/CatIsNotFound/MyEngine/wikis) for documentation. (Content not updated)
+1. Check the [Wiki](https://github.com/CatIsNotFound/MyEngine/wikis) for documentation. (Content not updated)
 2. Submit issues through [Github Issue](https://github.com/CatIsNotFound/MyEngine/issues) or [Gitee Issues](https://gitee.com/CatIsNotFound/MyEngine).

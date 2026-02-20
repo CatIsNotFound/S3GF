@@ -186,6 +186,20 @@ namespace MyEngine {
         return false;
     }
 
+    bool FileSystem::writeFile(const std::string &path, const std::function<void(std::ofstream&)>& how2WriteFile,
+                               bool append_mode, bool ignore_error) {
+        std::filesystem::path temp = getAbsolutePath(path);
+        std::ofstream file(temp.string(),((append_mode ? (std::ios::out | std::ios::app) : std::ios::out)));
+        if (!file.is_open()) {
+            if (!ignore_error) Logger::log(FMT::format("FileSystem: Can't create file '{}'!", temp.string()),
+                                           Logger::Error);
+            return false;
+        }
+        if (how2WriteFile) how2WriteFile(file);
+        file.close();
+        return true;
+    }
+
     bool FileSystem::writeFile(const std::string_view &context, const std::string &path,
                                bool append_mode, bool ignore_error) {
         std::filesystem::path temp = getAbsolutePath(path);
@@ -253,6 +267,20 @@ namespace MyEngine {
         file.close();
         if (ok) *ok = true;
         return buffer;
+    }
+
+    bool FileSystem::readFile(const std::string &path, const std::function<void(std::ifstream &)> &how2ReadFile,
+                bool ignore_error) {
+        std::filesystem::path temp = getAbsolutePath(path);
+        std::ifstream file(temp.string(), std::ios::in);
+        if (!file.is_open()) {
+            if (!ignore_error) Logger::log(FMT::format("FileSystem: File '{}' is not found!",
+                                                       temp.string()), Logger::Error);
+            return false;
+        }
+        if (how2ReadFile) how2ReadFile(file);
+        file.close();
+        return true;
     }
 
     bool FileSystem::writeBinaryFile(const std::string &path, bool append_mode,

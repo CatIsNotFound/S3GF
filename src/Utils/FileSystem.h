@@ -171,7 +171,11 @@ namespace MyEngine {
          * \endif
          */
         static bool writeFile(const std::string_view &context, const std::string &path,
-                              bool append_mode, bool ignore_error = false);
+                              bool append_mode = false, bool ignore_error = false);
+
+        static bool writeFile(const std::string &path, const std::function<void(std::ofstream&)>& how2WriteFile,
+                               bool append_mode, bool ignore_error);
+
         /**
          * \if EN
          * @brief Reads content from the specified file
@@ -184,6 +188,9 @@ namespace MyEngine {
          * \endif
          */
         static std::string readFile(const std::string &path, bool ignore_error = false, bool *ok = nullptr);
+
+        static bool readFile(const std::string &path, const std::function<void(std::ifstream&)>& how2ReadFile,
+                             bool ignore_error = false);
 
         /**
          * \if EN
