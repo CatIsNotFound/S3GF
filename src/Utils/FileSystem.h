@@ -233,7 +233,7 @@ namespace MyEngine {
          * \endif
          */
         static bool readBinaryFile(const std::string& path,
-                                   const std::function<void(std::ifstream& file)>& how2ReadFile,
+                                   const std::function<bool(std::ifstream&)>& how2ReadFile,
                                    bool ignore_error = false);
         /**
          * \if EN
@@ -245,7 +245,7 @@ namespace MyEngine {
          * @see writeBinaryFile
          * \endif
          */
-        static std::vector<uint8_t> readBinaryFile(const std::string& path, bool ignore_error = false, bool* ok = nullptr);
+        static BinaryArray readBinaryFile(const std::string& path, bool ignore_error = false, bool* ok = nullptr);
         /**
          * \if EN
          * @brief Get the size of the specified file

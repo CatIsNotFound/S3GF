@@ -57,9 +57,10 @@ namespace MyEngine {
          * @see log(LogLevel level, std::string_view format, Args... args)
          */
         static void log(const std::string &message, LogLevel level = Debug) {
+            std::unique_lock<std::mutex> _lock;
             if (level < _base_level) return;
             _running_time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-            auto _real_time = (float) (_running_time - _started_time) / 1e9;
+            auto _real_time = static_cast<float>(_running_time - _started_time) / 1e9;
             std::string log;
             if (level >= Warn) {
                 log = FMT::format("[{:.06f}] [{}] {}\n", _real_time, _logLevelToString(level), message);
@@ -98,6 +99,7 @@ namespace MyEngine {
          */
         template<typename ...Args>
         static void log(LogLevel level, std::string_view format, Args... args) {
+            std::unique_lock<std::mutex> _lock;
             if (level < _base_level) return;
             _running_time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
             auto _real_time = (float) (_running_time - _started_time) / 1e9;

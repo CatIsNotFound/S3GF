@@ -1,5 +1,6 @@
 #include "Variant.h"
 #include "Exception.h"
+#include "Algorithm/String.h"
 
 namespace MyEngine {
     int64_t Variant::convert2Int64() const {
@@ -470,4 +471,171 @@ namespace MyEngine {
         return _value;
     }
 
+    std::string Variant::valueAsString(const std::function<std::string(void*)>& callback) const {
+        switch (_type) {
+            case Null: break;
+            case Bool:
+                return std::to_string(*static_cast<bool *>(_value));
+            case Int8:
+                return std::to_string(*static_cast<int8_t *>(_value));
+            case Int16:
+                return std::to_string(*static_cast<int16_t *>(_value));
+            case Int32:
+                return std::to_string(*static_cast<int32_t *>(_value));
+            case Int64:
+                return std::to_string(*static_cast<int64_t *>(_value));
+            case UInt8:
+                return std::to_string(*static_cast<uint8_t *>(_value));
+            case UInt16:
+                return std::to_string(*static_cast<uint16_t *>(_value));
+            case UInt32:
+                return std::to_string(*static_cast<uint32_t *>(_value));
+            case UInt64:
+                return std::to_string(*static_cast<uint64_t *>(_value));
+            case Float:
+                return std::to_string(*static_cast<float *>(_value));
+            case Double:
+                return std::to_string(*static_cast<double *>(_value));
+            case String:
+                return *static_cast<std::string *>(_value);
+            case Pointer:
+                if (callback) return callback(_value);
+                break;
+        }
+        return {};
+    }
+
+    bool Variant::stringToValue(const std::string &string_value, Type var_type, const std::function<bool(void *)> &callback) {
+        if (_type != Null) return false;
+        auto old_type = _type;
+        _type = var_type;
+        switch (var_type) {
+            case Null: break;
+            case Bool:
+                _value = new bool(std::stoi(string_value) > 0);
+                return true;
+            case Int8:
+                _value = new int8_t(std::stoi(string_value));
+                return true;
+            case Int16:
+                _value = new int16_t(std::stoi(string_value));
+                return true;
+            case Int32:
+                _value = new int32_t(std::stol(string_value));
+                return true;
+            case Int64:
+                _value = new int64_t(std::stoll(string_value));
+                return true;
+            case UInt8:
+                _value = new uint8_t(std::stoul(string_value));
+                return true;
+            case UInt16:
+                _value = new uint16_t(std::stoul(string_value));
+                return true;
+            case UInt32:
+                _value = new uint32_t(std::stoul(string_value));
+                return true;
+            case UInt64:
+                _value = new uint64_t(std::stoull(string_value));
+                return true;
+            case Float:
+                _value = new float(std::stof(string_value));
+                return true;
+            case Double:
+                _value = new double(std::stod(string_value));
+                return true;
+            case String:
+                _value = new std::string(string_value);
+                return true;
+            case Pointer:
+                if (callback) return callback(_value);
+                break;
+        }
+        _type = old_type;
+        return false;
+    }
+
+    BinaryArray Variant::valueAsBinary(const std::function<BinaryArray(void *)> &callback) const {
+        switch (_type) {
+            case Null: break;
+            case Bool:
+                return {*static_cast<bool *>(_value)};
+            case Int8:
+                return Algorithm::int8ToBinary(*static_cast<int8_t *>(_value));
+            case Int16:
+                return Algorithm::int16ToBinary(*static_cast<int16_t *>(_value));
+            case Int32:
+                return Algorithm::int32ToBinary(*static_cast<int32_t *>(_value));
+            case Int64:
+                return Algorithm::int64ToBinary(*static_cast<int64_t *>(_value));
+            case UInt8:
+                return Algorithm::uint8ToBinary(*static_cast<uint8_t *>(_value));
+            case UInt16:
+                return Algorithm::uint16ToBinary(*static_cast<uint16_t *>(_value));
+            case UInt32:
+                return Algorithm::uint32ToBinary(*static_cast<uint32_t *>(_value));
+            case UInt64:
+                return Algorithm::uint64ToBinary(*static_cast<uint64_t *>(_value));
+            case Float:
+                return Algorithm::floatToBinary(*static_cast<float *>(_value));
+            case Double:
+                return Algorithm::doubleToBinary(*static_cast<double *>(_value));
+            case String:
+                return Algorithm::stringToBinary(*static_cast<std::string *>(_value));
+            case Pointer:
+                if (callback) return callback(_value);
+                break;
+        }
+        return {};
+    }
+
+    bool Variant::binaryToValue(const BinaryArray &bin_value, Type var_type, const std::function<bool(void *)> &callback) {
+        if (_type != Null) return false;
+        auto old_type = _type;
+        _type = var_type;
+        switch (var_type) {
+            case Null: break;
+            case Bool:
+                _value = new bool(bin_value[0] > 0);
+                return true;
+            case Int8:
+                _value = new int8_t(Algorithm::binaryToInt8(bin_value));
+                return true;
+            case Int16:
+                _value = new int16_t(Algorithm::binaryToInt16(bin_value));
+                return true;
+            case Int32:
+                _value = new int32_t(Algorithm::binaryToInt32(bin_value));
+                return true;
+            case Int64:
+                _value = new int64_t(Algorithm::binaryToInt64(bin_value));
+                return true;
+            case UInt8:
+                _value = new uint8_t(Algorithm::binaryToUInt8(bin_value));
+                return true;
+            case UInt16:
+                _value = new uint16_t(Algorithm::binaryToUInt16(bin_value));
+                return true;
+            case UInt32:
+                _value = new uint32_t(Algorithm::binaryToUInt32(bin_value));
+                return true;
+            case UInt64:
+                _value = new uint64_t(Algorithm::binaryToUInt64(bin_value));
+                return true;
+            case Float:
+                _value = new float(Algorithm::binaryToFloat(bin_value));
+                return true;
+            case Double:
+                _value = new double(Algorithm::binaryToDouble(bin_value));
+                return true;
+            case String:
+                _value = new std::string(Algorithm::binaryToString(bin_value));
+                return true;
+            case Pointer:
+                if (callback) return callback(_value);
+                break;
+        }
+        _type = old_type;
+        return false;
+    }
 }

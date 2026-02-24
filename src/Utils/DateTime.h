@@ -79,7 +79,7 @@ namespace MyEngine {
             }
 
             bool operator!=(const DT& other) {
-                return operator==(other);
+                return !operator==(other);
             }
         };
 

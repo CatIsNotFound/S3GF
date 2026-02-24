@@ -47,6 +47,10 @@ if (EXISTS ${CATCH2_LIB})
             core/AudioSystem/test_audio_system.cpp
     )
 
+    addC2TestModule(CATCH2_TEST_MODULE_LIST utils_configuration
+            utils/test_config.cpp
+    )
+
     # ......
 
 endif()
@@ -112,6 +116,10 @@ addModule(TEST_MODULES VirtualDrums
 
 addModule(TEST_MODULES Pong
         examples/Game/Pong.cpp
+)
+
+addModule(TEST_MODULES test_config
+        examples/Config/test_config.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

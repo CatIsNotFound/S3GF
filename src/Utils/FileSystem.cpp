@@ -330,7 +330,7 @@ namespace MyEngine {
         }
     }
 
-    bool FileSystem::readBinaryFile(const std::string &path, const std::function<void(std::ifstream &)> &how2ReadFile,
+    bool FileSystem::readBinaryFile(const std::string &path, const std::function<bool(std::ifstream&)> &how2ReadFile,
                                     bool ignore_error) {
         std::filesystem::path temp = getAbsolutePath(path);
         std::ifstream file(temp.string(), std::ios::in | std::ios::binary);
@@ -339,12 +339,13 @@ namespace MyEngine {
                                                        temp.string()), Logger::Error);
             return false;
         }
-        if (how2ReadFile) how2ReadFile(file);
+        bool _ret = false;
+        if (how2ReadFile) _ret = how2ReadFile(file);
         file.close();
-        return true;
+        return _ret;
     }
 
-    std::vector<uint8_t> FileSystem::readBinaryFile(const std::string &path, bool ignore_error, bool *ok) {
+    BinaryArray FileSystem::readBinaryFile(const std::string &path, bool ignore_error, bool *ok) {
         std::filesystem::path temp = getAbsolutePath(path);
         std::ifstream file(temp.string(), std::ios::in | std::ios::binary | std::ios::ate);
         if (!file.is_open()) {
@@ -354,7 +355,7 @@ namespace MyEngine {
             return {};
         }
         std::streampos file_size = file.tellg();
-        std::vector<uint8_t> ret;
+        BinaryArray ret;
         if (file_size > 0) {
             ret.assign(file_size, '\0');
             file.seekg(0, std::ios::beg);

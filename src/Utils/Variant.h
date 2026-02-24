@@ -44,7 +44,7 @@ namespace MyEngine {
             Pointer
         };
         explicit Variant() : _type(Null), _value(nullptr) {}
-        Variant(Variant& v) : _type(v._type) {
+        explicit Variant(const Variant& v) : _type(v._type) {
             switch (_type) {
                 case Null:
                     _value = nullptr;
@@ -149,7 +149,8 @@ namespace MyEngine {
         explicit Variant(float v) : _type(Float), _value(new float(v)) {}
         explicit Variant(double v) : _type(Double), _value(new double(v)) {}
         explicit Variant(const char* string) : _type(String), _value(new std::string(string)) {}
-        explicit Variant(std::string& string) : _type(String), _value(new std::string(string)) {}
+        explicit Variant(const std::string& string) : _type(String), _value(new std::string(string)) {}
+        explicit Variant(std::string&& string) noexcept : _type(String), _value(new std::string(string)) {}
         explicit Variant(void* pointer, std::function<void(void*)> deleter = {})
             : _type(Pointer), _value(pointer), _deleter(std::move(deleter)) {}
         /**
@@ -213,25 +214,70 @@ namespace MyEngine {
         void setValue(const char* string);
         void setValue(std::string& string);
         void setValue(void* pointer, std::function<void(void*)> deleter = {});
-        bool toBool() const;
-        int8_t toInt8() const;
-        int16_t toInt16() const;
-        int32_t toInt32() const;
-        int64_t toInt64() const;
-        uint8_t toUInt8() const;
-        uint16_t toUInt16() const;
-        uint32_t toUInt32() const;
-        uint64_t toUInt64() const;
-        float toFloat() const;
-        double toDouble() const;
-        std::string toString() const;
-        void* toPointer() const;
+        [[nodiscard]] bool toBool() const;
+        [[nodiscard]] int8_t toInt8() const;
+        [[nodiscard]] int16_t toInt16() const;
+        [[nodiscard]] int32_t toInt32() const;
+        [[nodiscard]] int64_t toInt64() const;
+        [[nodiscard]] uint8_t toUInt8() const;
+        [[nodiscard]] uint16_t toUInt16() const;
+        [[nodiscard]] uint32_t toUInt32() const;
+        [[nodiscard]] uint64_t toUInt64() const;
+        [[nodiscard]] float toFloat() const;
+        [[nodiscard]] double toDouble() const;
+        [[nodiscard]] std::string toString() const;
+        [[nodiscard]] void* toPointer() const;
+
+        [[nodiscard]] std::string valueAsString(const std::function<std::string(void*)>& callback = {}) const;
+        bool stringToValue(const std::string &string_value, Type var_type, const std::function<bool(void*)>& callback = {});
+
+        [[nodiscard]] BinaryArray valueAsBinary(const std::function<BinaryArray(void*)>& callback = {}) const;
+        bool binaryToValue(const BinaryArray& bin_value, Type var_type, const std::function<bool(void*)>& callback = {});
+
     private:
         Type _type;
         void* _value;
         std::function<void(void*)> _deleter{};
     };
-
 } // MyEngine
+
+template<>
+    struct FMT::formatter<MyEngine::Variant> {
+    constexpr auto parse(FMT::format_parse_context& context) {
+        return context.begin();
+    }
+
+    auto format(const MyEngine::Variant& variant, FMT::format_context& context) const {
+        if (variant.type() == MyEngine::Variant::Null)
+            return FMT::format_to(context.out(), "<NULL>");
+        else if (variant.type() == MyEngine::Variant::Bool)
+            return FMT::format_to(context.out(), "{}", variant.toBool());
+        else if (variant.type() == MyEngine::Variant::Int8)
+            return FMT::format_to(context.out(), "{}", variant.toInt8());
+        else if (variant.type() == MyEngine::Variant::Int16)
+            return FMT::format_to(context.out(), "{}", variant.toInt16());
+        else if (variant.type() == MyEngine::Variant::Int32)
+            return FMT::format_to(context.out(), "{}", variant.toInt32());
+        else if (variant.type() == MyEngine::Variant::Int64)
+            return FMT::format_to(context.out(), "{}", variant.toInt64());
+        else if (variant.type() == MyEngine::Variant::UInt8)
+            return FMT::format_to(context.out(), "{}", variant.toUInt8());
+        else if (variant.type() == MyEngine::Variant::UInt16)
+            return FMT::format_to(context.out(), "{}", variant.toUInt16());
+        else if (variant.type() == MyEngine::Variant::UInt32)
+            return FMT::format_to(context.out(), "{}", variant.toUInt32());
+        else if (variant.type() == MyEngine::Variant::UInt64)
+            return FMT::format_to(context.out(), "{}", variant.toUInt64());
+        else if (variant.type() == MyEngine::Variant::Float)
+            return FMT::format_to(context.out(), "{}", variant.toFloat());
+        else if (variant.type() == MyEngine::Variant::Double)
+            return FMT::format_to(context.out(), "{}", variant.toDouble());
+        else if (variant.type() == MyEngine::Variant::String)
+            return FMT::format_to(context.out(), "{}", variant.toString());
+        else if (variant.type() == MyEngine::Variant::Pointer)
+            return FMT::format_to(context.out(), "0x{:x}", (size_t)variant.toPointer());
+        return context.out();
+    }
+};
 
 #endif //MYENGINE_UTILS_VARIANT_H
