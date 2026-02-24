@@ -14,81 +14,79 @@ MACRO_MAKE_CONFIG(Rect,
     MACRO_MAKE_PROPERTY(SDL_Color, foregroundColor, StdColor::Black)
 );
 
+using BagPack = std::unordered_map<std::string, Variant>;
+using AllBags = std::vector<BagPack>;
+
+MACRO_MAKE_CONFIG(SaveData,
+    MACRO_MAKE_PROPERTY(std::string, playerName)
+    MACRO_MAKE_PROPERTY(uint64_t, id)
+    MACRO_MAKE_PROPERTY(uint64_t, firstPlayedTime)
+    MACRO_MAKE_PROPERTY(uint64_t, lastPlayedTime)
+    MACRO_MAKE_PROPERTY(BagPack, bagPack)
+    MACRO_MAKE_PROPERTY(AllBags, allBags)
+);
+
 
 int main() {
-    Config::BinaryConfigParser parser(Config::ConfigObject{});
-    std::cout << "[parser 1]\n";
-    std::cout << "Object: " << (parser.isObject() ? "true" : "false") << std::endl;
-    std::cout << "Array: " << (parser.isArray() ? "true" : "false") << std::endl;
+    // Config::BinaryConfigParser parser(Config::ConfigObject{});
+    // std::cout << "[parser 1]\n";
+    // std::cout << "Object: " << (parser.isObject() ? "true" : "false") << std::endl;
+    // std::cout << "Array: " << (parser.isArray() ? "true" : "false") << std::endl;
+    // SaveData saveData;
+    // saveData.set_id(100);
+    // saveData.set_playerName("Red");
+    // saveData.set_firstPlayedTime(DateTime::currentTimestamp());
+    // saveData.set_lastPlayedTime(DateTime::currentTimestamp());
+    // BagPack bagPack;
+    // bagPack["a0"] = Variant(2);
+    // bagPack["a1"] = Variant(3);
+    // bagPack["a2"] = Variant(4);
+    // saveData.set_bagPack(std::move(bagPack));
+    // BagPack bag1;
+    // bag1["grape"] = Variant(50);
+    // bag1["banana"] = Variant(200);
+    // BagPack bag2;
+    // bag2["banana"] = Variant(300);
+    // bag2["grape"] = Variant(400);
+    // AllBags allBags = {
+    //     bag1, bag2
+    // };
+    // saveData.set_allBags(std::move(allBags));
+    // MACRO_MAKE_CONFIG_OBJECT(saveDataObject);
+    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, id);
+    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, playerName);
+    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, firstPlayedTime);
+    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, lastPlayedTime);
+    // auto all_bags = std::make_unique<AllBags>(saveData.get_allBags());
+    // auto bag_pack = std::make_unique<BagPack>(saveData.get_bagPack());
+    // Variant var_bagpack(bag_pack.get(), Config::Var_ConfigObject);
+    // saveDataObject.emplace("bagPack", var_bagpack);
+    // Variant var_all_bags(all_bags.get(), Config::Var_ConfigArray);
+    // saveDataObject.emplace("allBags", var_all_bags);
+    // parser.setConfigObject(std::move(saveDataObject));
+    // Logger::log(Logger::Info, "Saved file: {}", parser.saveFile("./test_obj_complex.bin"));
+    // Logger::log(Logger::Info, "{}\nArr: {}", parser.configObject().size(), static_cast<BagPack*>(var_bagpack.toPointer())->size());
 
-    parser.configObject().emplace("Test", 123456);
-    parser.configObject().emplace("ID", "1a2b3c4d");
-    parser.configObject().emplace("bool", true);
-    parser.configObject().emplace("PI", 3.1415926);
-    parser.configObject().emplace("uint8", static_cast<uint8_t>(127));
-    if (parser.saveFile("./test.bin")) {
-        Logger::log("Log file saved!", Logger::LogLevel::Info);
+    Config::BinaryConfigParser parser("./test_obj_complex.bin");
+    if (parser.loadFile()) {
+        Logger::log("Loaded config file");
     } else {
-        Logger::log("Log file is not saved!", Logger::Info);
+        Logger::log("Failed to load config file");
+        return 1;
     }
-
-    Config::BinaryConfigParser parser2(Config::ConfigArray{});
-    std::cout << "[parser 2]\n";
-    std::cout << "Object: " << (parser2.isObject() ? "true" : "false") << std::endl;
-    std::cout << "Array: " << (parser2.isArray() ? "true" : "false") << std::endl;
-
-    Config::ConfigObject object1;
-    object1.emplace("name", "Amy");
-    object1.emplace("id", 1234);
-    object1.emplace("Rand", 123.4567);
-
-    Config::ConfigObject object2;
-    object2.emplace("name", "Bob");
-    object2.emplace("id", 1235);
-    object2.emplace("Rand", 188.7418);
-
-    parser2.configArray().push_back(object1);
-    parser2.configArray().push_back(object2);
-
-    if (parser2.saveFile("./test_arr.bin")) {
-        Logger::log("Log file saved!", Logger::LogLevel::Info);
-    } else {
-        Logger::log("Log file is not saved!", Logger::Info);
-    }
-
-    Config::BinaryConfigParser parser3("./test.bin");
-    if (parser3.loadFile()) {
-        Logger::log("Log file loaded!", Logger::Info);
-    } else {
-        Logger::log("Log file is not loaded!", Logger::Info);
-        return 0;
-    }
-    std::cout << "[parser 3]\n";
-    std::cout << "Object: " << (parser3.isObject() ? "true" : "false") << std::endl;
-    std::cout << "Array: " << (parser3.isArray() ? "true" : "false") << std::endl;
-
-    for (auto& key : parser3.configObject()) {
-        Logger::log(Logger::Info, "{}:{}", key.first, key.second.valueAsString());
-    }
-    Logger::log(Logger::Info, "Test: {}", parser3.configObject().at("Test").toUInt64());
-    std::cout << std::endl;
-
-    Config::BinaryConfigParser parser4("./test_arr.bin");
-    if (parser4.loadFile()) {
-        Logger::log("Log file loaded!", Logger::Info);
-    } else {
-        Logger::log("Log file is not loaded!", Logger::Info);
-        return 0;
-    }
-    std::cout << "[parser 4]\n";
-    std::cout << "Object: " << (parser4.isObject() ? "true" : "false") << std::endl;
-    std::cout << "Array: " << (parser4.isArray() ? "true" : "false") << std::endl;
-    size_t idx = 0;
-    for (auto& map : parser4.configArray()) {
-        std::cout << "[Index " << idx++ << "]\n";
-        for (auto& key : map) {
-            std::cout << key.first << ":" << key.second.valueAsString() << "\n";
-        }
+    Logger::log(Logger::Info, "is_object = {}, is_array = {}", parser.isObject(), parser.isArray());
+    for (auto& [key, value] : parser.configObject()) {
+        Logger::log(Logger::Info, "{} -> {}", key, value.valueAsString([](void* d, uint32_t type_id) {
+            std::string out;
+            if (type_id == Config::Var_ConfigObject) {
+                auto obj = static_cast<Config::ConfigObject*>(d);
+                out = std::to_string(obj->size());
+            } else if (type_id == Config::Var_ConfigArray) {
+                auto arr = static_cast<Config::ConfigArray*>(d);
+                out = std::to_string(arr->size());
+            }
+            return out;
+        }));
     }
     return 0;
 }

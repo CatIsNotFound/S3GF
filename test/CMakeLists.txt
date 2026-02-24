@@ -51,6 +51,10 @@ if (EXISTS ${CATCH2_LIB})
             utils/test_config.cpp
     )
 
+    addC2TestModule(CATCH2_TEST_MODULE_LIST utils_variant
+            utils/test_variant.cpp
+    )
+
     # ......
 
 endif()

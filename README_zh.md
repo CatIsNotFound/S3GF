@@ -108,34 +108,59 @@ MyEngine 是一个轻量级但功能强大的 2D 图形框架，构建于 SDL3 �
     set(MYENGINE_LIB   "/path/to/MyEngine")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
     
+    if (APPLE)
+       if (NOT EXISTS ${DATE_LIB})
+          message(FATAL_ERROR "You are using MacOS, but you have not set Date Libs path!")
+       endif()
+       if (NOT EXISTS ${FMT_LIB})
+          message(FATAL_ERROR "You are using MacOS, but you have not set FMT Libs path!")
+       endif()
+    endif()
+    
     list(APPEND CMAKE_PREFIX_PATH ${SDL3_LIB})
     list(APPEND CMAKE_PREFIX_PATH ${SDL3_IMAGE_LIB})
     list(APPEND CMAKE_PREFIX_PATH ${SDL3_TTF_LIB})
     list(APPEND CMAKE_PREFIX_PATH ${SDL3_MIXER_LIB})
-    # list(APPEND CMAKE_PREFIX_PATH ${DATE_LIB})
-    # list(APPEND CMAKE_PREFIX_PATH ${FMT_LIB})
+    if (EXISTS ${DATE_LIB}) 
+        list(APPEND CMAKE_PREFIX_PATH ${DATE_LIB})
+        add_compile_definitions(__USED_DATE_LIB__)
+    endif()
+    if (EXISTS ${FMT_LIB}) 
+        list(APPEND CMAKE_PREFIX_PATH ${FMT_LIB})
+        add_compile_definitions(__USED_FMT_LIB__)
+    endif()
     list(APPEND CMAKE_PREFIX_PATH ${MYENGINE_LIB})
     
     find_package(SDL3 REQUIRED)
     find_package(SDL3_image REQUIRED)
     find_package(SDL3_ttf REQUIRED)
     find_package(SDL3_mixer REQUIRED)
-    # find_package(date REQUIRED)
-    # find_package(fmt REQUIRED)
+    if (EXISTS ${DATE_LIB})
+        find_package(date REQUIRED)
+    endif()
+    if (EXISTS ${FMT_LIB}) 
+        find_package(fmt REQUIRED)
+    endif()
     find_package(MyEngine REQUIRED)
     
     add_executable(${PROJECT_NAME}
             main.cpp
     )
     
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-            SDL3::SDL3
-            SDL3_image::SDL3_image
-            SDL3_ttf::SDL3_ttf
-            SDL3_mixer::SDL3_mixer
-            # date::date
-            # fmt::fmt
-            MyEngine::MyEngine
+    list(APPEND TARGET_LIBS SDL3::SDL3)
+    list(APPEND TARGET_LIBS SDL3_image::SDL3_image)
+    list(APPEND TARGET_LIBS SDL3_mixer::SDL3_mixer)
+    list(APPEND TARGET_LIBS SDL3_ttf::SDL3_ttf)
+    if (EXISTS ${FMT_LIB})
+        list(APPEND TARGET_LIBS fmt::fmt)
+    endif()
+    if (EXISTS ${DATE_LIB})
+        list(APPEND TARGET_LIBS date::date)
+        list(APPEND TARGET_LIBS date::date-tz)
+    endif()
+    
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        ${TARGET_LIBS}
     )
    
     set_target_properties(${PROJECT_NAME} PROPERTIES

@@ -11,6 +11,8 @@ namespace MyEngine::Config {
     using ConfigArrayIterator = ConfigArray::iterator;
     using ConfigArrayConstIterator = ConfigArray::const_iterator;
     using ConfigVariant = std::variant<std::monostate, ConfigObject, ConfigArray>;
+    constexpr static uint32_t Var_ConfigObject = 16;
+    constexpr static uint32_t Var_ConfigArray = 32;
 
     class AbstractConfigParser {
     public:
@@ -31,6 +33,10 @@ namespace MyEngine::Config {
         [[nodiscard]] ConfigObject& configObject();
         [[nodiscard]] bool isObject() const;
         [[nodiscard]] bool isArray() const;
+        void setConfigObject(const ConfigObject& config_object);
+        void setConfigObject(ConfigObject&& config_object) noexcept;
+        void setConfigArray(const ConfigArray& config_array);
+        void setConfigArray(ConfigArray&& config_array) noexcept;
 
         explicit AbstractConfigParser(const AbstractConfigParser&) = delete;
         explicit AbstractConfigParser(AbstractConfigParser&&) = delete;

@@ -67,12 +67,11 @@ public:                                             \
         }                                           \
     }                                               \
 
-#define MACRO_MAKE_CONFIG_OBJECT(NAME, ...)             \
-MyEngine::Config::ConfigObject NAME;                    \
-__VA_ARGS__
+#define MACRO_MAKE_CONFIG_OBJECT(NAME)             \
+MyEngine::Config::ConfigObject NAME
 
 #define MACRO_APPEND_PROP_TO_OBJECT(OBJECT, CONFIG, PROPERTY)    \
-OBJECT.emplace(#PROPERTY, CONFIG.get_##PROPERTY());
+OBJECT.emplace(#PROPERTY, CONFIG.get_##PROPERTY())
 
 
 #endif //MYENGINE_UTILS_MACRO_H

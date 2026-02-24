@@ -4,87 +4,342 @@
 
 namespace MyEngine {
     int64_t Variant::convert2Int64() const {
-        if (_type == Null || _type >= String) return 0;
+        if (_type >= String) return 0;
         if (_type == Bool) return *static_cast<bool*>(_value);
-        if (_type == Int64 || _type == UInt64) return *static_cast<int64_t*>(_value);
-        if (_type == Float) {
-            return static_cast<int64_t>(*static_cast<float*>(_value));
-        }
-        if (_type == Double) {
-            return static_cast<int64_t>(*static_cast<double*>(_value));
-        }
-        return static_cast<int64_t>(*static_cast<int32_t*>(_value));
+        if (_type == UInt64) return *static_cast<int64_t*>(_value);
+        if (_type == Float) return static_cast<int64_t>(*static_cast<float*>(_value));
+        if (_type == Double) return static_cast<int64_t>(*static_cast<double*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == UInt32) return *static_cast<uint32_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
+        if (_type == Int32) return *static_cast<int32_t*>(_value);
+        return *static_cast<int64_t*>(_value);
     }
 
     uint64_t Variant::convert2UInt64() const {
-        if (_type == Null || _type >= String) return 0;
+        if (_type >= String) return 0;
         if (_type == Bool) return *static_cast<bool*>(_value);
-        if (_type == Int64 || _type == UInt64) return *static_cast<uint64_t*>(_value);
-        if (_type == Float) {
-            return static_cast<int64_t>(*static_cast<float*>(_value));
-        }
-        if (_type == Double) {
-            return static_cast<int64_t>(*static_cast<double*>(_value));
-        }
-        return static_cast<uint64_t>(*static_cast<int32_t*>(_value));
+        if (_type == Int64) return *static_cast<uint64_t*>(_value);
+        if (_type == Float) return static_cast<int64_t>(*static_cast<float*>(_value));
+        if (_type == Double) return static_cast<int64_t>(*static_cast<double*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == UInt32) return *static_cast<uint32_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
+        if (_type == Int32) return *static_cast<int32_t*>(_value);
+        return *static_cast<uint64_t*>(_value);
     }
 
     int32_t Variant::convert2Int32() const {
-        if (_type == Null || _type >= String) return 0;
+        if (_type >= String) return 0;
         if (_type == Bool) return *static_cast<bool*>(_value);
         if (_type == Int64 || _type == UInt64) return static_cast<int32_t>(*static_cast<int64_t*>(_value));
-        if (_type == Float) {
-            return static_cast<int64_t>(*static_cast<float*>(_value));
-        }
-        if (_type == Double) {
-            return static_cast<int64_t>(*static_cast<double*>(_value));
-        }
+        if (_type == Float) return static_cast<int64_t>(*static_cast<float*>(_value));
+        if (_type == Double) return static_cast<int64_t>(*static_cast<double*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == UInt32) return *static_cast<uint32_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
         return *static_cast<int32_t*>(_value);
     }
 
     uint32_t Variant::convert2UInt32() const {
-        if (_type == Null || _type >= String) return 0;
+        if (_type >= String) return 0;
         if (_type == Bool) return *static_cast<bool*>(_value);
         if (_type == Int64 || _type == UInt64) return static_cast<uint32_t>(*static_cast<int64_t*>(_value));
-        if (_type == Float) {
-            return static_cast<int64_t>(*static_cast<float*>(_value));
-        }
-        if (_type == Double) {
-            return static_cast<int64_t>(*static_cast<double*>(_value));
-        }
+        if (_type == Float) return static_cast<int64_t>(*static_cast<float*>(_value));
+        if (_type == Double) return static_cast<int64_t>(*static_cast<double*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
+        if (_type == Int32) return *static_cast<int32_t*>(_value);
         return *static_cast<uint32_t*>(_value);
     }
 
     float Variant::convert2Float() const {
-        if (_type == Float) return *static_cast<float*>(_value);
         if (_type == Double) return static_cast<float>(*static_cast<double*>(_value));
         if (_type <= Bool || _type >= String) return 0;
-        if (_type == Int64) {
-            return static_cast<float>(*static_cast<int64_t*>(_value));
-        } else if (_type == UInt64) {
-            return static_cast<float>(*static_cast<uint64_t*>(_value));
-        }
-        if (_type >= Int8 && _type <= Int32) {
-            return static_cast<float>(*static_cast<int32_t*>(_value));
-        } else {
-            return static_cast<float>(*static_cast<uint32_t*>(_value));
-        }
+        if (_type == Int64) return static_cast<float>(*static_cast<int64_t*>(_value));
+        if (_type == UInt64) return static_cast<float>(*static_cast<uint64_t*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == UInt32) return *static_cast<uint32_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
+        if (_type == Int32) return *static_cast<int32_t*>(_value);
+        return *static_cast<float*>(_value);
     }
 
     double Variant::convert2Double() const {
-        if (_type == Double) return *static_cast<double*>(_value);
         if (_type == Float) return static_cast<double>(*static_cast<float*>(_value));
         if (_type <= Bool || _type >= String) return 0;
-        if (_type == Int64) {
-            return static_cast<double>(*static_cast<int64_t*>(_value));
-        } else if (_type == UInt64) {
-            return static_cast<double>(*static_cast<uint64_t*>(_value));
+        if (_type == Int64) return static_cast<double>(*static_cast<int64_t*>(_value));
+        if (_type == UInt64) return static_cast<double>(*static_cast<uint64_t*>(_value));
+        if (_type == UInt8) return *static_cast<uint8_t*>(_value);
+        if (_type == UInt16) return *static_cast<uint16_t*>(_value);
+        if (_type == UInt32) return *static_cast<uint32_t*>(_value);
+        if (_type == Int8) return *static_cast<int8_t*>(_value);
+        if (_type == Int16) return *static_cast<int16_t*>(_value);
+        if (_type == Int32) return *static_cast<int32_t*>(_value);
+        return *static_cast<double*>(_value);
+    }
+
+    Variant::Variant(const Variant& v) : _type(v._type) {
+        switch (_type) {
+            case Null:
+                _value = nullptr;
+                break;
+            case Bool:
+                _value = new bool(*static_cast<bool*>(v._value));
+                break;
+            case Int8:
+                _value = new int8_t(*static_cast<int8_t*>(v._value));
+                break;
+            case Int16:
+                _value = new int16_t(*static_cast<int16_t*>(v._value));
+                break;
+            case Int32:
+                _value = new int32_t(*static_cast<int32_t*>(v._value));
+                break;
+            case Int64:
+                _value = new int64_t(*static_cast<int64_t*>(v._value));
+                break;
+            case UInt8:
+                _value = new uint8_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt16:
+                _value = new uint16_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt32:
+                _value = new uint32_t(*static_cast<uint32_t*>(v._value));
+                break;
+            case UInt64:
+                _value = new uint64_t(*static_cast<uint64_t*>(v._value));
+                break;
+            case Float:
+                _value = new float(*static_cast<float*>(v._value));
+                break;
+            case Double:
+                _value = new double(*static_cast<double*>(v._value));
+                break;
+            case String:
+                _value = new std::string(*static_cast<std::string*>(v._value));
+                break;
+            case Pointer:
+                _value = static_cast<void*>(v._value);
+                _custom_type_id = v._custom_type_id;
+                _deleter = std::function(v._deleter);
+                _reference_count = v._reference_count + 1;
+                break;
         }
-        if (_type >= Int8 && _type <= Int32) {
-            return static_cast<double>(*static_cast<int32_t*>(_value));
-        } else {
-            return static_cast<double>(*static_cast<uint32_t*>(_value));
+    }
+
+    Variant::Variant(Variant && v) noexcept : _type(v._type) {
+        switch (_type) {
+            case Null:
+                _value = nullptr;
+                break;
+            case Bool:
+                _value = new bool(*static_cast<bool*>(v._value));
+                break;
+            case Int8:
+                _value = new int8_t(*static_cast<int8_t*>(v._value));
+                break;
+            case Int16:
+                _value = new int16_t(*static_cast<int16_t*>(v._value));
+                break;
+            case Int32:
+                _value = new int32_t(*static_cast<int32_t*>(v._value));
+                break;
+            case Int64:
+                _value = new int64_t(*static_cast<int64_t*>(v._value));
+                break;
+            case UInt8:
+                _value = new uint8_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt16:
+                _value = new uint16_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt32:
+                _value = new uint32_t(*static_cast<uint32_t*>(v._value));
+                break;
+            case UInt64:
+                _value = new uint64_t(*static_cast<uint64_t*>(v._value));
+                break;
+            case Float:
+                _value = new float(*static_cast<float*>(v._value));
+                break;
+            case Double:
+                _value = new double(*static_cast<double*>(v._value));
+                break;
+            case String:
+                _value = new std::string(*static_cast<std::string*>(v._value));
+                break;
+            case Pointer:
+                _value = static_cast<void*>(v._value);
+                _custom_type_id = v._custom_type_id;
+                _deleter = std::function(v._deleter);
+                _reference_count = v._reference_count + 1;
+                break;
         }
+    }
+
+    Variant& Variant::operator=(const Variant& v) {
+        _type = v._type;
+        switch (_type) {
+            case Null:
+                _value = nullptr;
+                break;
+            case Bool:
+                _value = new bool(*static_cast<bool*>(v._value));
+                break;
+            case Int8:
+                _value = new int8_t(*static_cast<int8_t*>(v._value));
+                break;
+            case Int16:
+                _value = new int16_t(*static_cast<int16_t*>(v._value));
+                break;
+            case Int32:
+                _value = new int32_t(*static_cast<int32_t*>(v._value));
+                break;
+            case Int64:
+                _value = new int64_t(*static_cast<int64_t*>(v._value));
+                break;
+            case UInt8:
+                _value = new uint8_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt16:
+                _value = new uint16_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt32:
+                _value = new uint32_t(*static_cast<uint32_t*>(v._value));
+                break;
+            case UInt64:
+                _value = new uint64_t(*static_cast<uint64_t*>(v._value));
+                break;
+            case Float:
+                _value = new float(*static_cast<float*>(v._value));
+                break;
+            case Double:
+                _value = new double(*static_cast<double*>(v._value));
+                break;
+            case String:
+                _value = new std::string(*static_cast<std::string*>(v._value));
+                break;
+            case Pointer:
+                _value = static_cast<void*>(v._value);
+                _custom_type_id = v._custom_type_id;
+                _deleter = std::function(v._deleter);
+                _reference_count = v._reference_count + 1;
+                break;
+        }
+        return *this;
+    }
+
+    Variant &Variant::operator=(Variant && v) noexcept {
+        _type = v._type;
+        switch (_type) {
+            case Null:
+                _value = nullptr;
+                break;
+            case Bool:
+                _value = new bool(*static_cast<bool*>(v._value));
+                break;
+            case Int8:
+                _value = new int8_t(*static_cast<int8_t*>(v._value));
+                break;
+            case Int16:
+                _value = new int16_t(*static_cast<int16_t*>(v._value));
+                break;
+            case Int32:
+                _value = new int32_t(*static_cast<int32_t*>(v._value));
+                break;
+            case Int64:
+                _value = new int64_t(*static_cast<int64_t*>(v._value));
+                break;
+            case UInt8:
+                _value = new uint8_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt16:
+                _value = new uint16_t(*static_cast<uint8_t*>(v._value));
+                break;
+            case UInt32:
+                _value = new uint32_t(*static_cast<uint32_t*>(v._value));
+                break;
+            case UInt64:
+                _value = new uint64_t(*static_cast<uint64_t*>(v._value));
+                break;
+            case Float:
+                _value = new float(*static_cast<float*>(v._value));
+                break;
+            case Double:
+                _value = new double(*static_cast<double*>(v._value));
+                break;
+            case String:
+                _value = new std::string(*static_cast<std::string*>(v._value));
+                break;
+            case Pointer:
+                _value = static_cast<void*>(v._value);
+                _custom_type_id = v._custom_type_id;
+                _deleter = std::function(v._deleter);
+                _reference_count = v._reference_count + 1;
+                break;
+        }
+        return *this;
+    }
+
+    Variant::~Variant() {
+        if (!_value) return;
+        switch (_type) {
+            case Bool:
+                delete (static_cast<bool*>(_value));
+                break;
+            case Int8:
+                delete (static_cast<int8_t*>(_value));
+                break;
+            case Int16:
+                delete (static_cast<int16_t*>(_value));
+                break;
+            case Int32:
+                delete (static_cast<int32_t*>(_value));
+                break;
+            case Int64:
+                delete (static_cast<int64_t*>(_value));
+                break;
+            case UInt8:
+                delete (static_cast<uint8_t*>(_value));
+                break;
+            case UInt16:
+                delete (static_cast<uint16_t*>(_value));
+                break;
+            case UInt32:
+                delete (static_cast<uint32_t*>(_value));
+                break;
+            case UInt64:
+                delete (static_cast<uint64_t*>(_value));
+                break;
+            case Float:
+                delete (static_cast<float*>(_value));
+                break;
+            case Double:
+                delete (static_cast<double*>(_value));
+                break;
+            case String:
+                delete (static_cast<std::string*>(_value));
+                break;
+            case Pointer:
+                if (_reference_count > 0) _reference_count--;
+                if (_reference_count == 0 && _deleter) _deleter(_value);
+                break;
+            default:
+                break;
+        }
+        _value = nullptr;
     }
 
     Variant::Type Variant::type() const {
@@ -137,6 +392,14 @@ namespace MyEngine {
         if (_type == Pointer) _deleter = std::move(deleter);
     }
 
+    void Variant::setCustomTypeID(uint32_t type_id) {
+        if (_type == Pointer) _custom_type_id = type_id;
+    }
+
+    uint32_t Variant::customTypeID() const {
+        return _custom_type_id;
+    }
+
     void Variant::clearValue() {
         if (_value) {
             switch (_type) {
@@ -177,7 +440,8 @@ namespace MyEngine {
                     delete (static_cast<std::string*>(_value));
                     break;
                 case Pointer:
-                    if (_deleter) _deleter(_value);
+                    if (_reference_count > 0) _reference_count--;
+                    if (_reference_count == 0 && _deleter) _deleter(_value);
                     break;
                 default:
                     break;
@@ -185,6 +449,8 @@ namespace MyEngine {
         }
         _type = Null;
         _value = nullptr;
+        _custom_type_id = 0;
+        _reference_count = 0;
         _deleter = {};
     }
 
@@ -321,11 +587,11 @@ namespace MyEngine {
     void Variant::setValue(void* pointer, std::function<void(void*)> deleter) {
         if (_type == Pointer) {
             if (_value != pointer) {
-                if (_deleter) {
-                    _deleter(_value);
-                }
+                if (_reference_count > 0) _reference_count--;
+                if (_reference_count == 0 && _deleter) _deleter(_value);
                 _value = pointer;
                 _deleter = std::move(deleter);
+                _reference_count = 1;
             } else {
                 _deleter = std::move(deleter);
             }
@@ -333,6 +599,24 @@ namespace MyEngine {
             clearValue();
             _type = Pointer;
             _value = pointer;
+            _deleter = std::move(deleter);
+            _reference_count = 1;
+        }
+    }
+
+    void Variant::setValue(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter) {
+        if (_type == Pointer) {
+            if (_value != pointer) {
+                if (_deleter) _deleter(_value);
+                _value = pointer;
+            }
+            _deleter = std::move(deleter);
+            _custom_type_id = custom_type_id;
+        } else {
+            clearValue();
+            _type = Pointer;
+            _value = pointer;
+            _custom_type_id = custom_type_id;
             _deleter = std::move(deleter);
         }
     }
@@ -471,7 +755,7 @@ namespace MyEngine {
         return _value;
     }
 
-    std::string Variant::valueAsString(const std::function<std::string(void*)>& callback) const {
+    std::string Variant::valueAsString(const std::function<std::string(void *, uint32_t)> &callback) const {
         switch (_type) {
             case Null: break;
             case Bool:
@@ -499,7 +783,7 @@ namespace MyEngine {
             case String:
                 return *static_cast<std::string *>(_value);
             case Pointer:
-                if (callback) return callback(_value);
+                if (callback) return callback(_value, _custom_type_id);
                 break;
         }
         return {};
@@ -555,7 +839,7 @@ namespace MyEngine {
         return false;
     }
 
-    BinaryArray Variant::valueAsBinary(const std::function<BinaryArray(void *)> &callback) const {
+    BinaryArray Variant::valueAsBinary(const std::function<BinaryArray(void *, uint32_t)> &callback) const {
         switch (_type) {
             case Null: break;
             case Bool:
@@ -583,7 +867,7 @@ namespace MyEngine {
             case String:
                 return Algorithm::stringToBinary(*static_cast<std::string *>(_value));
             case Pointer:
-                if (callback) return callback(_value);
+                if (callback) return callback(_value, _custom_type_id);
                 break;
         }
         return {};

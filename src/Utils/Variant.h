@@ -27,7 +27,7 @@ namespace MyEngine {
          * @details Used to indicate the data type stored by the variant
          * \endif
          */
-        enum Type {
+        enum Type : uint8_t {
             Null,
             Bool,
             Int8,
@@ -44,99 +44,11 @@ namespace MyEngine {
             Pointer
         };
         explicit Variant() : _type(Null), _value(nullptr) {}
-        explicit Variant(const Variant& v) : _type(v._type) {
-            switch (_type) {
-                case Null:
-                    _value = nullptr;
-                    break;
-                case Bool:
-                    _value = new bool(*static_cast<bool*>(v._value));
-                    break;
-                case Int8:
-                    _value = new int8_t(*static_cast<int8_t*>(v._value));
-                    break;
-                case Int16:
-                    _value = new int16_t(*static_cast<int16_t*>(v._value));
-                    break;
-                case Int32:
-                    _value = new int32_t(*static_cast<int32_t*>(v._value));
-                    break;
-                case Int64:
-                    _value = new int64_t(*static_cast<int64_t*>(v._value));
-                    break;
-                case UInt8:
-                    _value = new uint8_t(*static_cast<uint8_t*>(v._value));
-                    break;
-                case UInt16:
-                    _value = new uint16_t(*static_cast<uint8_t*>(v._value));
-                    break;
-                case UInt32:
-                    _value = new uint32_t(*static_cast<uint32_t*>(v._value));
-                    break;
-                case UInt64:
-                    _value = new uint64_t(*static_cast<uint64_t*>(v._value));
-                    break;
-                case Float:
-                    _value = new float(*static_cast<float*>(v._value));
-                    break;
-                case Double:
-                    _value = new double(*static_cast<double*>(v._value));
-                    break;
-                case String:
-                    _value = new std::string(*static_cast<std::string*>(v._value));
-                    break;
-                case Pointer:
-                    _value = static_cast<void*>(v._value);
-                    break;
-            }
-        }
-        ~Variant() {
-            if (!_value) return;
-            switch (_type) {
-                case Bool:
-                    delete (static_cast<bool*>(_value));
-                    break;
-                case Int8:
-                    delete (static_cast<int8_t*>(_value));
-                    break;
-                case Int16:
-                    delete (static_cast<int16_t*>(_value));
-                    break;
-                case Int32:
-                    delete (static_cast<int32_t*>(_value));
-                    break;
-                case Int64:
-                    delete (static_cast<int64_t*>(_value));
-                    break;
-                case UInt8:
-                    delete (static_cast<uint8_t*>(_value));
-                    break;
-                case UInt16:
-                    delete (static_cast<uint16_t*>(_value));
-                    break;
-                case UInt32:
-                    delete (static_cast<uint32_t*>(_value));
-                    break;
-                case UInt64:
-                    delete (static_cast<uint64_t*>(_value));
-                    break;
-                case Float:
-                    delete (static_cast<float*>(_value));
-                    break;
-                case Double:
-                    delete (static_cast<double*>(_value));
-                    break;
-                case String:
-                    delete (static_cast<std::string*>(_value));
-                    break;
-                case Pointer:
-                    if (_deleter) _deleter(_value);
-                    break;
-                default:
-                    break;
-            }
-            _value = nullptr;
-        }
+        explicit Variant(const Variant&);
+        explicit Variant(Variant&&) noexcept;
+        Variant& operator=(const Variant&);
+        Variant& operator=(Variant&&) noexcept;
+        ~Variant();
         explicit Variant(bool v) : _type(Bool), _value(new bool(v)) {}
         explicit Variant(int8_t v) : _type(Int8), _value(new int8_t(v)) {}
         explicit Variant(int16_t v) : _type(Int16), _value(new int16_t(v)) {}
@@ -152,7 +64,10 @@ namespace MyEngine {
         explicit Variant(const std::string& string) : _type(String), _value(new std::string(string)) {}
         explicit Variant(std::string&& string) noexcept : _type(String), _value(new std::string(string)) {}
         explicit Variant(void* pointer, std::function<void(void*)> deleter = {})
-            : _type(Pointer), _value(pointer), _deleter(std::move(deleter)) {}
+            : _type(Pointer), _reference_count(1), _value(pointer), _deleter(std::move(deleter)) {}
+        explicit Variant(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter = {})
+            : _type(Pointer), _reference_count(1), _custom_type_id(custom_type_id),
+              _value(pointer), _deleter(std::move(deleter)) {}
         /**
          * \if EN
          * @brief Get the data type stored in the current variant
@@ -199,6 +114,9 @@ namespace MyEngine {
          */
         void setDeleter(std::function<void(void*)> deleter);
 
+        void setCustomTypeID(uint32_t type_id);
+        [[nodiscard]] uint32_t customTypeID() const;
+
         void clearValue();
         void setValue(bool v);
         void setValue(int8_t v);
@@ -214,6 +132,7 @@ namespace MyEngine {
         void setValue(const char* string);
         void setValue(std::string& string);
         void setValue(void* pointer, std::function<void(void*)> deleter = {});
+        void setValue(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter = {});
         [[nodiscard]] bool toBool() const;
         [[nodiscard]] int8_t toInt8() const;
         [[nodiscard]] int16_t toInt16() const;
@@ -228,14 +147,16 @@ namespace MyEngine {
         [[nodiscard]] std::string toString() const;
         [[nodiscard]] void* toPointer() const;
 
-        [[nodiscard]] std::string valueAsString(const std::function<std::string(void*)>& callback = {}) const;
+        [[nodiscard]] std::string valueAsString(const std::function<std::string(void *, uint32_t)> &callback = {}) const;
         bool stringToValue(const std::string &string_value, Type var_type, const std::function<bool(void*)>& callback = {});
 
-        [[nodiscard]] BinaryArray valueAsBinary(const std::function<BinaryArray(void*)>& callback = {}) const;
+        [[nodiscard]] BinaryArray valueAsBinary(const std::function<BinaryArray(void *, uint32_t)> &callback = {}) const;
         bool binaryToValue(const BinaryArray& bin_value, Type var_type, const std::function<bool(void*)>& callback = {});
 
     private:
         Type _type;
+        uint16_t _reference_count{0};
+        uint32_t _custom_type_id{0};
         void* _value;
         std::function<void(void*)> _deleter{};
     };
@@ -275,7 +196,7 @@ template<>
         else if (variant.type() == MyEngine::Variant::String)
             return FMT::format_to(context.out(), "{}", variant.toString());
         else if (variant.type() == MyEngine::Variant::Pointer)
-            return FMT::format_to(context.out(), "0x{:x}", (size_t)variant.toPointer());
+            return FMT::format_to(context.out(), "0x{:x}", reinterpret_cast<size_t>(variant.toPointer()));
         return context.out();
     }
 };

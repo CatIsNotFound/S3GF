@@ -39,13 +39,12 @@ TEST_CASE("Configuration Test", "[Utils][Conf]") {
         player.set_seed(123.890123);
         player.set_invalid(true);
 
-        MACRO_MAKE_CONFIG_OBJECT(users,
-            MACRO_APPEND_PROP_TO_OBJECT(users, player, last_played_time)
-            MACRO_APPEND_PROP_TO_OBJECT(users, player, first_played_time)
-            MACRO_APPEND_PROP_TO_OBJECT(users, player, playerName)
-            MACRO_APPEND_PROP_TO_OBJECT(users, player, seed)
-            MACRO_APPEND_PROP_TO_OBJECT(users, player, invalid)
-        )
+        MACRO_MAKE_CONFIG_OBJECT(users);
+        MACRO_APPEND_PROP_TO_OBJECT(users, player, last_played_time);
+        MACRO_APPEND_PROP_TO_OBJECT(users, player, first_played_time);
+        MACRO_APPEND_PROP_TO_OBJECT(users, player, playerName);
+        MACRO_APPEND_PROP_TO_OBJECT(users, player, seed);
+        MACRO_APPEND_PROP_TO_OBJECT(users, player, invalid);
 
         Config::BinaryConfigParser bin_conf_parser(users);
         CHECK_FALSE(bin_conf_parser.isArray());
@@ -89,13 +88,13 @@ TEST_CASE("Configuration Test", "[Utils][Conf]") {
             data.set_HP(RandomGenerator::randInt(0, 10000));
             data.set_MP(RandomGenerator::randInt(0, 10000));
             data.set_LV(RandomGenerator::randUInt(0, 999));
-            MACRO_MAKE_CONFIG_OBJECT(obj,
-                MACRO_APPEND_PROP_TO_OBJECT(obj, data, playerName)
-                MACRO_APPEND_PROP_TO_OBJECT(obj, data, dataID)
-                MACRO_APPEND_PROP_TO_OBJECT(obj, data, HP)
-                MACRO_APPEND_PROP_TO_OBJECT(obj, data, MP)
-                MACRO_APPEND_PROP_TO_OBJECT(obj, data, LV)
-            )
+            MACRO_MAKE_CONFIG_OBJECT(obj);
+            MACRO_APPEND_PROP_TO_OBJECT(obj, data, playerName);
+            MACRO_APPEND_PROP_TO_OBJECT(obj, data, dataID);
+            MACRO_APPEND_PROP_TO_OBJECT(obj, data, HP);
+            MACRO_APPEND_PROP_TO_OBJECT(obj, data, MP);
+            MACRO_APPEND_PROP_TO_OBJECT(obj, data, LV);
+
             datas.push_back(obj);
         }
         Config::BinaryConfigParser binary_config_parser(datas);
