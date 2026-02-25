@@ -449,6 +449,14 @@ namespace MyEngine {
                     (SDL_WINDOW_MINIMIZED | SDL_WINDOW_MAXIMIZED | SDL_WINDOW_FULLSCREEN));
     }
 
+    void Window::setFreezeEnabled(bool enabled) {
+        _render = !enabled;
+    }
+
+    bool Window::isFreeze() const {
+        return !_render;
+    }
+
     void Window::setWindowTitle(const std::string& title) {
         SDL_SetWindowTitle(_window, title.c_str());
     }
@@ -1183,7 +1191,7 @@ namespace MyEngine {
             auto current_ns = SDL_GetTicksNS();
             if ((double)(current_ns - start_ns) >= _frame_in_ns) {
                 for (auto& win : _window_list) {
-                    win.second->renderer()->_update();
+                    if (!win.second->isFreeze()) win.second->renderer()->_update();
                 }
                 start_ns = SDL_GetTicksNS();
                 frames += 1;

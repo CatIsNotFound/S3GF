@@ -159,6 +159,7 @@ namespace MyEngine {
         [[nodiscard]] double toDouble() const;
         [[nodiscard]] std::string toString() const;
         [[nodiscard]] void* toPointer() const;
+        [[nodiscard]] size_t usedCount() const;
 
         [[nodiscard]] std::string valueAsString(const std::function<std::string(void *, uint32_t)> &callback = {}) const;
         bool stringToValue(const std::string &string_value, Type var_type, const std::function<bool(void*)>& callback = {});

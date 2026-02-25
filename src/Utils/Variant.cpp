@@ -222,7 +222,6 @@ namespace MyEngine {
                                        "The specified custom pointer is not valid!");
             std::terminate();
         }
-        *_reference_count += 1;
     }
 
     Variant::Variant(const Variant& v) : _type(v._type), _value() {
@@ -839,6 +838,10 @@ namespace MyEngine {
             throw BadValueException(FMT::format("Variant: The variant can not convert to pointer!"));
         }
         return _pointer.get();
+    }
+
+    size_t Variant::usedCount() const {
+        return _type == Pointer ? _pointer.usedCount() : 0;
     }
 
     std::string Variant::valueAsString(const std::function<std::string(void *, uint32_t)> &callback) const {

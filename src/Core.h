@@ -174,6 +174,9 @@ namespace MyEngine {
         [[nodiscard]] bool isMaximizedWindow() const;
         [[nodiscard]] bool isRestoredWindow() const;
 
+        void setFreezeEnabled(bool enabled);
+        bool isFreeze() const;
+
         void setWindowTitle(const std::string& title);
         [[nodiscard]] std::string_view windowTitle() const;
 
@@ -238,6 +241,7 @@ namespace MyEngine {
         SDL_WindowID _winID{};
         bool _dragging{false};
         bool _drag_mode{false};
+        bool _render{true};
         Cursor::StdCursor _cursor{};
         std::string _drop_url{};
         Vector2 _mouse_pos{}, _dragging_pos{};

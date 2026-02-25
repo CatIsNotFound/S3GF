@@ -146,3 +146,233 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         CHECK(var_ptr2.isNull() == true);
     }
 }
+
+TEST_CASE("Variant Custom Pointer Test", "[Utils][Var]") {
+    SECTION("Create custom pointer variant with deleter") {
+        auto* data = new int(42);
+        bool deleted = false;
+        Variant var(data, 1001, [&deleted](void* ptr) {
+            delete static_cast<int*>(ptr);
+            deleted = true;
+        });
+        
+        CHECK(var.type() == Variant::Pointer);
+        CHECK(var.customTypeID() == 1001);
+        CHECK(var.toPointer() == data);
+        CHECK(*static_cast<int*>(var.toPointer()) == 42);
+        CHECK(var.usedCount() == 1);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test reference counting with copy constructor") {
+        auto* data = new std::string("Hello");
+        bool deleted = false;
+        Variant var1(data, 2002, [&deleted](void* ptr) {
+            delete static_cast<std::string*>(ptr);
+            deleted = true;
+        });
+        
+        CHECK(var1.usedCount() == 1);
+        
+        Variant var2(var1);
+        CHECK(var1.usedCount() == 2);
+        CHECK(var2.usedCount() == 2);
+        CHECK(var1.toPointer() == var2.toPointer());
+        CHECK(var1.customTypeID() == var2.customTypeID());
+        CHECK(*static_cast<std::string*>(var2.toPointer()) == "Hello");
+        CHECK_FALSE(deleted);
+        
+        Variant var3(var2);
+        CHECK(var1.usedCount() == 3);
+        CHECK(var2.usedCount() == 3);
+        CHECK(var3.usedCount() == 3);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test reference counting with copy assignment") {
+        auto* data = new float(3.14f);
+        bool deleted = false;
+        Variant var1(data, 3003, [&deleted](void* ptr) {
+            delete static_cast<float*>(ptr);
+            deleted = true;
+        });
+        
+        Variant var2;
+        CHECK(var1.usedCount() == 1);
+        
+        var2 = var1;
+        CHECK(var1.usedCount() == 2);
+        CHECK(var2.usedCount() == 2);
+        CHECK(var1.toPointer() == var2.toPointer());
+        CHECK(*static_cast<float*>(var2.toPointer()) == 3.14f);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test move semantics") {
+        auto* data = new double(2.718);
+        bool deleted = false;
+        Variant var1(data, 4004, [&deleted](void* ptr) {
+            delete static_cast<double*>(ptr);
+            deleted = true;
+        });
+        
+        CHECK(var1.usedCount() == 1);
+        
+        Variant var2(std::move(var1));
+        CHECK(var1.isNull());
+        CHECK(var1.usedCount() == 0);
+        CHECK(var2.usedCount() == 1);
+        CHECK(var2.toPointer() == data);
+        CHECK(*static_cast<double*>(var2.toPointer()) == 2.718);
+        CHECK_FALSE(deleted);
+        
+        Variant var3;
+        var3 = std::move(var2);
+        CHECK(var2.isNull());
+        CHECK(var2.usedCount() == 0);
+        CHECK(var3.usedCount() == 1);
+        CHECK(var3.toPointer() == data);
+        CHECK(*static_cast<double*>(var3.toPointer()) == 2.718);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test reset functionality") {
+        auto* data1 = new int(100);
+        auto* data2 = new int(200);
+        bool deleted1 = false;
+        bool deleted2 = false;
+        
+        Variant var(data1, 5005, [&deleted1](void* ptr) {
+            delete static_cast<int*>(ptr);
+            deleted1 = true;
+        });
+        
+        CHECK(var.usedCount() == 1);
+        CHECK(*static_cast<int*>(var.toPointer()) == 100);
+        CHECK_FALSE(deleted1);
+        
+        var.setValue(data2, 6006, [&deleted2](void* ptr) {
+            delete static_cast<int*>(ptr);
+            deleted2 = true;
+        });
+        
+        CHECK(deleted1);
+        CHECK_FALSE(deleted2);
+        CHECK(var.usedCount() == 1);
+        CHECK(var.customTypeID() == 6006);
+        CHECK(*static_cast<int*>(var.toPointer()) == 200);
+    }
+    
+    SECTION("Test clearValue with custom pointer") {
+        auto* data = new std::vector<int>{1, 2, 3, 4, 5};
+        bool deleted = false;
+        
+        {
+            Variant var(data, 7007, [&deleted](void* ptr) {
+                delete static_cast<std::vector<int>*>(ptr);
+                deleted = true;
+            });
+            
+            CHECK(var.usedCount() == 1);
+            CHECK(static_cast<std::vector<int>*>(var.toPointer())->size() == 5);
+            CHECK_FALSE(deleted);
+            
+            var.clearValue();
+            CHECK(var.isNull());
+            CHECK(var.usedCount() == 0);
+            CHECK(deleted);
+        }
+    }
+    
+    SECTION("Test customTypeID getter and setter") {
+        auto* data = new char('A');
+        Variant var(data, [](void* ptr) {
+            delete static_cast<char*>(ptr);
+        });
+        
+        CHECK(var.customTypeID() == 0);
+        
+        var.setCustomTypeID(8008);
+        CHECK(var.customTypeID() == 8008);
+        
+        var.setCustomTypeID(9009);
+        CHECK(var.customTypeID() == 9009);
+    }
+    
+    SECTION("Test multiple copies and destruction order") {
+        auto* data = new int(999);
+        bool deleted = false;
+        
+        {
+            Variant var1(data, 10101, [&deleted](void* ptr) {
+                delete static_cast<int*>(ptr);
+                deleted = true;
+            });
+            
+            {
+                Variant var2(var1);
+                Variant var3(var2);
+                Variant var4(var3);
+                
+                CHECK(var1.usedCount() == 4);
+                CHECK(var2.usedCount() == 4);
+                CHECK(var3.usedCount() == 4);
+                CHECK(var4.usedCount() == 4);
+                CHECK_FALSE(deleted);
+            }
+            
+            CHECK(var1.usedCount() == 1);
+            CHECK_FALSE(deleted);
+        }
+        
+        CHECK(deleted);
+    }
+    
+    SECTION("Test self-assignment") {
+        auto* data = new int(777);
+        bool deleted = false;
+        
+        Variant var(data, 11111, [&deleted](void* ptr) {
+            delete static_cast<int*>(ptr);
+            deleted = true;
+        });
+        
+        auto original_ptr = var.toPointer();
+        auto original_count = var.usedCount();
+        
+        var = var;
+        
+        CHECK(var.toPointer() == original_ptr);
+        CHECK(var.usedCount() == original_count);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test pointer without custom type ID") {
+        auto* data = new int(123);
+        bool deleted = false;
+        
+        Variant var(data, [&deleted](void* ptr) {
+            delete static_cast<int*>(ptr);
+            deleted = true;
+        });
+        
+        CHECK(var.type() == Variant::Pointer);
+        CHECK(var.customTypeID() == 0);
+        CHECK(var.toPointer() == data);
+        CHECK(*static_cast<int*>(var.toPointer()) == 123);
+        CHECK(var.usedCount() == 1);
+        CHECK_FALSE(deleted);
+    }
+    
+    SECTION("Test pointer without deleter") {
+        int data = 456;
+        
+        Variant var(&data);
+        
+        CHECK(var.type() == Variant::Pointer);
+        CHECK(var.customTypeID() == 0);
+        CHECK(var.toPointer() == &data);
+        CHECK(*static_cast<int*>(var.toPointer()) == 456);
+        CHECK(var.usedCount() == 1);
+    }
+}
