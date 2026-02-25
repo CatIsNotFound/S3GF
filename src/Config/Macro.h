@@ -73,5 +73,12 @@ MyEngine::Config::ConfigObject NAME
 #define MACRO_APPEND_PROP_TO_OBJECT(OBJECT, CONFIG, PROPERTY)    \
 OBJECT.emplace(#PROPERTY, CONFIG.get_##PROPERTY())
 
+#define MACRO_APPEND_CONF_OBJ_PROP_TO_OBJECT(NAME, OBJECT, CONFIG, PROPERTY)                           \
+auto NAME = std::make_unique<Config::ConfigObject>(CONFIG.get_##PROPERTY());                           \
+OBJECT.emplace(#PROPERTY, Variant(NAME.get(), MyEngine::Config::Var_ConfigObject))
+
+#define MACRO_APPEND_CONF_ARRAY_PROP_TO_OBJECT(OBJECT, CONFIG, PROPERTY)                               \
+    auto obj = std::make_unique<MyEngine::Config::ConfigArray>(CONFIG.get_##PROPERTY());               \
+    OBJECT.emplace(#PROPERTY, Variant(obj.get(), MyEngine::Config::Var_ConfigArray))
 
 #endif //MYENGINE_UTILS_MACRO_H

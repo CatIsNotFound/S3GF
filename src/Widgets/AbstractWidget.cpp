@@ -611,8 +611,7 @@ namespace MyEngine::Widget {
 
     void AbstractWidget::setProperty(const std::string& name, void* value, std::function<void(void*)> deleter) {
         if (_prop_map.contains(name)) {
-            _prop_map.at(name).setValue(value);
-            _prop_map.at(name).setDeleter(std::move(deleter));
+            _prop_map.at(name).setValue(value, std::move(deleter));
         } else {
             _prop_map.try_emplace(name, value, std::move(deleter));
         }

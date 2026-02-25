@@ -89,10 +89,145 @@ namespace MyEngine {
         return *static_cast<double*>(_value);
     }
 
-    Variant::Variant(const Variant& v) : _type(v._type) {
+    Variant::CustomPointer::CustomPointer(void *pointer, const std::function<void(void *)> &deleter)
+            : _reference_count(), _pointer(), _custom_type_id(0) {
+        initialize(pointer, deleter);
+    }
+
+    Variant::CustomPointer::CustomPointer(void *pointer, size_t custom_type_id,
+        const std::function<void(void *)> &deleter)
+            : _reference_count(), _pointer(), _custom_type_id(custom_type_id) {
+        initialize(pointer, deleter);
+    }
+
+    Variant::CustomPointer::CustomPointer(const CustomPointer &custom_pointer)
+            : _reference_count(), _pointer(), _deleter(), _custom_type_id(custom_pointer._custom_type_id) {
+        copy(custom_pointer);
+    }
+
+    Variant::CustomPointer::CustomPointer(CustomPointer &&custom_pointer) noexcept
+            : _reference_count(), _pointer(), _deleter(), _custom_type_id(custom_pointer._custom_type_id) {
+        copy(std::move(custom_pointer));
+    }
+
+    Variant::CustomPointer::~CustomPointer() {
+        destroy();
+    }
+
+    Variant::CustomPointer& Variant::CustomPointer::operator=(const CustomPointer &ptr) {
+        copy(ptr);
+        return *this;
+    }
+
+    Variant::CustomPointer &Variant::CustomPointer::operator=(CustomPointer && ptr) noexcept {
+        copy(std::move(ptr));
+        return *this;
+    }
+
+    void Variant::CustomPointer::reset() {
+        destroy();
+        _custom_type_id = 0;
+    }
+
+    void Variant::CustomPointer::reset(void *pointer, const std::function<void(void *)> &deleter) {
+        destroy();
+        initialize(pointer, deleter);
+        _custom_type_id = 0;
+    }
+
+    void Variant::CustomPointer::reset(void *pointer, std::function<void(void *)> &&deleter) noexcept {
+        destroy();
+        initialize(pointer, deleter);
+        _custom_type_id = 0;
+    }
+
+    void Variant::CustomPointer::reset(void *pointer, size_t custom_type_id,
+                                       const std::function<void(void *)> &deleter) {
+        destroy();
+        initialize(pointer, deleter);
+        _custom_type_id = custom_type_id;
+    }
+
+    void Variant::CustomPointer::reset(void *pointer, size_t custom_type_id,
+                                       std::function<void(void *)> &&deleter) noexcept {
+        destroy();
+        initialize(pointer, deleter);
+        _custom_type_id = custom_type_id;
+    }
+
+    size_t Variant::CustomPointer::usedCount() const {
+        return *_reference_count;
+    }
+
+    size_t Variant::CustomPointer::customTypeID() const {
+        return _custom_type_id;
+    }
+
+    void Variant::CustomPointer::setCustomTypeID(size_t type_id) {
+        _custom_type_id = type_id;
+    }
+
+    void* Variant::CustomPointer::get() const {
+        return _pointer;
+    }
+
+    void Variant::CustomPointer::initialize(void *pointer, const std::function<void(void *)> &deleter) {
+        _pointer = pointer;
+        _deleter = deleter;
+        _reference_count = new size_t(1);
+    }
+
+    void Variant::CustomPointer::destroy() {
+        if (_reference_count) {
+            *_reference_count -= 1;
+            if (*_reference_count == 0 && _deleter) {
+                try {
+                    _deleter(_pointer);
+                    delete _reference_count;
+                } catch (const std::exception&) {
+                    throw BadValueException(FMT::format("Variant::CustomPointer: "
+                                                      "The custom pointer (0x{:x}) has deleted at least twice!",
+                                                      reinterpret_cast<size_t>(_pointer)));
+                }
+            }
+        }
+        _reference_count = nullptr;
+        _pointer = nullptr;
+        _deleter = {};
+        _custom_type_id = 0;
+    }
+
+    void Variant::CustomPointer::copy(const CustomPointer &ptr) {
+        _pointer = ptr._pointer;
+        _deleter = ptr._deleter;
+        _reference_count = ptr._reference_count;
+        _custom_type_id = ptr._custom_type_id;
+        if (!_reference_count) {
+            Logger::log(Logger::Fatal, "Variant::CustomPointer: Copy failed! "
+                                       "The specified custom pointer is not valid!");
+            throw InvalidArgumentException(FMT::format("Variant::CustomPointer: "
+                                           "The specified custom pointer (0x{:x}) is not valid!",
+                                           reinterpret_cast<size_t>(ptr._pointer)));
+        }
+        *_reference_count += 1;
+    }
+
+    void Variant::CustomPointer::copy(CustomPointer &&ptr) noexcept {
+        _pointer = ptr._pointer;
+        _deleter = ptr._deleter;
+        _reference_count = ptr._reference_count;
+        _custom_type_id = ptr._custom_type_id;
+        if (!_reference_count) {
+            Logger::log(Logger::Fatal, "Variant::CustomPointer: Copy failed! "
+                                       "The specified custom pointer is not valid!");
+            std::terminate();
+        }
+        *_reference_count += 1;
+    }
+
+    Variant::Variant(const Variant& v) : _type(v._type), _value() {
         switch (_type) {
             case Null:
-                _value = nullptr;
                 break;
             case Bool:
                 _value = new bool(*static_cast<bool*>(v._value));
@@ -131,18 +266,14 @@ namespace MyEngine {
                 _value = new std::string(*static_cast<std::string*>(v._value));
                 break;
             case Pointer:
-                _value = static_cast<void*>(v._value);
-                _custom_type_id = v._custom_type_id;
-                _deleter = std::function(v._deleter);
-                _reference_count = v._reference_count + 1;
+                _pointer = v._pointer;
                 break;
         }
     }
 
-    Variant::Variant(Variant && v) noexcept : _type(v._type) {
+    Variant::Variant(Variant && v) noexcept : _type(v._type), _value() {
         switch (_type) {
             case Null:
-                _value = nullptr;
                 break;
             case Bool:
                 _value = new bool(*static_cast<bool*>(v._value));
@@ -178,18 +309,20 @@ namespace MyEngine {
                 _value = new double(*static_cast<double*>(v._value));
                 break;
             case String:
-                _value = new std::string(*static_cast<std::string*>(v._value));
+                _value = new std::string(std::move(*static_cast<std::string*>(v._value)));
                 break;
             case Pointer:
-                _value = static_cast<void*>(v._value);
-                _custom_type_id = v._custom_type_id;
-                _deleter = std::function(v._deleter);
-                _reference_count = v._reference_count + 1;
+                _pointer = std::move(v._pointer);
                 break;
         }
+        v._type = Null;
+        v._value = nullptr;
     }
 
     Variant& Variant::operator=(const Variant& v) {
+        if (this == &v) return *this;
+        clearValue();
+
         _type = v._type;
         switch (_type) {
             case Null:
@@ -232,16 +365,17 @@ namespace MyEngine {
                 _value = new std::string(*static_cast<std::string*>(v._value));
                 break;
             case Pointer:
-                _value = static_cast<void*>(v._value);
-                _custom_type_id = v._custom_type_id;
-                _deleter = std::function(v._deleter);
-                _reference_count = v._reference_count + 1;
+                _value = nullptr;
+                _pointer = v._pointer;
                 break;
         }
         return *this;
     }
 
     Variant &Variant::operator=(Variant && v) noexcept {
+        if (this == &v) return *this;
+        clearValue();
+
         _type = v._type;
         switch (_type) {
             case Null:
@@ -281,20 +415,19 @@ namespace MyEngine {
                 _value = new double(*static_cast<double*>(v._value));
                 break;
             case String:
-                _value = new std::string(*static_cast<std::string*>(v._value));
+                _value = new std::string(std::move(*static_cast<std::string*>(v._value)));
                 break;
             case Pointer:
-                _value = static_cast<void*>(v._value);
-                _custom_type_id = v._custom_type_id;
-                _deleter = std::function(v._deleter);
-                _reference_count = v._reference_count + 1;
+                _value = nullptr;
+                _pointer = std::move(v._pointer);
                 break;
         }
+        v._type = Null;
+        v._value = nullptr;
         return *this;
     }
 
     Variant::~Variant() {
-        if (!_value) return;
         switch (_type) {
             case Bool:
                 delete (static_cast<bool*>(_value));
@@ -333,8 +466,7 @@ namespace MyEngine {
                 delete (static_cast<std::string*>(_value));
                 break;
             case Pointer:
-                if (_reference_count > 0) _reference_count--;
-                if (_reference_count == 0 && _deleter) _deleter(_value);
+                _pointer.reset();
                 break;
             default:
                 break;
@@ -384,20 +516,12 @@ namespace MyEngine {
         return _type == Null;
     }
 
-    bool Variant::hasDeleter() const {
-        return (_deleter != nullptr);
-    }
-
-    void Variant::setDeleter(std::function<void(void*)> deleter) {
-        if (_type == Pointer) _deleter = std::move(deleter);
-    }
-
     void Variant::setCustomTypeID(uint32_t type_id) {
-        if (_type == Pointer) _custom_type_id = type_id;
+        if (_type == Pointer) _pointer.setCustomTypeID(type_id);
     }
 
     uint32_t Variant::customTypeID() const {
-        return _custom_type_id;
+        return _pointer.customTypeID();
     }
 
     void Variant::clearValue() {
@@ -439,19 +563,12 @@ namespace MyEngine {
                 case String:
                     delete (static_cast<std::string*>(_value));
                     break;
-                case Pointer:
-                    if (_reference_count > 0) _reference_count--;
-                    if (_reference_count == 0 && _deleter) _deleter(_value);
-                    break;
                 default:
                     break;
             }
-        }
+        } else if (_type == Pointer) _pointer.reset();
         _type = Null;
         _value = nullptr;
-        _custom_type_id = 0;
-        _reference_count = 0;
-        _deleter = {};
     }
 
     void Variant::setValue(bool v) {
@@ -585,50 +702,29 @@ namespace MyEngine {
     }
 
     void Variant::setValue(void* pointer, std::function<void(void*)> deleter) {
-        if (_type == Pointer) {
-            if (_value != pointer) {
-                if (_reference_count > 0) _reference_count--;
-                if (_reference_count == 0 && _deleter) _deleter(_value);
-                _value = pointer;
-                _deleter = std::move(deleter);
-                _reference_count = 1;
-            } else {
-                _deleter = std::move(deleter);
-            }
-        } else {
+        if (_type != Pointer) {
             clearValue();
             _type = Pointer;
-            _value = pointer;
-            _deleter = std::move(deleter);
-            _reference_count = 1;
         }
+        _pointer.reset(pointer, deleter);
     }
 
-    void Variant::setValue(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter) {
-        if (_type == Pointer) {
-            if (_value != pointer) {
-                if (_deleter) _deleter(_value);
-                _value = pointer;
-            }
-            _deleter = std::move(deleter);
-            _custom_type_id = custom_type_id;
-        } else {
+    void Variant::setValue(void* pointer, uint32_t custom_type_id, const std::function<void(void*)> &deleter) {
+        if (_type != Pointer) {
             clearValue();
             _type = Pointer;
-            _value = pointer;
-            _custom_type_id = custom_type_id;
-            _deleter = std::move(deleter);
         }
+        _pointer.reset(pointer, custom_type_id, deleter);
     }
 
     bool Variant::toBool() const {
         if (_type == Bool) {
             return (_value != nullptr) && *static_cast<bool *>(_value);
-        } else if (_type == Pointer) {
-            return _value != nullptr;
-        } else {
-            throw BadValueException(FMT::format("Variant: The variant can not convert to bool!"));
         }
+        if (_type == Pointer) {
+            return _value != nullptr;
+        }
+        throw BadValueException(FMT::format("Variant: The variant can not convert to bool!"));
     }
 
     int8_t Variant::toInt8() const {
@@ -637,9 +733,8 @@ namespace MyEngine {
         }
         if (_type == Int8) {
             return *static_cast<int8_t *>(_value);
-        } else {
-            return static_cast<int8_t>(convert2Int32());
         }
+        return static_cast<int8_t>(convert2Int32());
     }
 
     int16_t Variant::toInt16() const {
@@ -648,9 +743,8 @@ namespace MyEngine {
         }
         if (_type == Int16) {
             return *static_cast<int16_t*>(_value);
-        } else {
-            return static_cast<int16_t>(convert2Int32());
         }
+        return static_cast<int16_t>(convert2Int32());
     }
 
     int32_t Variant::toInt32() const {
@@ -659,9 +753,8 @@ namespace MyEngine {
         }
         if (_type == Int32) {
             return *static_cast<int32_t *>(_value);
-        } else {
-            return convert2Int32();
         }
+        return convert2Int32();
     }
 
     int64_t Variant::toInt64() const {
@@ -670,9 +763,8 @@ namespace MyEngine {
         }
         if (_type == Int64) {
             return *static_cast<int64_t *>(_value);
-        } else {
-            return convert2Int64();
         }
+        return convert2Int64();
     }
 
     uint8_t Variant::toUInt8() const {
@@ -681,9 +773,8 @@ namespace MyEngine {
         }
         if (_type == UInt8) {
             return *static_cast<uint8_t *>(_value);
-        } else {
-            return static_cast<uint8_t>(convert2UInt32());
         }
+        return static_cast<uint8_t>(convert2UInt32());
     }
 
     uint16_t Variant::toUInt16() const {
@@ -692,9 +783,8 @@ namespace MyEngine {
         }
         if (_type == UInt16) {
             return *static_cast<uint16_t *>(_value);
-        } else {
-            return static_cast<uint16_t>(convert2UInt32());
         }
+        return static_cast<uint16_t>(convert2UInt32());
     }
 
     uint32_t Variant::toUInt32() const {
@@ -703,9 +793,8 @@ namespace MyEngine {
         }
         if (_type == UInt32) {
             return *static_cast<uint32_t *>(_value);
-        } else {
-            return convert2UInt32();
         }
+        return convert2UInt32();
     }
 
     uint64_t Variant::toUInt64() const {
@@ -714,9 +803,8 @@ namespace MyEngine {
         }
         if (_type == UInt64) {
             return *static_cast<uint64_t *>(_value);
-        } else {
-            return convert2UInt64();
         }
+        return convert2UInt64();
     }
 
     float Variant::toFloat() const {
@@ -725,9 +813,8 @@ namespace MyEngine {
         }
         if (_type == Float) {
             return *static_cast<float *>(_value);
-        } else {
-            return convert2Float();
         }
+        return convert2Float();
     }
 
     double Variant::toDouble() const {
@@ -736,9 +823,8 @@ namespace MyEngine {
         }
         if (_type == Double) {
             return *static_cast<double *>(_value);
-        } else {
-            return convert2Double();
         }
+        return convert2Double();
     }
 
     std::string Variant::toString() const {
@@ -752,7 +838,7 @@ namespace MyEngine {
         if (_type != Pointer) {
             throw BadValueException(FMT::format("Variant: The variant can not convert to pointer!"));
         }
-        return _value;
+        return _pointer.get();
     }
 
     std::string Variant::valueAsString(const std::function<std::string(void *, uint32_t)> &callback) const {
@@ -783,7 +869,7 @@ namespace MyEngine {
             case String:
                 return *static_cast<std::string *>(_value);
             case Pointer:
-                if (callback) return callback(_value, _custom_type_id);
+                if (callback) return callback(_pointer.get(), _pointer.customTypeID());
                 break;
         }
         return {};
@@ -832,7 +918,7 @@ namespace MyEngine {
                 _value = new std::string(string_value);
                 return true;
             case Pointer:
-                if (callback) return callback(_value);
+                if (callback) return callback(_pointer.get());
                 break;
         }
         _type = old_type;
@@ -867,7 +953,7 @@ namespace MyEngine {
             case String:
                 return Algorithm::stringToBinary(*static_cast<std::string *>(_value));
             case Pointer:
-                if (callback) return callback(_value, _custom_type_id);
+                if (callback) return callback(_pointer.get(), _pointer.customTypeID());
                 break;
         }
         return {};
@@ -916,7 +1002,7 @@ namespace MyEngine {
                 _value = new std::string(Algorithm::binaryToString(bin_value));
                 return true;
             case Pointer:
-                if (callback) return callback(_value);
+                if (callback) return callback(_pointer.get());
                 break;
         }
         _type = old_type;

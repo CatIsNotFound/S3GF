@@ -20,6 +20,40 @@ namespace MyEngine {
         uint64_t convert2UInt64() const;
         float convert2Float() const;
         double convert2Double() const;
+
+        struct CustomPointer {
+        private:
+            size_t* _reference_count;
+            void* _pointer;
+            std::function<void(void*)> _deleter{};
+            uint32_t _custom_type_id;
+
+        public:
+            explicit CustomPointer() : _reference_count(), _pointer(), _custom_type_id(0) {}
+            explicit CustomPointer(void* pointer, const std::function<void(void*)>& deleter = {});
+            explicit CustomPointer(void* pointer, size_t custom_type_id,
+                                    const std::function<void(void*)>& deleter = {});
+            explicit CustomPointer(const CustomPointer& custom_pointer);
+            explicit CustomPointer(CustomPointer&& custom_pointer) noexcept;
+            ~CustomPointer();
+            CustomPointer& operator=(const CustomPointer&);
+            CustomPointer& operator=(CustomPointer&&) noexcept;
+
+            void reset();
+            void reset(void* pointer, const std::function<void(void*)> &deleter = {});
+            void reset(void* pointer, std::function<void(void*)> &&deleter = {}) noexcept;
+            void reset(void* pointer, size_t custom_type_id, const std::function<void(void*)>& deleter = {});
+            void reset(void* pointer, size_t custom_type_id, std::function<void(void*)>&& deleter = {}) noexcept;
+            [[nodiscard]] size_t usedCount() const;
+            [[nodiscard]] size_t customTypeID() const;
+            void setCustomTypeID(size_t type_id);
+            [[nodiscard]] void* get() const;
+        private:
+            void initialize(void* pointer, const std::function<void(void*)> &deleter = {});
+            void destroy();
+            void copy(const CustomPointer& ptr);
+            void copy(CustomPointer&& ptr) noexcept;
+        };
     public:
         /**
          * \if EN
@@ -27,7 +61,7 @@ namespace MyEngine {
          * @details Used to indicate the data type stored by the variant
          * \endif
          */
-        enum Type : uint8_t {
+        enum Type {
             Null,
             Bool,
             Int8,
@@ -63,11 +97,10 @@ namespace MyEngine {
         explicit Variant(const char* string) : _type(String), _value(new std::string(string)) {}
         explicit Variant(const std::string& string) : _type(String), _value(new std::string(string)) {}
         explicit Variant(std::string&& string) noexcept : _type(String), _value(new std::string(string)) {}
-        explicit Variant(void* pointer, std::function<void(void*)> deleter = {})
-            : _type(Pointer), _reference_count(1), _value(pointer), _deleter(std::move(deleter)) {}
-        explicit Variant(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter = {})
-            : _type(Pointer), _reference_count(1), _custom_type_id(custom_type_id),
-              _value(pointer), _deleter(std::move(deleter)) {}
+        explicit Variant(void* pointer, const std::function<void(void*)> &deleter = {})
+            : _type(Pointer), _value(), _pointer(pointer, deleter) {}
+        explicit Variant(void* pointer, uint32_t custom_type_id, const std::function<void(void*)> &deleter = {})
+            : _type(Pointer), _value(), _pointer(pointer, custom_type_id, deleter){}
         /**
          * \if EN
          * @brief Get the data type stored in the current variant
@@ -93,26 +126,6 @@ namespace MyEngine {
          * \endif
          */
         bool isNull() const;
-        /**
-         * \if EN
-         * @brief Check if the current variant is set with a deleter to release the pointer
-         * @return Returns `true` if set, otherwise `false`
-         * \endif
-         * @see setDeleter
-         */
-        bool hasDeleter() const;
-        /**
-         * \if EN
-         * @brief Set the deleter used for releasing the pointer
-         * @param deleter Specify a function for freeing a pointer
-         * @details When a variant is destructed, a deleter is automatically called to release the pointer,
-         * thereby preventing issues such as memory leaks.
-         * @note For reference-counted pointers, there is no need to set a deleter.
-         * Otherwise, it may cause the pointer to be deleted twice.
-         * \endif
-         * @see hasDeleter
-         */
-        void setDeleter(std::function<void(void*)> deleter);
 
         void setCustomTypeID(uint32_t type_id);
         [[nodiscard]] uint32_t customTypeID() const;
@@ -132,7 +145,7 @@ namespace MyEngine {
         void setValue(const char* string);
         void setValue(std::string& string);
         void setValue(void* pointer, std::function<void(void*)> deleter = {});
-        void setValue(void* pointer, uint32_t custom_type_id, std::function<void(void*)> deleter = {});
+        void setValue(void* pointer, uint32_t custom_type_id, const std::function<void(void*)> &deleter = {});
         [[nodiscard]] bool toBool() const;
         [[nodiscard]] int8_t toInt8() const;
         [[nodiscard]] int16_t toInt16() const;
@@ -155,10 +168,8 @@ namespace MyEngine {
 
     private:
         Type _type;
-        uint16_t _reference_count{0};
-        uint32_t _custom_type_id{0};
         void* _value;
-        std::function<void(void*)> _deleter{};
+        CustomPointer _pointer{};
     };
 } // MyEngine
 
