@@ -167,7 +167,7 @@ TEST_CASE("Binary Configuration Parser Complex Test", "[Utils][Conf]") {
     SECTION("Write binary array to file") {
         Config::ConfigArray game_datas;
         std::vector<std::unique_ptr<Config::ConfigObject>> bg_packs;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 300; i++) {
             GameData data;
             data.set_playerName("Player_" + std::to_string(i));
             data.set_dataID(RandomGenerator::randBigUInt(100000, 9999999));
@@ -192,17 +192,17 @@ TEST_CASE("Binary Configuration Parser Complex Test", "[Utils][Conf]") {
         Config::BinaryConfigParser bin_parser{game_datas};
         CHECK(bin_parser.isArray() == true);
         CHECK(bin_parser.isObject() == false);
-        REQUIRE(bin_parser.configArray().size() == 10);
+        REQUIRE(bin_parser.configArray().size() == 300);
         CHECK_NOTHROW(bin_parser.saveFile("./result4.bin") == true);
     }
 
     SECTION("Read binary array to file") {
-        Config::BinaryConfigParser read_bin_parser("./result4.bin");
-        REQUIRE_NOTHROW(read_bin_parser.loadFile() == true);
-        CHECK(read_bin_parser.isArray() == true);
-        CHECK(read_bin_parser.isObject() == false);
-        auto& array = read_bin_parser.configArray();
-        CHECK(array.size() == 10);
+        Config::BinaryConfigParser test_bin_parser("./result4.bin");
+        REQUIRE_NOTHROW(test_bin_parser.loadFile() == true);
+        CHECK(test_bin_parser.isArray() == true);
+        CHECK(test_bin_parser.isObject() == false);
+        auto& array = test_bin_parser.configArray();
+        CHECK(array.size() == 300);
         CHECK(array[0].size() == 6);
         CHECK(array[0].contains("playerName") == true);
         CHECK(array[0].contains("dataID") == true);

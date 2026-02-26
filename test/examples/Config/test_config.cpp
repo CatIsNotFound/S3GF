@@ -28,54 +28,54 @@ MACRO_MAKE_CONFIG(SaveData,
 
 
 int main() {
-    // Config::BinaryConfigParser parser(Config::ConfigObject{});
-    // std::cout << "[parser 1]\n";
-    // std::cout << "Object: " << (parser.isObject() ? "true" : "false") << std::endl;
-    // std::cout << "Array: " << (parser.isArray() ? "true" : "false") << std::endl;
-    // SaveData saveData;
-    // saveData.set_id(100);
-    // saveData.set_playerName("Red");
-    // saveData.set_firstPlayedTime(DateTime::currentTimestamp());
-    // saveData.set_lastPlayedTime(DateTime::currentTimestamp());
-    // BagPack bagPack;
-    // bagPack["a0"] = Variant(2);
-    // bagPack["a1"] = Variant(3);
-    // bagPack["a2"] = Variant(4);
-    // saveData.set_bagPack(std::move(bagPack));
-    // BagPack bag1;
-    // bag1["grape"] = Variant(50);
-    // bag1["banana"] = Variant(200);
-    // BagPack bag2;
-    // bag2["banana"] = Variant(300);
-    // bag2["grape"] = Variant(400);
-    // AllBags allBags = {
-    //     bag1, bag2
-    // };
-    // saveData.set_allBags(std::move(allBags));
-    // MACRO_MAKE_CONFIG_OBJECT(saveDataObject);
-    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, id);
-    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, playerName);
-    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, firstPlayedTime);
-    // MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, lastPlayedTime);
-    // auto all_bags = std::make_unique<AllBags>(saveData.get_allBags());
-    // auto bag_pack = std::make_unique<BagPack>(saveData.get_bagPack());
-    // Variant var_bagpack(bag_pack.get(), Config::Var_ConfigObject);
-    // saveDataObject.emplace("bagPack", var_bagpack);
-    // Variant var_all_bags(all_bags.get(), Config::Var_ConfigArray);
-    // saveDataObject.emplace("allBags", var_all_bags);
-    // parser.setConfigObject(std::move(saveDataObject));
-    // Logger::log(Logger::Info, "Saved file: {}", parser.saveFile("./test_obj_complex.bin"));
-    // Logger::log(Logger::Info, "{}\nArr: {}", parser.configObject().size(), static_cast<BagPack*>(var_bagpack.toPointer())->size());
+    Config::BinaryConfigParser parser(Config::ConfigObject{});
+    std::cout << "[parser 1]\n";
+    std::cout << "Object: " << (parser.isObject() ? "true" : "false") << std::endl;
+    std::cout << "Array: " << (parser.isArray() ? "true" : "false") << std::endl;
+    SaveData saveData;
+    saveData.set_id(100);
+    saveData.set_playerName("Red");
+    saveData.set_firstPlayedTime(DateTime::currentTimestamp());
+    saveData.set_lastPlayedTime(DateTime::currentTimestamp());
+    BagPack bagPack;
+    bagPack["a0"] = Variant(2);
+    bagPack["a1"] = Variant(3);
+    bagPack["a2"] = Variant(4);
+    saveData.set_bagPack(std::move(bagPack));
+    BagPack bag1;
+    bag1["grape"] = Variant(50);
+    bag1["banana"] = Variant(200);
+    BagPack bag2;
+    bag2["banana"] = Variant(300);
+    bag2["grape"] = Variant(400);
+    AllBags allBags = {
+        bag1, bag2
+    };
+    saveData.set_allBags(std::move(allBags));
+    MACRO_MAKE_CONFIG_OBJECT(saveDataObject);
+    MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, id);
+    MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, playerName);
+    MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, firstPlayedTime);
+    MACRO_APPEND_PROP_TO_OBJECT(saveDataObject, saveData, lastPlayedTime);
+    auto all_bags = std::make_unique<AllBags>(saveData.get_allBags());
+    auto bag_pack = std::make_unique<BagPack>(saveData.get_bagPack());
+    Variant var_bagpack(bag_pack.get(), Config::Var_ConfigObject);
+    saveDataObject.emplace("bagPack", var_bagpack);
+    Variant var_all_bags(all_bags.get(), Config::Var_ConfigArray);
+    saveDataObject.emplace("allBags", var_all_bags);
+    parser.setConfigObject(std::move(saveDataObject));
+    Logger::log(Logger::Info, "Saved file: {}", parser.saveFile("./test_obj_complex.bin"));
+    Logger::log(Logger::Info, "{}\nArr: {}", parser.configObject().size(), static_cast<BagPack*>(var_bagpack.toPointer())->size());
 
-    Config::BinaryConfigParser parser("./test_obj_complex.bin");
-    if (parser.loadFile()) {
+    Config::BinaryConfigParser load_parser("./test_obj_complex.bin");
+    if (load_parser.loadFile()) {
         Logger::log("Loaded config file");
     } else {
         Logger::log("Failed to load config file");
         return 1;
     }
-    Logger::log(Logger::Info, "is_object = {}, is_array = {}", parser.isObject(), parser.isArray());
-    for (auto& [key, value] : parser.configObject()) {
+    Logger::log(Logger::Info, "is_object = {}, is_array = {}", load_parser.isObject(), load_parser.isArray());
+    for (auto& [key, value] : load_parser.configObject()) {
         Logger::log(Logger::Info, "{} -> {}", key, value.valueAsString([](void* d, uint32_t type_id) {
             std::string out;
             if (type_id == Config::Var_ConfigObject) {

@@ -23,11 +23,13 @@ namespace MyEngine::Config {
     }
 
     ConfigArray& AbstractConfigParser::configArray() {
-        return std::get<ConfigArray>(_variant);
+        if (std::holds_alternative<ConfigArray>(_variant)) return std::get<ConfigArray>(_variant);
+        throw BadValueException("ConfigParser: The current value is not configArray!");
     }
 
     ConfigObject & AbstractConfigParser::configObject() {
-        return std::get<ConfigObject>(_variant);
+        if (std::holds_alternative<ConfigObject>(_variant)) return std::get<ConfigObject>(_variant);
+        throw BadValueException("ConfigParser: The current value is not configObject!");
     }
 
     bool AbstractConfigParser::isObject() const {
@@ -209,7 +211,9 @@ namespace MyEngine::Config {
                 result.push_back('V');
                 result.push_back(value.type());
                 if (value.type() == Variant::Pointer) {
-                    result.push_back(value.customTypeID());
+                    auto type_id_array = Algorithm::number2Bin(value.customTypeID());
+                    result.push_back(type_id_array.size());
+                    result.append(type_id_array.begin(), type_id_array.end());
                     std::string obj_view;
                     if (value.customTypeID() == Var_ConfigObject) {
                         obj_view = objectToString(*reinterpret_cast<ConfigObject*>(value.toPointer()));
@@ -335,41 +339,45 @@ namespace MyEngine::Config {
                     return result;
                 }
                 stream.read(len, 1);
-                Variant::Type var_type;
-                if (len[0] == Var_ConfigObject || len[0] == Var_ConfigArray) {
-                    var_type = Variant::Pointer;
-                } else {
-                    var_type = static_cast<Variant::Type>(len[0]);
-                }
-                stream.read(len, 1);
-                len_arr.assign(len[0], '\0');
-                stream.read(reinterpret_cast<char*>(len_arr.data()), len_arr.size());
-                size_t str_len = Algorithm::bin2Number(len_arr);
-                if (var_type == Variant::Pointer) {
+                Variant::Type var_type = static_cast<Variant::Type>(len[0]);
+                if (var_type != Variant::Pointer) {
                     stream.read(len, 1);
-                    BinaryArray bin_arr(len[0], '\0');
-                    stream.read(reinterpret_cast<char*>(bin_arr.data()), bin_arr.size());
-                    size_t arr_length = Algorithm::bin2Number(bin_arr);
-                    Variant value;
-                    if (arr_length == 1) {
-                        auto new_obj = new ConfigObject(stringToObject(stream, ok));
-                        value.setValue(new_obj, Var_ConfigObject, [](void* self) {
-                            auto obj = static_cast<ConfigObject*>(self);
-                            delete obj;
-                        });
-                    } else if (arr_length > 1) {
-                        auto new_arr = new ConfigArray(stringToArray(stream, arr_length, ok));
-                        value.setValue(new_arr, Var_ConfigArray, [](void* self) {
-                            auto obj = static_cast<ConfigArray*>(self);
-                            delete obj;
-                        });
-                    }
-                    object.emplace(key, value);
-                } else {
+                    len_arr.assign(len[0], '\0');
+                    stream.read(reinterpret_cast<char*>(len_arr.data()), len_arr.size());
+                    size_t str_len = Algorithm::bin2Number(len_arr);
                     std::vector<uint8_t> bin_arr(str_len, '\0');
                     stream.read(reinterpret_cast<char*>(bin_arr.data()), bin_arr.size());
                     Variant new_var;
                     new_var.binaryToValue(bin_arr, var_type);
+                    object.emplace(key, new_var);
+                } else {
+                    stream.read(len, 1);
+                    len_arr.assign(len[0], '\0');
+                    stream.read(reinterpret_cast<char*>(len_arr.data()), len_arr.size());
+                    size_t type_id = Algorithm::bin2Number(len_arr);
+                    stream.read(len, 1);
+                    len_arr.assign(len[0], '\0');
+                    stream.read(reinterpret_cast<char*>(len_arr.data()), len_arr.size());
+                    Variant new_var;
+                    if (type_id == Var_ConfigObject) {
+                        stream.read(len, 1);
+                        stream.read(len, 1);
+                        auto new_obj = new ConfigObject(stringToObject(stream, ok));
+                        new_var.setValue(new_obj, Var_ConfigObject, [](void* self) {
+                            auto obj = static_cast<ConfigObject*>(self);
+                            delete obj;
+                        });
+                    } else if (type_id == Var_ConfigArray) {
+                        stream.read(len, 1);
+                        len_arr.assign(len[0], '\0');
+                        stream.read(reinterpret_cast<char*>(len_arr.data()), len_arr.size());
+                        size_t arr_length = Algorithm::bin2Number(len_arr);
+                        auto new_arr = new ConfigArray(stringToArray(stream, arr_length, ok));
+                        new_var.setValue(new_arr, Var_ConfigArray, [](void* self) {
+                            auto arr = static_cast<ConfigArray*>(self);
+                            delete arr;
+                        });
+                    }
                     object.emplace(key, new_var);
                 }
             }
