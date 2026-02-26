@@ -1,6 +1,8 @@
 
 #include "MyEngine"
-
+#ifdef __USED_VLD_LIB__
+#include <vld.h>
+#endif
 using namespace MyEngine;
 
 MACRO_MAKE_CONFIG(Rect,

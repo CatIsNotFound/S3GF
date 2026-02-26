@@ -19,6 +19,42 @@ else()
         add_compile_options(-Wall -g)
     endif()
 endif()
+
+if (WIN32 AND MSVC)
+    set(ENABLED_VLD OFF CACHE BOOL "Enabled Visual Leak Detector for memory leak detection")
+    set(VLD_x64 ON CACHE BOOL "Using Visual Leak Detector x64 library")
+    set(VLD_LIB "C:/Program Files (x86)/Visual Leak Detector" CACHE STRING "Defined where the Visual Leak Detector placed")
+    if (ENABLED_VLD)
+        message("-- Enabled option: Visual Leak Detector")
+        if (NOT EXISTS ${VLD_LIB})
+            message(FATAL_ERROR "VLD Lib path is not valid! Use '-DVLD_LIB=/path/to/VLD' to set the path.")
+        endif()
+        if (VLD_x64)
+            set(VLD_PLATFORM "Win64")
+        else()
+            set(VLD_PLATFORM "Win32")
+        endif()
+        
+        # Check for vld.h in different possible locations
+        set(VLD_INCLUDE_DIR "")
+        if(EXISTS "${VLD_LIB}/include/vld.h")
+            set(VLD_INCLUDE_DIR "${VLD_LIB}/include")
+        elseif(EXISTS "${VLD_LIB}/include/${VLD_PLATFORM}/vld.h")
+            set(VLD_INCLUDE_DIR "${VLD_LIB}/include/${VLD_PLATFORM}")
+        elseif(EXISTS "${VLD_LIB}/vld.h")
+            set(VLD_INCLUDE_DIR "${VLD_LIB}")
+        else()
+            message(FATAL_ERROR "VLD header file (vld.h) not found in ${VLD_LIB}. Please check your VLD installation.")
+        endif()
+        
+        include_directories(${VLD_INCLUDE_DIR})
+        link_directories(${VLD_LIB}/lib/${VLD_PLATFORM})
+        add_compile_definitions(__USED_VLD_LIB__)
+        message("-- Found VLD at: ${VLD_LIB} (${VLD_PLATFORM})")
+        message("-- VLD include directory: ${VLD_INCLUDE_DIR}")
+    endif()
+endif()
+
 add_compile_definitions(APP_NAME="MyEngine Test")
 add_compile_definitions(APP_ID="test.MyEngine.app")
 add_compile_definitions(APP_VERSION="v1.0.1")
@@ -154,6 +190,13 @@ foreach (MODULE IN ITEMS ${TEST_MODULES})
             ${PARENT_PROJECT_NAME}
     )
 
+    if (WIN32 AND ENABLED_VLD AND EXISTS ${VLD_LIB}/lib/${VLD_PLATFORM}/vld.lib)
+        target_link_libraries(${MODULE} ${VLD_LIB}/lib/${VLD_PLATFORM}/vld.lib)
+        add_custom_command(TARGET ${MODULE} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${VLD_LIB}/bin/${VLD_PLATFORM} ${CMAKE_BINARY_DIR}/bin
+        )
+    endif()
+
     add_test(${MODULE} COMMAND ${MODULE})
 endforeach ()
 
@@ -170,6 +213,12 @@ if (EXISTS ${CATCH2_LIB})
                 Catch2::Catch2WithMain
         )
 
+        if (WIN32 AND ENABLED_VLD AND EXISTS ${VLD_LIB}/lib/${VLD_PLATFORM}/vld.lib)
+            target_link_libraries(${MODULE} ${VLD_LIB}/lib/${VLD_PLATFORM}/vld.lib)
+            add_custom_command(TARGET ${MODULE} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${VLD_LIB}/bin/${VLD_PLATFORM} ${CMAKE_BINARY_DIR}/bin
+            )
+        endif()
         add_test(${MODULE} COMMAND ${MODULE})
     endforeach ()
 endif()
