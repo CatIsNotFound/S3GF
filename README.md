@@ -179,6 +179,11 @@ Currently, no official version has been released yet. It is expected to release 
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_LIB}/bin ${CMAKE_BINARY_DIR}/bin
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_MIXER_LIB}/bin ${CMAKE_BINARY_DIR}/bin
     )
+    if (EXISTS ${MYENGINE_LIB}/bin)
+        list(APPEND POST_BUILD_COMMANDS
+                COMMAND ${CMAKE_COMMAND} -E copy_directory ${MYENGINE_LIB}/bin ${CMAKE_BINARY_DIR}/bin
+        )
+    endif ()
     if (MINGW)
         list(APPEND POST_BUILD_COMMANDS
                 COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/bin
