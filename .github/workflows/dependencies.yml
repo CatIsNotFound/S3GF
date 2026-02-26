@@ -156,7 +156,7 @@ jobs:
         shell: bash
         run: |
           brew update
-          brew install cmake pkg-config ninja fmt howard-hinnant-date catch2
+          brew install cmake pkg-config ninja fmt howard-hinnant-date
           
           mkdir -p ~/Libs
           mkdir -p ~/git ; cd ~/git
@@ -164,9 +164,26 @@ jobs:
           git clone --depth 1 https://github.com/libsdl-org/SDL_image 
           git clone --depth 1 https://github.com/libsdl-org/SDL_mixer 
           git clone --depth 1 https://github.com/libsdl-org/SDL_ttf
+          git clone --depth 1 https://github.com/catchorg/Catch2
           
           echo "~/git: "
           ls ~/git
+
+      - name: Compiling and installing Catch2
+        shell: bash
+        run: |
+          cd ~/git/Catch2
+          mkdir -p build ; cd build
+          echo "* Starting configure SDL3...."
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/Libs/Catch2
+          echo "* Compiling and installing Catch2...."
+          cmake --build . -j10 --target install
+          if [ $? -eq 0 ]; then
+              echo "* No error occurred, finished! "
+          else
+              echo "* Failed to compile and install! "
+              exit 1
+          fi
 
       - name: Compiling and installing SDL3
         shell: bash
@@ -244,7 +261,7 @@ jobs:
           fi
           cmake .. -DDATE_LIB=$HOMEBREW \
                    -DFMT_LIB=$HOMEBREW \
-                   -DCATCH2_LIB=$HOMEBREW \
+                   -DCATCH2_LIB=~/Libs/Catch2 \
                    -DSDL3_LIB=~/Libs/SDL3 \
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
