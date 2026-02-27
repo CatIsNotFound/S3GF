@@ -76,8 +76,8 @@ namespace MyEngine {
                 Logger::log("writePixelsToSurface: The start position is out of range!", Logger::Error);
                 return false;
             }
-            if (surface->w < x2) x2 = surface->w;
-            if (surface->h < y2) y2 = surface->h;
+            if (surface->w <= x2) x2 = surface->w - 1;
+            if (surface->h <= y2) y2 = surface->h - 1;
             if (!SDL_LockSurface(surface)) {
                 Logger::log(FMT::format("writePixelToSurface: "
                                         "Failed to write pixel from the specified surface! "

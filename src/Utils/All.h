@@ -9,6 +9,5 @@
 #include "RGBAColor.h"
 #include "SysMemory.h"
 #include "Variant.h"
-#include "../Config/Macro.h"
 
 #endif //MYENGINE_UTILS_H

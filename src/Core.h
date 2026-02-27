@@ -192,6 +192,9 @@ namespace MyEngine {
         [[nodiscard]] const Vector2& draggingPosition() const;
         std::string_view droppedInfo() const;
 
+        bool setWindowShape(SDL_Surface* surface);
+        bool clearWindowShape();
+
         [[nodiscard]] SDL_Window* self() const;
         [[nodiscard]] Engine* engine() const;
         void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event, bool push_back = false);

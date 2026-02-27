@@ -180,15 +180,17 @@ namespace MyEngine {
     void Variant::CustomPointer::destroy() {
         if (_reference_count) {
             *_reference_count -= 1;
-            if (*_reference_count == 0 && _deleter) {
-                try {
-                    _deleter(_pointer);
-                    delete _reference_count;
-                } catch (const std::exception&) {
-                    throw BadValueException(FMT::format("Variant::CustomPointer: "
-                                                      "The custom pointer (0x{:x}) has deleted at least twice!",
-                                                      reinterpret_cast<size_t>(_pointer)));
+            if (*_reference_count == 0) {
+                if (_deleter) {
+                    try {
+                        _deleter(_pointer);
+                    } catch (const std::exception&) {
+                        throw BadValueException(FMT::format("Variant::CustomPointer: "
+                                                          "The custom pointer (0x{:x}) has deleted at least twice!",
+                                                          reinterpret_cast<size_t>(_pointer)));
+                    }
                 }
+                delete _reference_count;
             }
         }
         _reference_count = nullptr;

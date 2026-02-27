@@ -173,6 +173,10 @@ addModule(TEST_MODULES test_config
         examples/Config/test_config.cpp
 )
 
+addModule(TEST_MODULES test_useless
+        examples/Useless/Useless.cpp
+)
+
 #addModule(TEST_MODULES test_audio_system
 #        core/AudioSystem/test_audio_system.cpp
 #)

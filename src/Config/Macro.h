@@ -1,6 +1,6 @@
 
-#ifndef MYENGINE_UTILS_MACRO_H
-#define MYENGINE_UTILS_MACRO_H
+#ifndef MYENGINE_CONFIGURATION_MACRO_H
+#define MYENGINE_CONFIGURATION_MACRO_H
 #include "../Libs.h"
 #define MACRO_MAKE_CONFIG(NAME, ...)        \
 class NAME {                                \
@@ -8,9 +8,9 @@ public:                                     \
     NAME() = default;                       \
     ~NAME() = default;                      \
     NAME(const NAME&) = default;            \
-    NAME(NAME&&)      = default;            \
+    NAME(NAME&&) noexcept = default;        \
     NAME& operator=(const NAME&) = default; \
-    NAME& operator=(NAME&&)    = default;   \
+    NAME& operator=(NAME&&) noexcept = default;   \
                                             \
     __VA_ARGS__                             \
                                             \
@@ -81,4 +81,4 @@ OBJECT.emplace(#PROPERTY, Variant(NAME.get(), MyEngine::Config::Var_ConfigObject
     auto obj = std::make_unique<MyEngine::Config::ConfigArray>(CONFIG.get_##PROPERTY());               \
     OBJECT.emplace(#PROPERTY, Variant(obj.get(), MyEngine::Config::Var_ConfigArray))
 
-#endif //MYENGINE_UTILS_MACRO_H
+#endif //MYENGINE_CONFIGURATION_MACRO_H

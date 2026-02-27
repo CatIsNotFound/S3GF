@@ -164,6 +164,7 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Widgets/HorizontalLayout.h
             src/Algorithm/RGBAPixels.h
             src/Widgets/All.h
+            src/Config/All.h
             src/Config/Macro.h
             src/Config/Configuration.h
             src/Config/Configuration.cpp
@@ -229,6 +230,7 @@ else ()
             src/Widgets/HorizontalLayout.h
             src/Algorithm/RGBAPixels.h
             src/Widgets/All.h
+            src/Config/All.h
             src/Config/Macro.h
             src/Config/Configuration.h
             src/Config/Configuration.cpp

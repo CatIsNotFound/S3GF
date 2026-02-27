@@ -7,6 +7,6 @@
 #include "MultiThread/All.h"
 #include "Utils/All.h"
 #include "Widgets/All.h"
-#include "Config/Configuration.h"
+#include "Config/All.h"
 
 #endif //MYENGINE_MYENGINE

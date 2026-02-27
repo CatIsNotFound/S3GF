@@ -12,7 +12,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
     Variant var_bool(true);
     Variant var_uint8 = Variant((uint8_t)127);
     Variant var_int16(static_cast<int16_t>(-2048));
-    Variant var_int64(1234567890LL);
+    Variant var_int64((int64_t)1234567890);
     Variant var_float = Variant(3.1415926f);
     Variant var_double = Variant(3.14159265358979323846);
     Variant var_str1("Hello world!");
@@ -46,7 +46,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         CHECK(var_bool.toBool() == true);
         CHECK(var_uint8.toUInt8() == (uint8_t)127);
         CHECK(var_int16.toInt16() == (int16_t)-2048);
-        CHECK(var_int64.toInt64() == 1234567890LL);
+        CHECK(var_int64.toInt64() == (int64_t)1234567890);
         CHECK(var_float.toFloat() == 3.1415926f);
         CHECK(var_double.toDouble() == 3.14159265358979323846);
         CHECK(var_str1.toString() == "Hello world!");
@@ -64,7 +64,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         CHECK(var_int16.toInt32() == -2048);
         CHECK(var_int16.toInt64() == -2048);
         CHECK(var_int16.toDouble() == -2048.0);
-        CHECK(var_int64.toUInt64() == 1234567890LL);
+        CHECK(var_int64.toUInt64() == (int64_t)1234567890);
         CHECK(var_int64.toFloat() == 1234567890.f);
         CHECK(var_int64.toDouble() == 1234567890.000000);
         CHECK(var_float.toInt8() == (int8_t)3);
@@ -75,7 +75,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         var_bool.setValue(false);
         var_uint8.setValue((uint8_t)24);
         var_int16.setValue((int16_t)1024);
-        var_int64.setValue(66666666666LL);
+        var_int64.setValue((int64_t)66666666666);
         var_float.setValue(123.456f);
         var_double.setValue(123.4567890);
         var_str1.setValue("New str1");
@@ -90,7 +90,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         CHECK(var_bool.toBool() == false);
         CHECK(var_uint8.toUInt8() == 24);
         CHECK(var_int16.toInt16() == 1024);
-        CHECK(var_int64.toInt64() == 66666666666LL);
+        CHECK(var_int64.toInt64() == (int64_t)66666666666);
         CHECK(var_float.toFloat() == 123.456f);
         CHECK(var_double.toDouble() == 123.4567890);
         CHECK(var_str1.toString() == "New str1");
@@ -109,7 +109,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         var_int16.setValue(false);
         var_int64.setValue((uint8_t)123);
         var_float.setValue((int8_t)-123);
-        var_double.setValue(1234567890ULL);
+        var_double.setValue((uint64_t)1234567890);
         var_str1.setValue(&sample);
         auto copy_sample = new StringList(sample2);
         var_str2.setValue(copy_sample, 4096, [](void* data) {
@@ -130,7 +130,7 @@ TEST_CASE("Variant Simple Test", "[Utils][Var]") {
         CHECK(var_float.type() == Variant::Int8);
         CHECK(var_float.toInt8() == (int8_t)-123);
         CHECK(var_double.type() == Variant::UInt64);
-        CHECK(var_double.toUInt64() == 1234567890ULL);
+        CHECK(var_double.toUInt64() == (uint64_t)1234567890);
         CHECK(var_str1.type() == Variant::Pointer);
         CHECK(var_str1.toPointer() == &sample);
         CHECK(reinterpret_cast<StringList*>(var_str1.toPointer())->at(1) == sample[1]);

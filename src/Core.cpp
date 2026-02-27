@@ -221,10 +221,10 @@ namespace MyEngine {
         : _window_geometry(0, 0, width, height), _engine(engine) {
         if (graphic_engine == Vulkan)
             _window = SDL_CreateWindow(title.c_str(), width, height,
-                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN);
+                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN | SDL_WINDOW_TRANSPARENT);
         else
             _window = SDL_CreateWindow(title.c_str(), width, height,
-                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN);
+                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_TRANSPARENT);
         if (!_window) {
             Engine::throwFatalError();
         }
@@ -507,6 +507,16 @@ namespace MyEngine {
 
     std::string_view Window::droppedInfo() const {
         return _drop_url;
+    }
+
+    bool Window::setWindowShape(SDL_Surface *surface) {
+        auto ret = SDL_SetWindowShape(_window, surface);
+        if (surface) SDL_DestroySurface(surface);
+        return ret;
+    }
+
+    bool Window::clearWindowShape() {
+        return SDL_SetWindowShape(_window, nullptr);
     }
 
     SDL_Window* Window::self() const {
