@@ -217,15 +217,19 @@ namespace MyEngine {
         addCommand<RenderCommand::BlendModeCMD>(_renderer, blend_mode);
     }
 
-    Window::Window(Engine* engine, const std::string& title, int width, int height, GraphicEngine graphic_engine)
-        : _window_geometry(0, 0, width, height), _engine(engine) {
-        if (graphic_engine == Vulkan)
-            _window = SDL_CreateWindow(title.c_str(), width, height,
-                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN | SDL_WINDOW_TRANSPARENT);
-        else
-            _window = SDL_CreateWindow(title.c_str(), width, height,
-                                       SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_TRANSPARENT);
+    Window::Window(Engine* engine, const std::string& title, int width, int height, WindowType type, GraphicEngine graphic_engine)
+            : _window_geometry(0, 0, width, height), _engine(engine) {
+        SDL_WindowFlags flags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_TRANSPARENT | SDL_WINDOW_HIDDEN;
+        if (type == WindowType::Popup)      flags |= SDL_WINDOW_POPUP_MENU;
+        if (type == WindowType::Tooltip)    flags |= SDL_WINDOW_TOOLTIP;
+        if (type == WindowType::Tool)       flags |= SDL_WINDOW_UTILITY;
+        if (type == WindowType::Borderless) flags |= SDL_WINDOW_BORDERLESS;
+        if (graphic_engine == OpenGL)       flags |= SDL_WINDOW_OPENGL;
+        if (graphic_engine == Vulkan)       flags |= SDL_WINDOW_VULKAN;
+
+        _window = SDL_CreateWindow(title.c_str(), width, height, flags);
         if (!_window) {
+            Logger::log(Logger::Fatal, "Failed to create window! \nException: {}", SDL_GetError());
             Engine::throwFatalError();
         }
         _renderer = std::make_shared<Renderer>(this);
@@ -234,6 +238,38 @@ namespace MyEngine {
         Logger::log(Logger::Debug, "Window: created with ID {}", _winID);
         if (engine) {
             engine->newWindow(this);
+        } else {
+            Logger::log("Window: Can't find engine object!", Logger::Fatal);
+            Engine::throwFatalError();
+        }
+    }
+
+    Window::Window(Window *parent, const std::string &title, int width, int height, WindowType type, GraphicEngine graphic_engine)
+            : _window_geometry(0, 0, width, height), _engine(parent->engine()) {
+        SDL_WindowFlags flags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_TRANSPARENT | SDL_WINDOW_HIDDEN;
+        if (type == WindowType::Popup)      flags |= SDL_WINDOW_POPUP_MENU;
+        if (type == WindowType::Tooltip)    flags |= SDL_WINDOW_TOOLTIP;
+        if (type == WindowType::Tool)       flags |= SDL_WINDOW_UTILITY;
+        if (type == WindowType::Borderless) flags |= SDL_WINDOW_BORDERLESS;
+        if (graphic_engine == OpenGL)       flags |= SDL_WINDOW_OPENGL;
+        if (graphic_engine == Vulkan)       flags |= SDL_WINDOW_VULKAN;
+
+        if (type == WindowType::Popup || type == WindowType::Tooltip) {
+            _window = SDL_CreatePopupWindow(parent->self(),
+                parent->geometry().x, parent->geometry().y, width, height, flags);
+        } else {
+            _window = SDL_CreateWindow(title.c_str(), width, height, flags);
+        }
+        if (!_window) {
+            Logger::log(Logger::Fatal, "Failed to create window! \nException: {}", SDL_GetError());
+            Engine::throwFatalError();
+        }
+        _renderer = std::make_shared<Renderer>(this);
+        _winID = SDL_GetWindowID(_window);
+        SDL_GetWindowPosition(_window, &_window_geometry.x, &_window_geometry.y);
+        Logger::log(Logger::Debug, "Window: created with ID {}", _winID);
+        if (_engine) {
+            _engine->newWindow(this, parent->windowID(), _winID);
         } else {
             Logger::log("Window: Can't find engine object!", Logger::Fatal);
             Engine::throwFatalError();
@@ -524,6 +560,13 @@ namespace MyEngine {
             Logger::log("The window is not created!", Logger::Error);
         }
         return _window;
+    }
+
+    Window *Window::parent() const {
+        auto parent = SDL_GetWindowParent(_window);
+        if (!parent) return nullptr;
+        if (_engine->isWindowExist(SDL_GetWindowID(parent))) return _engine->window(SDL_GetWindowID(parent));
+        return nullptr;
     }
 
     Engine* Window::engine() const {
@@ -1108,18 +1151,31 @@ namespace MyEngine {
         return _return_code;
     }
 
-    void Engine::newWindow(Window* window) {
+    void Engine::newWindow(Window* window, SDL_WindowID parent_window_id, SDL_WindowID child_window_id) {
         if (!window) return;
         if (_main_window_id == 0) _main_window_id = window->windowID();
         if (!_window_list.contains(window->windowID()))
             _window_list.emplace(window->windowID(), window);
+        if (parent_window_id > 0 && _window_list.contains(parent_window_id)) {
+            if (_parent_window_list.contains(parent_window_id)) {
+                _parent_window_list.at(parent_window_id).emplace_back(child_window_id);
+            } else {
+                _parent_window_list.insert({parent_window_id, {child_window_id}});
+            }
+        }
     }
 
     void Engine::removeWindow(SDL_WindowID id) {
         if (_window_list.contains(id)) {
             std::unique_ptr<Window> win = std::move(_window_list.at(id));
             _window_list.erase(id);
-            win.reset(nullptr);
+            win.reset();
+            if (_parent_window_list.contains(id)) {
+                for (auto& sub_id : _parent_window_list.at(id)) {
+                    removeWindow(sub_id);
+                }
+                _parent_window_list.erase(id);
+            }
         }
     }
 
@@ -1169,6 +1225,16 @@ namespace MyEngine {
 
     void Engine::installCleanUpEvent(const std::function<void()> &event) {
         _clean_up_event = event;
+    }
+
+    bool Engine::messageBox(MessageBoxType type, const std::string &title, const std::string &message,
+                uint32_t parent_window_id) {
+        SDL_MessageBoxFlags flags = SDL_MESSAGEBOX_INFORMATION;
+        if (type == MessageBoxType::Warning)     flags = SDL_MESSAGEBOX_WARNING;
+        if (type == MessageBoxType::Fatal)       flags = SDL_MESSAGEBOX_ERROR;
+        auto ret = SDL_ShowSimpleMessageBox(flags, title.c_str(), message.c_str(),
+                _window_list.contains(parent_window_id) ? _window_list.at(parent_window_id).get()->self() : nullptr);
+        return ret;
     }
 
     void Engine::cleanUp() {

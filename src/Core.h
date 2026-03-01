@@ -131,8 +131,19 @@ namespace MyEngine {
             OpenGL,
             Vulkan
         };
+        enum class WindowType : uint8_t {
+            Window,
+            Tooltip,
+            Popup,
+            Tool,
+            Borderless
+        };
         explicit Window(Engine* engine, const std::string& title,
-                        int width = 800, int height = 600, GraphicEngine graphic_engine = OpenGL);
+                        int width = 800, int height = 600, WindowType type = WindowType::Window,
+                        GraphicEngine graphic_engine = OpenGL);
+        explicit Window(Window* parent, const std::string& title,
+                        int width = 800, int height = 600, WindowType type = WindowType::Window,
+                        GraphicEngine graphic_engine = OpenGL);
         virtual ~Window();
 
         bool move(int x, int y);
@@ -196,6 +207,7 @@ namespace MyEngine {
         bool clearWindowShape();
 
         [[nodiscard]] SDL_Window* self() const;
+        [[nodiscard]] Window* parent() const;
         [[nodiscard]] Engine* engine() const;
         void installPaintEvent(const std::function<void(Renderer* renderer)>& paint_event, bool push_back = false);
 
@@ -300,9 +312,14 @@ namespace MyEngine {
     };
 
     class Engine {
-    public:
         using constIter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::const_iterator;
         using iter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::iterator;
+    public:
+        enum MessageBoxType {
+            Information,
+            Warning,
+            Fatal
+        };
         Engine(const Engine&) = delete;
         Engine(Engine&&) = delete;
         Engine& operator=(const Engine&) = delete;
@@ -337,7 +354,7 @@ namespace MyEngine {
         static void exit(int code = 0);
         int exec();
 
-        void newWindow(Window* window);
+        void newWindow(Window* window, SDL_WindowID parent_window_id = 0, SDL_WindowID child_window_id = 0);
         void removeWindow(SDL_WindowID id);
         [[nodiscard]] Window* window(SDL_WindowID id = _main_window_id) const;
         [[nodiscard]] std::vector<uint32_t> windowIDList() const;
@@ -346,13 +363,16 @@ namespace MyEngine {
         [[nodiscard]] constIter end() const { return _window_list.cend(); }
         iter end() { return _window_list.end(); }
         size_t windowCount() { return _window_list.size(); }
-        [[nodiscard]] bool isWindowExist(uint32_t window_id) { return _window_list.contains(window_id); }
+        [[nodiscard]] bool isWindowExist(uint32_t window_id) const { return _window_list.contains(window_id); }
 
         void setFPS(uint32_t fps);
         [[nodiscard]] uint32_t fps() const;
         static void throwFatalError();
 
         void installCleanUpEvent(const std::function<void()>& event);
+
+        bool messageBox(MessageBoxType type, const std::string& title, const std::string& message,
+                uint32_t parent_window_id = _main_window_id);
 
     private:
         void cleanUp();
@@ -367,6 +387,7 @@ namespace MyEngine {
         uint32_t _real_fps{0};
         bool _running{};
         std::unordered_map<SDL_WindowID, std::unique_ptr<Window>> _window_list;
+        std::unordered_map<SDL_WindowID, std::vector<SDL_WindowID>> _parent_window_list;
         std::function<void()> _clean_up_event;
         size_t _used_mem_kb{0}, _max_mem_kb{0}, _warn_mem_kb{0};
     };

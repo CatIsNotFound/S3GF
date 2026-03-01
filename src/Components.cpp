@@ -1429,10 +1429,14 @@ namespace MyEngine {
         }
         if (std::holds_alternative<BGM*>(_audio)) {
             track = std::get<BGM*>(_audio)->getTrack();
+            MIX_SetTrackCookedCallback(track, nullptr, nullptr);
         } else if (std::holds_alternative<SFX*>(_audio)) {
-            track = std::get<SFX*>(_audio)->getTrack(0).value();
+            auto sfx = std::get<SFX*>(_audio);
+            for (size_t i = 0; i < sfx->count(); ++i) {
+                track = sfx->getTrack(0).value();
+                MIX_SetTrackCookedCallback(track, nullptr, nullptr);
+            }
         }
-        MIX_SetTrackCookedCallback(track, nullptr, nullptr);
     }
 
     float AudioDecibelMeter::linearToDecibel(float linear) {

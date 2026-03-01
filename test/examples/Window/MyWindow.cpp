@@ -122,12 +122,14 @@ void MyWindow::mouseMovedEvent(const Vector2 &position, const Vector2 &distance)
 
 void MyWindow::keyUpEvent(SDL_Scancode keycode) {
     Window::keyUpEvent(keycode);
-    _debug_keyboard = FMT::format("Key up: {}", static_cast<int>(keycode));
+    _debug_keyboard = FMT::format("Key up: {}",
+        SDL_GetKeyName(SDL_GetKeyFromScancode(keycode, SDL_Keymod(), true)));
 }
 
 void MyWindow::keyDownEvent(SDL_Scancode keycode) {
     Window::keyDownEvent(keycode);
-    _debug_keyboard = FMT::format("Key down: {}", static_cast<int>(keycode));
+    _debug_keyboard = FMT::format("Key down: {}",
+        SDL_GetKeyName(SDL_GetKeyFromScancode(keycode, SDL_Keymod(), true)));
     if (keycode == SDL_SCANCODE_RETURN) {
         this->setFullScreen(!fullScreen());
     }
@@ -135,7 +137,8 @@ void MyWindow::keyDownEvent(SDL_Scancode keycode) {
 
 void MyWindow::keyPressedEvent(SDL_Scancode keycode) {
     Window::keyPressedEvent(keycode);
-    Logger::log(Logger::Info, "Key clicked: {}", static_cast<int>(keycode));
+    Logger::log(Logger::Info, "Key clicked: {}",
+        SDL_GetKeyName(SDL_GetKeyFromScancode(keycode, SDL_Keymod(), true)));
 }
 
 void MyWindow::fingerDownEvent(SDL_FingerID id, const MyEngine::Vector2 &position) {

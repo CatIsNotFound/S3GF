@@ -4,7 +4,8 @@ using namespace MyEngine;
 
 class MyWindow : public Window {
     public:
-        explicit MyWindow(Engine* engine, const std::string& title, int w, int h) : Window(engine, title, w, h) {}
+        explicit MyWindow(Engine* engine, const std::string& title, int w, int h)
+                : Window(engine, title, w, h) {}
 
         void setViewer(AudioDecibelMeter* viewer) {
             _viewer = viewer;
