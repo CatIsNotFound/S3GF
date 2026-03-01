@@ -157,12 +157,16 @@ addModule(TEST_MODULES test_area
         examples/TriggerArea/test_area.cpp
 )
 
+addModule(TEST_MODULES test_audio
+        examples/Audio/test_audio.cpp
+)
+
 addModule(TEST_MODULES test_SFX
-        examples/SFX/test_SFX.cpp
+        examples/Audio/test_SFX.cpp
 )
 
 addModule(TEST_MODULES VirtualDrums
-        examples/SFX/VirtualDrums.cpp
+        examples/Audio/VirtualDrums.cpp
 )
 
 addModule(TEST_MODULES Pong
@@ -175,6 +179,10 @@ addModule(TEST_MODULES test_config
 
 addModule(TEST_MODULES test_useless
         examples/Useless/Useless.cpp
+)
+
+addModule(TEST_MODULES test_collider
+        examples/Graphics/test_collider.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

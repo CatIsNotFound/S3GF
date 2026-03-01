@@ -16,6 +16,14 @@ int main() {
             ellipse.centerPosition(), ellipse.size()), {20, 20});
         r->drawDebugText(FMT::format("{:>9s}border = {}, indices = {}, rotation = {} degrees",
             " ", ellipse.borderSize(), ellipse.indicesCount(), ellipse.rotation()), {20, 30});
+        auto mouse_cur = EventSystem::global()->captureMousePosition();
+        if (Algorithm::comparePosInRotatedEllipse(mouse_cur, ellipse) >= 0) {
+            ellipse.setBorderColor(RGBAColor::GreenDark);
+            ellipse.setBackground(RGBAColor::GreenApple);
+        } else {
+            ellipse.setBorderColor(StdColor::DarkRed);
+            ellipse.setBackground(StdColor::Orange);
+        }
     });
 
     EventSystem::global()->appendEvent(IDGenerator::getNewEventID(), [&] (SDL_Event e) {
@@ -45,6 +53,7 @@ int main() {
         } else if (e.key.key == SDLK_E) {
             ellipse.setRotate(ellipse.rotation() + 1.f);
         }
+
     });
 
     return engine.exec();

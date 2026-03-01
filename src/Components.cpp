@@ -945,6 +945,10 @@ namespace MyEngine {
         return _track;
     }
 
+    MIX_Track* BGM::getTrack() const {
+        return _track;
+    }
+
     void BGM::init() {
         _global_ev_id = IDGenerator::getNewGlobalEventID();
         EventSystem::global()->appendGlobalEvent(_global_ev_id, [this]() {
@@ -1253,6 +1257,10 @@ namespace MyEngine {
         return _tracks.size() <= index ? std::optional<MIX_Track*>() : _tracks.at(index).track;
     }
 
+    std::optional<MIX_Track *> SFX::getTrack(size_t index) const {
+        return _tracks.size() <= index ? std::optional<MIX_Track*>() : _tracks.at(index).track;
+    }
+
     size_t SFX::count() const {
         return _tracks.size();
     }
@@ -1328,6 +1336,197 @@ namespace MyEngine {
         }
         return _tracks.size();
     }
+
+    AudioDecibelMeter::AudioDecibelMeter(BGM *bgm) : _audio(bgm) {
+        init();
+    }
+
+    AudioDecibelMeter::AudioDecibelMeter(SFX *sfx) : _audio(sfx) {
+        init();
+    }
+
+    AudioDecibelMeter::AudioDecibelMeter(MIX_Mixer *mixer) : _audio(mixer) {
+        init();
+    }
+
+    void AudioDecibelMeter::viewBGM(BGM *bgm) {
+        uninitialized();
+        _audio = bgm;
+        init();
+    }
+
+    void AudioDecibelMeter::viewSFX(SFX *sfx) {
+        uninitialized();
+        _audio = sfx;
+        init();
+    }
+
+    void AudioDecibelMeter::viewMixer(MIX_Mixer *mixer) {
+        uninitialized();
+        _audio = mixer;
+        init();
+    }
+
+    float AudioDecibelMeter::currentDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._mix_dB;
+    }
+
+    float AudioDecibelMeter::leftDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._left_dB;
+    }
+
+    float AudioDecibelMeter::rightDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._right_dB;
+    }
+
+    float AudioDecibelMeter::leftPeakDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._left_peak_dB;
+    }
+
+    float AudioDecibelMeter::rightPeakDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._right_peak_dB;
+    }
+
+    void AudioDecibelMeter::init() {
+        MIX_Track* track = nullptr;
+        if (std::holds_alternative<BGM*>(_audio)) {
+            track = std::get<BGM*>(_audio)->getTrack();
+            _level_meters.assign(1, {});
+            if (!MIX_SetTrackCookedCallback(track, &AudioDecibelMeter::cookedBGM, &_level_meters)) {
+                Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for BGM! "
+                                           "Exception: {}", SDL_GetError());
+            }
+        } else if (std::holds_alternative<SFX*>(_audio)) {
+            auto sfx = std::get<SFX*>(_audio);
+            _level_meters.assign(sfx->count(), {});
+            for (size_t i = 0; i < sfx->count(); i++) {
+                track = sfx->getTrack(i).value();
+                if (!MIX_SetTrackCookedCallback(track, &AudioDecibelMeter::cookedSFX, &_level_meters[i])) {
+                    Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for SFX! "
+                                               "Exception: {}", SDL_GetError());
+                }
+            }
+        } else if (std::holds_alternative<MIX_Mixer*>(_audio)) {
+            auto mixer = std::get<MIX_Mixer*>(_audio);
+            _level_meters.assign(1, {});
+            if (!MIX_SetPostMixCallback(mixer, &AudioDecibelMeter::cookedMixer, &_level_meters)) {
+                Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for Mixer! "
+                                           "Exception: {}", SDL_GetError());
+            }
+        }
+    }
+
+    void AudioDecibelMeter::uninitialized() {
+        MIX_Track* track = nullptr;
+        if (std::holds_alternative<MIX_Mixer*>(_audio)) {
+            MIX_SetPostMixCallback(std::get<MIX_Mixer*>(_audio), nullptr, nullptr);
+            return;
+        }
+        if (std::holds_alternative<BGM*>(_audio)) {
+            track = std::get<BGM*>(_audio)->getTrack();
+        } else if (std::holds_alternative<SFX*>(_audio)) {
+            track = std::get<SFX*>(_audio)->getTrack(0).value();
+        }
+        MIX_SetTrackCookedCallback(track, nullptr, nullptr);
+    }
+
+    float AudioDecibelMeter::linearToDecibel(float linear) {
+        if (linear < 1e-8f) return MUTED_DB;
+        return 20.f * log10f(linear);
+    }
+
+    void AudioDecibelMeter::cookedBGM(void *userdata, MIX_Track *, const SDL_AudioSpec *spec,
+                float *pcm, int samples) {
+        auto self = static_cast<std::vector<LevelMeter>*>(userdata);
+
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f;
+        auto frames_count = static_cast<float>(samples / spec->channels);
+
+        for (size_t i = 0; i < samples; i += spec->channels) {
+            const float L = fabsf(pcm[i]);
+            const float R = fabsf(pcm[i + spec->channels - 1]);
+
+            sum_L += L;
+            sum_R += R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+        }
+
+        self->begin()->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
+        self->begin()->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+
+        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
+        self->begin()->_mix_dB = linearToDecibel(sqrtf(TOTAL));
+        self->begin()->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
+        self->begin()->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+    }
+
+    void AudioDecibelMeter::cookedSFX(void *userdata, MIX_Track *, const SDL_AudioSpec *spec,
+                float *pcm, int samples) {
+        auto self = static_cast<LevelMeter*>(userdata);
+
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f;
+        auto frames_count = static_cast<float>(samples / spec->channels);
+
+        for (size_t i = 0; i < samples; i += spec->channels) {
+            const float L = fabsf(pcm[i]);
+            const float R = fabsf(pcm[i + spec->channels - 1]);
+
+            sum_L += L;
+            sum_R += R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+        }
+
+        self->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
+        self->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+
+        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
+        self->_mix_dB = linearToDecibel(sqrtf(TOTAL));
+        self->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
+        self->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+    }
+
+    void AudioDecibelMeter::cookedMixer(void *userdata, MIX_Mixer *, const SDL_AudioSpec *spec,
+                float *pcm, int samples) {
+        auto self = static_cast<std::vector<LevelMeter>*>(userdata);
+
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f;
+        auto frames_count = static_cast<float>(samples / spec->channels);
+
+        for (size_t i = 0; i < samples; i += spec->channels) {
+            const float L = fabsf(pcm[i]);
+            const float R = fabsf(pcm[i + spec->channels - 1]);
+
+            sum_L += L;
+            sum_R += R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+        }
+
+        self->begin()->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
+        self->begin()->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+
+        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
+        self->begin()->_mix_dB = linearToDecibel(sqrtf(TOTAL));
+        self->begin()->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
+        self->begin()->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+    }
+
 
     TriggerArea::TriggerArea(GeometryF geometry, Window *window) :
             _geometry(geometry), _window(window), _event_id(IDGenerator::getNewEventID()){

@@ -3,6 +3,7 @@
 using namespace MyEngine;
 
 int main() {
+    Logger::setBaseLogLevel(Logger::Debug);
     Engine engine;
     auto window = new Window(&engine, "Test sound effect");
     window->show();
@@ -27,7 +28,7 @@ int main() {
         }
     });
     area.setTriggerKey(SDL_SCANCODE_SPACE);
-    area2.setTriggerEvent([&sfx] { sfx.resetAll(); });
+    area2.setTriggerEvent([&sfx] { sfx.stopAll(100); });
     area2.setTriggerKey(SDL_SCANCODE_ESCAPE);
     window->installPaintEvent([&](Renderer* r) {
         if (area.isOnArea()) {

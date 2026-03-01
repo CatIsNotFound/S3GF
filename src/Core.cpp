@@ -1704,10 +1704,19 @@ namespace MyEngine {
 
     void AudioSystem::stopAll() {
         for (auto& [name, audio] : _audio_map) {
-            if (audio.index() == 1) {
+            if (std::holds_alternative<std::unique_ptr<BGM>>(audio)) {
                 std::get<std::unique_ptr<BGM>>(audio)->stop();
-            } else if (audio.index() == 2) {
-                std::get<std::unique_ptr<SFX>>(audio)->stop();
+            } else if (std::holds_alternative<std::unique_ptr<SFX>>(audio)) {
+                std::get<std::unique_ptr<SFX>>(audio)->resetAll();
+            }
+        }
+    }
+
+    void AudioSystem::forcedStopAll() {
+        for (auto& mixer : _mixer_list) {
+            if (!MIX_StopAllTracks(mixer, 0)) {
+                Logger::log(Logger::Warn, "AudioSystem: Failed to stop mixer at (0x{:x}). Exception: {}",
+                    (size_t)mixer, SDL_GetError());
             }
         }
     }

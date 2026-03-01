@@ -25,6 +25,7 @@
 #include <utility>
 #include <random>
 #include <ranges>
+#include <algorithm>
 #include <chrono>
 #include <thread>
 #include <mutex>

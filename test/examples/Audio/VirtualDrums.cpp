@@ -89,6 +89,20 @@ int main() {
     PadKey key4(GeometryF(100.f, 220.f, 100.f, 100.f), window, "A");
     PadKey key5(GeometryF(220.f, 220.f, 100.f, 100.f), window, "S");
     PadKey key6(GeometryF(340.f, 220.f, 100.f, 100.f), window, "D");
+    std::array<AudioDecibelMeter, 6> meters;
+    meters[0].viewSFX(AudioSystem::global()->getSFX("bell2"));
+    meters[1].viewSFX(AudioSystem::global()->getSFX("open1"));
+    meters[2].viewSFX(AudioSystem::global()->getSFX("splash1"));
+    meters[3].viewSFX(AudioSystem::global()->getSFX("snare1"));
+    meters[4].viewSFX(AudioSystem::global()->getSFX("kik"));
+    meters[5].viewSFX(AudioSystem::global()->getSFX("tom1"));
+    struct Meter {
+        float peakL{};
+        float peakR{};
+        float L{};
+        float R{};
+    };
+    Meter keys_mixer;
     key1.setSFX(AudioSystem::global()->getSFX("bell2"));
     key2.setSFX(AudioSystem::global()->getSFX("open1"));
     key3.setSFX(AudioSystem::global()->getSFX("splash1"));
@@ -101,6 +115,8 @@ int main() {
     key4.setTriggerKey(SDL_SCANCODE_A);
     key5.setTriggerKey(SDL_SCANCODE_S);
     key6.setTriggerKey(SDL_SCANCODE_D);
+
+    AudioDecibelMeter mixer_meter(AudioSystem::global()->mixer());
     size_t playing_sum = 0, sum = 0;
     bool show_debug = false;
     EventSystem::global()->appendGlobalEvent(IDGenerator::getNewGlobalEventID(), [&] {
@@ -118,19 +134,46 @@ int main() {
         sum += key4.sfx()->count();
         sum += key5.sfx()->count();
         sum += key6.sfx()->count();
-        if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_F1)) show_debug = !show_debug;
+        auto muted = AudioDecibelMeter::MUTED_DB;
+        keys_mixer = {muted, muted, muted, muted};
+        for (auto& m : meters) {
+            keys_mixer.L = std::max(m.leftDecibel(), keys_mixer.L);
+            keys_mixer.R = std::max(m.rightDecibel(), keys_mixer.R);
+            keys_mixer.peakL = std::max(m.leftPeakDecibel(), keys_mixer.peakL);
+            keys_mixer.peakR = std::max(m.rightPeakDecibel(), keys_mixer.peakR);
+        }
+        static size_t timer_delay = SDL_GetTicks();
+        if (SDL_GetTicks() - timer_delay > 1000) {
+            meters[0].viewSFX(AudioSystem::global()->getSFX("bell2"));
+            meters[1].viewSFX(AudioSystem::global()->getSFX("open1"));
+            meters[2].viewSFX(AudioSystem::global()->getSFX("splash1"));
+            meters[3].viewSFX(AudioSystem::global()->getSFX("snare1"));
+            meters[4].viewSFX(AudioSystem::global()->getSFX("kik"));
+            meters[5].viewSFX(AudioSystem::global()->getSFX("tom1"));
+            timer_delay = SDL_GetTicks();
+        }
     });
-    window->installPaintEvent([&playing_sum, &sum, &show_debug, &window](Renderer* r) {
+    window->installPaintEvent([&](Renderer* r) {
         if (!show_debug) return;
-        static Graphics::Rectangle back(GeometryF(0.f, 0.f, (float)window->geometry().width, (float)window->geometry().height),
+        static Graphics::Rectangle back(GeometryF(0.f, 0.f,
+            (float)window->geometry().width, (float)window->geometry().height),
             0, {}, RGBAColor::HalfTransparent);
         r->setBlendMode(SDL_BLENDMODE_BLEND);
         r->drawRectangle(&back);
         r->setBlendMode(SDL_BLENDMODE_NONE);
         r->drawDebugFPS();
         r->drawDebugText(FMT::format("Playing count: {} / {}", playing_sum, sum), {20, 30});
+        r->drawDebugText(FMT::format("[Keys] L: {:.2f} dB, R: {:.2f} dB, peakL: {:.2f} dB, peakR: {:.2f} dB",
+            keys_mixer.L, keys_mixer.R, keys_mixer.peakL, keys_mixer.peakR), {20, 40});
+        r->drawDebugText(FMT::format("[Mixer] L: {:.2f} dB, R: {:.2f} dB, peakL: {:.2f} dB, peakR: {:.2f} dB",
+            mixer_meter.leftDecibel(), mixer_meter.rightDecibel(),
+            mixer_meter.leftPeakDecibel(), mixer_meter.rightPeakDecibel()), {20, 50});
     }, true);
 
-
+    EventSystem::global()->appendEvent([&show_debug](SDL_Event e) {
+        if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_F1)) show_debug = !show_debug;
+        if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_P)) AudioSystem::global()->stopAll();
+        if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_ESCAPE)) Engine::exit();
+    });
     return engine.exec();
 }

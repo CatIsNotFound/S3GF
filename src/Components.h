@@ -136,6 +136,7 @@ namespace MyEngine {
         [[nodiscard]] float speedAndPitch() const;
         [[nodiscard]] const MIX_Audio* audio() const;
         [[nodiscard]] const MIX_Track* track() const;
+        [[nodiscard]] MIX_Track *getTrack() const;
     private:
         void init();
         void load();
@@ -201,13 +202,14 @@ namespace MyEngine {
         [[nodiscard]] std::optional<float> speedAndPitch(size_t index = 0) const;
         [[nodiscard]] const MIX_Audio* audio() const;
         [[nodiscard]] const std::optional<MIX_Track*> track(size_t index = 0) const;
+        [[nodiscard]] std::optional<MIX_Track*> getTrack(size_t index = 0) const;
         [[nodiscard]] size_t count() const;
         [[nodiscard]] size_t playingCount() const;
     private:
         void load();
         void unload();
-        size_t findBusyTrackIndex() const;
-        size_t findFreeTrackIndex() const;
+        [[nodiscard]] size_t findBusyTrackIndex() const;
+        [[nodiscard]] size_t findFreeTrackIndex() const;
         std::string _path;
         bool _is_load{false};
         size_t _last_index{0};
@@ -222,6 +224,45 @@ namespace MyEngine {
         MIX_Audio* _audio{nullptr};
         std::vector<Track> _tracks{};
         Track _default_track{};
+    };
+
+    class AudioDecibelMeter {
+        using Audio = std::variant<std::monostate, BGM*, SFX*, MIX_Mixer*>;
+    public:
+        constexpr static float MUTED_DB = -96.f;
+        explicit AudioDecibelMeter(BGM* bgm);
+        explicit AudioDecibelMeter(SFX* sfx);
+        explicit AudioDecibelMeter(MIX_Mixer* mixer);
+        explicit AudioDecibelMeter() : _audio(std::monostate{}) {}
+
+        void viewBGM(BGM* bgm);
+        void viewSFX(SFX* sfx);
+        void viewMixer(MIX_Mixer* mixer);
+        [[nodiscard]] float currentDecibel(size_t index = 0) const;
+        [[nodiscard]] float leftDecibel(size_t index = 0) const;
+        [[nodiscard]] float rightDecibel(size_t index = 0) const;
+        [[nodiscard]] float leftPeakDecibel(size_t index = 0) const;
+        [[nodiscard]] float rightPeakDecibel(size_t index = 0) const;
+    private:
+        void init();
+        void uninitialized();
+        static float linearToDecibel(float linear);
+        static void SDLCALL cookedBGM(void *userdata, MIX_Track *,
+                const SDL_AudioSpec *spec, float *pcm, int samples);
+        static void SDLCALL cookedSFX(void *userdata, MIX_Track *,
+                const SDL_AudioSpec *spec, float *pcm, int samples);
+        static void SDLCALL cookedMixer(void *userdata, MIX_Mixer *,
+                const SDL_AudioSpec *spec, float *pcm, int samples);
+
+        Audio _audio;
+        struct LevelMeter {
+            float _mix_dB{MUTED_DB};
+            float _left_dB{MUTED_DB};
+            float _right_dB{MUTED_DB};
+            float _left_peak_dB{MUTED_DB};
+            float _right_peak_dB{MUTED_DB};
+        };
+        std::vector<LevelMeter> _level_meters;
     };
 
     class Renderer;

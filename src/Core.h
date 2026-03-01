@@ -450,6 +450,7 @@ namespace MyEngine {
         void setMixerVolume(float volume, size_t mixer_index = 0);
         [[nodiscard]] float mixerVolume(size_t mixer_index = 0);
         void stopAll();
+        void forcedStopAll();
 
     private:
         explicit AudioSystem();

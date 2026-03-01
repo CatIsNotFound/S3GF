@@ -26,6 +26,23 @@ namespace MyEngine {
             inline float dot(float x1, float y1, float x2, float y2) {
                 return x1 * x2 + y1 * y2;
             }
+
+            inline Vector2 subtract(const Vector2& v1, const Vector2& v2) {
+                return {v1.x - v2.x, v1.y - v2.y};
+            }
+
+            struct ExtremalValue {
+                float min;
+                float max;
+            };
+
+            inline ExtremalValue projectPolygon(const std::vector<Vector2>& points, const Vector2& axis) {
+                std::vector<float> values;
+                for (auto& p : points) {
+                    values.emplace_back(dot(p, axis));
+                }
+                return {std::ranges::min(values), std::ranges::max(values)};
+            }
         }
 
         inline GeometryF translateObjectInParent(const GeometryF& object, const GeometryF& parent) {
@@ -112,6 +129,22 @@ namespace MyEngine {
             return 1;
         }
 
+        inline int8_t comparePosInRotatedEllipse(const Vector2& pos, const Graphics::Ellipse& ellipse,
+                        const float EPISON = 1e-6) {
+            if (ellipse.size().width <= 0 || ellipse.size().height <= 0) return -1;
+            const auto THETA = ellipse.rotation() * (M_PI / 180.f);
+            const auto SIZE = ellipse.size();
+            const Vector2 P = pos - ellipse.centerPosition();
+            const float X_ROTATE = P.x * cosf(THETA) + P.y * sinf(THETA);
+            const float Y_ROTATE = -P.x * sinf(THETA) + P.y * cosf(THETA);
+
+            const float VALUE = (X_ROTATE * X_ROTATE) / (SIZE.width * SIZE.width) +
+                                (Y_ROTATE * Y_ROTATE) / (SIZE.height * SIZE.height);
+            if (fabs(VALUE - 1.f) <= EPISON) return 0;
+            if (VALUE < 1.f) return 1;
+            return -1;
+        }
+
         inline int8_t comparePoints(const Graphics::Point& point1, const Graphics::Point& point2) {
             auto p1 = point1.position(), p2 = point2.position();
             if (point1.size() < 2 && point2.size() < 2) {
@@ -153,8 +186,8 @@ namespace MyEngine {
         }
 
         inline int8_t compareRotatedRects(const Graphics::Rectangle& rect1, const Graphics::Rectangle& rect2) {
-            auto rotate_deg_1 = static_cast<float>(rect1.rotation());
-            auto rotate_deg_2 = static_cast<float>(rect2.rotation());
+            auto rotate_deg_1 = rect1.rotation();
+            auto rotate_deg_2 = rect2.rotation();
             const bool NO_ROTATE_1 = (fabsf(fmodf(rotate_deg_1, 180.f)) == 0.f);
             const bool NO_ROTATE_2 = (fabsf(fmodf(rotate_deg_2, 180.f)) == 0.f);
             if (NO_ROTATE_1 && NO_ROTATE_2)
@@ -244,6 +277,31 @@ namespace MyEngine {
                 }
             }
             return on_border ? 0 : 1;
+        }
+
+        inline uint8_t compareRotatedEllipses(const Graphics::Ellipse& ellipse1, const Graphics::Ellipse& ellipse2,
+                uint8_t sample_points = 64) {
+            /// get sample points
+            std::function getSamplePoints(
+                [] (const Graphics::Ellipse& ellipse, uint8_t pts) {
+                std::vector<Vector2> points;
+                const auto COS_R = cosf(ellipse.rotation());
+                const auto SIN_R = sinf(ellipse.rotation());
+                for (uint8_t i = 0; i < pts; ++i) {
+                    auto temp = 2 * M_PI * i / pts;
+                    const auto TEMP_X = ellipse.size().width * cosf(temp);
+                    const auto TEMP_Y = ellipse.size().height * sinf(temp);
+                    const auto NEW_X = COS_R * TEMP_X - SIN_R * TEMP_Y + ellipse.centerPosition().x;
+                    const auto NEW_Y = SIN_R * TEMP_X + COS_R * TEMP_Y + ellipse.centerPosition().y;
+                    points.emplace_back(NEW_X, NEW_Y);
+                }
+                return points;
+            });
+            auto pts1 = getSamplePoints(ellipse1, sample_points);
+            auto pts2 = getSamplePoints(ellipse2, sample_points);
+
+
+            return 0;
         }
 
         inline int8_t compareCircleRect(const Graphics::Point& point,
