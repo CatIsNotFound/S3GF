@@ -2,43 +2,45 @@
 
 using namespace MyEngine;
 
-class MyWindow : public Window {
-    public:
-        explicit MyWindow(Engine* engine, const std::string& title, int w, int h)
-                : Window(engine, title, w, h) {}
-
-        void setViewer(AudioDecibelMeter* viewer) {
-            _viewer = viewer;
-        }
-
-    protected:
-        void dropEvent(const char *url) override {
-            auto bgm = AudioSystem::global()->getBGM("main");
-            if (!bgm) return;
-            bgm->setPath(url);
-            if (_viewer) _viewer->viewBGM(bgm);
-            bgm->play(0, true);
-        }
-
-    private:
-        AudioDecibelMeter* _viewer{};
-};
-
+#if 0
 int main() {
+    auto local = std::locale("zh_cn");
+    std::locale::global(local);
+    std::wcout.imbue(std::locale(""));
+    std::cout << "Locale: " << std::cout.getloc().name() << "\n";
+    std::cout << "WLocale: " << std::wcout.getloc().name() << "\n";
+    std::wcout << L"Hello 你好世界！ world!" << std::endl;
+    return 0;
+}
+
+#endif
+
+#if 1
+int main() {
+    Logger::setBaseLogLevel(Logger::Debug);
+    Logger::setWriteLogFileEnabled(true);
+    Logger::setLogFileName(FMT::format("./{}.log", DateTime::currentTimestamp()));
     Engine engine;
     engine.setFPS(60);
-    auto window = new MyWindow(&engine, "Audio test", 800, 600);
-    AudioSystem::global()->appendBGM("main", FileSystem::getAbsolutePath("./assets/Peace.wav"));
-    auto bgm = AudioSystem::global()->getBGM("main");
+    auto window = new Window(&engine, "Test Voice");
     Graphics::Rectangle rect_L(100, 100, 0, 20, 0, {}, StdColor::Green);
     Graphics::Rectangle rect_R(100, 120, 0, 20, 0, {}, StdColor::LightGreen);
-    Graphics::Rectangle rect_C(100, 100, 240, 40, 0, {}, RGBAColor::BlueLightTrans);
-    Graphics::Rectangle rect_peak_L(100, 100, 0, 20, 0, {}, {0, 255, 0, 143});
-    Graphics::Rectangle rect_peak_R(100, 120, 0, 20, 0, {}, {144, 238, 144, 143});
-    AudioDecibelMeter mixer_level_viewer(AudioSystem::global()->mixer());
-    AudioDecibelMeter track_level_viewer(bgm);
-    window->setViewer(&track_level_viewer);
-    bgm->play(0, true);
+    Graphics::Rectangle rect_C(100, 100, 240, 40, 0, {}, StdColor::LightGray);
+    Graphics::Rectangle rect_peak_L(100, 100, 0, 20, 0, {}, {0, 255, 0, 128});
+    Graphics::Rectangle rect_peak_R(100, 120, 0, 20, 0, {}, {144, 238, 144, 128});
+    int cnt;
+    auto r_id_list = SDL_GetAudioRecordingDevices(&cnt);
+    for (int i = 0; i < cnt; i++) {
+        Logger::log(Logger::Info, "ID: {}", r_id_list[i]);
+    }
+    auto recorder = new AudioRecorder();
+    auto input_spec = recorder->inputAudioSpec();
+    auto output_spec = recorder->outputAudioSpec();
+    Logger::log(Logger::Info, "[Input] ch: {}, format: {}, freq: {}",
+        input_spec.channels, SDL_GetAudioFormatName(input_spec.format), input_spec.freq);
+    Logger::log(Logger::Info, "[Output] ch: {}, format: {}, freq: {}",
+        output_spec.channels, SDL_GetAudioFormatName(output_spec.format), output_spec.freq);
+    AudioDecibelMeter track_level_viewer(recorder);
     window->installPaintEvent([&](Renderer* r) {
         r->setBlendMode(SDL_BLENDMODE_BLEND);
         float L = std::clamp(track_level_viewer.leftDecibel(), -40.f, 8.f);
@@ -90,31 +92,27 @@ int main() {
         r->drawRectangle(&rect_peak_R);
         r->drawRectangle(&rect_L);
         r->drawRectangle(&rect_R);
-        r->drawDebugText(FMT::format("Playing: {}", bgm->path()), {20, 20});
-        r->drawDebugText(FMT::format("Status: {}, Vol: {:.0f}%", bgm->position(),
-            roundf(bgm->volume() * 100.f)), {20, 30});
-        r->drawDebugText(FMT::format("[M] mix: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB",
-            mixer_level_viewer.mixDecibel(), mixer_level_viewer.leftDecibel(), mixer_level_viewer.rightDecibel()), {20, 40});
-        r->drawDebugText(FMT::format("[P] mix: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB",
-            mixer_level_viewer.mixPeakDecibel(), mixer_level_viewer.leftPeakDecibel(),
-            mixer_level_viewer.rightPeakDecibel()), {20, 50});
 
+        r->drawDebugText(FMT::format("[main] M: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB ",
+            track_level_viewer.mixDecibel(), track_level_viewer.leftDecibel(), track_level_viewer.rightDecibel()),
+            {20, 20});
     });
-
+    window->show();
+    engine.installCleanUpEvent([&recorder] {
+        delete recorder;
+        recorder = nullptr;
+    });
     EventSystem::global()->appendEvent([&](SDL_Event e) {
-        if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_SPACE)) {
-            if (bgm->playStatus() != BGM::Playing) {
-                bgm->resume();
-            } else {
-                bgm->pause();
+        if (e.type == SDL_EVENT_KEY_DOWN) {
+            if (e.key.key == SDLK_M) {
+                if (recorder->isRecording()) {
+                    recorder->stopRecord();
+                } else {
+                    recorder->startRecord();
+                }
             }
         }
-        if (e.type == SDL_EVENT_KEY_DOWN) {
-            if (e.key.key == SDLK_UP) bgm->setVolume(bgm->volume() + 0.1f);
-            if (e.key.key == SDLK_DOWN) bgm->setVolume(bgm->volume() - 0.1f);
-        }
     });
-    window->setDragDropEnabled(true);
-    window->show();
     return engine.exec();
 }
+#endif

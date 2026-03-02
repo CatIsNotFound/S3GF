@@ -178,6 +178,9 @@ namespace MyEngine {
         void setFullScreen(bool enabled, bool move_to_center = false);
         [[nodiscard]] bool fullScreen() const;
 
+        bool setWindowAlwaysOnTop(bool enabled);
+        bool isAlwaysOnTop() const;
+
         bool minimizeWindow();
         bool maximizeWindow();
         bool restoreWindow();
@@ -368,6 +371,13 @@ namespace MyEngine {
         void setFPS(uint32_t fps);
         [[nodiscard]] uint32_t fps() const;
         static void throwFatalError();
+        template <typename T>
+        static void throwCustomFatalError() {
+            bool ok;
+            auto err = copeWithFatalError(&ok);
+            if (!ok) return;
+            throw T(err);
+        }
 
         void installCleanUpEvent(const std::function<void()>& event);
 
@@ -377,6 +387,7 @@ namespace MyEngine {
     private:
         void cleanUp();
         void running();
+        static std::string copeWithFatalError(bool* ok = nullptr);
         static bool _quit_requested;
         static int _return_code;
         static SDL_WindowID _main_window_id;
@@ -457,7 +468,7 @@ namespace MyEngine {
         ~AudioSystem() = default;
         bool isValid() const;
 
-        void addNewMixer(size_t count = 1);
+        bool addNewMixer(size_t count = 1, SDL_AudioDeviceID device_id = 0);
         [[nodiscard]] MIX_Mixer* mixer(size_t index = 0) const;
         [[nodiscard]] size_t mixerCount() const;
 
@@ -473,13 +484,18 @@ namespace MyEngine {
         void stopAll();
         void forcedStopAll();
 
+        size_t addAudioRecorder(AudioRecorder* recorder);
+        void removeAudioRecorder(size_t index);
+        AudioRecorder* audioRecoder(size_t index);
+        size_t audioRecorderCount() const;
     private:
         explicit AudioSystem();
         bool load();
         void unload();
-        std::vector<MIX_Mixer*> _mixer_list;
-        std::unordered_map<std::string, Audio> _audio_map;
         bool _is_init{false};
+        std::vector<MIX_Mixer*> _mixer_list{};
+        std::unordered_map<std::string, Audio> _audio_map{};
+        std::vector<std::unique_ptr<AudioRecorder>> _recoder_list{};
     };
 }
 

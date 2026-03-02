@@ -677,12 +677,12 @@ namespace MyEngine {
     void TextureAnimation::draw() {
         if (_null) {
             Logger::log("TextureAnimation: No image loaded or it is not valid!", Logger::Fatal);
-            throw NullPointerException("TextureAnimation: No image loaded or it is not valid!");
+            Engine::throwCustomFatalError<NullPointerException>();
         }
         if (_textures.size() >= _cur_frame) {
             auto err = FMT::format("TextureAnimation: Current frame is out of range (at frame {})!", _cur_frame);
             Logger::log(err,Logger::Fatal);
-            throw BadValueException(err);
+            Engine::throwCustomFatalError<BadValueException>();
         }
         _renderer->drawTexture(_textures.at(_cur_frame)->texture, _property.get());
     }
@@ -1337,6 +1337,120 @@ namespace MyEngine {
         return _tracks.size();
     }
 
+    AudioRecorder::AudioRecorder(SDL_AudioDeviceID output_id) : _output_deviceID(output_id) {
+        load();
+    }
+
+    AudioRecorder::AudioRecorder(SDL_AudioDeviceID input_id, SDL_AudioDeviceID output_id)
+            : _input_deviceID(input_id), _output_deviceID(output_id) {
+        load();
+    }
+
+    AudioRecorder::~AudioRecorder() {
+        unload();
+    }
+
+    bool AudioRecorder::setInputDeviceID(SDL_AudioDeviceID input_id) {
+        unload();
+        _input_deviceID = input_id;
+        return load();
+    }
+
+    bool AudioRecorder::reload() {
+        unload();
+        return load();
+    }
+
+    SDL_AudioDeviceID AudioRecorder::inputDeviceID() const {
+        return _input_deviceID;
+    }
+
+    SDL_AudioDeviceID AudioRecorder::outputDeviceID() const {
+        return _output_deviceID;
+    }
+
+    SDL_AudioSpec AudioRecorder::inputAudioSpec() const {
+        SDL_AudioSpec ret;
+        SDL_GetAudioDeviceFormat(_input_deviceID, &ret, nullptr);
+        return ret;
+    }
+
+    SDL_AudioSpec AudioRecorder::outputAudioSpec() const {
+        SDL_AudioSpec ret;
+        SDL_GetAudioDeviceFormat(_output_deviceID, &ret, nullptr);
+        return ret;
+    }
+
+    bool AudioRecorder::startRecord() {
+        if (!SDL_ResumeAudioStreamDevice(_stream)) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to start recording! Exception: {}", SDL_GetError());
+            return false;
+        }
+        _is_recoding = true;
+        return true;
+    }
+
+    bool AudioRecorder::stopRecord() {
+        if (!SDL_PauseAudioStreamDevice(_stream)) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to stop recording! Exception: {}", SDL_GetError());
+            return true;
+        }
+        _is_recoding = false;
+        return true;
+    }
+
+    bool AudioRecorder::isRecording() const {
+        return _is_recoding;
+    }
+
+    bool AudioRecorder::isValid() const {
+        return _is_load;
+    }
+
+    SDL_AudioStream *AudioRecorder::audioStream() const {
+        return _stream;
+    }
+
+    bool AudioRecorder::load() {
+        auto real_id = _input_deviceID == 0 ? SDL_AUDIO_DEVICE_DEFAULT_RECORDING : _input_deviceID;
+        _input_deviceID = SDL_OpenAudioDevice(real_id, nullptr);
+        if (_input_deviceID == 0) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to open audio recorder! "
+                                       "Exception: {}", SDL_GetError());
+            Engine::throwCustomFatalError<InvalidArgumentException>();
+        }
+        auto in_spec = inputAudioSpec();
+        auto out_spec = outputAudioSpec();
+        _stream = SDL_CreateAudioStream(&in_spec, &out_spec);
+        if (!_stream) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to create audio stream! "
+                                       "Exception: {}", SDL_GetError());
+            SDL_CloseAudioDevice(_input_deviceID);
+            _input_deviceID = 0;
+            _output_deviceID = 0;
+            Engine::throwCustomFatalError<InvalidArgumentException>();
+            return false;
+        }
+        _is_load = SDL_BindAudioStream(_input_deviceID, _stream);
+        Logger::log(Logger::Debug, "AudioRecorder: Loaded the audio recorder ID: {}",
+                    _input_deviceID);
+        if (_is_load) _is_recoding = true;
+        return _is_load;
+    }
+
+    void AudioRecorder::unload() {
+        if (_is_recoding) stopRecord();
+        if (_input_deviceID > 0) {
+            if (_is_load) {
+                if (SDL_GetAudioStreamDevice(_stream) > 0) {
+                    SDL_UnbindAudioStream(_stream);
+                }
+                SDL_DestroyAudioStream(_stream);
+            }
+            SDL_CloseAudioDevice(_input_deviceID);
+        }
+    }
+
     AudioDecibelMeter::AudioDecibelMeter(BGM *bgm) : _audio(bgm) {
         init();
     }
@@ -1346,6 +1460,10 @@ namespace MyEngine {
     }
 
     AudioDecibelMeter::AudioDecibelMeter(MIX_Mixer *mixer) : _audio(mixer) {
+        init();
+    }
+
+    AudioDecibelMeter::AudioDecibelMeter(AudioRecorder *recorder) : _audio(recorder) {
         init();
     }
 
@@ -1367,7 +1485,13 @@ namespace MyEngine {
         init();
     }
 
-    float AudioDecibelMeter::currentDecibel(size_t index) const {
+    void AudioDecibelMeter::viewRecorder(AudioRecorder *recorder) {
+        uninitialized();
+        _audio = recorder;
+        init();
+    }
+
+    float AudioDecibelMeter::mixDecibel(size_t index) const {
         if (index >= _level_meters.size()) return MUTED_DB;
         return _level_meters.at(index)._mix_dB;
     }
@@ -1390,6 +1514,11 @@ namespace MyEngine {
     float AudioDecibelMeter::rightPeakDecibel(size_t index) const {
         if (index >= _level_meters.size()) return MUTED_DB;
         return _level_meters.at(index)._right_peak_dB;
+    }
+
+    float AudioDecibelMeter::mixPeakDecibel(size_t index) const {
+        if (index >= _level_meters.size()) return MUTED_DB;
+        return _level_meters.at(index)._mix_peak_dB;
     }
 
     void AudioDecibelMeter::init() {
@@ -1418,6 +1547,13 @@ namespace MyEngine {
                 Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for Mixer! "
                                            "Exception: {}", SDL_GetError());
             }
+        } else if (std::holds_alternative<AudioRecorder*>(_audio)) {
+            auto recorder = std::get<AudioRecorder*>(_audio);
+            _level_meters.assign(1, {});
+            if (!SDL_SetAudioStreamPutCallback(recorder->audioStream(), &AudioDecibelMeter::onRecording, &_level_meters)) {
+                Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for AudioRecorder! "
+                                           "Exception: {}", SDL_GetError());
+            }
         }
     }
 
@@ -1440,8 +1576,7 @@ namespace MyEngine {
     }
 
     float AudioDecibelMeter::linearToDecibel(float linear) {
-        if (linear < 1e-8f) return MUTED_DB;
-        return 20.f * log10f(linear);
+        return (linear > 0) ? 20.f * log10f(linear) : MUTED_DB;
     }
 
     void AudioDecibelMeter::cookedBGM(void *userdata, MIX_Track *, const SDL_AudioSpec *spec,
@@ -1450,27 +1585,32 @@ namespace MyEngine {
 
         // Calculate RMS
         float sum_L = 0.f, sum_R = 0.f;
-        float peak_L = 0.f, peak_R = 0.f;
-        auto frames_count = static_cast<float>(samples / spec->channels);
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / spec->channels;
 
         for (size_t i = 0; i < samples; i += spec->channels) {
             const float L = fabsf(pcm[i]);
-            const float R = fabsf(pcm[i + spec->channels - 1]);
+            const float R = spec->channels > 1 ? fabsf(pcm[i + 1]) : L;
 
-            sum_L += L;
-            sum_R += R;
+            sum_L += L * L;
+            sum_R += R * R;
 
             if (L > peak_L) peak_L = L;
             if (R > peak_R) peak_R = R;
+
+            float max_sample = (spec->channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
         }
 
-        self->begin()->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
-        self->begin()->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->begin()->_left_dB = linearToDecibel(RMS_L);
+        self->begin()->_right_dB = linearToDecibel(RMS_R);
+        self->begin()->_mix_dB = linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
 
-        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
-        self->begin()->_mix_dB = linearToDecibel(sqrtf(TOTAL));
-        self->begin()->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
-        self->begin()->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+        self->begin()->_left_peak_dB = linearToDecibel(peak_L);
+        self->begin()->_right_peak_dB = linearToDecibel(peak_R);
+        self->begin()->_mix_peak_dB = linearToDecibel(peak_M);
     }
 
     void AudioDecibelMeter::cookedSFX(void *userdata, MIX_Track *, const SDL_AudioSpec *spec,
@@ -1479,27 +1619,32 @@ namespace MyEngine {
 
         // Calculate RMS
         float sum_L = 0.f, sum_R = 0.f;
-        float peak_L = 0.f, peak_R = 0.f;
-        auto frames_count = static_cast<float>(samples / spec->channels);
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / spec->channels;
 
         for (size_t i = 0; i < samples; i += spec->channels) {
             const float L = fabsf(pcm[i]);
-            const float R = fabsf(pcm[i + spec->channels - 1]);
+            const float R = spec->channels > 1 ? fabsf(pcm[i + 1]) : L;
 
-            sum_L += L;
-            sum_R += R;
+            sum_L += L * L;
+            sum_R += R * R;
 
             if (L > peak_L) peak_L = L;
             if (R > peak_R) peak_R = R;
+
+            float max_sample = (spec->channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
         }
 
-        self->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
-        self->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->_left_dB = linearToDecibel(RMS_L);
+        self->_right_dB = linearToDecibel(RMS_R);
+        self->_mix_dB = linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
 
-        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
-        self->_mix_dB = linearToDecibel(sqrtf(TOTAL));
-        self->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
-        self->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+        self->_left_peak_dB = linearToDecibel(peak_L);
+        self->_right_peak_dB = linearToDecibel(peak_R);
+        self->_mix_peak_dB = linearToDecibel(peak_M);
     }
 
     void AudioDecibelMeter::cookedMixer(void *userdata, MIX_Mixer *, const SDL_AudioSpec *spec,
@@ -1508,27 +1653,81 @@ namespace MyEngine {
 
         // Calculate RMS
         float sum_L = 0.f, sum_R = 0.f;
-        float peak_L = 0.f, peak_R = 0.f;
-        auto frames_count = static_cast<float>(samples / spec->channels);
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / spec->channels;
 
         for (size_t i = 0; i < samples; i += spec->channels) {
             const float L = fabsf(pcm[i]);
-            const float R = fabsf(pcm[i + spec->channels - 1]);
+            const float R = spec->channels > 1 ? fabsf(pcm[i + 1]) : L;
 
-            sum_L += L;
-            sum_R += R;
+            sum_L += L * L;
+            sum_R += R * R;
 
             if (L > peak_L) peak_L = L;
             if (R > peak_R) peak_R = R;
+
+            float max_sample = (spec->channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
         }
 
-        self->begin()->_left_dB = linearToDecibel(sqrtf(sum_L / frames_count));
-        self->begin()->_right_dB = linearToDecibel(sqrtf(sum_R / frames_count));
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->begin()->_left_dB = linearToDecibel(RMS_L);
+        self->begin()->_right_dB = linearToDecibel(RMS_R);
+        self->begin()->_mix_dB = linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
 
-        const float TOTAL = (sum_L + sum_R) / static_cast<float>(samples);
-        self->begin()->_mix_dB = linearToDecibel(sqrtf(TOTAL));
-        self->begin()->_left_peak_dB = linearToDecibel(sqrtf(peak_L));
-        self->begin()->_right_peak_dB = linearToDecibel(sqrtf(peak_R));
+        self->begin()->_left_peak_dB = linearToDecibel(peak_L);
+        self->begin()->_right_peak_dB = linearToDecibel(peak_R);
+        self->begin()->_mix_peak_dB = linearToDecibel(peak_M);
+    }
+
+    void AudioDecibelMeter::onRecording(void *userdata, SDL_AudioStream *stream, int additional_amount,
+        int total_amount) {
+        auto self = static_cast<std::vector<LevelMeter>*>(userdata);
+        auto dev_id = SDL_GetAudioStreamDevice(stream);
+        SDL_AudioSpec spec;
+        if (!SDL_GetAudioDeviceFormat(dev_id, &spec, nullptr)) {
+            Logger::log(Logger::Fatal, "AudioRecorder: Can't get the audio device format (ID: {})\n"
+                                       "Exception: {}", dev_id, SDL_GetError());
+            Engine::throwCustomFatalError<BadValueException>();
+        }
+
+        auto samples = additional_amount / sizeof(float);
+        std::vector<float> pcm(samples);
+        auto bytes = SDL_GetAudioStreamData(stream, pcm.data(), additional_amount);
+        if (bytes < 0) {
+            Logger::log(Logger::Fatal, "AudioRecorder: Can't get the audio stream data (ID: {})\n"
+                                       "Exception: {}", dev_id, SDL_GetError());
+            Engine::throwCustomFatalError<BadValueException>();
+        }
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / spec.channels;
+
+        for (size_t i = 0; i < samples; i += spec.channels) {
+            const float L = fabsf(pcm[i]);
+            const float R = spec.channels > 1 ? fabsf(pcm[i + 1]) : L;
+
+            sum_L += L * L;
+            sum_R += R * R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+
+            float max_sample = (spec.channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
+        }
+
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->begin()->_left_dB = linearToDecibel(RMS_L);
+        self->begin()->_right_dB = linearToDecibel(RMS_R);
+        self->begin()->_mix_dB = linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
+
+        self->begin()->_left_peak_dB = linearToDecibel(peak_L);
+        self->begin()->_right_peak_dB = linearToDecibel(peak_R);
+        self->begin()->_mix_peak_dB = linearToDecibel(peak_M);
     }
 
 

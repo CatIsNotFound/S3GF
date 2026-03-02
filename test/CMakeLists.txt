@@ -161,6 +161,10 @@ addModule(TEST_MODULES test_audio
         examples/Audio/test_audio.cpp
 )
 
+addModule(TEST_MODULES test_voice
+        examples/Audio/test_voice.cpp
+)
+
 addModule(TEST_MODULES test_SFX
         examples/Audio/test_SFX.cpp
 )
@@ -177,8 +181,8 @@ addModule(TEST_MODULES test_config
         examples/Config/test_config.cpp
 )
 
-addModule(TEST_MODULES test_useless
-        examples/Useless/Useless.cpp
+addModule(TEST_MODULES test_borderless
+        examples/Window/test_borderless.cpp
 )
 
 addModule(TEST_MODULES test_collider

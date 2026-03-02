@@ -249,7 +249,7 @@ namespace MyEngine {
         SDL_WindowFlags flags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_TRANSPARENT | SDL_WINDOW_HIDDEN;
         if (type == WindowType::Popup)      flags |= SDL_WINDOW_POPUP_MENU;
         if (type == WindowType::Tooltip)    flags |= SDL_WINDOW_TOOLTIP;
-        if (type == WindowType::Tool)       flags |= SDL_WINDOW_UTILITY;
+        if (type == WindowType::Tool)       flags |= SDL_WINDOW_UTILITY | SDL_WINDOW_ALWAYS_ON_TOP;
         if (type == WindowType::Borderless) flags |= SDL_WINDOW_BORDERLESS;
         if (graphic_engine == OpenGL)       flags |= SDL_WINDOW_OPENGL;
         if (graphic_engine == Vulkan)       flags |= SDL_WINDOW_VULKAN;
@@ -420,8 +420,7 @@ namespace MyEngine {
     }
 
     void Window::setWindowOpacity(float opacity) {
-        if (opacity < 0.f || opacity > 1.f) return;
-        bool _ok = SDL_SetWindowOpacity(_window, opacity);
+        bool _ok = SDL_SetWindowOpacity(_window, std::clamp(opacity, 0.0f, 1.0f));
         if (!_ok) {
             Logger::log(Logger::Error, "Window (ID {}): Can't set window opacity for this window! Exception: {}", _winID, SDL_GetError());
         }
@@ -429,7 +428,7 @@ namespace MyEngine {
 
     float Window::windowOpacity() const {
         float ret = SDL_GetWindowOpacity(_window);
-        if (ret == -1.0f) {
+        if (ret < 0) {
             Logger::log(Logger::Error, "Window (ID {}): Can't get window opacity for this window! Exception: {}", _winID, SDL_GetError());
         }
         return ret;
@@ -453,6 +452,17 @@ namespace MyEngine {
 
     bool Window::fullScreen() const {
         return SDL_GetWindowFlags(_window) & SDL_WINDOW_FULLSCREEN;
+    }
+
+    bool Window::setWindowAlwaysOnTop(bool enabled) {
+        auto _ret = SDL_SetWindowAlwaysOnTop(_window, enabled);
+        if (_ret)
+            SDL_SetWindowSize(_window, _window_geometry.width, _window_geometry.height);
+        return _ret;
+    }
+
+    bool Window::isAlwaysOnTop() const {
+        return SDL_GetWindowFlags(_window) & SDL_WINDOW_ALWAYS_ON_TOP;
     }
 
     bool Window::minimizeWindow() {
@@ -1182,11 +1192,11 @@ namespace MyEngine {
     Window* Engine::window(SDL_WindowID id) const {
         if (_window_list.contains(id)) {
             return _window_list.at(id).get();
-        } else {
-            auto err = FMT::format("Engine: Window id {} is not created or is already removed!", id);
-            Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
         }
+        auto err = FMT::format("Engine: Window id {} is not created or is already removed!", id);
+        Logger::log(err, Logger::Fatal);
+        Engine::throwCustomFatalError<NullPointerException>();
+        return nullptr;
     }
 
     std::vector<uint32_t> Engine::windowIDList() const {
@@ -1211,15 +1221,9 @@ namespace MyEngine {
     }
 
     void Engine::throwFatalError() {
-        std::string get_err_info = Logger::lastError();
-        if (get_err_info.empty()) {
-            Logger::log("No error found. It will not throw the fatal error!", Logger::Debug);
-            return;
-        }
-        std::string err = FMT::format("An error has caused the entire program to crash.\nException: {}",
-                                      get_err_info);
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FATAL ERROR", err.c_str(), nullptr);
-        Logger::log(err, Logger::Fatal);
+        bool ok;
+        auto err = copeWithFatalError(&ok);
+        if (!ok) return;
         throw EngineException(err);
     }
 
@@ -1320,6 +1324,21 @@ namespace MyEngine {
         }
     }
 
+    std::string Engine::copeWithFatalError(bool* ok) {
+        std::string get_err_info = Logger::lastError();
+        if (get_err_info.empty()) {
+            Logger::log("No error found. It will not throw the fatal error!", Logger::Debug);
+            if (ok) *ok = false;
+            return {};
+        }
+        std::string err = FMT::format("An error has caused the entire program to crash.\nException: {}",
+                                      get_err_info);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FATAL ERROR", err.c_str(), nullptr);
+        Logger::log(err, Logger::Fatal);
+        if (ok) *ok = true;
+        return err;
+    }
+
     TextSystem::TextSystem() {
         load();
     }
@@ -1393,7 +1412,7 @@ namespace MyEngine {
         if (!_font_map.contains(font_name)) {
             auto err = FMT::format("TextSystem: Font '{}' is not in the font list!", font_name);
             Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
+            Engine::throwCustomFatalError<NullPointerException>();
         }
         return _font_map.at(font_name).font.get();
     }
@@ -1538,7 +1557,7 @@ namespace MyEngine {
         if (!_text_map.contains(text_id)) {
             auto err = FMT::format("TextSystem: Text ID {} is not in the text list!", text_id);
             Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
+            Engine::throwCustomFatalError<NullPointerException>();
         }
         return &_text_map.at(text_id);
     }
@@ -1622,7 +1641,8 @@ namespace MyEngine {
             return false;
         }
         _is_init = true;
-        SDL_AudioSpec _audio_spec(SDL_AUDIO_S16, 2, 44100);
+        SDL_AudioSpec _audio_spec;
+        SDL_GetAudioDeviceFormat(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &_audio_spec, nullptr);
         auto new_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &_audio_spec);
         if (!new_mixer) {
             Logger::log(Logger::Error, "AudioSystem: Can't initialized audio system! Exception: {}", SDL_GetError());
@@ -1645,18 +1665,31 @@ namespace MyEngine {
         _is_init = false;
     }
 
-    void AudioSystem::addNewMixer(size_t count) {
-        if (!_is_init) return;
+    bool AudioSystem::addNewMixer(size_t count, SDL_AudioDeviceID device_id) {
+        if (!_is_init) {
+            Logger::log("AudioSystem: The audio system is not initialized!", Logger::Fatal);
+            Engine::throwFatalError();
+            return false;
+        }
+        auto audio_dev_id = (device_id == 0 ? SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK : device_id);
+        if (!SDL_IsAudioDevicePlayback(audio_dev_id)) {
+            Logger::log("AudioSystem: The specified audio device ID is not the playback device!", Logger::Fatal);
+            Engine::throwCustomFatalError<NullPointerException>();
+            return false;
+        }
         while (count--) {
-            SDL_AudioSpec _audio_spec(SDL_AUDIO_S16, 2, 44100);
-            auto new_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &_audio_spec);
+            SDL_AudioSpec _audio_spec;
+            SDL_GetAudioDeviceFormat(audio_dev_id, &_audio_spec, nullptr);
+            auto new_mixer = MIX_CreateMixerDevice(audio_dev_id, &_audio_spec);
             if (!new_mixer) {
                 Logger::log(Logger::Error, "AudioSystem: Can't create the new mixer device! "
                                            "Exception: {}", SDL_GetError());
+                return false;
             } else {
                 _mixer_list.push_back(new_mixer);
             }
         }
+        return true;
     }
 
     MIX_Mixer *AudioSystem::mixer(size_t index) const {
@@ -1664,7 +1697,7 @@ namespace MyEngine {
             auto err = FMT::format("AudioSystem: Mixer #{} is not valid! "
                                    "Did you forget to call `AudioSystem::addNewMixer()` function?", index);
             Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
+            Engine::throwCustomFatalError<NullPointerException>();
         }
         return _mixer_list.at(index);
     }
@@ -1713,13 +1746,14 @@ namespace MyEngine {
             } else {
                 auto err = FMT::format("AudioSystem: Audio '{}' is not the BGM type! ", name);
                 Logger::log(err, Logger::Fatal);
-                throw NullPointerException(err);
+                Engine::throwFatalError();
             }
         } else {
             auto err = FMT::format("AudioSystem: Audio '{}' is not exist! ", name);
             Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
+            Engine::throwFatalError();
         }
+        return nullptr;
     }
 
     SFX *AudioSystem::getSFX(const std::string &name) {
@@ -1729,13 +1763,14 @@ namespace MyEngine {
             } else {
                 auto err = FMT::format("AudioSystem: Audio '{}' is not the SFX type! ", name);
                 Logger::log(err, Logger::Fatal);
-                throw NullPointerException(err);
+                Engine::throwFatalError();
             }
         } else {
             auto err = FMT::format("AudioSystem: Audio '{}' is not exist! ", name);
             Logger::log(err, Logger::Fatal);
-            throw NullPointerException(err);
+            Engine::throwFatalError();
         }
+        return nullptr;
     }
 
     size_t AudioSystem::size() const {
@@ -1785,5 +1820,33 @@ namespace MyEngine {
                     (size_t)mixer, SDL_GetError());
             }
         }
+    }
+
+    size_t AudioSystem::addAudioRecorder(AudioRecorder *recorder) {
+        if (!recorder) return SIZE_MAX;
+        _recoder_list.emplace_back(std::unique_ptr<AudioRecorder>(recorder));
+        return _recoder_list.size() - 1;
+    }
+
+    void AudioSystem::removeAudioRecorder(size_t index) {
+        if (index >= _recoder_list.size()) {
+            Logger::log(Logger::Error, "AudioSystem: The index of {} is not exist in recorder list.", index);
+            return;
+        }
+        _recoder_list.erase(_recoder_list.begin() + index);
+    }
+
+    AudioRecorder *AudioSystem::audioRecoder(size_t index) {
+        if (index >= _recoder_list.size()) {
+            Logger::log(Logger::Fatal, "AudioSystem: The index of {} is not exist "
+                                       "in audio recorder list!", index);
+            Engine::throwCustomFatalError<NullPointerException>();
+            return nullptr;
+        }
+        return _recoder_list.at(index).get();
+    }
+
+    size_t AudioSystem::audioRecorderCount() const {
+        return _recoder_list.size();
     }
 }

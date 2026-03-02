@@ -226,23 +226,54 @@ namespace MyEngine {
         Track _default_track{};
     };
 
+    class AudioRecorder {
+    public:
+        explicit AudioRecorder(SDL_AudioDeviceID output_id = SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK);
+        explicit AudioRecorder(SDL_AudioDeviceID input_id, SDL_AudioDeviceID output_id);
+        ~AudioRecorder();
+
+        bool setInputDeviceID(SDL_AudioDeviceID input_id);
+        bool reload();
+        [[nodiscard]] SDL_AudioDeviceID inputDeviceID() const;
+        [[nodiscard]] SDL_AudioDeviceID outputDeviceID() const;
+        [[nodiscard]] SDL_AudioSpec inputAudioSpec() const;
+        [[nodiscard]] SDL_AudioSpec outputAudioSpec() const;
+        bool startRecord();
+        bool stopRecord();
+        [[nodiscard]] bool isRecording() const;
+        [[nodiscard]] bool isValid() const;
+        [[nodiscard]] SDL_AudioStream* audioStream() const;
+
+    private:
+        bool load();
+        void unload();
+
+        SDL_AudioStream* _stream{nullptr};
+        SDL_AudioDeviceID _input_deviceID{0}, _output_deviceID{0};
+        bool _is_load{false};
+        bool _is_recoding{false};
+    };
+
     class AudioDecibelMeter {
-        using Audio = std::variant<std::monostate, BGM*, SFX*, MIX_Mixer*>;
+        using Audio = std::variant<std::monostate, BGM*, SFX*, MIX_Mixer*, AudioRecorder*>;
     public:
         constexpr static float MUTED_DB = -96.f;
         explicit AudioDecibelMeter(BGM* bgm);
         explicit AudioDecibelMeter(SFX* sfx);
         explicit AudioDecibelMeter(MIX_Mixer* mixer);
+        explicit AudioDecibelMeter(AudioRecorder* recorder);
         explicit AudioDecibelMeter() : _audio(std::monostate{}) {}
 
         void viewBGM(BGM* bgm);
         void viewSFX(SFX* sfx);
         void viewMixer(MIX_Mixer* mixer);
-        [[nodiscard]] float currentDecibel(size_t index = 0) const;
+        void viewRecorder(AudioRecorder* recorder);
+        [[nodiscard]] float mixDecibel(size_t index = 0) const;
         [[nodiscard]] float leftDecibel(size_t index = 0) const;
         [[nodiscard]] float rightDecibel(size_t index = 0) const;
         [[nodiscard]] float leftPeakDecibel(size_t index = 0) const;
         [[nodiscard]] float rightPeakDecibel(size_t index = 0) const;
+        [[nodiscard]] float mixPeakDecibel(size_t index = 0) const;
     private:
         void init();
         void uninitialized();
@@ -253,10 +284,13 @@ namespace MyEngine {
                 const SDL_AudioSpec *spec, float *pcm, int samples);
         static void SDLCALL cookedMixer(void *userdata, MIX_Mixer *,
                 const SDL_AudioSpec *spec, float *pcm, int samples);
+        static void SDLCALL onRecording(void *userdata, SDL_AudioStream *stream,
+            int additional_amount, int total_amount);
 
         Audio _audio;
         struct LevelMeter {
             float _mix_dB{MUTED_DB};
+            float _mix_peak_dB{MUTED_DB};
             float _left_dB{MUTED_DB};
             float _right_dB{MUTED_DB};
             float _left_peak_dB{MUTED_DB};

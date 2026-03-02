@@ -11,7 +11,6 @@ int main() {
     engine.setFPS(60);
     auto win2 = new Window(&engine, "2nd window", 800, 600, Window::WindowType::Borderless);
     auto rect = Algorithm::drawFilledRoundedRectangleSurface(800, 600, 20);
-    // SDL_SetWindowShape(win2->self(), rect);
     delay(1);
     win2->show();
     win2->setResizable(true);
