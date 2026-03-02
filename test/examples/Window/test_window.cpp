@@ -5,7 +5,7 @@ int main() {
     engine.setFPS(30);
     auto window = new MyWindow(&engine, "Test window");
     auto tool = new Window(window, "Test tool", 200, 400, Window::WindowType::Tool);
-    auto tooltip = new Window(window, "Test tip", 300, 120, Window::WindowType::Tooltip);
+    auto tooltip = new Window(window, "Test tip", 200, 30, Window::WindowType::Tooltip);
     window->renderer()->setVSyncMode(Renderer::Adaptive);
     window->setResizable(true);
     window->setDragDropEnabled(true);
@@ -14,6 +14,7 @@ int main() {
     tooltip->installPaintEvent([](Renderer* r) {
         r->drawDebugText("Here is a tooltip!", {20, 20});
     });
+    tooltip->move(0, 100);
     tooltip->show();
     return engine.exec();
 }

@@ -256,7 +256,7 @@ namespace MyEngine {
 
         if (type == WindowType::Popup || type == WindowType::Tooltip) {
             _window = SDL_CreatePopupWindow(parent->self(),
-                parent->geometry().x, parent->geometry().y, width, height, flags);
+                0, 0, width, height, flags);
         } else {
             _window = SDL_CreateWindow(title.c_str(), width, height, flags);
         }

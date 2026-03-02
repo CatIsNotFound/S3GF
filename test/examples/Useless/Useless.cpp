@@ -9,13 +9,12 @@ using namespace MyEngine;
 int main() {
     Engine engine;
     engine.setFPS(60);
-    auto win2 = new Window(&engine, "2nd window", 800, 600, Window::Vulkan);
+    auto win2 = new Window(&engine, "2nd window", 800, 600, Window::WindowType::Borderless);
     auto rect = Algorithm::drawFilledRoundedRectangleSurface(800, 600, 20);
     // SDL_SetWindowShape(win2->self(), rect);
     delay(1);
     win2->show();
     win2->setResizable(true);
-    win2->setBorderless(true);
     win2->setWindowShape(rect);
     win2->installPaintEvent([&](Renderer* r) {
         r->fillBackground(StdColor::LightBlue);
