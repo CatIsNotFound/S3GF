@@ -5,11 +5,12 @@
 #include "Utils/FileSystem.h"
 #include "Utils/RGBAColor.h"
 #include "Algorithm/All.h"
+#include "Utils/WavWriter.h"
 
 namespace MyEngine {
     constexpr size_t MAX_AUDIO_FILE_SIZE = 2 * 1024 * 1024;
     Font::Font(const std::string& font_path, float font_size)
-            : _font_size(font_size), _font_path(font_path) {
+            : _font_path(font_path), _font_size(font_size) {
         _font = TTF_OpenFont(font_path.c_str(), font_size);
         if (!_font) {
             Logger::log(FMT::format("Font: Can't load font from path '{}'.", font_path),
@@ -1386,7 +1387,16 @@ namespace MyEngine {
             Logger::log(Logger::Error, "AudioRecorder: Failed to start recording! Exception: {}", SDL_GetError());
             return false;
         }
-        _is_recoding = true;
+        _status = Recording;
+
+        SDL_AudioSpec spec = inputAudioSpec();
+        auto bit_size = SDL_AUDIO_BITSIZE(spec.format);
+        if (!_wav_writer.begin(spec.freq, spec.channels, bit_size)) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to write audio file!");
+            stopRecord();
+            return false;
+        }
+
         return true;
     }
 
@@ -1395,20 +1405,40 @@ namespace MyEngine {
             Logger::log(Logger::Error, "AudioRecorder: Failed to stop recording! Exception: {}", SDL_GetError());
             return true;
         }
-        _is_recoding = false;
+        _status = Processing;
+        if (_wav_writer.isOpen()) {
+            bool ok = _wav_writer.end();
+            if (!ok) {
+                Logger::log(Logger::Error, "AudioRecorder: Failed to write audio file!");
+            }
+        }
+        _status = Idle;
         return true;
     }
 
     bool AudioRecorder::isRecording() const {
-        return _is_recoding;
+        return _status == Recording;
     }
 
     bool AudioRecorder::isValid() const {
-        return _is_load;
+        return _status >= Idle;
     }
 
     SDL_AudioStream *AudioRecorder::audioStream() const {
         return _stream;
+    }
+
+    void AudioRecorder::setOutputFileName(const std::string &file_name) {
+        _wav_writer.setOutputPath(file_name);
+    }
+
+    void AudioRecorder::setAudioDecibalMeter(AudioDecibelMeter *decibel_meter) {
+        _audio_decibel_meter = decibel_meter;
+
+    }
+
+    AudioDecibelMeter *AudioRecorder::audioDecibelMeter() const {
+        return _audio_decibel_meter;
     }
 
     bool AudioRecorder::load() {
@@ -1431,17 +1461,25 @@ namespace MyEngine {
             Engine::throwCustomFatalError<InvalidArgumentException>();
             return false;
         }
-        _is_load = SDL_BindAudioStream(_input_deviceID, _stream);
-        Logger::log(Logger::Debug, "AudioRecorder: Loaded the audio recorder ID: {}",
-                    _input_deviceID);
-        if (_is_load) _is_recoding = true;
-        return _is_load;
+        bool is_load = SDL_BindAudioStream(_input_deviceID, _stream);
+        if (is_load) {
+            Logger::log(Logger::Debug, "AudioRecorder: Loaded the audio recorder ID: {}",
+                        _input_deviceID);
+            _status = Recording;
+        } else {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to bind audio stream!");
+            SDL_DestroyAudioStream(_stream);
+            SDL_CloseAudioDevice(_input_deviceID);
+            _status = Invalid;
+        }
+        is_load = SDL_SetAudioStreamPutCallback(_stream, &AudioRecorder::onRecording, this);
+        return is_load;
     }
 
     void AudioRecorder::unload() {
-        if (_is_recoding) stopRecord();
+        if (_status == Recording) stopRecord();
         if (_input_deviceID > 0) {
-            if (_is_load) {
+            if (_status >= Idle) {
                 if (SDL_GetAudioStreamDevice(_stream) > 0) {
                     SDL_UnbindAudioStream(_stream);
                 }
@@ -1449,6 +1487,65 @@ namespace MyEngine {
             }
             SDL_CloseAudioDevice(_input_deviceID);
         }
+        _status = Invalid;
+    }
+
+    void AudioRecorder::onRecording(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount) {
+        auto self = static_cast<AudioRecorder*>(userdata);
+        auto input_spec = self->inputAudioSpec();
+
+        auto samples = additional_amount / sizeof(float);
+        std::vector<float> pcm(samples);
+        auto bytes = SDL_GetAudioStreamData(stream, pcm.data(), pcm.size() * sizeof(float));
+        if (bytes < 0) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to get audio stream data! (ID: {})\n"
+                "Exception: {}", self->_input_deviceID, SDL_GetError());
+            return;
+        }
+        if (bytes > 0) {
+            // Using limiting to deal with plosives and noise issues.
+            for (size_t i = 0; i < samples; i++) {
+                if (pcm[i] > 1.0f) pcm[i] = 1.0f;
+                if (pcm[i] < -1.0f) pcm[i] = -1.0f;
+            }
+
+            if (self->_wav_writer.isOpen() && !self->_wav_writer.write(pcm.data(), bytes)) {
+                Logger::log(Logger::Error, "AudioRecorder: Failed to write audio data! (ID: {})",
+                    self->_input_deviceID);
+            }
+        }
+        if (!self->_audio_decibel_meter) return;
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / input_spec.channels;
+
+        for (size_t i = 0; i < samples; i += input_spec.channels) {
+            const float L = fabsf(pcm[i]);
+            const float R = input_spec.channels > 1 ? fabsf(pcm[i + 1]) : L;
+
+            sum_L += L * L;
+            sum_R += R * R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+
+            float max_sample = (input_spec.channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
+        }
+
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->_audio_decibel_meter->_level_meters.assign(1, {});
+        auto& level_meter = self->_audio_decibel_meter->_level_meters.front();
+        level_meter._left_dB = self->_audio_decibel_meter->linearToDecibel(RMS_L);
+        level_meter._right_dB = self->_audio_decibel_meter->linearToDecibel(RMS_R);
+        level_meter._mix_dB =
+                self->_audio_decibel_meter->linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
+
+        level_meter._left_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_L);
+        level_meter._right_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_R);
+        level_meter._mix_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_M);
     }
 
     AudioDecibelMeter::AudioDecibelMeter(BGM *bgm) : _audio(bgm) {
@@ -1485,10 +1582,9 @@ namespace MyEngine {
         init();
     }
 
-    void AudioDecibelMeter::viewRecorder(AudioRecorder *recorder) {
+    void AudioDecibelMeter::unload() {
         uninitialized();
-        _audio = recorder;
-        init();
+        _audio = std::monostate{};
     }
 
     float AudioDecibelMeter::mixDecibel(size_t index) const {
@@ -1545,13 +1641,6 @@ namespace MyEngine {
             _level_meters.assign(1, {});
             if (!MIX_SetPostMixCallback(mixer, &AudioDecibelMeter::cookedMixer, &_level_meters)) {
                 Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for Mixer! "
-                                           "Exception: {}", SDL_GetError());
-            }
-        } else if (std::holds_alternative<AudioRecorder*>(_audio)) {
-            auto recorder = std::get<AudioRecorder*>(_audio);
-            _level_meters.assign(1, {});
-            if (!SDL_SetAudioStreamPutCallback(recorder->audioStream(), &AudioDecibelMeter::onRecording, &_level_meters)) {
-                Logger::log(Logger::Error, "AudioLevelViewer: Failed to initialized for AudioRecorder! "
                                            "Exception: {}", SDL_GetError());
             }
         }
@@ -1680,56 +1769,6 @@ namespace MyEngine {
         self->begin()->_right_peak_dB = linearToDecibel(peak_R);
         self->begin()->_mix_peak_dB = linearToDecibel(peak_M);
     }
-
-    void AudioDecibelMeter::onRecording(void *userdata, SDL_AudioStream *stream, int additional_amount,
-        int total_amount) {
-        auto self = static_cast<std::vector<LevelMeter>*>(userdata);
-        auto dev_id = SDL_GetAudioStreamDevice(stream);
-        SDL_AudioSpec spec;
-        if (!SDL_GetAudioDeviceFormat(dev_id, &spec, nullptr)) {
-            Logger::log(Logger::Fatal, "AudioRecorder: Can't get the audio device format (ID: {})\n"
-                                       "Exception: {}", dev_id, SDL_GetError());
-            Engine::throwCustomFatalError<BadValueException>();
-        }
-
-        auto samples = additional_amount / sizeof(float);
-        std::vector<float> pcm(samples);
-        auto bytes = SDL_GetAudioStreamData(stream, pcm.data(), additional_amount);
-        if (bytes < 0) {
-            Logger::log(Logger::Fatal, "AudioRecorder: Can't get the audio stream data (ID: {})\n"
-                                       "Exception: {}", dev_id, SDL_GetError());
-            Engine::throwCustomFatalError<BadValueException>();
-        }
-        // Calculate RMS
-        float sum_L = 0.f, sum_R = 0.f;
-        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
-        auto frames_count = samples / spec.channels;
-
-        for (size_t i = 0; i < samples; i += spec.channels) {
-            const float L = fabsf(pcm[i]);
-            const float R = spec.channels > 1 ? fabsf(pcm[i + 1]) : L;
-
-            sum_L += L * L;
-            sum_R += R * R;
-
-            if (L > peak_L) peak_L = L;
-            if (R > peak_R) peak_R = R;
-
-            float max_sample = (spec.channels > 1) ? fmaxf(L, R) : L;
-            if (max_sample > peak_M) peak_M = max_sample;
-        }
-
-        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
-        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
-        self->begin()->_left_dB = linearToDecibel(RMS_L);
-        self->begin()->_right_dB = linearToDecibel(RMS_R);
-        self->begin()->_mix_dB = linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
-
-        self->begin()->_left_peak_dB = linearToDecibel(peak_L);
-        self->begin()->_right_peak_dB = linearToDecibel(peak_R);
-        self->begin()->_mix_peak_dB = linearToDecibel(peak_M);
-    }
-
 
     TriggerArea::TriggerArea(GeometryF geometry, Window *window) :
             _geometry(geometry), _window(window), _event_id(IDGenerator::getNewEventID()){

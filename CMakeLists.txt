@@ -168,6 +168,8 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Config/Macro.h
             src/Config/Configuration.h
             src/Config/Configuration.cpp
+            src/Utils/WavWriter.cpp
+            src/Utils/WavWriter.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -234,6 +236,8 @@ else ()
             src/Config/Macro.h
             src/Config/Configuration.h
             src/Config/Configuration.cpp
+            src/Utils/WavWriter.cpp
+            src/Utils/WavWriter.h
     )
 endif ()
 

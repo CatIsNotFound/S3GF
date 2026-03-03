@@ -9,5 +9,6 @@
 #include "RGBAColor.h"
 #include "SysMemory.h"
 #include "Variant.h"
+#include "WavWriter.h"
 
 #endif //MYENGINE_UTILS_H

@@ -18,8 +18,6 @@ int main() {
 #if 1
 int main() {
     Logger::setBaseLogLevel(Logger::Debug);
-    Logger::setWriteLogFileEnabled(true);
-    Logger::setLogFileName(FMT::format("./{}.log", DateTime::currentTimestamp()));
     Engine engine;
     engine.setFPS(60);
     auto window = new Window(&engine, "Test Voice");
@@ -33,14 +31,30 @@ int main() {
     for (int i = 0; i < cnt; i++) {
         Logger::log(Logger::Info, "ID: {}", r_id_list[i]);
     }
+    AudioDecibelMeter track_level_viewer;
     auto recorder = new AudioRecorder();
+    recorder->stopRecord();
+    recorder->setOutputFileName(FMT::format("./{}.wav", DateTime::currentTimestamp()));
+    recorder->setAudioDecibalMeter(&track_level_viewer);
+    recorder->startRecord();
     auto input_spec = recorder->inputAudioSpec();
     auto output_spec = recorder->outputAudioSpec();
     Logger::log(Logger::Info, "[Input] ch: {}, format: {}, freq: {}",
         input_spec.channels, SDL_GetAudioFormatName(input_spec.format), input_spec.freq);
     Logger::log(Logger::Info, "[Output] ch: {}, format: {}, freq: {}",
         output_spec.channels, SDL_GetAudioFormatName(output_spec.format), output_spec.freq);
-    AudioDecibelMeter track_level_viewer(recorder);
+    Widget::Button record_button("record", window);
+    record_button.move(130, 160);
+    record_button.resize(120, 80);
+    record_button.setCheckable(true);
+    record_button.setChecked(true);
+    record_button.setBackgroundColor(Widget::WidgetStatus::Normal, StdColor::BrightRed);
+    record_button.setBackgroundColor(Widget::WidgetStatus::Checked, StdColor::FireRed);
+    record_button.setTriggerEvent([&recorder, &record_button] {
+        record_button.setChecked(!record_button.isChecked());
+        if (record_button.isChecked()) recorder->startRecord();
+        else recorder->stopRecord();
+    });
     window->installPaintEvent([&](Renderer* r) {
         r->setBlendMode(SDL_BLENDMODE_BLEND);
         float L = std::clamp(track_level_viewer.leftDecibel(), -40.f, 8.f);
@@ -96,6 +110,15 @@ int main() {
         r->drawDebugText(FMT::format("[main] M: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB ",
             track_level_viewer.mixDecibel(), track_level_viewer.leftDecibel(), track_level_viewer.rightDecibel()),
             {20, 20});
+        r->drawDebugText(FMT::format("[peak] M: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB ",
+            track_level_viewer.mixPeakDecibel(), track_level_viewer.leftPeakDecibel(), track_level_viewer.rightPeakDecibel()),
+            {20, 30});
+        std::string status_text;
+        if (recorder->isRecording()) status_text = "Recording";
+        else if (recorder->isValid()) status_text = "No recording";
+        else status_text = "Invalid";
+        r->drawDebugText(FMT::format("Status: {}", status_text), {20, 40});
+
     });
     window->show();
     engine.installCleanUpEvent([&recorder] {
@@ -104,11 +127,13 @@ int main() {
     });
     EventSystem::global()->appendEvent([&](SDL_Event e) {
         if (e.type == SDL_EVENT_KEY_DOWN) {
-            if (e.key.key == SDLK_M) {
+            if (e.key.key == SDLK_R) {
                 if (recorder->isRecording()) {
                     recorder->stopRecord();
+                    record_button.setChecked(false);
                 } else {
                     recorder->startRecord();
+                    record_button.setChecked(true);
                 }
             }
         }

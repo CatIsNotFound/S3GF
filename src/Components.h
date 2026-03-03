@@ -3,6 +3,7 @@
 #define MYENGINE_COMPONETS_H
 #include "Basic.h"
 #include "MultiThread/Components.h"
+#include "Utils/WavWriter.h"
 
 namespace MyEngine {
     class Font {
@@ -226,8 +227,17 @@ namespace MyEngine {
         Track _default_track{};
     };
 
+    class AudioDecibelMeter;
+
     class AudioRecorder {
     public:
+        enum Status : uint8_t {
+            Invalid,
+            Idle,
+            Recording,
+            Playing,
+            Processing
+        };
         explicit AudioRecorder(SDL_AudioDeviceID output_id = SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK);
         explicit AudioRecorder(SDL_AudioDeviceID input_id, SDL_AudioDeviceID output_id);
         ~AudioRecorder();
@@ -243,19 +253,27 @@ namespace MyEngine {
         [[nodiscard]] bool isRecording() const;
         [[nodiscard]] bool isValid() const;
         [[nodiscard]] SDL_AudioStream* audioStream() const;
+        void setOutputFileName(const std::string& file_name);
+        void setAudioDecibalMeter(AudioDecibelMeter* decibel_meter);
+        AudioDecibelMeter* audioDecibelMeter() const;
 
     private:
         bool load();
         void unload();
+        static void SDLCALL onRecording(void *userdata, SDL_AudioStream *stream,
+                                        int additional_amount, int total_amount);
 
         SDL_AudioStream* _stream{nullptr};
         SDL_AudioDeviceID _input_deviceID{0}, _output_deviceID{0};
-        bool _is_load{false};
-        bool _is_recoding{false};
+        std::vector<float> _pcm_datas{};
+        WAVWriter _wav_writer;
+        AudioDecibelMeter* _audio_decibel_meter{};
+        Status _status{Invalid};
     };
 
     class AudioDecibelMeter {
         using Audio = std::variant<std::monostate, BGM*, SFX*, MIX_Mixer*, AudioRecorder*>;
+        friend class AudioRecorder;
     public:
         constexpr static float MUTED_DB = -96.f;
         explicit AudioDecibelMeter(BGM* bgm);
@@ -267,7 +285,7 @@ namespace MyEngine {
         void viewBGM(BGM* bgm);
         void viewSFX(SFX* sfx);
         void viewMixer(MIX_Mixer* mixer);
-        void viewRecorder(AudioRecorder* recorder);
+        void unload();
         [[nodiscard]] float mixDecibel(size_t index = 0) const;
         [[nodiscard]] float leftDecibel(size_t index = 0) const;
         [[nodiscard]] float rightDecibel(size_t index = 0) const;
@@ -284,8 +302,6 @@ namespace MyEngine {
                 const SDL_AudioSpec *spec, float *pcm, int samples);
         static void SDLCALL cookedMixer(void *userdata, MIX_Mixer *,
                 const SDL_AudioSpec *spec, float *pcm, int samples);
-        static void SDLCALL onRecording(void *userdata, SDL_AudioStream *stream,
-            int additional_amount, int total_amount);
 
         Audio _audio;
         struct LevelMeter {
