@@ -1391,7 +1391,7 @@ namespace MyEngine {
 
         SDL_AudioSpec spec = inputAudioSpec();
         auto bit_size = SDL_AUDIO_BITSIZE(spec.format);
-        if (!_wav_writer.begin(spec.freq, spec.channels, bit_size)) {
+        if (!_wav_writer.begin(spec.freq, spec.channels, bit_size, spec.format)) {
             Logger::log(Logger::Error, "AudioRecorder: Failed to write audio file!");
             stopRecord();
             return false;
@@ -1429,12 +1429,12 @@ namespace MyEngine {
     }
 
     void AudioRecorder::setOutputFileName(const std::string &file_name) {
+        if (_status == Recording) stopRecord();
         _wav_writer.setOutputPath(file_name);
     }
 
     void AudioRecorder::setAudioDecibalMeter(AudioDecibelMeter *decibel_meter) {
         _audio_decibel_meter = decibel_meter;
-
     }
 
     AudioDecibelMeter *AudioRecorder::audioDecibelMeter() const {
@@ -1472,7 +1472,9 @@ namespace MyEngine {
             SDL_CloseAudioDevice(_input_deviceID);
             _status = Invalid;
         }
-        is_load = SDL_SetAudioStreamPutCallback(_stream, &AudioRecorder::onRecording, this);
+        is_load = SDL_SetAudioStreamPutCallback(_stream,
+            SDL_AUDIO_ISFLOAT(in_spec.format) ? &AudioRecorder::onRecordingF32 : &AudioRecorder::onRecordingS16,
+                                        this);
         return is_load;
     }
 
@@ -1490,10 +1492,9 @@ namespace MyEngine {
         _status = Invalid;
     }
 
-    void AudioRecorder::onRecording(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount) {
+    void AudioRecorder::onRecordingF32(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount) {
         auto self = static_cast<AudioRecorder*>(userdata);
         auto input_spec = self->inputAudioSpec();
-
         auto samples = additional_amount / sizeof(float);
         std::vector<float> pcm(samples);
         auto bytes = SDL_GetAudioStreamData(stream, pcm.data(), pcm.size() * sizeof(float));
@@ -1523,6 +1524,57 @@ namespace MyEngine {
         for (size_t i = 0; i < samples; i += input_spec.channels) {
             const float L = fabsf(pcm[i]);
             const float R = input_spec.channels > 1 ? fabsf(pcm[i + 1]) : L;
+
+            sum_L += L * L;
+            sum_R += R * R;
+
+            if (L > peak_L) peak_L = L;
+            if (R > peak_R) peak_R = R;
+
+            float max_sample = (input_spec.channels > 1) ? fmaxf(L, R) : L;
+            if (max_sample > peak_M) peak_M = max_sample;
+        }
+
+        const float RMS_L = sqrtf(sum_L / static_cast<float>(frames_count));
+        const float RMS_R = sqrtf(sum_R / static_cast<float>(frames_count));
+        self->_audio_decibel_meter->_level_meters.assign(1, {});
+        auto& level_meter = self->_audio_decibel_meter->_level_meters.front();
+        level_meter._left_dB = self->_audio_decibel_meter->linearToDecibel(RMS_L);
+        level_meter._right_dB = self->_audio_decibel_meter->linearToDecibel(RMS_R);
+        level_meter._mix_dB =
+                self->_audio_decibel_meter->linearToDecibel(sqrtf((sum_L + sum_R) / static_cast<float>(samples)));
+
+        level_meter._left_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_L);
+        level_meter._right_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_R);
+        level_meter._mix_peak_dB = self->_audio_decibel_meter->linearToDecibel(peak_M);
+    }
+
+    void AudioRecorder::onRecordingS16(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount) {
+        auto self = static_cast<AudioRecorder*>(userdata);
+        auto input_spec = self->inputAudioSpec();
+        auto samples = additional_amount / sizeof(uint16_t);
+        std::vector<uint16_t> pcm(samples);
+        auto bytes = SDL_GetAudioStreamData(stream, pcm.data(), pcm.size() * sizeof(uint16_t));
+        if (bytes < 0) {
+            Logger::log(Logger::Error, "AudioRecorder: Failed to get audio stream data! (ID: {})\n"
+                "Exception: {}", self->_input_deviceID, SDL_GetError());
+            return;
+        }
+        if (bytes > 0) {
+            if (self->_wav_writer.isOpen() && !self->_wav_writer.write(pcm.data(), bytes)) {
+                Logger::log(Logger::Error, "AudioRecorder: Failed to write audio data! (ID: {})",
+                    self->_input_deviceID);
+            }
+        }
+        if (!self->_audio_decibel_meter) return;
+        // Calculate RMS
+        float sum_L = 0.f, sum_R = 0.f;
+        float peak_L = 0.f, peak_R = 0.f, peak_M = 0.f;
+        auto frames_count = samples / input_spec.channels;
+
+        for (size_t i = 0; i < samples; i += input_spec.channels) {
+            const float L = fabsf(pcm[i] / 32768.f);
+            const float R = input_spec.channels > 1 ? fabsf(pcm[i + 1] / 32768.f) : L;
 
             sum_L += L * L;
             sum_R += R * R;

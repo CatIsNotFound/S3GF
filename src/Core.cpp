@@ -1773,6 +1773,26 @@ namespace MyEngine {
         return nullptr;
     }
 
+    bool AudioSystem::isBGM(const std::string &name) const {
+        return (_audio_map.contains(name) && std::holds_alternative<std::unique_ptr<BGM>>(_audio_map.at(name)));
+    }
+
+    bool AudioSystem::isSFX(const std::string &name) const {
+        return (_audio_map.contains(name) && std::holds_alternative<std::unique_ptr<SFX>>(_audio_map.at(name)));
+    }
+
+    bool AudioSystem::isAudio(const std::string &name) const {
+        return _audio_map.contains(name);
+    }
+
+    StringList AudioSystem::audioNamesList() const {
+        StringList _ret;
+        for (auto& name : _audio_map) {
+            _ret.push_back(name.first);
+        }
+        return _ret;
+    }
+
     size_t AudioSystem::size() const {
         return _audio_map.size();
     }

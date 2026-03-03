@@ -26,7 +26,7 @@ namespace MyEngine {
         return _path;
     }
 
-    bool WAVWriter::begin(int sample_rates, int channels, int bytes) noexcept {
+    bool WAVWriter::begin(int sample_rates, int channels, int bits_per_sample, SDL_AudioFormat format) noexcept {
         _file.open(_path, std::ios::binary);
         if (!_file.is_open()) return false;
 
@@ -38,12 +38,12 @@ namespace MyEngine {
         // fmt chunk
         _file.write("fmt ", 4);
         writeData<uint32_t>(16);
-        writeData<uint16_t>(1);
+        writeData<uint16_t>(SDL_AUDIO_ISFLOAT(format) ? 3 : 1);
         writeData<uint16_t>(channels);
         writeData<uint32_t>(sample_rates);
-        writeData<uint32_t>(sample_rates * channels * bytes / 8);
-        writeData<uint16_t>(channels * bytes / 8);
-        writeData<uint16_t>(bytes);
+        writeData<uint32_t>(sample_rates * channels * bits_per_sample / 8);
+        writeData<uint16_t>(channels * bits_per_sample / 8);
+        writeData<uint16_t>(bits_per_sample);
 
         // data chunk header
         _file.write("data", 4);
@@ -62,6 +62,7 @@ namespace MyEngine {
         writeData<uint32_t>(static_cast<uint32_t>(_data_size + 36));
 
         _file.close();
+        _data_size = 0;
         return true;
     }
 

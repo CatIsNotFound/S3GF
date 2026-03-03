@@ -477,6 +477,10 @@ namespace MyEngine {
         void remove(const std::string& name);
         BGM* getBGM(const std::string& name);
         SFX* getSFX(const std::string& name);
+        bool isBGM(const std::string& name) const;
+        bool isSFX(const std::string& name) const;
+        bool isAudio(const std::string& name) const;
+        StringList audioNamesList() const;
         [[nodiscard]] size_t size() const;
 
         void setMixerVolume(float volume, size_t mixer_index = 0);

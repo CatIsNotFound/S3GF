@@ -12,7 +12,7 @@ namespace MyEngine {
         void setOutputPath(std::string_view&& path) noexcept;
         const std::string& outputPath() const noexcept;
 
-        bool begin(int sample_rates, int channels, int bytes) noexcept;
+        bool begin(int sample_rates, int channels, int bits_per_sample, SDL_AudioFormat format) noexcept;
         bool end() noexcept;
         bool write(void* data, size_t size) noexcept;
         bool isOpen() const noexcept;

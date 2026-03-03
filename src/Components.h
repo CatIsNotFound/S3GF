@@ -260,7 +260,9 @@ namespace MyEngine {
     private:
         bool load();
         void unload();
-        static void SDLCALL onRecording(void *userdata, SDL_AudioStream *stream,
+        static void SDLCALL onRecordingF32(void *userdata, SDL_AudioStream *stream,
+                                        int additional_amount, int total_amount);
+        static void SDLCALL onRecordingS16(void *userdata, SDL_AudioStream *stream,
                                         int additional_amount, int total_amount);
 
         SDL_AudioStream* _stream{nullptr};

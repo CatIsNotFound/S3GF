@@ -33,8 +33,8 @@ int main() {
     }
     AudioDecibelMeter track_level_viewer;
     auto recorder = new AudioRecorder();
-    recorder->stopRecord();
-    recorder->setOutputFileName(FMT::format("./{}.wav", DateTime::currentTimestamp()));
+    auto file_path = FileSystem::getAbsolutePath(FMT::format("./{}.wav", DateTime::currentTimestamp()));
+    recorder->setOutputFileName(file_path);
     recorder->setAudioDecibalMeter(&track_level_viewer);
     recorder->startRecord();
     auto input_spec = recorder->inputAudioSpec();
@@ -45,16 +45,58 @@ int main() {
         output_spec.channels, SDL_GetAudioFormatName(output_spec.format), output_spec.freq);
     Widget::Button record_button("record", window);
     record_button.move(130, 160);
-    record_button.resize(120, 80);
+    record_button.resize(80, 40);
     record_button.setCheckable(true);
     record_button.setChecked(true);
     record_button.setBackgroundColor(Widget::WidgetStatus::Normal, StdColor::BrightRed);
-    record_button.setBackgroundColor(Widget::WidgetStatus::Checked, StdColor::FireRed);
-    record_button.setTriggerEvent([&recorder, &record_button] {
+    record_button.setBackgroundColor(Widget::WidgetStatus::Hovered, StdColor::FireRed);
+    record_button.setBackgroundColor(Widget::WidgetStatus::Checked, StdColor::DarkRed);
+
+    Widget::Button playback_button("playback", window);
+    playback_button.move(220, 160);
+    playback_button.resize(80, 40);
+    playback_button.setCheckable(true);
+    playback_button.setChecked(false);
+    playback_button.setEnabled(false);
+    playback_button.setBackgroundColor(Widget::WidgetStatus::Normal, StdColor::DarkGreen);
+    playback_button.setBackgroundColor(Widget::WidgetStatus::Hovered, RGBAColor::GreenApple);
+    playback_button.setBackgroundColor(Widget::WidgetStatus::Checked, StdColor::Green);
+
+    record_button.setTriggerEvent([&] {
         record_button.setChecked(!record_button.isChecked());
-        if (record_button.isChecked()) recorder->startRecord();
-        else recorder->stopRecord();
+        if (record_button.isChecked()) {
+            if (AudioSystem::global()->isBGM("test")) {
+                AudioSystem::global()->getBGM("test")->stop();
+            }
+            recorder->setAudioDecibalMeter(&track_level_viewer);
+            recorder->startRecord();
+            playback_button.setEnabled(false);
+        } else {
+            recorder->stopRecord();
+            recorder->setAudioDecibalMeter(nullptr);
+            if (AudioSystem::global()->isBGM("test")) {
+                AudioSystem::global()->getBGM("test")->setPath(file_path);
+            } else {
+                AudioSystem::global()->appendBGM("test", file_path);
+            }
+            playback_button.setEnabled(true);
+        }
     });
+
+    playback_button.setTriggerEvent([&] {
+        playback_button.setChecked(!playback_button.isChecked());
+        auto bgm = AudioSystem::global()->getBGM("test");
+        if (playback_button.isChecked()) {
+            track_level_viewer.viewBGM(bgm);
+            bgm->play(0, true);
+            playback_button.setBackgroundColor(Widget::WidgetStatus::Normal, StdColor::Green);
+        } else {
+            track_level_viewer.unload();
+            bgm->stop();
+            playback_button.setBackgroundColor(Widget::WidgetStatus::Normal, StdColor::DarkGreen);
+        }
+    });
+
     window->installPaintEvent([&](Renderer* r) {
         r->setBlendMode(SDL_BLENDMODE_BLEND);
         float L = std::clamp(track_level_viewer.leftDecibel(), -40.f, 8.f);
@@ -113,11 +155,6 @@ int main() {
         r->drawDebugText(FMT::format("[peak] M: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB ",
             track_level_viewer.mixPeakDecibel(), track_level_viewer.leftPeakDecibel(), track_level_viewer.rightPeakDecibel()),
             {20, 30});
-        std::string status_text;
-        if (recorder->isRecording()) status_text = "Recording";
-        else if (recorder->isValid()) status_text = "No recording";
-        else status_text = "Invalid";
-        r->drawDebugText(FMT::format("Status: {}", status_text), {20, 40});
 
     });
     window->show();
