@@ -61,6 +61,8 @@ namespace MyEngine {
          */
         static size_t translateSize(float size, DataUnit data_size);
 
+        static std::string homePath();
+
         /**
          * \if EN
          * @brief Set the current global directory, defining the full path for `.` in the relative path

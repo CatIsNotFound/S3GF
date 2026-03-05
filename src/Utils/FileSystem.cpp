@@ -1,5 +1,15 @@
 
 #include "FileSystem.h"
+#ifdef _WIN32
+#include <windows.h>
+#include <shlobj.h>
+#pragma comment(lib, "shell32.lib")
+#else
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+#endif
+
 
 namespace MyEngine {
     std::string FileSystem::_main_path = std::filesystem::absolute(".").string();
@@ -31,6 +41,27 @@ namespace MyEngine {
             default:
                 return static_cast<size_t>(size);
         }
+    }
+
+    std::string FileSystem::homePath() {
+#ifdef _WIN32
+        std::string home = std::getenv("USERPROFILE");
+        if (home.empty()) {
+            char home_path[128] = "";
+            if (SUCCEEDED(SHGetFolderPathA(nullptr, CSIDL_PROFILE, nullptr, 0, home_path))) {
+                return std::string(home_path);
+            }
+        }
+#else
+        std::string home = std::getenv("HOME");
+        if (home.empty()) {
+            passwd* pw = getpwuid(getuid());
+            if (pw) {
+                return std::string(pw->pw_dir);
+            }
+        }
+#endif
+        return home;
     }
 
     bool FileSystem::setCurrentPath(const std::string &main_directory) {

@@ -124,6 +124,10 @@ addModule(TEST_MODULES test_window
         examples/Window/test_window.cpp
 )
 
+addModule(TEST_MODULES test_fileDialog
+        examples/Window/test_fileDialog.cpp
+)
+
 addModule(TEST_MODULES test_renderer
         examples/Renderer/test_renderer.cpp
 )

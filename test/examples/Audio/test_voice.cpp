@@ -158,7 +158,7 @@ int main() {
 
     });
     window->show();
-    engine.installCleanUpEvent([&recorder] {
+    engine.installCleanUpEvent([&engine, &recorder] {
         delete recorder;
         recorder = nullptr;
     });

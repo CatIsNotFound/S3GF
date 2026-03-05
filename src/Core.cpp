@@ -11,6 +11,7 @@ namespace MyEngine {
     SDL_Color Renderer::_background_color{RGBAColor::White};
     SDL_WindowID Engine::_main_window_id{0};
     bool Engine::_quit_requested{false};
+    Engine::FileDialogResult Engine::_file_dialog_result{};
     int Engine::_return_code{0};
     bool Engine::_show_app_info{true};
     bool FontDatabase::_is_loaded{false};
@@ -1241,6 +1242,67 @@ namespace MyEngine {
         return ret;
     }
 
+    void Engine::openFileDialog(const StringList &filters,
+                                const std::string &default_path, Window *parent_window) {
+        std::vector<SDL_DialogFileFilter> m_filters;
+        struct TempFilter {
+            std::string name;
+            std::string pattern;
+        };
+        std::vector<TempFilter> _temp_filters;
+        for (size_t i = 0; i < filters.size(); ++i) {
+            std::string name, pattern;
+            getFileFilter(filters[i], name, pattern);
+            _temp_filters.emplace_back(name, pattern);
+        }
+        for (auto& filter : _temp_filters) {
+            m_filters.emplace_back(filter.name.data(), filter.pattern.data());
+        }
+        SDL_ShowOpenFileDialog(&Engine::getFilePathURL, &_file_dialog_result,
+                parent_window ? parent_window->self() : nullptr, m_filters.data(), m_filters.size(),
+                default_path.data(), false);
+    }
+
+    void Engine::openDirectoryDialog(const std::string &default_path, Window *parent_window) {
+        SDL_ShowOpenFolderDialog(&Engine::getFileDirectoryURL, &_file_dialog_result,
+            parent_window ? parent_window->self() : nullptr, default_path.data(), false);
+    }
+
+    void Engine::saveFileDialog(const StringList &filters, const std::string &default_path,
+                                Window *parent_window) {
+        std::vector<SDL_DialogFileFilter> m_filters;
+        struct TempFilter {
+            std::string name;
+            std::string pattern;
+        };
+        std::vector<TempFilter> _temp_filters;
+        for (size_t i = 0; i < filters.size(); ++i) {
+            std::string name, pattern;
+            getFileFilter(filters[i], name, pattern);
+            _temp_filters.emplace_back(name, pattern);
+        }
+        for (auto& filter : _temp_filters) {
+            m_filters.emplace_back(filter.name.data(), filter.pattern.data());
+        }
+        SDL_ShowSaveFileDialog(&Engine::getFilePathURL, &_file_dialog_result,
+                parent_window ? parent_window->self() : nullptr, m_filters.data(), m_filters.size(),
+                default_path.data());
+    }
+
+    std::string Engine::getFileDialogURL(bool* is_user_cancelled, bool* is_finished) {
+        if (!_file_dialog_result.is_finished) {
+            if (is_user_cancelled) *is_user_cancelled = true;
+            if (is_finished) *is_finished = _file_dialog_result.is_finished;
+            return {};
+        }
+        auto url = _file_dialog_result.url;
+        if (is_user_cancelled) *is_user_cancelled = _file_dialog_result.user_cancelled;
+        if (is_finished) *is_finished = _file_dialog_result.is_finished;
+        _file_dialog_result.is_finished = false;
+        _file_dialog_result.url.clear();
+        return url;
+    }
+
     void Engine::cleanUp() {
         if (_clean_up_event) {
             _clean_up_event();
@@ -1337,6 +1399,51 @@ namespace MyEngine {
         Logger::log(err, Logger::Fatal);
         if (ok) *ok = true;
         return err;
+    }
+
+    void Engine::getFileDirectoryURL(void *userdata, const char * const *filelist, int filter) {
+        auto res = static_cast<FileDialogResult*>(userdata);
+        if (!filelist || !*filelist) {
+            res->user_cancelled = true;
+        } else {
+            res->url.assign(filelist[0]);
+            res->user_cancelled = false;
+        }
+        res->is_finished = true;
+    }
+
+    void Engine::getFilePathURL(void *userdata, const char * const *filelist, int filter) {
+        auto res = static_cast<FileDialogResult*>(userdata);
+        if (!filelist || !*filelist) {
+            res->user_cancelled = true;
+        } else {
+            res->url.assign(filelist[0]);
+            res->user_cancelled = false;
+        }
+        res->is_finished = true;
+    }
+
+    void Engine::getFileFilter(const std::string &str, std::string &name, std::string &pattern) {
+        // For example: All files(*.*)  -> "All files" : (*)
+        //              Image file(*.png;*.jpg;*.gif) -> "Image file" : (png;jpg;gif)
+
+        auto left_braket_pos = str.find_first_of('(');
+        auto right_braket_pos = str.find_last_of(')');
+        if (left_braket_pos == std::string::npos || right_braket_pos == std::string::npos) {
+            name = str;
+            pattern = "";
+            return;
+        }
+
+        name = str.substr(0, left_braket_pos);
+        auto f_pattern = str.substr(left_braket_pos + 1, right_braket_pos - left_braket_pos - 1);
+        size_t first_pos = 0;
+        while (true) {
+            first_pos = f_pattern.find("*.", first_pos);
+            if (first_pos == std::string::npos) break;
+            f_pattern = f_pattern.replace(first_pos, 2, "");
+        }
+        pattern = f_pattern;
     }
 
     TextSystem::TextSystem() {

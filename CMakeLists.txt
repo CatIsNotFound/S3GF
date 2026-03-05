@@ -142,7 +142,7 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Renderer/BaseCommand.h
             src/Renderer/CommandPool.h
             src/Renderer/CommandFactory.h
-            src/RCommand.h
+            src/Renderer/RCommand.h
             src/Template/Singleton.h
             src/Exception.h
             src/Widgets/AbstractWidget.cpp
@@ -210,7 +210,7 @@ else ()
             src/Renderer/BaseCommand.h
             src/Renderer/CommandPool.h
             src/Renderer/CommandFactory.h
-            src/RCommand.h
+            src/Renderer/RCommand.h
             src/Template/Singleton.h
             src/Exception.h
             src/Widgets/AbstractWidget.cpp

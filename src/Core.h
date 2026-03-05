@@ -384,10 +384,31 @@ namespace MyEngine {
         bool messageBox(MessageBoxType type, const std::string& title, const std::string& message,
                 uint32_t parent_window_id = _main_window_id);
 
+        void openFileDialog(const StringList &filters,
+                            const std::string &default_path = FileSystem::homePath(), Window *parent_window = nullptr);
+
+        void openDirectoryDialog(
+            const std::string &default_path = FileSystem::homePath(),
+            Window *parent_window = nullptr);
+
+        void saveFileDialog(const StringList &filters,
+                            const std::string &default_path = FileSystem::homePath(), Window *parent_window = nullptr);
+
+        std::string getFileDialogURL(bool* is_user_cancelled = nullptr, bool* is_finished = nullptr);
+
     private:
         void cleanUp();
         void running();
         static std::string copeWithFatalError(bool* ok = nullptr);
+        static void SDLCALL getFileDirectoryURL(void *userdata, const char * const *filelist, int filter);
+        static void SDLCALL getFilePathURL(void *userdata, const char * const *filelist, int filter);
+        static void getFileFilter(const std::string& str, std::string &name, std::string &pattern);
+        struct FileDialogResult {
+            std::string url{};
+            bool user_cancelled{};
+            bool is_finished{};
+        };
+        static FileDialogResult _file_dialog_result;
         static bool _quit_requested;
         static int _return_code;
         static SDL_WindowID _main_window_id;
@@ -503,6 +524,6 @@ namespace MyEngine {
     };
 }
 
-#include "RCommand.h"
+#include "Renderer/RCommand.h"
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef MYENGINE_RCOMMAND_H
 #define MYENGINE_RCOMMAND_H
 
-#include "Renderer/CommandFactory.h"
+#include "CommandFactory.h"
 
 namespace MyEngine {
     template<typename T, typename ...Args>
