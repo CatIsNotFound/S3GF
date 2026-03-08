@@ -9,9 +9,7 @@ int main() {
     window->renderer()->setVSyncMode(Renderer::Adaptive);
     window->setResizable(true);
     window->setDragDropEnabled(true);
-    bool _ok = window->setWindowAlwaysOnTop(true);
     window->show();
-    if (!_ok) Logger::log("Failed to set window on top!", Logger::Error);
     tool->show();
     tooltip->installPaintEvent([](Renderer* r) {
         r->drawDebugText("Here is a tooltip!", {20, 10});

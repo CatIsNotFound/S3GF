@@ -367,6 +367,10 @@ namespace MyEngine {
         iter end() { return _window_list.end(); }
         size_t windowCount() { return _window_list.size(); }
         [[nodiscard]] bool isWindowExist(uint32_t window_id) const { return _window_list.contains(window_id); }
+        std::vector<SDL_WindowID> windowIDList(SDL_WindowID parent_window_id);
+        std::vector<SDL_WindowID> parentWindowIDList();
+        std::optional<SDL_WindowID> windowParentID(SDL_WindowID id);
+
 
         void setFPS(uint32_t fps);
         [[nodiscard]] uint32_t fps() const;

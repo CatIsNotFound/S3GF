@@ -279,16 +279,14 @@ namespace MyEngine {
             return on_border ? 0 : 1;
         }
 
-        inline uint8_t compareRotatedEllipses(const Graphics::Ellipse& ellipse1, const Graphics::Ellipse& ellipse2,
+        inline int8_t compareRotatedEllipses(const Graphics::Ellipse& ellipse1, const Graphics::Ellipse& ellipse2,
                 uint8_t sample_points = 64) {
-            /// get sample points
-            std::function getSamplePoints(
-                [] (const Graphics::Ellipse& ellipse, uint8_t pts) {
+            auto getSamplePoints = [] (const Graphics::Ellipse& ellipse, uint8_t pts) {
                 std::vector<Vector2> points;
                 const auto COS_R = cosf(ellipse.rotation());
                 const auto SIN_R = sinf(ellipse.rotation());
                 for (uint8_t i = 0; i < pts; ++i) {
-                    auto temp = 2 * M_PI * i / pts;
+                    float temp = 2 * M_PI * i / pts;
                     const auto TEMP_X = ellipse.size().width * cosf(temp);
                     const auto TEMP_Y = ellipse.size().height * sinf(temp);
                     const auto NEW_X = COS_R * TEMP_X - SIN_R * TEMP_Y + ellipse.centerPosition().x;
@@ -296,15 +294,27 @@ namespace MyEngine {
                     points.emplace_back(NEW_X, NEW_Y);
                 }
                 return points;
-            });
+            };
             auto pts1 = getSamplePoints(ellipse1, sample_points);
             auto pts2 = getSamplePoints(ellipse2, sample_points);
 
+            int32_t count_inside = 0;
+            int32_t count_on_border = 0;
+            int32_t count_outside = 0;
 
-            return 0;
+            for (const auto& p : pts1) {
+                auto result = comparePosInRotatedEllipse(p, ellipse2);
+                if (result == 1) ++count_inside;
+                else if (result == 0) ++count_on_border;
+                else ++count_outside;
+            }
+
+            if (count_outside == sample_points) return -1;
+            if (count_on_border > 0) return 0;
+            return 1;
         }
 
-        inline int8_t compareCircleRect(const Graphics::Point& point,
+        inline int8_t comparePointRect(const Graphics::Point& point,
                                         const Graphics::Rectangle& rect) {
             if (point.size() <= 1) return comparePosInRect(point.position(), rect);
             const Vector2& p = point.position();
@@ -324,6 +334,49 @@ namespace MyEngine {
             if (std::abs(dd - rr) < 1e-5f) return 0;
             return 1;
         }
+
+        inline int8_t compareRectEllipse(const Graphics::Rectangle& rect, const Graphics::Ellipse& ellipse,
+                    uint8_t sample_points = 64) {
+            auto getEllipseSamplePoints = [] (const Graphics::Ellipse& ellipse, uint8_t pts) {
+                std::vector<Vector2> points;
+                const auto COS_R = cosf(ellipse.rotation());
+                const auto SIN_R = sinf(ellipse.rotation());
+                for (uint8_t i = 0; i < pts; ++i) {
+                    auto temp = 2 * M_PI * i / pts;
+                    const auto TEMP_X = ellipse.size().width * cosf(temp);
+                    const auto TEMP_Y = ellipse.size().height * sinf(temp);
+                    const auto NEW_X = COS_R * TEMP_X - SIN_R * TEMP_Y + ellipse.centerPosition().x;
+                    const auto NEW_Y = SIN_R * TEMP_X + COS_R * TEMP_Y + ellipse.centerPosition().y;
+                    points.emplace_back(NEW_X, NEW_Y);
+                }
+                return points;
+            };
+
+            auto ellipse_points = getEllipseSamplePoints(ellipse, sample_points);
+            for (const auto& p : ellipse_points) {
+                auto result = comparePosInRotatedRect(p, rect);
+                if (result == 1) return 1;
+                if (result == 0) return 0;
+            }
+
+            float left = rect.geometry().pos.x;
+            float right = left + rect.geometry().size.width;
+            float top = rect.geometry().pos.y;
+            float bottom = top + rect.geometry().size.height;
+            Vector2 corners[] = {
+                {left, top},
+                {right, top},
+                {right, bottom},
+                {left, bottom}
+            };
+            for (const auto& corner : corners) {
+                auto result = comparePosInRotatedEllipse(corner, ellipse);
+                if (result == 1) return 1;
+                if (result == 0) return 0;
+            }
+            return -1;
+        }
+
     }
 }
 

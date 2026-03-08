@@ -13,9 +13,9 @@ MyEngine::Collider::Collider(MyEngine::Collider::Self self, bool delete_later)
             if ((c.collider->_base.index() == 1) && (pt)) {
                 tri = Algorithm::comparePoints(*pt, *std::get<Graphics::Point*>(c.collider->_base));
             } else if ((c.collider->_base.index() == 1) && (rect)) {
-                tri = Algorithm::compareCircleRect(*std::get<Graphics::Point*>(c.collider->_base), *rect);
+                tri = Algorithm::comparePointRect(*std::get<Graphics::Point*>(c.collider->_base), *rect);
             } else if ((c.collider->_base.index() == 2) && (pt)) {
-                tri = Algorithm::compareCircleRect(*pt, *std::get<Graphics::Rectangle*>(c.collider->_base));
+                tri = Algorithm::comparePointRect(*pt, *std::get<Graphics::Rectangle*>(c.collider->_base));
             } else if ((c.collider->_base.index() == 2) && (rect)) {
                 tri = Algorithm::compareRects(*rect, *std::get<Graphics::Rectangle*>(c.collider->_base));
             }

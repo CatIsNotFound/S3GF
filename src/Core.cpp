@@ -575,8 +575,13 @@ namespace MyEngine {
 
     Window *Window::parent() const {
         auto parent = SDL_GetWindowParent(_window);
-        if (!parent) return nullptr;
-        if (_engine->isWindowExist(SDL_GetWindowID(parent))) return _engine->window(SDL_GetWindowID(parent));
+        if (!parent) {
+            auto p_id = _engine->windowParentID(_winID);
+            if (p_id.has_value()) return _engine->window(p_id.value());
+            return nullptr;
+        }
+        auto id = SDL_GetWindowID(_window);
+        if (_engine->isWindowExist(id)) return _engine->window(id);
         return nullptr;
     }
 
@@ -836,6 +841,7 @@ namespace MyEngine {
                 static bool mouse_down = false, key_down = false;
                 std::for_each(win_id_list.begin(), win_id_list.end(),
                               [this, &ev, &win_id_list, &running] (uint32_t id) {
+                    if (!_engine->isWindowExist(id)) return;
                     auto win = _engine->window(id);
                     // Clear the fingers list, if it has any fingers.
                     if (!win->_finger_event_list.empty()) win->_finger_event_list.clear();
@@ -1178,15 +1184,26 @@ namespace MyEngine {
 
     void Engine::removeWindow(SDL_WindowID id) {
         if (_window_list.contains(id)) {
-            std::unique_ptr<Window> win = std::move(_window_list.at(id));
-            _window_list.erase(id);
-            win.reset();
+            auto win = _window_list.at(id).get();
+            auto parent = win->parent();
+            if (parent) {
+                auto parent_win_id = parent->windowID();
+                if (_parent_window_list.contains(parent_win_id)) {
+                    std::erase_if(_parent_window_list.at(parent_win_id),
+                        [&id] (const auto& this_id) {
+                            return this_id == id;
+                    });
+                }
+            }
             if (_parent_window_list.contains(id)) {
                 for (auto& sub_id : _parent_window_list.at(id)) {
                     removeWindow(sub_id);
                 }
                 _parent_window_list.erase(id);
             }
+            auto delete_win = std::move(_window_list.at(id));
+            _window_list.erase(id);
+            delete_win.reset();
         }
     }
 
@@ -1206,6 +1223,29 @@ namespace MyEngine {
             id_list.push_back(window.second->windowID());
         });
         return id_list;
+    }
+
+    std::vector<SDL_WindowID> Engine::windowIDList(SDL_WindowID parent_window_id) {
+        if (_parent_window_list.contains(parent_window_id)) {
+            return _parent_window_list.at(parent_window_id);
+        }
+        return {};
+    }
+
+    std::vector<SDL_WindowID> Engine::parentWindowIDList() {
+        std::vector<SDL_WindowID> id_list;
+        std::ranges::for_each(_parent_window_list,
+                              [&id_list](const auto& id) { id_list.push_back(id.first); });
+        return id_list;
+    }
+
+    std::optional<SDL_WindowID> Engine::windowParentID(SDL_WindowID id) {
+        for (auto& [sub_id, id_list] : _parent_window_list) {
+            for (auto& child_id : id_list) {
+                if (child_id == id) return sub_id;
+            }
+        }
+        return std::nullopt;
     }
 
     void Engine::setFPS(uint32_t fps) {

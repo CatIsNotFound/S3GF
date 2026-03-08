@@ -21,6 +21,7 @@ int main() {
         r->drawEllipse(&ellipse3);
         r->drawEllipse(&ellipse4);
     });
+    bool is_check_collider = false;
     EventSystem::global()->appendEvent([&](SDL_Event ev) {
         auto mouse_cur = EventSystem::global()->captureMousePosition();
         static uint8_t is_moving = 0;
@@ -77,6 +78,93 @@ int main() {
             }
         } else {
             is_moving = false;
+            is_check_collider = false;
+        }
+        std::array<bool, 6> is_triggered;
+
+        if (!is_check_collider) {
+            is_check_collider = true;
+            if (Algorithm::compareRects(rect1, rect2) >= 0) {
+                rect1.setBackgroundColor(RGBAColor::BlueBaby);
+                rect2.setBackgroundColor(RGBAColor::BlueBaby);
+                is_triggered[0] = true;
+                is_triggered[1] = true;
+            } else {
+                if (!is_triggered[0]) rect1.setBackgroundColor(StdColor::Gray);
+                if (!is_triggered[1]) rect2.setBackgroundColor(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse1, ellipse2) >= 0) {
+                ellipse1.setBackground(RGBAColor::BlueBaby);
+                ellipse2.setBackground(RGBAColor::BlueBaby);
+                is_triggered[2] = true;
+                is_triggered[3] = true;
+            } else {
+                if (!is_triggered[2]) ellipse1.setBackground(StdColor::Gray);
+                if (!is_triggered[3]) ellipse2.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse3, ellipse4) >= 0) {
+                ellipse3.setBackground(RGBAColor::BlueBaby);
+                ellipse4.setBackground(RGBAColor::BlueBaby);
+                is_triggered[4] = true;
+                is_triggered[5] = true;
+            } else {
+                if (!is_triggered[4]) ellipse3.setBackground(StdColor::Gray);
+                if (!is_triggered[5]) ellipse4.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse1, ellipse3) >= 0) {
+                ellipse1.setBackground(RGBAColor::BlueBaby);
+                ellipse3.setBackground(RGBAColor::BlueBaby);
+                is_triggered[2] = true;
+                is_triggered[4] = true;
+            } else {
+                if (!is_triggered[2]) ellipse1.setBackground(StdColor::Gray);
+                if (!is_triggered[4]) ellipse3.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse2, ellipse4) >= 0) {
+                ellipse2.setBackground(RGBAColor::BlueBaby);
+                ellipse4.setBackground(RGBAColor::BlueBaby);
+                is_triggered[3] = true;
+                is_triggered[5] = true;
+            } else {
+                if (!is_triggered[3]) ellipse2.setBackground(StdColor::Gray);
+                if (!is_triggered[5]) ellipse4.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse1, ellipse4) >= 0) {
+                ellipse1.setBackground(RGBAColor::BlueBaby);
+                ellipse4.setBackground(RGBAColor::BlueBaby);
+                is_triggered[2] = true;
+                is_triggered[5] = true;
+            } else {
+                if (!is_triggered[2]) ellipse1.setBackground(StdColor::Gray);
+                if (!is_triggered[5]) ellipse4.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRotatedEllipses(ellipse2, ellipse3) >= 0) {
+                ellipse2.setBackground(RGBAColor::BlueBaby);
+                ellipse3.setBackground(RGBAColor::BlueBaby);
+                is_triggered[3] = true;
+                is_triggered[4] = true;
+            } else {
+                if (!is_triggered[3]) ellipse2.setBackground(StdColor::Gray);
+                if (!is_triggered[4]) ellipse3.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRectEllipse(rect1, ellipse1) >= 0) {
+                rect1.setBackgroundColor(RGBAColor::BlueBaby);
+                ellipse1.setBackground(RGBAColor::BlueBaby);
+                is_triggered[0] = true;
+                is_triggered[2] = true;
+            } else {
+                if (is_triggered[0]) rect1.setBackgroundColor(StdColor::Gray);
+                if (is_triggered[2]) ellipse1.setBackground(StdColor::Gray);
+            }
+            if (Algorithm::compareRectEllipse(rect1, ellipse2) >= 0) {
+                rect1.setBackgroundColor(RGBAColor::BlueBaby);
+                ellipse2.setBackground(RGBAColor::BlueBaby);
+                is_triggered[0] = true;
+                is_triggered[3] = true;
+            } else {
+                if (is_triggered[0]) rect1.setBackgroundColor(StdColor::Gray);
+                if (is_triggered[3]) ellipse2.setBackground(StdColor::Gray);
+            }
         }
     });
     window->show();
