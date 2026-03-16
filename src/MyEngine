@@ -8,5 +8,6 @@
 #include "Utils/All.h"
 #include "Widgets/All.h"
 #include "Config/All.h"
+#include "UI/All.h"
 
 #endif //MYENGINE_MYENGINE

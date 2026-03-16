@@ -54,7 +54,7 @@ namespace MyEngine {
         void setLineSpacing(uint32_t spacing);
         [[nodiscard]] uint32_t lineSpacing() const;
         SDL_Surface* toImage(const std::string& text);
-        SDL_Surface* toImage(const std::string& text, const SDL_Color& backgrond_color);
+        SDL_Surface* toImage(const std::string& text, const SDL_Color& background_color);
 
         [[nodiscard]] TTF_Font* self() const;
     private:

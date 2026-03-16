@@ -193,6 +193,10 @@ addModule(TEST_MODULES test_collider
         examples/Graphics/test_collider.cpp
 )
 
+addModule(TEST_MODULES test_control
+        examples/UI/test_control.cpp
+)
+
 #addModule(TEST_MODULES test_audio_system
 #        core/AudioSystem/test_audio_system.cpp
 #)

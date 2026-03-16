@@ -1214,7 +1214,6 @@ namespace MyEngine {
         auto err = FMT::format("Engine: Window id {} is not created or is already removed!", id);
         Logger::log(err, Logger::Fatal);
         Engine::throwCustomFatalError<NullPointerException>();
-        return nullptr;
     }
 
     std::vector<uint32_t> Engine::windowIDList() const {
@@ -1431,7 +1430,7 @@ namespace MyEngine {
         if (get_err_info.empty()) {
             Logger::log("No error found. It will not throw the fatal error!", Logger::Debug);
             if (ok) *ok = false;
-            return {};
+            return "No error found, but it still throw the fatal error!";
         }
         std::string err = FMT::format("An error has caused the entire program to crash.\nException: {}",
                                       get_err_info);
@@ -1822,7 +1821,6 @@ namespace MyEngine {
         if (!SDL_IsAudioDevicePlayback(audio_dev_id)) {
             Logger::log("AudioSystem: The specified audio device ID is not the playback device!", Logger::Fatal);
             Engine::throwCustomFatalError<NullPointerException>();
-            return false;
         }
         while (count--) {
             SDL_AudioSpec _audio_spec;
@@ -2008,7 +2006,6 @@ namespace MyEngine {
             Logger::log(Logger::Fatal, "AudioSystem: The index of {} is not exist "
                                        "in audio recorder list!", index);
             Engine::throwCustomFatalError<NullPointerException>();
-            return nullptr;
         }
         return _recoder_list.at(index).get();
     }

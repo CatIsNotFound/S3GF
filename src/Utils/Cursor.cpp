@@ -93,7 +93,7 @@ namespace MyEngine {
             SDL_DestroySurface(_surface);
             _surface = nullptr;
         }
-        _cursor = SDL_CreateSystemCursor(SStdCursor(_std_cursor));
+        _cursor = SDL_CreateSystemCursor(SysCursor(_std_cursor));
         SDL_SetCursor(_cursor);
     }
 

@@ -379,7 +379,6 @@ namespace MyEngine {
         static void throwCustomFatalError() {
             bool ok;
             auto err = copeWithFatalError(&ok);
-            if (!ok) return;
             throw T(err);
         }
 

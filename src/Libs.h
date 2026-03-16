@@ -25,6 +25,7 @@
 #include <utility>
 #include <random>
 #include <ranges>
+#include <bitset>
 #include <algorithm>
 #include <chrono>
 #include <thread>
@@ -68,7 +69,9 @@ using SWindow       = SDL_Window;
 using SWindowID     = SDL_WindowID;
 using SColor        = SDL_Color;
 using SCursor       = SDL_Cursor;
-using SStdCursor    = SDL_SystemCursor;
+using SysCursor     = SDL_SystemCursor;
+using SKeyScan      = SDL_Scancode;
+using SKeyCode      = SDL_Scancode;
 
 using StringList    = std::vector<std::string>;
 using BinaryArray   = std::vector<uint8_t>;

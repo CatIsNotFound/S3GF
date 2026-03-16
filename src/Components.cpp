@@ -60,7 +60,7 @@ namespace MyEngine {
     }
 
     void Font::setStyle(uint32_t flags) {
-        TTF_SetFontStyle(_font, static_cast<TTF_FontStyleFlags>(flags));
+        TTF_SetFontStyle(_font, flags);
         _font_style_flags = flags;
     }
 
@@ -152,7 +152,7 @@ namespace MyEngine {
         return surface;
     }
 
-    SDL_Surface* Font::toImage(const std::string& text, const SDL_Color& backgrond_color) {
+    SDL_Surface* Font::toImage(const std::string& text, const SDL_Color& background_color) {
         SDL_Surface* surface = nullptr;
         if (!_font_is_loaded) {
             Logger::log("Font is not loaded! Did you forget to load font?", Logger::Error);
@@ -162,7 +162,7 @@ namespace MyEngine {
             if (_font_color.a > 0) {
                 auto filled_surface = TTF_RenderText_Blended(_font, text.c_str(), 0, _font_color);
                 TTF_SetFontOutline(_font, _font_outline);
-                auto bordered_surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _outline_color, backgrond_color);
+                auto bordered_surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _outline_color, background_color);
                 TTF_SetFontOutline(_font, 0);
                 int real_width = bordered_surface->w, real_height = bordered_surface->h;
                 surface = SDL_CreateSurface(real_width, real_height, bordered_surface->format);
@@ -178,11 +178,11 @@ namespace MyEngine {
                 SDL_DestroySurface(bordered_surface);
             } else {
                 TTF_SetFontOutline(_font, _font_outline);
-                surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _outline_color, backgrond_color);
+                surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _outline_color, background_color);
                 TTF_SetFontOutline(_font, 0);
             }
         } else {
-            surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _font_color, backgrond_color);
+            surface = TTF_RenderText_LCD(_font, text.c_str(), 0, _font_color, background_color);
         }
         if (!surface) {
             Logger::log(FMT::format("Can't drawEvent the current text!\nException: {}", SDL_GetError()), Logger::Error);
@@ -1459,7 +1459,6 @@ namespace MyEngine {
             _input_deviceID = 0;
             _output_deviceID = 0;
             Engine::throwCustomFatalError<InvalidArgumentException>();
-            return false;
         }
         bool is_load = SDL_BindAudioStream(_input_deviceID, _stream);
         if (is_load) {
