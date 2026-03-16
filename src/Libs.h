@@ -8,7 +8,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <format>
 #include <string>
 #include <variant>
 #include <vector>
@@ -55,6 +54,7 @@ namespace DATE_TZ = std::chrono;
 /// @since v0.2.1-beta
 namespace FMT = fmt;
 #else
+#include <format>
 /// @brief Standard format library (Undefined the fmt libs)
 /// @since v0.2.1-beta
 namespace FMT = std;

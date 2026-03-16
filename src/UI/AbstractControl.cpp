@@ -4,12 +4,20 @@
 
 MyEngine::UI::AbstractControl::AbstractControl(const std::string_view &class_name, Window *parent)
         : _window(parent), _event_id(), _class_name(class_name) {
+    if (!_window) {
+        Logger::log(Logger::Fatal, "{}: The specified window is not valid!", class_name);
+        Engine::throwCustomFatalError<InvalidArgumentException>();
+    }
     registerEvent();
 }
 
 MyEngine::UI::AbstractControl::AbstractControl(const std::string_view &class_name,
                                                const std::string_view &object_name, Window *parent)
         : _window(parent), _event_id(), _object_name(object_name), _class_name(class_name) {
+    if (!_window) {
+        Logger::log(Logger::Fatal, "{}: The specified window is not valid!", class_name);
+        Engine::throwCustomFatalError<InvalidArgumentException>();
+    }
     registerEvent();
 }
 
@@ -200,11 +208,10 @@ void MyEngine::UI::AbstractControl::setProperty(const std::string_view &property
 const MyEngine::Variant& MyEngine::UI::AbstractControl::property(const std::string_view &property_name) const {
     if (_prop_map.contains(property_name.data())) {
         return _prop_map.at(property_name.data());
-    } else {
-        Logger::log(Logger::Fatal, "{}({}): The specified property name '{}' is not exist!",
-            _class_name, _object_name, property_name.data());
-        Engine::throwCustomFatalError<InvalidArgumentException>();
     }
+    Logger::log(Logger::Fatal, "{}({}): The specified property name '{}' is not exist!",
+                _class_name, _object_name, property_name.data());
+    Engine::throwCustomFatalError<InvalidArgumentException>();
 }
 
 void MyEngine::UI::AbstractControl::removeProperty(const std::string_view &property_name) {

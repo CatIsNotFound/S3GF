@@ -38,6 +38,14 @@ namespace MyEngine {
         }
     }
 
+    void Renderer::setLayerManager(LayerManager *layer_manager) {
+        _layer_manager = layer_manager;
+    }
+
+    LayerManager * Renderer::layerManager() const {
+        return _layer_manager;
+    }
+
     void Renderer::setVSyncMode(Renderer::VSyncMode mode) {
         SDL_SetRenderVSync(_renderer, static_cast<int>(mode));
     }

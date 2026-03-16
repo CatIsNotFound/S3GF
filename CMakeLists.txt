@@ -170,12 +170,13 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
             src/Utils/WavWriter.h
-            src/Layers/Layers.cpp
             src/Layers/Layers.h
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
             src/UI/Label.h
+            src/Layers/LayerManager.cpp
+            src/Layers/LayerManager.h
     )
 else ()
     add_library(${PROJECT_NAME} STATIC
@@ -244,12 +245,13 @@ else ()
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
             src/Utils/WavWriter.h
-            src/Layers/Layers.cpp
             src/Layers/Layers.h
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
             src/UI/Label.h
+            src/Layers/LayerManager.cpp
+            src/Layers/LayerManager.h
     )
 endif ()
 

@@ -33,6 +33,7 @@ namespace MyEngine {
     class TextureProperty;
     class Texture;
     class EventSystem;
+    class LayerManager;
 
     enum class MouseStatus : uint8_t {
         None,
@@ -51,12 +52,12 @@ namespace MyEngine {
     }
 
     class Renderer {
-    private:
         std::deque<std::unique_ptr<RenderCommand::BaseCommand>> _cmd_list;
         SDL_Renderer* _renderer{nullptr};
         Window* _window{nullptr};
         size_t _render_count{0}, _render_cnt_in_sec{0};
         uint64_t _start_ts{0};
+        LayerManager* _layer_manager{nullptr};
         static SDL_Color _background_color;
 
         template<typename T, typename ...Args>
@@ -72,6 +73,8 @@ namespace MyEngine {
         };
         explicit Renderer(Window* window = nullptr);
         ~Renderer();
+        void setLayerManager(LayerManager* layer_manager);
+        [[nodiscard]] LayerManager* layerManager() const;
         void setVSyncMode(Renderer::VSyncMode mode);
         [[nodiscard]] VSyncMode currentVSyncMode() const;
         [[nodiscard]] SDL_Renderer* self() const;
@@ -528,5 +531,6 @@ namespace MyEngine {
 }
 
 #include "Renderer/RCommand.h"
+#include "Layers/LayerManager.h"
 
 #endif

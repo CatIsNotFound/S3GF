@@ -163,7 +163,7 @@ namespace MyEngine {
             Window* _window;
             size_t _event_id;
             std::string _object_name{};
-            std::string _class_name{"AbstractControl"};
+            std::string _class_name{};
             GeometryF _geometry{};
             std::bitset<32> _status{};
             Cursor::StdCursor _cursor{};
