@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(MyEngine LANGUAGES C CXX VERSION 0.2.2)
+project(MyEngine LANGUAGES C CXX VERSION 0.3.0)
 
 include(CMakePackageConfigHelpers)
 include(CMakeFindDependencyMacro)
@@ -170,11 +170,11 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
             src/Utils/WavWriter.h
-            src/Layers/Layers.h
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
             src/UI/Label.h
+            src/Layers/Layer.h
             src/Layers/LayerManager.cpp
             src/Layers/LayerManager.h
     )
@@ -245,11 +245,11 @@ else ()
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
             src/Utils/WavWriter.h
-            src/Layers/Layers.h
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
             src/UI/Label.h
+            src/Layers/Layer.h
             src/Layers/LayerManager.cpp
             src/Layers/LayerManager.h
     )
