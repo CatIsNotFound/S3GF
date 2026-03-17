@@ -304,7 +304,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         ${TARGET_LIBS}
 )
 
-if (NOT ${USING_SRC_LIBS})
+if (NOT ${USED_SRC_LIBS})
     install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}Targets
         LIBRARY DESTINATION lib
