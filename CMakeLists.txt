@@ -20,6 +20,8 @@ function(SHOW_USAGE)
     message("-DBUILD_TEST               A simple test project (For testing project), default value: 'ON'")
     message("-DBUILD_SHARED_LIBS_ONLY   Is it allowed to only build shared libraries, without guaranteeing direct use. ")
     message("                           If the value is 'OFF', only static libraries will be built, default value: 'OFF'")
+    message("-DUSED_SRC_LIBS            Import from source code reposities in `libs` directory.")
+    message("                           p.s: Need using `git submodule` command")
     message("-DSDL3_LIB                 Set SDL3 shared library path [REQUIRED]")
     message("-DSDL3_IMAGE_LIB           Set SDL3_image shared library path [REQUIRED]")
     message("-DSDL3_MIXER_LIB           Set SDL3_mixer shared library path [REQUIRED]")
@@ -36,19 +38,9 @@ if(HELP)
     SHOW_USAGE()
 endif()
 
+set(ENABLE_SRC_LIBS OFF CACHE BOOL "Import from source code reposities in `libs` directory.")
+
 message("-- Project ${PROJECT_NAME} is configuring...")
-
-if (APPLE AND NOT EXISTS ${DATE_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "You are using MacOS, but you have not set Date Libs path! Use '-DDATE_LIB=path/to/date' to set the path.")
-endif()
-
-if(EXISTS ${DATE_LIB})
-    message("-- Using Date Libs: ${DATE_LIB}")
-    list(APPEND CMAKE_PREFIX_PATH ${DATE_LIB})
-    find_package(date REQUIRED)
-    add_compile_definitions(__USED_DATE_LIB__)
-endif()
 
 if(WIN32)
         set(SDL3_LIB "C:/Program Files (x86)/" CACHE PATH "SDL3 Libs Path")
@@ -62,46 +54,82 @@ else()
         set(SDL3_TTF_LIB "/usr/local/" CACHE PATH "SDL3 TTF Libs Path")
 endif()
 
-set(BUILD_TEST ON CACHE BOOL "Build Test")
+set(BUILD_TEST ON CACHE BOOL "Build Test Modules (For testing project)")
 set(BUILD_SHARED_LIBS_ONLY OFF CACHE BOOL "Build Shared Libraries Only")
+if (${USED_SRC_LIBS})
+    option(ENABLE_FMT "Enabled using FMT library" OFF)
+    option(ENABLE_DATE "Enabled using Howard Hinnant Date library" OFF)
+    message("-- Importing from source code libraries, it may takes a long time...")
+    add_subdirectory(libs/SDL3)
+    add_subdirectory(libs/SDL3_image)
+    add_subdirectory(libs/SDL3_mixer)
+    add_subdirectory(libs/SDL3_ttf)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(ENABLE_FMT ON)
+        set(ENABLE_DATE ON)
+    endif()
+    if (${ENABLE_FMT})
+        add_subdirectory(libs/fmt)
+        add_compile_definitions(__USED_FMT_LIB__)
+    endif()
+    if (${ENABLE_DATE})
+        add_subdirectory(libs/date)
+        # set(USE_SYSTEM_TZ_DB ON CACHE BOOL "Use system timezone database")
+        # set(BUILD_TZ_LIB ON CACHE BOOL "Enable building timezone library")
+        # set(ENABLE_CURL OFF CACHE BOOL "Enable using curl library")
+        add_compile_definitions(__USED_DATE_LIB__)
+    endif()
+else()
+    if (NOT EXISTS ${SDL3_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "SDL3 Libs path is not found! Use '-DSDL3_LIB=path/to/sdl3' to set the path.")
+    endif()
+    if (NOT EXISTS ${SDL3_IMAGE_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "SDL3 Image Libs path is not found! Use '-DSDL3_IMAGE_LIB=path/to/sdl3_image' to set the path.")
+    endif()
+    if (NOT EXISTS ${SDL3_MIXER_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "SDL3 Mixer Libs path is not found! Use '-DSDL3_MIXER_LIB=path/to/sdl3_mixer' to set the path.")
+    endif()
+    if (NOT EXISTS ${SDL3_TTF_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "SDL3 TTF Libs path is not found! Use '-DSDL3_TTF_LIB=path/to/sdl3_ttf' to set the path.")
+    endif()
 
-if (NOT EXISTS ${SDL3_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "SDL3 Libs path is not found! Use '-DSDL3_LIB=path/to/sdl3' to set the path.")
-endif()
-if (NOT EXISTS ${SDL3_IMAGE_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "SDL3 Image Libs path is not found! Use '-DSDL3_IMAGE_LIB=path/to/sdl3_image' to set the path.")
-endif()
-if (NOT EXISTS ${SDL3_MIXER_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "SDL3 Mixer Libs path is not found! Use '-DSDL3_MIXER_LIB=path/to/sdl3_mixer' to set the path.")
-endif()
-if (NOT EXISTS ${SDL3_TTF_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "SDL3 TTF Libs path is not found! Use '-DSDL3_TTF_LIB=path/to/sdl3_ttf' to set the path.")
-endif()
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_IMAGE_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_MIXER_LIB})
+    list(APPEND CMAKE_PREFIX_PATH ${SDL3_TTF_LIB})
 
-list(APPEND CMAKE_PREFIX_PATH ${SDL3_LIB})
-list(APPEND CMAKE_PREFIX_PATH ${SDL3_IMAGE_LIB})
-list(APPEND CMAKE_PREFIX_PATH ${SDL3_MIXER_LIB})
-list(APPEND CMAKE_PREFIX_PATH ${SDL3_TTF_LIB})
+    if (APPLE AND NOT EXISTS ${DATE_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "You are using MacOS, but you have not set Date Libs path! Use '-DDATE_LIB=path/to/date' to set the path.")
+    endif()
 
-if (APPLE AND NOT EXISTS ${FMT_LIB})
-    message("Tips: Use '-DHELP=ON' option for more help.")
-    message(FATAL_ERROR "You are using MacOS, but your FMT Libs path is not set! Use '-DFMT_LIB=path/to/FMT' to set the path.")
-endif()
+    if(EXISTS ${DATE_LIB})
+        message("-- Using Date Libs: ${DATE_LIB}")
+        list(APPEND CMAKE_PREFIX_PATH ${DATE_LIB})
+        find_package(date REQUIRED)
+        add_compile_definitions(__USED_DATE_LIB__)
+    endif()
 
-if (EXISTS ${FMT_LIB})
-    message("-- Using FMT Libs: ${FMT_LIB}")
-    list(APPEND CMAKE_PREFIX_PATH ${FMT_LIB})
-    find_package(fmt REQUIRED)
-    add_compile_definitions(__USED_FMT_LIB__)
+    if (APPLE AND NOT EXISTS ${FMT_LIB})
+        message("Tips: Use '-DHELP=ON' option for more help.")
+        message(FATAL_ERROR "You are using MacOS, but your FMT Libs path is not set! Use '-DFMT_LIB=path/to/FMT' to set the path.")
+    endif()
+
+    if (EXISTS ${FMT_LIB})
+        message("-- Using FMT Libs: ${FMT_LIB}")
+        list(APPEND CMAKE_PREFIX_PATH ${FMT_LIB})
+        find_package(fmt REQUIRED)
+        add_compile_definitions(__USED_FMT_LIB__)
+    endif()
+    find_package(SDL3 REQUIRED)
+    find_package(SDL3_image REQUIRED)
+    find_package(SDL3_mixer REQUIRED)
+    find_package(SDL3_ttf REQUIRED)
 endif()
-find_package(SDL3 REQUIRED)
-find_package(SDL3_image REQUIRED)
-find_package(SDL3_mixer REQUIRED)
-find_package(SDL3_ttf REQUIRED)
 
 if (BUILD_SHARED_LIBS_ONLY)
     add_library(${PROJECT_NAME} SHARED
@@ -178,7 +206,7 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/Layers/LayerManager.cpp
             src/Layers/LayerManager.h
     )
-else ()
+else()
     add_library(${PROJECT_NAME} STATIC
             src/MyEngine
             src/Basic.h
@@ -253,7 +281,7 @@ else ()
             src/Layers/LayerManager.cpp
             src/Layers/LayerManager.h
     )
-endif ()
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
@@ -264,10 +292,10 @@ list(APPEND TARGET_LIBS SDL3::SDL3)
 list(APPEND TARGET_LIBS SDL3_image::SDL3_image)
 list(APPEND TARGET_LIBS SDL3_mixer::SDL3_mixer)
 list(APPEND TARGET_LIBS SDL3_ttf::SDL3_ttf)
-if (EXISTS ${FMT_LIB})
+if ((EXISTS ${FMT_LIB}) OR (${ENABLE_FMT}))
     list(APPEND TARGET_LIBS fmt::fmt)
 endif()
-if (EXISTS ${DATE_LIB})
+if ((EXISTS ${DATE_LIB}) OR (${ENABLE_DATE}))
     list(APPEND TARGET_LIBS date::date)
     list(APPEND TARGET_LIBS date::date-tz)
 endif()
@@ -276,58 +304,64 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         ${TARGET_LIBS}
 )
 
-install(TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Targets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-)
+if (NOT ${USING_SRC_LIBS})
+    install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+    )
 
-install(DIRECTORY src/
+    install(DIRECTORY src/
+            DESTINATION include/MyEngine
+            FILES_MATCHING
+                PATTERN "*.h"
+    )
+
+    install(DIRECTORY assets/
+            DESTINATION assets
+    )
+
+    install(FILES src/MyEngine
         DESTINATION include/MyEngine
-        FILES_MATCHING
-            PATTERN "*.h"
-)
+    )
 
-install(FILES src/MyEngine
-    DESTINATION include/MyEngine
-)
+    install(FILES
+            LICENSE
+            README.md
+            README_zh.md
+            DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
 
-install(FILES
-        LICENSE
-        README.md
-        README_zh.md
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
-)
+    install(EXPORT ${PROJECT_NAME}Targets
+        FILE ${PROJECT_NAME}Targets.cmake
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION lib/cmake/${PROJECT_NAME}
+    )
 
-install(EXPORT ${PROJECT_NAME}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
-    DESTINATION lib/cmake/${PROJECT_NAME}
-)
+    set(CONFIG_PACKAGE_LOCATION lib/cmake/${PROJECT_NAME})
 
-set(CONFIG_PACKAGE_LOCATION lib/cmake/${PROJECT_NAME})
-
-configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    INSTALL_DESTINATION ${CONFIG_PACKAGE_LOCATION}
-    PATH_VARS CMAKE_INSTALL_PREFIX
-)
-
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
-install(
-    FILES
+    configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+        INSTALL_DESTINATION ${CONFIG_PACKAGE_LOCATION}
+        PATH_VARS CMAKE_INSTALL_PREFIX
+    )
+
+    write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    DESTINATION ${CONFIG_PACKAGE_LOCATION}
-)
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+    )
+
+    install(
+        FILES
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+        DESTINATION ${CONFIG_PACKAGE_LOCATION}
+    )
+endif()
 
 set(PARENT_PROJECT_NAME ${PROJECT_NAME})
 
@@ -345,30 +379,43 @@ endif()
 
 message("================= Configuration Result ======================")
 message("Project version: ${PROJECT_VERSION}")
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if (${CMAKE_BUILD_TYPE} MATCHES "Release")
     message("Build type: Release")
 else()
     message("Build type: Debug")
 endif()
 message("Build test: ${BUILD_TEST}")
-message("SDL3 libs  path: ${SDL3_LIB}")
-message("SDL3 image path: ${SDL3_IMAGE_LIB}")
-message("SDL3 mixer path: ${SDL3_MIXER_LIB}")
-message("SDL3 ttf   path: ${SDL3_TTF_LIB}")
-if(EXISTS ${FMT_LIB})
-    message("FMT  libs  path: ${FMT_LIB}")
+if (${USED_SRC_LIBS})
+    message("SDL3 Lib:       ON")
+    message("SDL3 image Lib: ON")
+    message("SDL3 mixer Lib: ON")
+    message("SDL3 ttf Lib:   ON")
+    message("FMT Lib:        ${ENABLE_FMT}")
+    message("Date Lib:       ${ENABLE_DATE}")
 else()
-    message("FMT  libs  path: (not set)")
+    message("SDL3 libs  path: ${SDL3_LIB}")
+    message("SDL3 image path: ${SDL3_IMAGE_LIB}")
+    message("SDL3 mixer path: ${SDL3_MIXER_LIB}")
+    message("SDL3 ttf   path: ${SDL3_TTF_LIB}")
+    if(EXISTS ${FMT_LIB})
+        message("FMT  libs  path: ${FMT_LIB}")
+    else()
+        message("FMT  libs  path: (not set)")
+    endif()
+    if(EXISTS ${DATE_LIB})
+        message("Date libs  path: ${DATE_LIB}")
+    else()
+        message("Date libs  path: (not set)")
+    endif()
+    message("Install path: ${CMAKE_INSTALL_PREFIX}")
 endif()
-if(EXISTS ${DATE_LIB})
-    message("Date libs  path: ${DATE_LIB}")
-else()
-    message("Date libs  path: (not set)")
-endif()
-message("Install path: ${CMAKE_INSTALL_PREFIX}")
 message("=============================================================")
 message("You can run command as below now: ")
-message("  cmake --build . --target install")
+if (${USED_SRC_LIBS})
+    message("  cmake --build .")
+else()
+    message("  cmake --build . --target install")
+endif()
 message("Have fun! :)")
 
 function(CopyDependencies OUT)
