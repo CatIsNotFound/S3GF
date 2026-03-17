@@ -38,7 +38,7 @@ if(HELP)
     SHOW_USAGE()
 endif()
 
-set(ENABLE_SRC_LIBS OFF CACHE BOOL "Import from source code reposities in `libs` directory.")
+set(USED_SRC_LIBS OFF CACHE BOOL "Import from source code reposities in `libs` directory.")
 
 message("-- Project ${PROJECT_NAME} is configuring...")
 
