@@ -3,6 +3,9 @@
 #define MYENGINE_UTILS_LOGGER_H
 #include "../Libs.h"
 #include "FileSystem.h"
+#ifdef __ANDROID__
+#include <android/log.h>
+#endif
 namespace MyEngine {
     /**
      * @if EN
@@ -62,6 +65,10 @@ namespace MyEngine {
             _running_time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
             auto _real_time = static_cast<float>(_running_time - _started_time) / 1e9;
             std::string log;
+#ifdef __ANDROID__
+            log = FMT::format("[{:.06f}] {}\n", _real_time, message);
+            __android_log_print(_logLevelToAndroidLogLevel(level), "MyEngine", "%s", log.data());
+#else
             if (level >= Warn) {
                 log = FMT::format("[{:.06f}] [{}] {}\n", _real_time, _logLevelToString(level), message);
                 std::cerr << log;
@@ -69,6 +76,7 @@ namespace MyEngine {
                 log = FMT::format("[{:.06f}] [{}] {}\n", _real_time, _logLevelToString(level), message);
                 std::cout << log;
             }
+#endif
             if (_write_log) {
                 _writeLogToFile(log);
             }
@@ -103,20 +111,36 @@ namespace MyEngine {
             if (level < _base_level) return;
             _running_time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
             auto _real_time = (float) (_running_time - _started_time) / 1e9;
+#ifdef __ANDROID__
+            std::string fmt = FMT::format("[{:.06f}] ", _real_time);
+#else
             std::string fmt = FMT::format("[{:.06f}] [{}] ", _real_time, _logLevelToString(level));
+#endif
             std::string msg;
             try {
                 FMT::vformat_to(std::back_inserter(msg), format, FMT::make_format_args(args...));
+#ifdef __ANDROID__
+                __android_log_print(_logLevelToAndroidLogLevel(level), "MyEngine",
+                                    "%s%s\n", fmt.c_str(), msg.c_str());
+#else
                 std::cout << fmt << msg << "\n";
+#endif
                 if (_write_log) {
                     _writeLogToFile(fmt);
                 }
                 _last_log_level = level;
                 _last_log_info = msg;
             } catch (const FMT::format_error &e) {
+#ifdef __ANDROID__
+                _last_log_info = FMT::format("[{:.06f}] Logger: {}\n",
+                                             _real_time, e.what());
+                __android_log_print(ANDROID_LOG_ERROR, "MyEngine",
+                                    "%s", _last_log_info.c_str());
+#else
                 _last_log_info = FMT::format("[{:.06f}] [{}] Logger: {}\n",
                                              _real_time, _logLevelToString(Error), e.what());
                 std::cerr << _last_log_info;
+#endif
                 _last_log_level = Error;
             }
         }
@@ -214,6 +238,25 @@ namespace MyEngine {
                     return "UNKNOWN";
             }
         }
+
+#ifdef __ANDROID__
+        static int _logLevelToAndroidLogLevel(LogLevel level) {
+            switch (level) {
+                case Debug:
+                    return ANDROID_LOG_DEBUG;
+                case Info:
+                    return ANDROID_LOG_INFO;
+                case Warn:
+                    return ANDROID_LOG_WARN;
+                case Error:
+                    return ANDROID_LOG_ERROR;
+                case Fatal:
+                    return ANDROID_LOG_FATAL;
+                default:
+                    return ANDROID_LOG_UNKNOWN;
+            }
+        }
+#endif
 
         static void _writeLogToFile(const std::string& log) {
             FILE* file = fopen(_output_file_name.c_str(), "a+");
