@@ -2,7 +2,6 @@
 #ifndef MYENGINE_LAYERS_LAYER_H
 #define MYENGINE_LAYERS_LAYER_H
 #include "../Components.h"
-inline static std::string NULL_STR{};
 namespace MyEngine {
     class ComponentBase {
     public:
@@ -107,22 +106,22 @@ namespace MyEngine {
             return *static_cast<Component<T>*>(_layers[index].component.get());
         }
 
-        [[nodiscard]] const std::string& className(size_t index) const {
+        [[nodiscard]] std::optional<std::string> className(size_t index) const {
             if (index >= _layers.size()) {
                 Logger::log(Logger::Fatal, "Layer({}): Failed to get component to the index {}.",
                         _object_name, index);
                 Engine::throwCustomFatalError<OutOfRangeException>();
-                return NULL_STR;
+                return {};
             }
             return _layers[index].class_name;
         }
 
-        [[nodiscard]] const std::string& objectName(size_t index) const {
+        [[nodiscard]] std::optional<std::string> objectName(size_t index) const {
             if (index >= _layers.size()) {
                 Logger::log(Logger::Fatal, "Layer({}): Failed to get component to the index {}.",
                         _object_name, index);
                 Engine::throwCustomFatalError<OutOfRangeException>();
-                return NULL_STR;
+                return {};
             }
             return _layers[index].name;
         }

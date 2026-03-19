@@ -5,6 +5,12 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_mixer/SDL_mixer.h>
 
+/// @brief Added the header file for Android device.
+/// @since v0.3.0-beta
+#ifdef __ANDROID__
+#include <SDL3/SDL_main.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -39,7 +45,7 @@
 
 #ifdef __USED_DATE_LIB__
 #include <date/tz.h>
-/// @brief HowardHinnant date libs (Defined the date libs).
+/// @brief Howard Hinnant date libs (Defined the date libs).
 /// @since v0.2.1-beta
 namespace DATE_TZ = date;
 #else

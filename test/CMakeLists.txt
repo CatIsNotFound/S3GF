@@ -197,6 +197,10 @@ addModule(TEST_MODULES test_control
         examples/UI/test_control.cpp
 )
 
+addModule(TEST_MODULES test_layer
+        examples/Layers/test_layer.cpp
+)
+
 #addModule(TEST_MODULES test_audio_system
 #        core/AudioSystem/test_audio_system.cpp
 #)

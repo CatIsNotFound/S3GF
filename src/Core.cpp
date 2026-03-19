@@ -72,7 +72,7 @@ namespace MyEngine {
         return SDL_RenderReadPixels(_renderer, nullptr);
     }
 
-    SDL_Surface* Renderer::capture(MyEngine::Geometry geometry) const {
+    SDL_Surface* Renderer::capture(Geometry geometry) const {
         SDL_Rect rect(geometry.x, geometry.y, geometry.width, geometry.height);
         return SDL_RenderReadPixels(_renderer, &rect);
     }
@@ -585,11 +585,11 @@ namespace MyEngine {
         auto parent = SDL_GetWindowParent(_window);
         if (!parent) {
             auto p_id = _engine->windowParentID(_winID);
-            if (p_id.has_value()) return _engine->window(p_id.value());
+            if (p_id.has_value()) return _engine->window(p_id.value()).value();
             return nullptr;
         }
         auto id = SDL_GetWindowID(_window);
-        if (_engine->isWindowExist(id)) return _engine->window(id);
+        if (_engine->isWindowExist(id)) return _engine->window(id).value();
         return nullptr;
     }
 
@@ -794,7 +794,7 @@ namespace MyEngine {
                 Window* win = nullptr;
                 Vector2 cur_pos;
                 if (!win_id_list.empty() && _engine->isWindowExist(ev.tfinger.windowID)) {
-                    win = _engine->window(ev.tfinger.windowID);
+                    win = _engine->window(ev.tfinger.windowID).value();
                     cur_pos.x = static_cast<float>(win->_window_geometry.width) * ev.tfinger.x;
                     cur_pos.y = static_cast<float>(win->_window_geometry.height) * ev.tfinger.y;
                 }
@@ -847,10 +847,9 @@ namespace MyEngine {
             // Windows Event
             if (!is_finger_event && !win_id_list.empty()) {
                 static bool mouse_down = false, key_down = false;
-                std::for_each(win_id_list.begin(), win_id_list.end(),
-                              [this, &ev, &win_id_list, &running] (uint32_t id) {
+                std::ranges::for_each(win_id_list, [&] (uint32_t id) {
                     if (!_engine->isWindowExist(id)) return;
-                    auto win = _engine->window(id);
+                    auto win = _engine->window(id).value();
                     // Clear the fingers list, if it has any fingers.
                     if (!win->_finger_event_list.empty()) win->_finger_event_list.clear();
                     // Cope with the window event.
@@ -952,19 +951,19 @@ namespace MyEngine {
                         } else if (ev.drop.type == SDL_EVENT_DROP_FILE) {
                             win->dropEvent(ev.drop.data);
                             win->_drop_url.assign(ev.drop.data);
-                            win->_dragging_pos.reset(0, 0);
-                            win->_dragging = false;
-                        } else if (ev.drop.type == SDL_EVENT_DROP_TEXT) {
-                            win->dropEvent(ev.drop.data);
-                            win->_drop_url.assign(ev.drop.data);
-                            win->_dragging = false;
-                        } else {
-                            auto real_pos = Cursor::global()->globalPosition() - toGeometryFloat(win->geometry()).pos;
-                            win->_dragging_pos.reset(real_pos);
-                            win->dragMovedEvent(real_pos, ev.drop.data);
-                        }
-                    }
-                });
+                                                  win->_dragging_pos.reset(0, 0);
+                                                  win->_dragging = false;
+                                              } else if (ev.drop.type == SDL_EVENT_DROP_TEXT) {
+                                                  win->dropEvent(ev.drop.data);
+                                                  win->_drop_url.assign(ev.drop.data);
+                                                  win->_dragging = false;
+                                              } else {
+                                                  auto real_pos = Cursor::global()->globalPosition() - toGeometryFloat(win->geometry()).pos;
+                                                  win->_dragging_pos.reset(real_pos);
+                                                  win->dragMovedEvent(real_pos, ev.drop.data);
+                                              }
+                                          }
+                                      });
             }
 
             for (auto& event : _event_list) {
@@ -1215,13 +1214,14 @@ namespace MyEngine {
         }
     }
 
-    Window* Engine::window(SDL_WindowID id) const {
+    std::optional<Window *> Engine::window(SDL_WindowID id) const {
         if (_window_list.contains(id)) {
             return _window_list.at(id).get();
         }
         auto err = FMT::format("Engine: Window id {} is not created or is already removed!", id);
         Logger::log(err, Logger::Fatal);
         Engine::throwCustomFatalError<NullPointerException>();
+        return {};
     }
 
     std::vector<uint32_t> Engine::windowIDList() const {

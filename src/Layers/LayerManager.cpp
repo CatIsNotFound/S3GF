@@ -8,6 +8,12 @@ namespace MyEngine {
             Engine::throwCustomFatalError<InvalidArgumentException>();
             return;
         }
+        if (_window->renderer()->layerManager()) {
+            Logger::log(Logger::Fatal, "LayerManager: The specified window is already "
+                                       "had the layer manager!");
+            Engine::throwCustomFatalError<InvalidArgumentException>();
+            return;
+        }
         _window->renderer()->setLayerManager(this);
         registerEvent();
     }
@@ -15,10 +21,19 @@ namespace MyEngine {
     LayerManager::~LayerManager() = default;
 
     void LayerManager::appendLayer(const std::string_view &layer_name) {
+        if (contains(layer_name)) {
+            Logger::log(Logger::Error, "LayerManager: The specified layer name '{}' is already exist!",
+                layer_name);
+            return;
+        }
         _layers.push_back(std::make_shared<Layer>(layer_name));
     }
 
     void LayerManager::appendLayer(Layer *layer) {
+        if (containsLayer(const_cast<const Layer*&>(layer))) {
+            Logger::log(Logger::Error, "LayerManager: The specified layer is already exist!");
+            return;
+        }
         _layers.emplace_back(layer);
     }
 
@@ -27,6 +42,11 @@ namespace MyEngine {
             Logger::log(Logger::Fatal, "LayerManager: The specified index {} is out of range!", index);
             Engine::throwCustomFatalError<InvalidArgumentException>();
         }
+        if (contains(layer_name)) {
+            Logger::log(Logger::Error, "LayerManager: The specified layer name '{}' is already exist!",
+                layer_name);
+            return;
+        }
         _layers.insert(_layers.begin() + index, std::make_shared<Layer>(layer_name));
     }
 
@@ -34,6 +54,10 @@ namespace MyEngine {
         if (index >= _layers.size()) {
             Logger::log(Logger::Fatal, "LayerManager: The specified index {} is out of range!", index);
             Engine::throwCustomFatalError<InvalidArgumentException>();
+        }
+        if (containsLayer(const_cast<const Layer*&>(layer))) {
+            Logger::log(Logger::Error, "LayerManager: The specified layer is already exist!");
+            return;
         }
         _layers.emplace(_layers.begin() + index, layer);
     }
@@ -47,6 +71,7 @@ namespace MyEngine {
     }
 
     void LayerManager::popLayer() {
+        if (_layers.empty()) return;
         _layers.pop_back();
     }
 
@@ -61,6 +86,19 @@ namespace MyEngine {
         Logger::log(Logger::Fatal, "LayerManager: The specified index {} is out of range!", index);
         Engine::throwCustomFatalError<InvalidArgumentException>();
         return nullptr;
+    }
+
+    Layer *LayerManager::layer(const std::string_view &layer_name) const {
+        auto found_layer = std::ranges::find_if(_layers,
+            [&layer_name](const std::shared_ptr<Layer>& layer) {
+            return layer->layerName() == layer_name;
+        });
+        if (found_layer == _layers.end()) {
+            Logger::log(Logger::Fatal, "LayerManager: The specified layer name {} is not exist!", layer_name);
+            Engine::throwCustomFatalError<InvalidArgumentException>();
+            return nullptr;
+        }
+        return found_layer->get();
     }
 
     LayerManager::LayerIterator LayerManager::begin() {
@@ -81,6 +119,37 @@ namespace MyEngine {
 
     size_t LayerManager::size() const {
         return _layers.size();
+    }
+
+    bool LayerManager::contains(const std::string_view &layer_name) const {
+        return std::ranges::find_if(_layers,
+            [&layer_name](const std::shared_ptr<Layer>& layer) {
+            return layer->layerName() == layer_name;
+        }) != _layers.end();
+    }
+
+    bool LayerManager::containsLayer(const Layer *&layer) const {
+        return std::ranges::find_if(_layers, [&layer](const std::shared_ptr<Layer>& this_layer) {
+            return this_layer.get() == layer;
+        }) != _layers.end();
+    }
+
+    std::optional<size_t> LayerManager::indexOf(const std::string_view &layer_name) const {
+        for (size_t index = 0; index < _layers.size(); index++) {
+            if (_layers.at(index)->layerName() == layer_name) {
+                return index;
+            }
+        }
+        return {};
+    }
+
+    std::optional<size_t> LayerManager::indexOf(const Layer *&layer) const {
+        for (size_t index = 0; index < _layers.size(); index++) {
+            if (_layers[index].get() == layer) {
+                return index;
+            }
+        }
+        return {};
     }
 
     void LayerManager::registerEvent() {

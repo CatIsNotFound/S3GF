@@ -59,6 +59,8 @@ namespace MyEngine {
         uint64_t _start_ts{0};
         LayerManager* _layer_manager{nullptr};
         static SDL_Color _background_color;
+        friend class LayerManager;
+        friend class Engine;
 
         template<typename T, typename ...Args>
         void addCommand(Args... args);
@@ -73,16 +75,20 @@ namespace MyEngine {
         };
         explicit Renderer(Window* window = nullptr);
         ~Renderer();
+    private:
         void setLayerManager(LayerManager* layer_manager);
         [[nodiscard]] LayerManager* layerManager() const;
-        void setVSyncMode(Renderer::VSyncMode mode);
+    public:
+        void setVSyncMode(VSyncMode mode);
         [[nodiscard]] VSyncMode currentVSyncMode() const;
         [[nodiscard]] SDL_Renderer* self() const;
         [[nodiscard]] Window* window() const;
         [[nodiscard]] size_t renderCountInSec() const;
         [[nodiscard]] SDL_Surface* capture() const;
         [[nodiscard]] SDL_Surface* capture(Geometry geometry) const;
+    private:
         void _update();
+    public:
         void fillBackground(const SDL_Color& color);
         void fillBackground(SDL_Color&& color);
         void fillBackground(uint64_t rgb_hex = 0);
@@ -362,7 +368,7 @@ namespace MyEngine {
 
         void newWindow(Window* window, SDL_WindowID parent_window_id = 0, SDL_WindowID child_window_id = 0);
         void removeWindow(SDL_WindowID id);
-        [[nodiscard]] Window* window(SDL_WindowID id = _main_window_id) const;
+        [[nodiscard]] std::optional<Window *> window(SDL_WindowID id = _main_window_id) const;
         [[nodiscard]] std::vector<uint32_t> windowIDList() const;
         [[nodiscard]] constIter begin() const { return _window_list.cbegin(); }
         iter begin() { return _window_list.begin(); }

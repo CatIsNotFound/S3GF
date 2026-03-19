@@ -20,12 +20,22 @@ namespace MyEngine {
         void popLayer();
         void clearLayers();
 
-        Layer* layer(size_t index) const;
+        [[nodiscard]] Layer* layer(size_t index) const;
+        [[nodiscard]] Layer* layer(const std::string_view& layer_name) const;
         [[nodiscard]] LayerIterator begin();
         [[nodiscard]] LayerIterator end();
         [[nodiscard]] LayerConstIterator cbegin() const;
         [[nodiscard]] LayerConstIterator cend() const;
         [[nodiscard]] size_t size() const;
+        [[nodiscard]] bool contains(const std::string_view& layer_name) const;
+        [[nodiscard]] bool containsLayer(const Layer*& layer) const;
+        [[nodiscard]] std::optional<size_t> indexOf(const std::string_view &layer_name) const;
+        [[nodiscard]] std::optional<size_t> indexOf(const Layer *&layer) const;
+
+        LayerManager(const LayerManager&) = delete;
+        LayerManager(LayerManager&&) = delete;
+        LayerManager& operator=(const LayerManager&) = delete;
+        LayerManager& operator=(LayerManager&&) = delete;
     private:
         void registerEvent();
         Window* _window;
