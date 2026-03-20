@@ -11,6 +11,12 @@ namespace MyEngine::Template {
             return &instance;
         }
 
+        template <typename ... Args>
+        static C* global(Args... args) {
+            static C instance(std::forward<Args>(args)...);
+            return &instance;
+        }
+
         Singleton(Singleton&&) = delete;
         Singleton(const Singleton&) = delete;
         Singleton& operator=(const Singleton&) = delete;
@@ -33,6 +39,15 @@ namespace MyEngine::Template {
             return _instance;
         }
 
+        template <typename ... Args>
+        static C* global(Args... args) {
+            std::lock_guard<std::mutex> lock(_mutex);
+            if (!_instance) {
+                _instance = std::make_unique<C>(std::forward<Args>(args)...);
+            }
+            return _instance;
+        }
+
         LazySingleton(const LazySingleton&) = delete;
         LazySingleton(LazySingleton&&) = delete;
         LazySingleton& operator=(const LazySingleton&) = delete;
@@ -48,6 +63,14 @@ namespace MyEngine::Template {
         static std::shared_ptr<C> global() {
             std::call_once(_once_flag, [&] {
                 _instance = std::make_shared<C>();
+            });
+            return _instance;
+        }
+
+        template <typename ... Args>
+        static std::shared_ptr<C> global(Args... args) {
+            std::call_once(_once_flag, [&] {
+                _instance = std::make_shared<C>(std::forward<Args>(args)...);
             });
             return _instance;
         }

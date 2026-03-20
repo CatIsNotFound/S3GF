@@ -10,7 +10,7 @@ namespace MyEngine {
         using LayerIterator = std::vector<std::shared_ptr<Layer>>::iterator;
         using LayerConstIterator = std::vector<std::shared_ptr<Layer>>::const_iterator;
         explicit LayerManager(Window* window = nullptr);
-        virtual ~LayerManager();
+        ~LayerManager() override;
 
         void appendLayer(const std::string_view& layer_name);
         void appendLayer(Layer* layer);
@@ -19,6 +19,8 @@ namespace MyEngine {
         void removeLayer(size_t index);
         void popLayer();
         void clearLayers();
+        bool swapLayers(size_t index_1, size_t index_2);
+        bool swapLayers(const std::string_view& layer_1, const std::string_view& layer_2);
 
         [[nodiscard]] Layer* layer(size_t index) const;
         [[nodiscard]] Layer* layer(const std::string_view& layer_name) const;

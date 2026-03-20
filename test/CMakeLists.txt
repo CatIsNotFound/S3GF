@@ -57,7 +57,7 @@ endif()
 
 add_compile_definitions(APP_NAME="MyEngine Test")
 add_compile_definitions(APP_ID="test.MyEngine.app")
-add_compile_definitions(APP_VERSION="v1.0.1")
+add_compile_definitions(APP_VERSION="v1.3.1")
 
 
 ############################################

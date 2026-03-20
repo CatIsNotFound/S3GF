@@ -79,6 +79,25 @@ namespace MyEngine {
         _layers.clear();
     }
 
+    bool LayerManager::swapLayers(size_t index_1, size_t index_2) {
+        if (index_1 >= _layers.size() || index_2 >= _layers.size()) {
+            Logger::log(Logger::Fatal, "LayerManager: One/All of the specified index is out of range!");
+            return false;
+        }
+        _layers.at(index_1).swap(_layers.at(index_2));
+        return true;
+    }
+
+    bool LayerManager::swapLayers(const std::string_view &layer_1, const std::string_view &layer_2) {
+        auto index_1 = indexOf(layer_1), index_2 = indexOf(layer_2);
+        if (!index_1.has_value() || !index_2.has_value()) {
+            Logger::log(Logger::Fatal, "LayerManager: One/All of the specified layer name is not found!");
+            return false;
+        }
+        _layers.at(index_1.value()).swap(_layers.at(index_2.value()));
+        return true;
+    }
+
     Layer* LayerManager::layer(size_t index) const {
         if (index < _layers.size()) {
             return _layers.at(index).get();
@@ -154,9 +173,10 @@ namespace MyEngine {
 
     void LayerManager::registerEvent() {
         _window->installPaintEvent([&](Renderer*) {
-            for (auto& _layer : _layers) {
-                if (!_layer) continue;
-                _layer->paintEvent();
+            for (size_t index = 0; index < _layers.size(); index++) {
+                auto layer = _layers.at(_layers.size() - index - 1).get();
+                if (layer == nullptr) continue;
+                layer->paintEvent();
             }
         });
     }

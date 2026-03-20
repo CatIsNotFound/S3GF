@@ -535,7 +535,7 @@ namespace MyEngine {
                 _positions = position_list;
             } else if (_mode == Mode::Custom) {
                 assert(_count > 0 && position_list.size() == _count && text_list.size() == _count);
-                for (int i = 0; i < _count; ++i) {
+                for (uint32_t i = 0; i < _count; ++i) {
                     _texts.emplace_back(text_list[i], position_list[i]);
                 }
             }
@@ -556,7 +556,7 @@ namespace MyEngine {
                 _positions = position_list;
             } else if (_mode == Mode::Custom) {
                 assert(_count > 0 && position_list.size() == _count && text_list.size() == _count);
-                for (int i = 0; i < _count; ++i) {
+                for (uint32_t i = 0; i < _count; ++i) {
                     _texts.emplace_back(text_list[i], position_list[i]);
                 }
             }
@@ -566,11 +566,11 @@ namespace MyEngine {
             if (_mode == Mode::Single) {
                 render(_text, &_pos);
             } else if (_mode == Mode::Multiple) {
-                for (int i = 0; i < _count; ++i) {
+                for (uint32_t i = 0; i < _count; ++i) {
                     render(_text, _positions[i]);
                 }
             } else if (_mode == Mode::Custom) {
-                for (int i = 0; i < _count; ++i) {
+                for (uint32_t i = 0; i < _count; ++i) {
                     auto& text = _texts[i];
                     render(text.text, text.position);
                 }
@@ -617,7 +617,7 @@ namespace MyEngine {
             if (_mode == Mode::Single) {
                 render(_text, &_position);
             } else if (_mode == Mode::Multiple) {
-                for (int i = 0; i < _count; ++i) {
+                for (uint32_t i = 0; i < _count; ++i) {
                     render(_text_list[i], _pos_list[i]);
                 }
             }

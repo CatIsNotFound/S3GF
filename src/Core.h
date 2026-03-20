@@ -326,6 +326,7 @@ namespace MyEngine {
     class Engine {
         using constIter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::const_iterator;
         using iter = std::unordered_map<SDL_WindowID, std::unique_ptr<Window>>::iterator;
+        friend class Window;
     public:
         enum MessageBoxType {
             Information,
@@ -365,9 +366,10 @@ namespace MyEngine {
         [[nodiscard]] bool isRunning() const;
         static void exit(int code = 0);
         int exec();
-
+    private:
         void newWindow(Window* window, SDL_WindowID parent_window_id = 0, SDL_WindowID child_window_id = 0);
         void removeWindow(SDL_WindowID id);
+    public:
         [[nodiscard]] std::optional<Window *> window(SDL_WindowID id = _main_window_id) const;
         [[nodiscard]] std::vector<uint32_t> windowIDList() const;
         [[nodiscard]] constIter begin() const { return _window_list.cbegin(); }
