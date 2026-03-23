@@ -1,4 +1,4 @@
-#include "Cursor.h"
+#include "include/MyEngine/Utils/Cursor.h"
 
 namespace MyEngine {
     Vector2 Cursor::globalPosition() const {

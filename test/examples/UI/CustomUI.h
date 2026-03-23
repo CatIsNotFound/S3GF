@@ -1,8 +1,8 @@
 ﻿
 #ifndef MYENGINE_TEST_CUSTOM_UI_H
 #define MYENGINE_TEST_CUSTOM_UI_H
-#include "MyEngine"
-#include "UI/AbstractControl.h"
+#include "../../../include/MyEngine/MyEngine"
+#include "../../../include/MyEngine/UI/AbstractControl.h"
 
 class CustomControl : public MyEngine::UI::AbstractControl {
 public:

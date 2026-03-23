@@ -1,5 +1,5 @@
 
-#include "SysMemory.h"
+#include "include/MyEngine/Utils/SysMemory.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <psapi.h>
@@ -14,7 +14,7 @@
 #include <mach/mach_host.h>
 #endif
 
-#include "Utils/Logger.h"
+#include "include/MyEngine/Utils/Logger.h"
 
 namespace MyEngine {
     SysMemory::SysMemStatus SysMemory::getSystemMemoryStatus(bool* ok) {

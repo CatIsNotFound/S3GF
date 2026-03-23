@@ -1,6 +1,6 @@
 
-#include "Button.h"
-#include "Utils/RGBAColor.h"
+#include "include/MyEngine/Widgets/Button.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
 
 namespace MyEngine::Widget {
     Button::Button(std::string object_name, Window *window) : Label(std::move(object_name), window) {

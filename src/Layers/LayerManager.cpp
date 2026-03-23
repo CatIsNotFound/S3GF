@@ -1,5 +1,5 @@
 ﻿
-#include "LayerManager.h"
+#include "include/MyEngine/Layers/LayerManager.h"
 
 namespace MyEngine {
     LayerManager::LayerManager(Window *window) : _window(window) {
@@ -14,7 +14,7 @@ namespace MyEngine {
             Engine::throwCustomFatalError<InvalidArgumentException>();
             return;
         }
-        _window->renderer()->setLayerManager(this, false);
+        _window->renderer()->setLayerManager(this);
         registerEvent();
     }
 

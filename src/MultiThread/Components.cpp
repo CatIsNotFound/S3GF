@@ -1,8 +1,8 @@
 
-#include "Components.h"
-#include "Core.h"
-#include "Utils/Logger.h"
-#include "Utils/Random.h"
+#include "include/MyEngine/MultiThread/Components.h"
+#include "include/MyEngine/Core.h"
+#include "include/MyEngine/Utils/Logger.h"
+#include "include/MyEngine/Utils/Random.h"
 
 namespace MyEngine {
     Timer::~Timer() {

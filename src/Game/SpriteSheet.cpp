@@ -1,6 +1,6 @@
 
-#include "SpriteSheet.h"
-#include "Utils/RGBAColor.h"
+#include "include/MyEngine/Game/SpriteSheet.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
 
 MyEngine::SpriteSheet::SpriteSheet(MyEngine::TextureAtlas *textureAtlas) : _atlas(textureAtlas) {
     _global_prop = std::make_shared<TextureProperty>();

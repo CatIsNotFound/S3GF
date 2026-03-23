@@ -1,5 +1,5 @@
 
-#include "HorizontalLayout.h"
+#include "include/MyEngine/Widgets/HorizontalLayout.h"
 
 MyEngine::Widget::HorizontalLayout::HorizontalLayout(std::string object_name, MyEngine::Window *window)
         : AbstractLayout(object_name, window) {}

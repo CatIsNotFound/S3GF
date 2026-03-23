@@ -1,11 +1,9 @@
-#include "Components.h"
-
-#include <memory>
-#include "Utils/Logger.h"
-#include "Utils/FileSystem.h"
-#include "Utils/RGBAColor.h"
-#include "Algorithm/All.h"
-#include "Utils/WavWriter.h"
+#include "include/MyEngine/Components.h"
+#include "include/MyEngine/Utils/Logger.h"
+#include "include/MyEngine/Utils/FileSystem.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
+#include "include/MyEngine/Algorithm/All.h"
+#include "include/MyEngine/Utils/WavWriter.h"
 
 namespace MyEngine {
     constexpr size_t MAX_AUDIO_FILE_SIZE = 2 * 1024 * 1024;

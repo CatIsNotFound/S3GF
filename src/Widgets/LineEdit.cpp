@@ -1,5 +1,5 @@
 
-#include "LineEdit.h"
+#include "include/MyEngine/Widgets/LineEdit.h"
 
 namespace MyEngine::Widget {
     LineEdit::LineEdit(Window *window) : AbstractWidget(window) {

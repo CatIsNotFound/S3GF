@@ -1,5 +1,5 @@
 
-#include "GObject.h"
+#include "include/MyEngine/Game/GObject.h"
 
 MyEngine::GObject::GObject(const std::string &name, MyEngine::Object object, bool delete_later)
     : _name(name), _object(object), _del_later(delete_later) {

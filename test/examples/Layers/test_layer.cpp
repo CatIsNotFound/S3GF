@@ -1,4 +1,4 @@
-﻿#include "MyEngine"
+﻿#include "../../../include/MyEngine/MyEngine"
 using namespace MyEngine;
 
 int main(int argc, char* argv[]) {
@@ -6,14 +6,14 @@ int main(int argc, char* argv[]) {
     Engine engine;
     auto window = new Window(&engine, "Test Layer");
     window->renderer()->setVSyncMode(Renderer::Enabled);
-    LayerManager layer_manager(window);
-    layer_manager.appendLayer("1st");
-    layer_manager.appendLayer("2nd");
+    auto layer_manager = new LayerManager(window);
+    layer_manager->appendLayer("1st");
+    layer_manager->appendLayer("2nd");
 
     auto third_layer = new Layer("3rd");
-    layer_manager.appendLayer(third_layer);
-    auto first_layer = layer_manager.layer(0);
-    auto second_layer = layer_manager.layer("2nd");
+    layer_manager->appendLayer(third_layer);
+    auto first_layer = layer_manager->layer(0);
+    auto second_layer = layer_manager->layer("2nd");
     auto re2 = new Component<Graphics::Rectangle>(0, 0, 100, 100, 1, StdColor::Gray, StdColor::Yellow);
     auto text = new Component<Texture>(FileSystem::getAbsolutePath("./assets/tilesn.jpg"), window->renderer());
     re2->self()->move(100, 100);
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
             } else if (e.key.key == SDLK_ESCAPE) {
                 Engine::exit();
             } else if (e.key.key == SDLK_R) {
-                layer_manager.swapLayers("1st", "2nd");
+                layer_manager->swapLayers("1st", "2nd");
             }
         }
     });

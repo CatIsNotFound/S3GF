@@ -1,6 +1,6 @@
 ﻿
-#include "AbstractControl.h"
-#include "Algorithm/All.h"
+#include "include/MyEngine/UI/AbstractControl.h"
+#include "include/MyEngine/Algorithm/All.h"
 
 MyEngine::UI::AbstractControl::AbstractControl(const std::string_view &class_name, Window *parent)
         : _window(parent), _event_id(), _class_name(class_name) {

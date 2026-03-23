@@ -76,9 +76,8 @@ namespace MyEngine {
         explicit Renderer(Window* window = nullptr);
         ~Renderer();
     private:
-        void setLayerManager(LayerManager* layer_manager, bool delete_later);
+        void setLayerManager(LayerManager *layer_manager);
     public:
-        void installLayerManager();
         [[nodiscard]] LayerManager* layerManager() const;
         void setVSyncMode(VSyncMode mode);
         [[nodiscard]] VSyncMode currentVSyncMode() const;

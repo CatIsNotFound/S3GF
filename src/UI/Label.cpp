@@ -1,7 +1,7 @@
 ﻿
-#include "Label.h"
+#include "include/MyEngine/UI/Label.h"
 
-#include "Utils/RGBAColor.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
 
 namespace MyEngine::UI {
     Label::Label(const std::string_view &object_name, Window *parent)
@@ -156,7 +156,6 @@ namespace MyEngine::UI {
     void Label::loadEvent() {
         auto layer_mgr = window()->renderer()->layerManager();
         if (!layer_mgr) {
-            window()->renderer()->installLayerManager();
             layer_mgr = window()->renderer()->layerManager();
         }
         if (!layer_mgr->contains(layerName())) {

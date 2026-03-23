@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_test_macros.hpp>
 
-#include "MyEngine"
+#include "../../../include/MyEngine/MyEngine"
 using namespace MyEngine;
 
 extern inline constexpr bool isColorsEqual(SDL_Color color1, SDL_Color color2) noexcept {

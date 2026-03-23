@@ -1,7 +1,7 @@
 
 #ifndef MYENGINE_TEST_MYWINDOW_H
 #define MYENGINE_TEST_MYWINDOW_H
-#include "MyEngine"
+#include "../../../include/MyEngine/MyEngine"
 
 using namespace MyEngine;
 

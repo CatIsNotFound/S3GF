@@ -1,7 +1,6 @@
 
-#include "Configuration.h"
-
-#include "Algorithm/String.h"
+#include "include/MyEngine/Config/Configuration.h"
+#include "include/MyEngine/Algorithm/String.h"
 
 namespace MyEngine::Config {
     AbstractConfigParser::~AbstractConfigParser() = default;

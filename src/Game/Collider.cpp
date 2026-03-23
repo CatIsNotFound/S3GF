@@ -1,5 +1,5 @@
-#include "Collider.h"
-#include "Algorithm/Collider.h"
+#include "include/MyEngine/Game/Collider.h"
+#include "include/MyEngine/Algorithm/Collider.h"
 MyEngine::Collider::Collider(MyEngine::Collider::Self self, bool delete_later)
     : _base(self), _del_later(delete_later) {
     EventSystem::global()->appendEvent(IDGenerator::getNewEventID(), [this](SDL_Event e) {

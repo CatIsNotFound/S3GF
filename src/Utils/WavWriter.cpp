@@ -1,7 +1,7 @@
 ﻿
-#include "WavWriter.h"
+#include "include/MyEngine/Utils/WavWriter.h"
 
-#include "Logger.h"
+#include "include/MyEngine/Utils/Logger.h"
 
 namespace MyEngine {
     WAVWriter::WAVWriter(std::string_view &&path) noexcept

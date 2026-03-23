@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 enable_testing()
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(ENABLED_ASAN OFF CACHE BOOL "Enable AddressSanitizer for memory leak detection")
 if (ENABLED_ASAN)
     message("-- Enabled option: AddressSanitizer")
@@ -199,6 +200,9 @@ addModule(TEST_MODULES test_control
 
 addModule(TEST_MODULES test_layer
         examples/Layers/test_layer.cpp
+)
+addModule(TEST_MODULES test_layer_2
+        examples/Layers/test_layer_2.cpp
 )
 
 #addModule(TEST_MODULES test_audio_system

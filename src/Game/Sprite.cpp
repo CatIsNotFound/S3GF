@@ -1,6 +1,6 @@
 
-#include "Sprite.h"
-#include "Utils/RGBAColor.h"
+#include "include/MyEngine/Game/Sprite.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
 
 MyEngine::Sprite::Sprite(MyEngine::Texture *texture) : _texture(texture) {
     _property = std::make_unique<TextureProperty>(texture->property());

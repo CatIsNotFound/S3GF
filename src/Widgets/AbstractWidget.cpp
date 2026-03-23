@@ -1,6 +1,6 @@
 
-#include "AbstractWidget.h"
-#include "Algorithm/Collider.h"
+#include "include/MyEngine/Widgets/AbstractWidget.h"
+#include "include/MyEngine/Algorithm/Collider.h"
 
 namespace MyEngine::Widget {
     AbstractWidget::AbstractWidget(Window *window) : _window(window), _renderer(nullptr),

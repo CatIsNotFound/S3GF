@@ -1,10 +1,10 @@
 
-#include "Core.h"
-#include "Basic.h"
-#include "Utils/All.h"
-#include "Renderer/BaseCommand.h"
-#include "Renderer/CommandFactory.h"
-#include "Algorithm/Collider.h"
+#include "include/MyEngine/Core.h"
+#include "include/MyEngine/Basic.h"
+#include "include/MyEngine/Utils/All.h"
+#include "include/MyEngine/Renderer/BaseCommand.h"
+#include "include/MyEngine/Renderer/CommandFactory.h"
+#include "include/MyEngine/Algorithm/Collider.h"
 
 namespace MyEngine {
     std::unique_ptr<EventSystem> EventSystem::_instance{};
@@ -38,15 +38,8 @@ namespace MyEngine {
         }
     }
 
-    void Renderer::setLayerManager(LayerManager *layer_manager, bool delete_later) {
-        if (delete_later)
-            _layer_manager = std::unique_ptr<LayerManager>(layer_manager);
-        else
-            _layer_manager = std::unique_ptr<LayerManager>(layer_manager, {});
-    }
-
-    void Renderer::installLayerManager() {
-        _layer_manager = std::make_unique<LayerManager>(this->_window);
+    void Renderer::setLayerManager(LayerManager *layer_manager) {
+        _layer_manager = std::unique_ptr<LayerManager>(layer_manager);
     }
 
     LayerManager* Renderer::layerManager() const {

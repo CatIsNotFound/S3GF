@@ -1,7 +1,7 @@
 
 #ifndef MYENGINE_TEST_MY_TRIGGER_AREA_H
 #define MYENGINE_TEST_MY_TRIGGER_AREA_H
-#include "MyEngine"
+#include "../../../include/MyEngine/MyEngine"
 
 using namespace MyEngine;
 

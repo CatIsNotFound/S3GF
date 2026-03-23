@@ -133,155 +133,155 @@ endif()
 
 if (BUILD_SHARED_LIBS_ONLY)
     add_library(${PROJECT_NAME} SHARED
-            src/MyEngine
-            src/Basic.h
-            src/Libs.h
+            include/MyEngine/MyEngine
+            include/MyEngine/Basic.h
+            include/MyEngine/Libs.h
             src/Core.cpp
-            src/Core.h
+            include/MyEngine/Core.h
             src/Components.cpp
-            src/Components.h
-            src/MultiThread/All.h
+            include/MyEngine/Components.h
+            include/MyEngine/MultiThread/All.h
             src/MultiThread/Components.cpp
-            src/MultiThread/Components.h
-            src/Utils/All.h
-            src/Utils/Random.h
-            src/Algorithm/All.h
-            src/Algorithm/Draw.h
-            src/Utils/DateTime.h
-            src/Utils/Cursor.h
+            include/MyEngine/MultiThread/Components.h
+            include/MyEngine/Utils/All.h
+            include/MyEngine/Utils/Random.h
+            include/MyEngine/Algorithm/All.h
+            include/MyEngine/Algorithm/Draw.h
+            include/MyEngine/Utils/DateTime.h
+            include/MyEngine/Utils/Cursor.h
             src/Utils/Cursor.cpp
-            src/Algorithm/Collider.h
-            src/MultiThread/ThreadPool.h
-            src/Utils/Logger.h
+            include/MyEngine/Algorithm/Collider.h
+            include/MyEngine/MultiThread/ThreadPool.h
+            include/MyEngine/Utils/Logger.h
             src/Utils/FileSystem.cpp
-            src/Utils/FileSystem.h
-            src/Utils/RGBAColor.h
+            include/MyEngine/Utils/FileSystem.h
+            include/MyEngine/Utils/RGBAColor.h
             src/Game/Sprite.cpp
-            src/Game/Sprite.h
+            include/MyEngine/Game/Sprite.h
             src/Game/SpriteSheet.cpp
-            src/Game/SpriteSheet.h
-            src/Utils/SysMemory.h
+            include/MyEngine/Game/SpriteSheet.h
+            include/MyEngine/Utils/SysMemory.h
             src/Utils/SysMemory.cpp
             src/Game/GObject.cpp
-            src/Game/GObject.h
+            include/MyEngine/Game/GObject.h
             src/Game/Collider.cpp
-            src/Game/Collider.h
+            include/MyEngine/Game/Collider.h
             src/Renderer/BaseCommand.cpp
-            src/Renderer/BaseCommand.h
-            src/Renderer/CommandPool.h
-            src/Renderer/CommandFactory.h
-            src/Renderer/RCommand.h
-            src/Template/Singleton.h
-            src/Exception.h
+            include/MyEngine/Renderer/BaseCommand.h
+            include/MyEngine/Renderer/CommandPool.h
+            include/MyEngine/Renderer/CommandFactory.h
+            include/MyEngine/Renderer/RCommand.h
+            include/MyEngine/Template/Singleton.h
+            include/MyEngine/Exception.h
             src/Widgets/AbstractWidget.cpp
-            src/Widgets/AbstractWidget.h
-            src/Utils/Variant.h
+            include/MyEngine/Widgets/AbstractWidget.h
+            include/MyEngine/Utils/Variant.h
             src/Utils/Variant.cpp
             src/Widgets/Label.cpp
-            src/Widgets/Label.h
+            include/MyEngine/Widgets/Label.h
             src/Widgets/Button.cpp
-            src/Widgets/Button.h
+            include/MyEngine/Widgets/Button.h
             src/Widgets/LineEdit.cpp
-            src/Widgets/LineEdit.h
-            src/Algorithm/String.h
+            include/MyEngine/Widgets/LineEdit.h
+            include/MyEngine/Algorithm/String.h
             src/Widgets/AbstractLayout.cpp
-            src/Widgets/AbstractLayout.h
+            include/MyEngine/Widgets/AbstractLayout.h
             src/Widgets/VerticalLayout.cpp
-            src/Widgets/VerticalLayout.h
+            include/MyEngine/Widgets/VerticalLayout.h
             src/Widgets/HorizontalLayout.cpp
-            src/Widgets/HorizontalLayout.h
-            src/Algorithm/RGBAPixels.h
-            src/Widgets/All.h
-            src/Config/All.h
-            src/Config/Macro.h
-            src/Config/Configuration.h
+            include/MyEngine/Widgets/HorizontalLayout.h
+            include/MyEngine/Algorithm/RGBAPixels.h
+            include/MyEngine/Widgets/All.h
+            include/MyEngine/Config/All.h
+            include/MyEngine/Config/Macro.h
+            include/MyEngine/Config/Configuration.h
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
-            src/Utils/WavWriter.h
-            src/UI/All.h
+            include/MyEngine/Utils/WavWriter.h
+            include/MyEngine/UI/All.h
             src/UI/AbstractControl.cpp
-            src/UI/AbstractControl.h
+            include/MyEngine/UI/AbstractControl.h
             src/UI/Label.cpp
-            src/UI/Label.h
-            src/Layers/Layer.h
+            include/MyEngine/UI/Label.h
+            include/MyEngine/Layers/Layer.h
             src/Layers/LayerManager.cpp
-            src/Layers/LayerManager.h
+            include/MyEngine/Layers/LayerManager.h
     )
 else()
     add_library(${PROJECT_NAME} STATIC
-            src/MyEngine
-            src/Basic.h
-            src/Libs.h
+            include/MyEngine/MyEngine
+            include/MyEngine/Basic.h
+            include/MyEngine/Libs.h
             src/Core.cpp
-            src/Core.h
+            include/MyEngine/Core.h
             src/Components.cpp
-            src/Components.h
-            src/MultiThread/All.h
+            include/MyEngine/Components.h
+            include/MyEngine/MultiThread/All.h
             src/MultiThread/Components.cpp
-            src/MultiThread/Components.h
-            src/Utils/All.h
-            src/Utils/Random.h
-            src/Algorithm/All.h
-            src/Algorithm/Draw.h
-            src/Utils/DateTime.h
-            src/Utils/Cursor.h
+            include/MyEngine/MultiThread/Components.h
+            include/MyEngine/Utils/All.h
+            include/MyEngine/Utils/Random.h
+            include/MyEngine/Algorithm/All.h
+            include/MyEngine/Algorithm/Draw.h
+            include/MyEngine/Utils/DateTime.h
+            include/MyEngine/Utils/Cursor.h
             src/Utils/Cursor.cpp
-            src/Algorithm/Collider.h
-            src/MultiThread/ThreadPool.h
-            src/Utils/Logger.h
+            include/MyEngine/Algorithm/Collider.h
+            include/MyEngine/MultiThread/ThreadPool.h
+            include/MyEngine/Utils/Logger.h
             src/Utils/FileSystem.cpp
-            src/Utils/FileSystem.h
-            src/Utils/RGBAColor.h
+            include/MyEngine/Utils/FileSystem.h
+            include/MyEngine/Utils/RGBAColor.h
             src/Game/Sprite.cpp
-            src/Game/Sprite.h
+            include/MyEngine/Game/Sprite.h
             src/Game/SpriteSheet.cpp
-            src/Game/SpriteSheet.h
-            src/Utils/SysMemory.h
+            include/MyEngine/Game/SpriteSheet.h
+            include/MyEngine/Utils/SysMemory.h
             src/Utils/SysMemory.cpp
             src/Game/GObject.cpp
-            src/Game/GObject.h
+            include/MyEngine/Game/GObject.h
             src/Game/Collider.cpp
-            src/Game/Collider.h
+            include/MyEngine/Game/Collider.h
             src/Renderer/BaseCommand.cpp
-            src/Renderer/BaseCommand.h
-            src/Renderer/CommandPool.h
-            src/Renderer/CommandFactory.h
-            src/Renderer/RCommand.h
-            src/Template/Singleton.h
-            src/Exception.h
+            include/MyEngine/Renderer/BaseCommand.h
+            include/MyEngine/Renderer/CommandPool.h
+            include/MyEngine/Renderer/CommandFactory.h
+            include/MyEngine/Renderer/RCommand.h
+            include/MyEngine/Template/Singleton.h
+            include/MyEngine/Exception.h
             src/Widgets/AbstractWidget.cpp
-            src/Widgets/AbstractWidget.h
-            src/Utils/Variant.h
+            include/MyEngine/Widgets/AbstractWidget.h
+            include/MyEngine/Utils/Variant.h
             src/Utils/Variant.cpp
             src/Widgets/Label.cpp
-            src/Widgets/Label.h
+            include/MyEngine/Widgets/Label.h
             src/Widgets/Button.cpp
-            src/Widgets/Button.h
+            include/MyEngine/Widgets/Button.h
             src/Widgets/LineEdit.cpp
-            src/Widgets/LineEdit.h
-            src/Algorithm/String.h
+            include/MyEngine/Widgets/LineEdit.h
+            include/MyEngine/Algorithm/String.h
             src/Widgets/AbstractLayout.cpp
-            src/Widgets/AbstractLayout.h
+            include/MyEngine/Widgets/AbstractLayout.h
             src/Widgets/VerticalLayout.cpp
-            src/Widgets/VerticalLayout.h
+            include/MyEngine/Widgets/VerticalLayout.h
             src/Widgets/HorizontalLayout.cpp
-            src/Widgets/HorizontalLayout.h
-            src/Algorithm/RGBAPixels.h
-            src/Widgets/All.h
-            src/Config/All.h
-            src/Config/Macro.h
-            src/Config/Configuration.h
+            include/MyEngine/Widgets/HorizontalLayout.h
+            include/MyEngine/Algorithm/RGBAPixels.h
+            include/MyEngine/Widgets/All.h
+            include/MyEngine/Config/All.h
+            include/MyEngine/Config/Macro.h
+            include/MyEngine/Config/Configuration.h
             src/Config/Configuration.cpp
             src/Utils/WavWriter.cpp
-            src/Utils/WavWriter.h
-            src/UI/All.h
+            include/MyEngine/Utils/WavWriter.h
+            include/MyEngine/UI/All.h
             src/UI/AbstractControl.cpp
-            src/UI/AbstractControl.h
+            include/MyEngine/UI/AbstractControl.h
             src/UI/Label.cpp
-            src/UI/Label.h
-            src/Layers/Layer.h
+            include/MyEngine/UI/Label.h
+            include/MyEngine/Layers/Layer.h
             src/Layers/LayerManager.cpp
-            src/Layers/LayerManager.h
+            include/MyEngine/Layers/LayerManager.h
     )
 endif()
 
@@ -315,18 +315,12 @@ if (NOT ${USED_SRC_LIBS})
         INCLUDES DESTINATION include
     )
 
-    install(DIRECTORY src/
-            DESTINATION include/MyEngine
-            FILES_MATCHING
-                PATTERN "*.h"
+    install(DIRECTORY include/
+            DESTINATION include
     )
 
     install(DIRECTORY assets/
             DESTINATION assets
-    )
-
-    install(FILES src/MyEngine
-        DESTINATION include/MyEngine
     )
 
     install(FILES

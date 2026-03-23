@@ -1,6 +1,6 @@
 
-#include "Label.h"
-#include "Utils/RGBAColor.h"
+#include "include/MyEngine/Widgets/Label.h"
+#include "include/MyEngine/Utils/RGBAColor.h"
 
 namespace MyEngine::Widget {
 
