@@ -4,10 +4,15 @@
 #include "AbstractControl.h"
 
 namespace MyEngine::UI {
+    inline constexpr const char* LabelProp_TextID{"__Label_TextID__"};
+    inline constexpr const char* LabelProp_TextPos{"__Label_TextPosition__"};
+    inline constexpr const char* LabelProp_Font_Ptr{"__Label_Font_Ptr__"};
+    inline constexpr const char* LabelProp_Text_Alignment{"__Label_Text_Alignment__"};
+    inline constexpr const char* LabelProp_Image_FilledMode{"__Label_Image_FillMode__"};
+
     class Label : public AbstractControl {
     public:
-        explicit Label(const std::string_view& object_name, Window* parent = nullptr)
-                : AbstractControl(object_name, parent) { Label::loadEvent(); }
+        explicit Label(const std::string_view& object_name, Window* parent = nullptr);
         explicit Label(Window* parent = nullptr);
         void setFont(Font* font);
         void setFont(const std::string_view& font_name);
@@ -20,13 +25,18 @@ namespace MyEngine::UI {
         [[nodiscard]] const SDL_Color& textColor() const;
         void setBackgroundColor(const SDL_Color& color);
         void setBackgroundColor(uint64_t hex_code, bool alpha = false);
+        void setBorderColor(const SDL_Color& color);
+        void setBorderColor(uint64_t hex_code, bool alpha = false);
         [[nodiscard]] const SDL_Color& backgroundColor() const;
-        void setBackgroundImage(const SDL_Surface* surface, bool delete_later = false);
+        [[nodiscard]] const SDL_Color& borderColor() const;
+        void setBackgroundImage(SDL_Surface *surface, bool delete_later = false);
         void setBackgroundImage(const std::shared_ptr<Texture>& texture);
-        [[nodiscard]] const std::optional<Texture*> backgroundImage() const;
-        [[nodiscard]] const std::optional<TextureProperty*> backgroundImageProperty() const;
+        [[nodiscard]] std::optional<Texture*> backgroundImage() const;
+        [[nodiscard]] std::optional<TextureProperty*> backgroundImageProperty() const;
         void setImageFilledMode(FilledMode mode);
-
+        [[nodiscard]] FilledMode imageFilledMode() const;
+        void setTextAlignment(Alignment alignment);
+        [[nodiscard]] Alignment textAlignment() const;
     protected:
         void loadEvent() override;
         void unloadEvent() override;
@@ -60,13 +70,12 @@ namespace MyEngine::UI {
         void fingerMovedInEvent() override;
         void fingerMovedOutEvent() override;
     private:
-        uint64_t _text_id{};
-        Font* _font{};
         std::shared_ptr<Texture> _texture{};
         std::shared_ptr<Graphics::Rectangle> _rectangle{};
-        Alignment _text_alignment{};
-        FilledMode _filled_mode{};
+        std::string _text{};
     };
+
+    inline constexpr uint32_t Label_Font_Type_ID{76979865};
 }
 
 #endif //MYENGINE_UI_LABEL_H

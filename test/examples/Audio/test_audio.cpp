@@ -27,7 +27,7 @@ class MyWindow : public Window {
 int main() {
     Engine engine;
     engine.setFPS(60);
-    auto window = new MyWindow(&engine, "Audio test", 800, 600);
+    auto window = new MyWindow(&engine, "Audio test", 800, 300);
     AudioSystem::global()->appendBGM("main", FileSystem::getAbsolutePath("./assets/Peace.wav"));
     auto bgm = AudioSystem::global()->getBGM("main");
     Graphics::Rectangle rect_L(100, 100, 0, 20, 0, {}, StdColor::Green);
@@ -35,6 +35,7 @@ int main() {
     Graphics::Rectangle rect_C(100, 100, 240, 40, 0, {}, RGBAColor::BlueLightTrans);
     Graphics::Rectangle rect_peak_L(100, 100, 0, 20, 0, {}, {0, 255, 0, 143});
     Graphics::Rectangle rect_peak_R(100, 120, 0, 20, 0, {}, {144, 238, 144, 143});
+    Graphics::Rectangle prg_rect(0, 0, 0, 48, 0, {}, StdColor::LightBlue);
     AudioDecibelMeter mixer_level_viewer(AudioSystem::global()->mixer());
     AudioDecibelMeter track_level_viewer(bgm);
     window->setViewer(&track_level_viewer);
@@ -85,13 +86,16 @@ int main() {
             delay_R = SDL_GetTicks();
             red_R = false;
         }
+        float playing_status = static_cast<float>(bgm->position()) / static_cast<float>(bgm->duration());
+        prg_rect.resize(playing_status * static_cast<float>(window->geometry().width), 16);
         r->drawRectangle(&rect_C);
         r->drawRectangle(&rect_peak_L);
         r->drawRectangle(&rect_peak_R);
         r->drawRectangle(&rect_L);
         r->drawRectangle(&rect_R);
+        r->drawRectangle(&prg_rect);
         r->drawDebugText(FMT::format("Playing: {}", bgm->path()), {20, 20});
-        r->drawDebugText(FMT::format("Status: {}, Vol: {:.0f}%", bgm->position(),
+        r->drawDebugText(FMT::format("Status: {} / {}, Vol: {:.0f}%", bgm->position(), bgm->duration(),
             roundf(bgm->volume() * 100.f)), {20, 30});
         r->drawDebugText(FMT::format("[M] mix: {:.2f} dB, L: {:.2f} dB, R: {:.2f} dB",
             mixer_level_viewer.mixDecibel(), mixer_level_viewer.leftDecibel(), mixer_level_viewer.rightDecibel()), {20, 40});
@@ -105,8 +109,10 @@ int main() {
         if (EventSystem::global()->captureKeyboard(SDL_SCANCODE_SPACE)) {
             if (bgm->playStatus() != BGM::Playing) {
                 bgm->resume();
+                prg_rect.setBackgroundColor(StdColor::LightBlue);
             } else {
                 bgm->pause();
+                prg_rect.setBackgroundColor(StdColor::DarkBlue);
             }
         }
         if (e.type == SDL_EVENT_KEY_DOWN) {

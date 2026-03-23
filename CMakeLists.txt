@@ -201,6 +201,7 @@ if (BUILD_SHARED_LIBS_ONLY)
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
+            src/UI/Label.cpp
             src/UI/Label.h
             src/Layers/Layer.h
             src/Layers/LayerManager.cpp
@@ -276,6 +277,7 @@ else()
             src/UI/All.h
             src/UI/AbstractControl.cpp
             src/UI/AbstractControl.h
+            src/UI/Label.cpp
             src/UI/Label.h
             src/Layers/Layer.h
             src/Layers/LayerManager.cpp

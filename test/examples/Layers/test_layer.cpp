@@ -1,7 +1,8 @@
 ﻿#include "MyEngine"
 using namespace MyEngine;
 
-int main() {
+int main(int argc, char* argv[]) {
+    FileSystem::setCurrentPath(FileSystem::getDirectoryFromFile(argv[0]));
     Engine engine;
     auto window = new Window(&engine, "Test Layer");
     window->renderer()->setVSyncMode(Renderer::Enabled);
@@ -14,7 +15,7 @@ int main() {
     auto first_layer = layer_manager.layer(0);
     auto second_layer = layer_manager.layer("2nd");
     auto re2 = new Component<Graphics::Rectangle>(0, 0, 100, 100, 1, StdColor::Gray, StdColor::Yellow);
-    auto text = new Component<Texture>("./assets/tilesn.jpg", window->renderer());
+    auto text = new Component<Texture>(FileSystem::getAbsolutePath("./assets/tilesn.jpg"), window->renderer());
     re2->self()->move(100, 100);
     re2->setRenderEvent([&window](Graphics::Rectangle* r) {
         window->renderer()->drawRectangle(r);

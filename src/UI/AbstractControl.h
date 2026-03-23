@@ -22,25 +22,34 @@ namespace MyEngine {
         constexpr inline size_t Status_HotkeysDown{14};
         constexpr inline size_t Status_Input{15};
         constexpr inline size_t Status_ContextMenu{16};
+        constexpr inline const char* Default_Layer{"__UI__"};
 
-        enum class Alignment : uint8_t {
+        enum Alignment : uint8_t {
             LeftTop,
             LeftCenter,
             LeftBottom,
-            Top,
-            Center,
-            Bottom,
+            MiddleTop,
+            MiddleCenter,
+            MiddleBottom,
             RightTop,
             RightCenter,
             RightBottom
         };
 
-        enum class FilledMode : uint8_t {
+        enum FilledMode : uint8_t {
             None,
             Stretch,
             Center,
             Fit,
             Fill
+        };
+
+        enum Status : uint8_t {
+            Default,
+            Disabled,
+            Hovered,
+            Pressed,
+            Checked
         };
 
         class AbstractControl {
@@ -66,11 +75,14 @@ namespace MyEngine {
 
         public:
             explicit AbstractControl(const std::string_view& class_name, Window* parent = nullptr);
-            explicit AbstractControl(const std::string_view& class_name, const std::string_view& object_name, Window* parent = nullptr);
+            explicit AbstractControl(const std::string_view& class_name, const std::string_view& object_name,
+                Window* parent = nullptr);
             virtual ~AbstractControl();
 
             void setObjectName(const std::string_view& object_name);
             [[nodiscard]] const std::string& objectName() const;
+            void setLayerName(const std::string_view& layer_name);
+            [[nodiscard]] const std::string& layerName() const;
 
             void setGeometry(float x, float y, float width, float height);
             void setGeometry(const Vector2& position, const Size& size);
@@ -158,12 +170,14 @@ namespace MyEngine {
             bool status(size_t id);
             void setClassName(const std::string_view& class_name);
             [[nodiscard]] const std::string& className() const;
+            [[nodiscard]] Window* window() const;
         private:
             void registerEvent();
             Window* _window;
             size_t _event_id;
             std::string _object_name{};
             std::string _class_name{};
+            std::string _layer_name{Default_Layer};
             GeometryF _geometry{};
             std::bitset<32> _status{};
             Cursor::StdCursor _cursor{};

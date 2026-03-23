@@ -14,7 +14,7 @@ namespace MyEngine {
             Engine::throwCustomFatalError<InvalidArgumentException>();
             return;
         }
-        _window->renderer()->setLayerManager(this);
+        _window->renderer()->setLayerManager(this, false);
         registerEvent();
     }
 

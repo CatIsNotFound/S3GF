@@ -55,9 +55,9 @@ namespace MyEngine {
         std::deque<std::unique_ptr<RenderCommand::BaseCommand>> _cmd_list;
         SDL_Renderer* _renderer{nullptr};
         Window* _window{nullptr};
-        size_t _render_count{0}, _render_cnt_in_sec{0};
+        uint32_t _render_count{0}, _render_cnt_in_sec{0};
         uint64_t _start_ts{0};
-        LayerManager* _layer_manager{nullptr};
+        std::unique_ptr<LayerManager> _layer_manager{};
         static SDL_Color _background_color;
         friend class LayerManager;
         friend class Engine;
@@ -76,9 +76,10 @@ namespace MyEngine {
         explicit Renderer(Window* window = nullptr);
         ~Renderer();
     private:
-        void setLayerManager(LayerManager* layer_manager);
-        [[nodiscard]] LayerManager* layerManager() const;
+        void setLayerManager(LayerManager* layer_manager, bool delete_later);
     public:
+        void installLayerManager();
+        [[nodiscard]] LayerManager* layerManager() const;
         void setVSyncMode(VSyncMode mode);
         [[nodiscard]] VSyncMode currentVSyncMode() const;
         [[nodiscard]] SDL_Renderer* self() const;

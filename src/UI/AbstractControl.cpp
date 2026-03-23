@@ -33,6 +33,14 @@ const std::string & MyEngine::UI::AbstractControl::objectName() const {
     return _object_name;
 }
 
+void MyEngine::UI::AbstractControl::setLayerName(const std::string_view &layer_name) {
+    _layer_name = layer_name;
+}
+
+const std::string & MyEngine::UI::AbstractControl::layerName() const {
+    return _layer_name;
+}
+
 void MyEngine::UI::AbstractControl::setGeometry(float x, float y, float width, float height) {
     if (isLocked()) return;
     _geometry.setGeometry(x, y, width, height);
@@ -242,6 +250,10 @@ void MyEngine::UI::AbstractControl::setClassName(const std::string_view &class_n
 
 const std::string &MyEngine::UI::AbstractControl::className() const {
     return _class_name;
+}
+
+MyEngine::Window *MyEngine::UI::AbstractControl::window() const {
+    return _window;
 }
 
 void MyEngine::UI::AbstractControl::registerEvent() {

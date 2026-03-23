@@ -7,10 +7,10 @@ namespace MyEngine {
     class ComponentBase {
     public:
         explicit ComponentBase() = default;
+        ComponentBase(ComponentBase&&) = default;
         virtual ~ComponentBase() = default;
         virtual void render() = 0;
         ComponentBase(const ComponentBase&) = delete;
-        ComponentBase(ComponentBase&&) = delete;
         ComponentBase& operator=(const ComponentBase&) = delete;
         ComponentBase& operator=(ComponentBase&&) = delete;
     };
@@ -19,11 +19,17 @@ namespace MyEngine {
     class Component : public ComponentBase {
         friend class Layer;
     public:
-        explicit Component(T* self, const std::function<void(T*)>& event = {})
-                : _self(std::unique_ptr<T>(self)), _render_event(event) {}
+        explicit Component(T* self, bool delete_later = false, const std::function<void(T*)>& event = {})
+                : _self(std::unique_ptr<T>(self)), _delete_this(delete_later), _render_event(event) {}
         template <typename ... Args>
         explicit Component(Args... args)
             : _self(std::make_unique<T>(std::forward<Args>(args)...)), _delete_this(true) {}
+        explicit Component(Component&& component) noexcept {
+            _self = std::move(component._self);
+            _delete_this = component._delete_this;
+            _render_event = std::move(component._render_event);
+            component._delete_this = false;
+        }
 
         ~Component() override {
             if (!_delete_this) _self.release();
@@ -75,7 +81,7 @@ namespace MyEngine {
                 Logger::log(Logger::Fatal, "Layer({}): Failed to add component! "
                                            "The specified object name is already exist!", object_name);
                 Engine::throwCustomFatalError<InvalidArgumentException>();
-                return SIZE_MAX;
+                return 0;
             }
             _layers.emplace_back(std::unique_ptr<ComponentBase>(component),
                 class_name.data(), object_name.data(), true);
@@ -201,7 +207,7 @@ namespace MyEngine {
             return _layers[index].visible;
         }
 
-        [[nodiscard]] int visibleComponentsCount() const {
+        [[nodiscard]] size_t visibleComponentsCount() const {
             size_t vis_cnt = 0;
             for (auto& layer : _layers) {
                 if (layer.visible) ++vis_cnt;
@@ -226,10 +232,11 @@ namespace MyEngine {
         }
 
     protected:
-        void paintEvent() {
-            for (auto& layer : _layers) {
-                if (!layer.visible) continue;
-                layer.component->render();
+        void paintEvent() const {
+            for (size_t i = 0; i < _layers.size(); ++i) {
+                const auto& LAYER = _layers.at(_layers.size() - i - 1);
+                if (!LAYER.visible) continue;
+                LAYER.component->render();
             }
         }
 

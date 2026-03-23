@@ -387,16 +387,11 @@ namespace MyEngine {
         if (!surface) {
             Logger::log(FMT::format("The surface is not valid!\n"
                                     "Exception: {}", SDL_GetError()), Logger::Error);
-            _property = std::make_unique<TextureProperty>();
             return false;
         }
         _surface = (deep_copy ? SDL_DuplicateSurface(surface) : std::move(surface));
         _texture = SDL_CreateTextureFromSurface(_renderer->self(), _surface);
-        _property = std::make_unique<TextureProperty>();
-        _property->resize((float)_surface->w, (float)_surface->h);
-        _property->clip_mode = false;
-        _property->color_alpha = RGBAColor::White;
-        _property->setScale(1.0f);
+        _property->resize(static_cast<float>(_surface->w), static_cast<float>(_surface->h));
         Logger::log(FMT::format("Texture: Created from surface"));
         Logger::log(FMT::format("Texture: Size set to {}x{}", _surface->w, _surface->h));
         return true;

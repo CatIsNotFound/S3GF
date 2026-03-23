@@ -38,12 +38,19 @@ namespace MyEngine {
         }
     }
 
-    void Renderer::setLayerManager(LayerManager *layer_manager) {
-        _layer_manager = layer_manager;
+    void Renderer::setLayerManager(LayerManager *layer_manager, bool delete_later) {
+        if (delete_later)
+            _layer_manager = std::unique_ptr<LayerManager>(layer_manager);
+        else
+            _layer_manager = std::unique_ptr<LayerManager>(layer_manager, {});
     }
 
-    LayerManager * Renderer::layerManager() const {
-        return _layer_manager;
+    void Renderer::installLayerManager() {
+        _layer_manager = std::make_unique<LayerManager>(this->_window);
+    }
+
+    LayerManager* Renderer::layerManager() const {
+        return _layer_manager.get();
     }
 
     void Renderer::setVSyncMode(Renderer::VSyncMode mode) {

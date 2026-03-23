@@ -2,6 +2,7 @@
 #ifndef MYENGINE_UTILS_VARIANT_H
 #define MYENGINE_UTILS_VARIANT_H
 #include "../Libs.h"
+#include "../Exception.h"
 namespace MyEngine {
     /**
      * \if EN
@@ -159,6 +160,13 @@ namespace MyEngine {
         [[nodiscard]] double toDouble() const;
         [[nodiscard]] std::string toString() const;
         [[nodiscard]] void* toPointer() const;
+        template <typename T>
+        [[nodiscard]] T* toCustomPointer() const {
+            if (_type != Pointer) {
+                throw BadValueException(FMT::format("Variant: The variant can not convert to pointer!"));
+            }
+            return static_cast<T*>(_pointer.get());
+        }
         [[nodiscard]] size_t usedCount() const;
 
         [[nodiscard]] std::string valueAsString(const std::function<std::string(void *, uint32_t)> &callback = {}) const;
@@ -167,11 +175,19 @@ namespace MyEngine {
         [[nodiscard]] BinaryArray valueAsBinary(const std::function<BinaryArray(void *, uint32_t)> &callback = {}) const;
         bool binaryToValue(const BinaryArray& bin_value, Type var_type, const std::function<bool(void*)>& callback = {});
 
+        template <typename T>
+        static std::function<void(void*)> makeDefaultDeleter() {
+            return [](void* ptr) {
+                delete static_cast<T*>(ptr);
+            };
+        }
     private:
         Type _type;
         void* _value;
         CustomPointer _pointer{};
     };
+
+
 } // MyEngine
 
 template<>
