@@ -96,10 +96,8 @@ TEST_CASE( "Windows management test", "[Core][Engine]" ) {
         }
     }
     // Tried to remove 2 windows
-    // third_window->close();
-    // sixth_window->close();
-    engine.removeWindow(third_window->windowID());
-    engine.removeWindow(sixth_window->windowID());
+    third_window->close();
+    sixth_window->close();
     auto third_id = third_window->windowID();
     auto sixth_id = sixth_window->windowID();
     // Get window by engine
