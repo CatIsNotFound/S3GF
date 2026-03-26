@@ -102,6 +102,23 @@ namespace MyEngine {
             : _type(Pointer), _value(), _pointer(pointer, deleter) {}
         explicit Variant(void* pointer, uint32_t custom_type_id, const std::function<void(void*)> &deleter = {})
             : _type(Pointer), _value(), _pointer(pointer, custom_type_id, deleter){}
+
+        Variant& operator=(std::nullptr_t value);
+        Variant& operator=(bool value);
+        Variant& operator=(int8_t value);
+        Variant& operator=(int16_t value);
+        Variant& operator=(int32_t value);
+        Variant& operator=(int64_t value);
+        Variant& operator=(uint8_t value);
+        Variant& operator=(uint16_t value);
+        Variant& operator=(uint32_t value);
+        Variant& operator=(uint64_t value);
+        Variant& operator=(float value);
+        Variant& operator=(double value);
+        Variant& operator=(const char* value);
+        Variant& operator=(const std::string& value);
+        Variant& operator=(std::string&& value) noexcept;
+        Variant& operator=(void* pointer);
         /**
          * \if EN
          * @brief Get the data type stored in the current variant

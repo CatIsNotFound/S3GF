@@ -475,6 +475,86 @@ namespace MyEngine {
         _value = nullptr;
     }
 
+    Variant & Variant::operator=(std::nullptr_t value) {
+        clearValue();
+        return *this;
+    }
+
+    Variant & Variant::operator=(bool value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(int8_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(int16_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(int32_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(int64_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(uint8_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(uint16_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(uint32_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(uint64_t value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(float value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(double value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(const char *value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(const std::string &value) {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(std::string &&value) noexcept {
+        setValue(value);
+        return *this;
+    }
+
+    Variant & Variant::operator=(void *pointer) {
+        setValue(pointer);
+        return *this;
+    }
+
     Variant::Type Variant::type() const {
         return _type;
     }
