@@ -6,6 +6,63 @@
 #include "Utils/WavWriter.h"
 
 namespace MyEngine {
+    class ComponentBase {
+    public:
+        explicit ComponentBase() = default;
+        ComponentBase(ComponentBase&&) = default;
+        virtual ~ComponentBase() = default;
+        virtual void render() = 0;
+        ComponentBase(const ComponentBase&) = delete;
+        ComponentBase& operator=(const ComponentBase&) = delete;
+        ComponentBase& operator=(ComponentBase&&) = delete;
+    };
+
+    template <typename T>
+    class Component : public ComponentBase {
+        friend class Layer;
+    public:
+        explicit Component(T* self, bool delete_later = false, const std::function<void(T*)>& event = {})
+                : _self(std::unique_ptr<T>(self)), _delete_this(delete_later), _render_event(event) {}
+        template <typename ... Args>
+        explicit Component(Args... args)
+            : _self(std::make_unique<T>(std::forward<Args>(args)...)), _delete_this(true) {}
+        explicit Component(Component&& component) noexcept {
+            _self = std::move(component._self);
+            _delete_this = component._delete_this;
+            _render_event = std::move(component._render_event);
+            component._delete_this = false;
+        }
+
+        ~Component() override {
+            if (!_delete_this) _self.release();
+        }
+
+        T* self() const { return _self.get(); }
+
+        void setComponent(T* self, bool delete_later = false) {
+            if (!_delete_this) _self.release();
+            _self.reset(self);
+            _delete_this = delete_later;
+        }
+        void setComponent(std::unique_ptr<T>&& unique_ptr, bool delete_later = false) {
+            if (!_delete_this) _self.release();
+            _self = std::move(unique_ptr);
+            _delete_this = delete_later;
+        }
+        template <typename ... Args>
+        void setComponent(Args... args) {
+            if (!_delete_this) _self.release();
+            _self = std::make_unique<T>(std::forward<Args>(args)...);
+            _delete_this = true;
+        }
+        void setRenderEvent(const std::function<void(T*)>& event) { _render_event = event; }
+    private:
+        void render() override { if (_render_event) _render_event(_self.get()); }
+        std::unique_ptr<T> _self;
+        bool _delete_this{};
+        std::function<void(T*)> _render_event{};
+    };
+
     class Font {
     public:
         enum Style : uint8_t {
