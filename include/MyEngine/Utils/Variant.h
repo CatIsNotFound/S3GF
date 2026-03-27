@@ -161,7 +161,7 @@ namespace MyEngine {
         void setValue(float v);
         void setValue(double v);
         void setValue(const char* string);
-        void setValue(std::string& string);
+        void setValue(const std::string &string);
         void setValue(void* pointer, std::function<void(void*)> deleter = {});
         void setValue(void* pointer, uint32_t custom_type_id, const std::function<void(void*)> &deleter = {});
         [[nodiscard]] bool toBool() const;

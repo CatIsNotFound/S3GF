@@ -772,7 +772,7 @@ namespace MyEngine {
         }
     }
 
-    void Variant::setValue(std::string& string) {
+    void Variant::setValue(const std::string &string) {
         if (_type == String) {
             *static_cast<std::string*>(_value) = string;
         } else {
