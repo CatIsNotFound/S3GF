@@ -276,7 +276,7 @@ jobs:
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_ttf...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \ 
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_PREFIX_PATH=~/Libs/SDL3  \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf
           echo "* Compiling and installing SDL3_ttf...."
@@ -486,6 +486,7 @@ jobs:
             mingw-w64-x86_64-ninja
             mingw-w64-x86_64-pkg-config
             mingw-w64-x86_64-catch
+            mingw-w64-x86_64-freetype
             git
             make
 
