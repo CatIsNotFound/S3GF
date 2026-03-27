@@ -273,9 +273,11 @@ jobs:
         shell: bash
         run: |
           cd ~/git/SDL_ttf
+          ./external/download.sh
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_ttf...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DSDLTTF_VENDORED=ON \
                    -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_PREFIX_PATH=~/Libs/SDL3  \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf

@@ -418,18 +418,9 @@ function(CopyDependencies OUT)
     set(POST_BUILD_COMMANDS
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_MIXER_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
     )
-    if (MINGW)
-        list(APPEND POST_BUILD_COMMANDS
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/${OUT}
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/x86_64-w64-mingw32/bin ${CMAKE_BINARY_DIR}/${OUT}
-        )
-    else ()
-        list(APPEND POST_BUILD_COMMANDS
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_IMAGE_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${SDL3_TTF_LIB}/bin ${CMAKE_BINARY_DIR}/${OUT}
-        )
-    endif()
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             ${POST_BUILD_COMMANDS}
