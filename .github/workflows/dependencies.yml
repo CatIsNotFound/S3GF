@@ -148,6 +148,7 @@ jobs:
       
   env-macos:
     runs-on: macos-latest
+
     steps:
       - name: pull code
         uses: actions/checkout@v4
@@ -156,7 +157,7 @@ jobs:
         shell: bash
         run: |
           brew update
-          brew install cmake pkg-config ninja fmt howard-hinnant-date
+          brew install cmake pkg-config ninja
           
           mkdir -p ~/Libs
           mkdir -p ~/git ; cd ~/git
@@ -165,9 +166,34 @@ jobs:
           git clone --depth 1 https://github.com/libsdl-org/SDL_mixer 
           git clone --depth 1 https://github.com/libsdl-org/SDL_ttf
           git clone --depth 1 https://github.com/catchorg/Catch2
+          git clone --depth 1 https://github.com/fmtlib/fmt.git
+          git clone --depth 1 https://github.com/HowardHinnant/date.git
           
           echo "~/git: "
           ls ~/git
+      
+
+      - name: Compile and install fmt (Universal Binary)
+        shell: bash
+        run: |
+          cd ~/git/fmt
+          mkdir -p build ; cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+                   -DCMAKE_INSTALL_PREFIX=~/Libs/fmt
+          cmake --build . -j10 --target install
+
+      - name: Compile and install date (Universal Binary)
+        shell: bash
+        run: |
+          cd ~/git/date
+          mkdir -p build ; cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+                   -DCMAKE_INSTALL_PREFIX=~/Libs/date \
+                   -DUSE_SYSTEM_TZ_DB=ON
+          cmake --build . -j10 --target install
+            
 
       - name: Compiling and installing Catch2
         shell: bash
@@ -175,7 +201,9 @@ jobs:
           cd ~/git/Catch2
           mkdir -p build ; cd build
           echo "* Starting configure SDL3...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/Libs/Catch2
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+             -DCMAKE_INSTALL_PREFIX=~/Libs/Catch2
           echo "* Compiling and installing Catch2...."
           cmake --build . -j10 --target install
           if [ $? -eq 0 ]; then
@@ -191,7 +219,9 @@ jobs:
           cd ~/git/SDL
           mkdir -p build ; cd build
           echo "* Starting configure SDL3...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_TEST=OFF -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_TEST=OFF \
+             -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+             -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3
           echo "* Compiling and installing SDL3...."
           cmake --build . -j10 --target install
           if [ $? -eq 0 ]; then
@@ -207,7 +237,10 @@ jobs:
           cd ~/git/SDL_image
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_image...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Libs/SDL3 -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_image
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+              -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
+              -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_image
           echo "* Compiling and installing SDL3_image...."
           cmake --build . -j10 --target install
           if [ $? -eq 0 ]; then
@@ -223,7 +256,10 @@ jobs:
           cd ~/git/SDL_mixer
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_mixer...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Libs/SDL3 -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_mixer
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+                   -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
+                   -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_mixer
           echo "* Compiling and installing SDL3_mixer...."
           cmake --build . -j10 --target install
           if [ $? -eq 0 ]; then
@@ -239,7 +275,10 @@ jobs:
           cd ~/git/SDL_ttf
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_ttf...."
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/Libs/SDL3 -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \ 
+                   -DCMAKE_PREFIX_PATH=~/Libs/SDL3  \
+                   -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf
           echo "* Compiling and installing SDL3_ttf...."
           cmake --build . -j10 --target install
           if [ $? -eq 0 ]; then
@@ -254,19 +293,15 @@ jobs:
         run: |
           mkdir -p build ; cd build
           echo "* Configuring project..."
-          if [[ `uname -m` == "x86_64" ]];then
-              HOMEBREW=/usr/local/    
-          else
-              HOMEBREW=/opt/homebrew/
-          fi
-          cmake .. -DDATE_LIB=$HOMEBREW \
-                   -DFMT_LIB=$HOMEBREW \
+          cmake .. -DFMT_LIB=~/Libs/fmt \
+                   -DDATE_LIB=~/Libs/date \
                    -DCATCH2_LIB=~/Libs/Catch2 \
                    -DSDL3_LIB=~/Libs/SDL3 \
                    -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
                    -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
                    -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
           echo "* Compiling and installing project..."
           cmake --build . -j10 --target all
@@ -433,5 +468,105 @@ jobs:
           
           cmake --build . -j10 --target install
           echo * Installation complete.
-      
+
+  env-windows-mingw:
+    runs-on: windows-latest
+    steps:
+      - name: pull code
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-fmt
+            mingw-w64-x86_64-date-tz
+            mingw-w64-x86_64-catch
+            git
+            make
+
+      - name: Download SDL source code
+        shell: msys2 {0}
+        run: |
+          mkdir -p ~/Libs
+          mkdir -p ~/git
+          cd ~/git
+          git clone --depth 1 https://github.com/libsdl-org/SDL
+          git clone --depth 1 https://github.com/libsdl-org/SDL_image
+          git clone --depth 1 https://github.com/libsdl-org/SDL_mixer
+          git clone --depth 1 https://github.com/libsdl-org/SDL_ttf
+          ls ~/git
+
+      - name: Compiling and installing SDL3 (MinGW)
+        shell: msys2 {0}
+        run: |
+          cd ~/git/SDL
+          mkdir -p build && cd build
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSDL_TEST=OFF \
+            -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3
+          cmake --build . -j10 --target install
+
+      - name: Compiling and installing SDL3_image (MinGW)
+        shell: msys2 {0}
+        run: |
+          cd ~/git/SDL_image
+          mkdir -p build && cd build
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
+            -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_image
+          cmake --build . -j10 --target install
+
+      - name: Compiling and installing SDL3_mixer (MinGW)
+        shell: msys2 {0}
+        run: |
+          cd ~/git/SDL_mixer
+          # 下载外部依赖（可选，如果不需要可以跳过）
+          # 这里假设不需要额外下载，因为 pacman 已安装 libogg, libflac 等，但 SDL_mixer 的 CMake 会自动检测
+          mkdir -p build && cd build
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
+            -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_mixer
+          cmake --build . -j10 --target install
+
+      - name: Compiling and installing SDL3_ttf (MinGW)
+        shell: msys2 {0}
+        run: |
+          cd ~/git/SDL_ttf
+          mkdir -p build && cd build
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
+            -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf
+          cmake --build . -j10 --target install
+
+      - name: Compiling and installing project (MinGW)
+        shell: msys2 {0}
+        run: |
+          mkdir -p build && cd build
+          echo "* Configuring project..."
+          cmake .. -G Ninja \
+            -DFMT_LIB=/mingw64 \
+            -DDATE_LIB=/mingw64 \
+            -DCATCH2_LIB=/mingw64 \
+            -DSDL3_LIB=~/Libs/SDL3 \
+            -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
+            -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
+            -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
+          echo "* Compiling project..."
+          cmake --build . -j10
+          echo "* Installing project..."
+          cmake --build . --target install
+          echo "* Installation complete."
       
