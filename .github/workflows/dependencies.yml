@@ -485,8 +485,6 @@ jobs:
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-ninja
             mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-fmt
-            mingw-w64-x86_64-date-tz
             mingw-w64-x86_64-catch
             git
             make
@@ -555,8 +553,6 @@ jobs:
           mkdir -p build && cd build
           echo "* Configuring project..."
           cmake .. -G Ninja \
-            -DFMT_LIB=/mingw64 \
-            -DDATE_LIB=/mingw64 \
             -DCATCH2_LIB=/mingw64 \
             -DSDL3_LIB=~/Libs/SDL3 \
             -DSDL3_IMAGE_LIB=~/Libs/SDL3_image \
