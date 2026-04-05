@@ -179,7 +179,6 @@ jobs:
           cd ~/git/fmt
           mkdir -p build ; cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/fmt
           cmake --build . -j10 --target install
 
@@ -189,7 +188,6 @@ jobs:
           cd ~/git/date
           mkdir -p build ; cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/date \
                    -DUSE_SYSTEM_TZ_DB=ON
           cmake --build . -j10 --target install
@@ -202,7 +200,6 @@ jobs:
           mkdir -p build ; cd build
           echo "* Starting configure SDL3...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-             -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
              -DCMAKE_INSTALL_PREFIX=~/Libs/Catch2
           echo "* Compiling and installing Catch2...."
           cmake --build . -j10 --target install
@@ -220,7 +217,6 @@ jobs:
           mkdir -p build ; cd build
           echo "* Starting configure SDL3...."
           cmake .. -DCMAKE_BUILD_TYPE=Release -DSDL_TEST=OFF \
-             -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
              -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3
           echo "* Compiling and installing SDL3...."
           cmake --build . -j10 --target install
@@ -238,7 +234,6 @@ jobs:
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_image...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
               -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
               -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_image
           echo "* Compiling and installing SDL3_image...."
@@ -257,7 +252,6 @@ jobs:
           mkdir -p build ; cd build
           echo "* Starting configure SDL3_mixer...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_PREFIX_PATH=~/Libs/SDL3 \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_mixer
           echo "* Compiling and installing SDL3_mixer...."
@@ -278,7 +272,6 @@ jobs:
           echo "* Starting configure SDL3_ttf...."
           cmake .. -DCMAKE_BUILD_TYPE=Release \
                    -DSDLTTF_VENDORED=ON \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_PREFIX_PATH=~/Libs/SDL3  \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/SDL3_ttf
           echo "* Compiling and installing SDL3_ttf...."
@@ -303,7 +296,6 @@ jobs:
                    -DSDL3_MIXER_LIB=~/Libs/SDL3_mixer \
                    -DSDL3_TTF_LIB=~/Libs/SDL3_ttf \
                    -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
                    -DCMAKE_INSTALL_PREFIX=~/Libs/MyEngine
           echo "* Compiling and installing project..."
           cmake --build . -j10 --target all
