@@ -3,6 +3,7 @@
 using namespace MyEngine;
 
 int main() {
+    Engine::disabledShowAppInfo();
     Engine engine;
     auto win = new Window(&engine, "Test file dialog");
     auto font_db = FontDatabase::getSystemDefaultFont();
@@ -23,7 +24,7 @@ int main() {
     button1.move(100, 140);
     button1.setTriggerEvent([&] {
         engine.openFileDialog({"All files(*.*)", "Text file(*.txt;*.json;*.xml)"},
-                              FileSystem::homePath(), win);
+                              ".", win);
         is_opened_file_dialog = true;
     });
     Widget::Button button2("openDir", win);

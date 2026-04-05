@@ -27,8 +27,6 @@ int main() {
     control.setLockedEnabled(true);
     control.move(100, 100);
     control.resize(100, 100);
-
-    control.setProperty("hello", Variant(new TT(), [](void* d) { delete static_cast<TT*>(d); }));
     win->show();
     Graphics::Rectangle rect(control.geometry());
     win->installPaintEvent([&rect](Renderer* r) {

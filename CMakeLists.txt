@@ -60,9 +60,19 @@ if (${USED_SRC_LIBS})
     option(ENABLE_FMT "Enabled using FMT library" OFF)
     option(ENABLE_DATE "Enabled using Howard Hinnant Date library" OFF)
     message("-- Importing from source code libraries, it may takes a long time...")
+
+    set(SDL_DISABLE_INSTALL OFF CACHE BOOL "Disable SDL3 installation" FORCE)
+    set(SDL_TEST OFF CACHE BOOL "Disable SDL3 test" FORCE)
+    set(SDL_INSTALL ON CACHE BOOL "Enable installation of SDL3" FORCE)
     add_subdirectory(libs/SDL3)
+
+    set(SDLIMAGE_INSTALL ON CACHE BOOL "Enable SDL3_image install target" FORCE)
     add_subdirectory(libs/SDL3_image)
+
+    set(SDLMIXER_INSTALL ON CACHE BOOL "Enable SDL3_mixer install target" FORCE)
     add_subdirectory(libs/SDL3_mixer)
+
+    set(SDLTTF_INSTALL ON CACHE BOOL "Enable SDL3_ttf install target" FORCE)
     add_subdirectory(libs/SDL3_ttf)
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(ENABLE_FMT ON)
@@ -74,9 +84,6 @@ if (${USED_SRC_LIBS})
     endif()
     if (${ENABLE_DATE})
         add_subdirectory(libs/date)
-        # set(USE_SYSTEM_TZ_DB ON CACHE BOOL "Use system timezone database")
-        # set(BUILD_TZ_LIB ON CACHE BOOL "Enable building timezone library")
-        # set(ENABLE_CURL OFF CACHE BOOL "Enable using curl library")
         add_compile_definitions(__USED_DATE_LIB__)
     endif()
 else()
@@ -285,6 +292,8 @@ else()
     )
 endif()
 
+add_library(MyEngine::MyEngine ALIAS MyEngine)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<INSTALL_INTERFACE:include>
@@ -306,58 +315,56 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         ${TARGET_LIBS}
 )
 
-if (NOT ${USED_SRC_LIBS})
-    install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}Targets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include
-    )
+)
 
-    install(DIRECTORY include/
-            DESTINATION include
-    )
+install(DIRECTORY include/
+        DESTINATION include
+)
 
-    install(DIRECTORY assets/
-            DESTINATION assets
-    )
+install(DIRECTORY assets/
+        DESTINATION assets
+)
 
-    install(FILES
-            LICENSE
-            README.md
-            README_zh.md
-            DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
+install(FILES
+        LICENSE
+        README.md
+        README_zh.md
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+)
 
-    install(EXPORT ${PROJECT_NAME}Targets
-        FILE ${PROJECT_NAME}Targets.cmake
-        NAMESPACE ${PROJECT_NAME}::
-        DESTINATION lib/cmake/${PROJECT_NAME}
-    )
+install(EXPORT ${PROJECT_NAME}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION lib/cmake/${PROJECT_NAME}
+)
 
-    set(CONFIG_PACKAGE_LOCATION lib/cmake/${PROJECT_NAME})
+set(CONFIG_PACKAGE_LOCATION lib/cmake/${PROJECT_NAME})
 
-    configure_package_config_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION ${CONFIG_PACKAGE_LOCATION}
+    PATH_VARS CMAKE_INSTALL_PREFIX
+)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(
+    FILES
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-        INSTALL_DESTINATION ${CONFIG_PACKAGE_LOCATION}
-        PATH_VARS CMAKE_INSTALL_PREFIX
-    )
-
-    write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
-    )
-
-    install(
-        FILES
-            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-        DESTINATION ${CONFIG_PACKAGE_LOCATION}
-    )
-endif()
+    DESTINATION ${CONFIG_PACKAGE_LOCATION}
+)
 
 set(PARENT_PROJECT_NAME ${PROJECT_NAME})
 
@@ -378,7 +385,7 @@ message("Project version: ${PROJECT_VERSION}")
 if (${CMAKE_BUILD_TYPE} MATCHES "Release")
     message("Build type: Release")
 else()
-    message("Build type: Debug")
+    message("Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 message("Build test: ${BUILD_TEST}")
 if (${USED_SRC_LIBS})
@@ -427,7 +434,7 @@ function(CopyDependencies OUT)
     )
 endfunction()
 
-if (${BUILD_TEST})
+if (${BUILD_TEST} AND NOT ${USED_SRC_LIBS})
     if (WIN32)
         CopyDependencies(bin)
     endif()
